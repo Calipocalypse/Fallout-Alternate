@@ -1,0 +1,3 @@
+Loaded f2_res.dll library at the memory address: 0x10000000
+Loading custom patches:
+New Game started.
