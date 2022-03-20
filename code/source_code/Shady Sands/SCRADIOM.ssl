@@ -1,0 +1,796 @@
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCRADIOM
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+#include "..\headers\ITEMPID.h"
+
+//variable hate;
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure use_obj_on_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_First_Talk                 (8)
+#define LVAR_Player_Repairing           (9)
+#define LVAR_destination                (10)
+
+#define TIMED_EVENT_FAJKI_MSG           (69)
+
+/*****************************************************************************************************************
+**************************************************DIALOGUE********************************************************
+*****************************************************************************************************************/
+
+procedure DialogueStart; procedure FirstTime; procedure NotFirstTime;
+procedure zaczep; procedure getangry; procedure stopWaist;
+procedure LookOnIt;
+procedure StartQuest;
+
+procedure u_fixed; procedure u_fixed2; procedure theycoming; procedure whataboutthetalk; procedure signalthisvillage;
+procedure holodisk;
+
+procedure TychoCrash; procedure TychoCrash_Rude; procedure TychoCrash2; procedure TychoCrash_ItsTycho; procedure Node998_1; procedure TychoCrash3; procedure TychoCrash4; procedure TychoCrash_GoToTycho; procedure TychoCrash_GoToTycho2;
+
+procedure Node_Tycho_Quest; procedure Node_Tycho_Quest_Go_Out; procedure Node999_HeNeedGoOut;
+
+/*****************************************************************************************************************
+**************************************************Variables*******************************************************
+*****************************************************************************************************************/
+
+//variable waiter;
+//variable anim1;
+variable using_radio;
+variable smokezone;
+variable time_in_seconds_previous;
+variable hate;
+variable temp_time_low;
+variable item;
+import variable person_felix;
+import variable point_tycho;
+/*****************************************************************************************************************
+***********************************************Custom procedures**************************************************
+*****************************************************************************************************************/
+procedure anime_fixingradio;
+procedure random_messages;
+procedure anime_smoking;
+
+import variable jackal_tobimber_1;
+import variable jackal_tobimber_2;
+import variable obj_ghost;
+import variable obj_green_explosion;
+
+
+
+procedure start begin
+person_felix := self_obj;
+end
+
+procedure map_enter_p_proc begin
+person_felix := self_obj;
+if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+hate := 0;
+time_in_seconds_previous:= game_time_in_seconds;
+using_radio := 15477;
+smokezone := 17685;
+if (map_first_run) then set_local_var(LVAR_destination,using_radio);
+
+end
+
+procedure map_exit_p_proc begin
+
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   if not shady_dude_has_started_rebellion then begin
+      if (tile_num(self_obj)) == using_radio then Call anime_fixingradio;
+      if (tile_num(self_obj)) == smokezone then Call anime_smoking;
+      if (tile_num(self_obj)) == using_radio and global_var(GVAR_QUEST_SHADYSANDS_RADIO) == 0 then Call random_messages;
+
+      temp_time_low := random(1,44);
+    //display_msg("cs"+temp_time_low);
+      if self_tile!=local_var(LVAR_destination) and anim_busy(self_obj)==0 then begin animate_move_to_tile(local_var(LVAR_destination)); end
+
+      if anim_busy(self_obj)==0 and global_var(GVAR_QUEST_SHADYSANDS_RADIO) == 3 and self_tile!=smokezone then animate_rotation(0);
+   end
+
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+if global_var(GVAR_SHADY_REBELLION) == 0 then begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   //display_msg("GVAR_QUEST_SHADYSANDS_RADIO" + global_var(GVAR_QUEST_SHADYSANDS_RADIO));
+   //display_msg("global_var(GVAR_SHADY_TYCHO_CHILD)" + global_var(GVAR_SHADY_TYCHO_CHILD));
+
+   GetReaction;
+   // before quest
+   if global_var(GVAR_QUEST_SHADYSANDS_RADIO) == 0 then begin
+    start_gdialog(NAME,self_obj,4,-1,-1);
+    gSay_Start;
+    if local_var(LVAR_First_Talk) != 1 then call DialogueStart;  else call NotFirstTime; // still reparing
+    gSay_End;
+    end_dialogue;
+    end
+    //during quest
+    else if global_var(GVAR_QUEST_SHADYSANDS_RADIO) == 1 then begin
+    float_msg(self_obj,mstr(random(210,211)),FLOAT_COLOR_NORMAL);
+    end
+    //after quest
+
+    else if global_var(GVAR_QUEST_SHADYSANDS_RADIO) >= 2 and (global_var(GVAR_SHADY_TYCHO_CHILD)) == TYCHO_RADIO_ACTIVE and self_tile == using_radio then start_dialog_at_node(Node_Tycho_Quest);
+
+    else if global_var(GVAR_QUEST_SHADYSANDS_RADIO) == 2 and local_var(LVAR_Player_Repairing) != 10 then begin
+    start_gdialog(NAME,self_obj,4,-1,-1);
+    gSay_Start;
+            call u_fixed;
+    gSay_End;
+    end_dialogue;
+    end
+
+    // after receving holodisk
+   else if local_var(LVAR_Player_Repairing) == 10 then float_msg(self_obj,mstr(310),FLOAT_COLOR_NORMAL);
+end
+else floater(1000);
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure anime_fixingradio begin
+
+   if global_var(GVAR_QUEST_SHADYSANDS_RADIO)==0 then begin
+
+         if temp_time_low==5 and anim_busy(self_obj)==0 then begin
+         reg_anim_begin();
+            if random(1,10) > 2 then reg_anim_animate(self_obj, 11, -1); else reg_anim_animate(self_obj, ANIM_throw_punch, -1);
+         reg_anim_end();
+         end
+
+   end
+
+   else begin
+
+         if temp_time_low==5 then begin
+         reg_anim_begin();
+            if random(1,10) > 7 and anim_busy(self_obj)==0 then reg_anim_animate(self_obj, 11, -1);
+         reg_anim_end();
+         end
+
+   end
+
+end
+
+procedure anime_smoking begin
+ if temp_time_low==5 and anim_busy(self_obj)==0 then begin
+   reg_anim_begin();
+      reg_anim_animate(self_obj, 2, -1);
+   reg_anim_end();
+   end
+end
+
+procedure go_kiep begin
+set_local_var(LVAR_destination,smokezone);
+end
+
+procedure go_radio begin
+set_local_var(LVAR_destination,using_radio);
+end
+
+procedure go_radio_normal begin
+set_local_var(LVAR_destination,using_radio);
+end
+
+procedure random_messages begin
+/*variable debugson;
+if (game_time_in_seconds+6)%50 then debugson:="niepodzielna"; else debugson := "podzielna przez 50";
+display_msg((game_time_in_seconds+6)+"  "+debugson);*/
+if game_time_in_seconds!=time_in_seconds_previous and not (game_time_in_seconds%50) then begin
+float_msg(self_obj,mstr(random(110,112)),FLOAT_MSG_NORMAL);
+time_in_seconds_previous:= game_time_in_seconds;
+end
+end
+
+procedure DialogueStart begin
+Reply(mstr(150));
+NOption(151,FirstTime,004);
+NOption(152,Node999,004);
+end
+
+procedure FirstTime begin
+Reply(mstr(160));
+NOption(161,zaczep,004);
+NOption(162,getangry,004);
+end
+
+procedure NotFirstTime begin
+Reply("Co znowu?");
+NOption(161,zaczep ,004);
+NOption(162,getangry,004);
+end
+
+procedure zaczep begin
+Reply(mstr(180));
+set_local_var(LVAR_First_Talk,1);
+if has_skill(dude_obj,SKILL_REPAIR)>29 then NOption(182,LookOnIt,004);
+NOption(181,LookOnIt,004);
+NOption(183,stopWaist,004);
+end
+
+procedure getangry begin
+call Node999;
+hate += 1;
+if hate == 1 then float_msg(self_obj,mstr(170),2);
+if hate == 2 then float_msg(self_obj,mstr(172),2);
+if hate == 3 then begin float_msg(self_obj,mstr(173),2); call Node998; end
+end
+
+procedure stopWaist begin
+call Node999;
+float_msg(self_obj,mstr(190),2);
+end
+
+procedure LookOnIt begin
+
+Reply(mstr(200));
+set_global_var(GVAR_QUEST_SHADYSANDS_RADIO,1);
+NOption(201,StartQuest,004);
+
+end
+
+procedure StartQuest begin
+call Node999;
+call go_kiep;
+end
+
+   /*
+   waiter += 1;
+   if waiter > 15 then begin
+   reg_anim_begin();
+   reg_anim_animate(self_obj, anim1, -1);
+   reg_anim_end();
+   anim1 +=1;
+   float_msg(self_obj,"Ta animacja to: "+anim1,3);
+   waiter := 0;
+   if anim1 == 100 then begin anim1 := 0; end
+   end
+   */
+
+   /*
+ if temp_time_low==5 then begin
+   reg_anim_begin();
+   reg_anim_animate(self_obj, 13, -1);
+   reg_anim_end();
+   end
+   */
+
+
+procedure u_fixed begin
+Reply(mstr(240));
+NOption(241,u_fixed2,004);
+end
+
+procedure u_fixed2 begin
+Reply(mstr(250));
+NOption(251,theycoming,004);
+NOption(252,whataboutthetalk,004);
+if local_var(LVAR_Player_Repairing) == 10 then NOption(282,Node999,004);
+end
+
+procedure theycoming begin
+Reply(mstr(260));
+NOption(261,signalthisvillage,004);
+if local_var(LVAR_Player_Repairing) == 10 then NOption(282,Node999,004);
+end
+
+procedure signalthisvillage begin
+Reply(mstr(270));
+NOption(271,holodisk,004);
+if local_var(LVAR_Player_Repairing) == 10 then NOption(282,Node999,004);
+end
+
+procedure holodisk begin
+Reply(mstr(280));
+item:=create_object(598,0,0);//MYSTERIOUS TRANSMISSION
+add_obj_to_inven(dude_obj,item);
+set_local_var(LVAR_Player_Repairing,10);
+NOption(282,Node999,004);
+call go_radio_normal;
+set_global_var(GVAR_QUEST_SHADYSANDS_RADIO,3);
+end
+
+procedure whataboutthetalk begin
+Reply(mstr(290));
+if local_var(LVAR_Player_Repairing) == 10 then NOption(282,Node999,004);
+NOption(291,theycoming,004);
+end
+
+procedure use_obj_on_p_proc begin
+if( obj_pid(obj_being_used_with) == 334 ) then add_timer_event(self_obj,game_ticks(8),15);
+end
+
+variable counter;
+
+procedure timed_event_p_proc begin
+
+if fixed_param == 15 then
+      begin
+      float_msg(self_obj,"Aaaaargh!",3);
+      metarule3(107,self_obj,FID_MAMTNT,0);
+      //set_map_var(MVAR_Felix_Mutant,1);
+      //display_msg("mvar: "+map_var(MVAR_Felix_Mutant));
+      animate_move_obj_to_tile(jackal_tobimber_1,tile_num(self_obj),ANIMATE_RUN);
+      animate_move_obj_to_tile(jackal_tobimber_2,tile_num(self_obj),ANIMATE_RUN);
+
+      add_timer_event(self_obj,0,3);
+      add_timer_event(self_obj,5,3);
+      add_timer_event(self_obj,10,3);
+      add_timer_event(self_obj,20,3);
+      add_timer_event(self_obj,25,3);
+      float_msg(jackal_tobimber_1,mstr(501),2);
+
+      if not combat_is_initialized then add_timer_event(self_obj,35,4);
+      end
+
+if fixed_param == 2 then begin
+      attack_setup(self_obj,dude_obj);
+end
+
+if fixed_param == 3 then begin
+      metarule3(107,self_obj,FID_MAMTNT,0);
+      animate_move_obj_to_tile(jackal_tobimber_1,tile_num(self_obj),ANIMATE_RUN);
+      animate_move_obj_to_tile(jackal_tobimber_2,tile_num(self_obj),ANIMATE_RUN);
+      if obj_can_see_obj(jackal_tobimber_1,dude_obj) then begin attack_setup(jackal_tobimber_1,dude_obj); float_msg(jackal_tobimber_1,mstr(500),2); end
+      if obj_can_see_obj(jackal_tobimber_2,dude_obj) then begin attack_setup(jackal_tobimber_2,dude_obj); float_msg(jackal_tobimber_2,mstr(500),2); end
+end
+
+if fixed_param == 4 then begin
+      attack_setup(jackal_tobimber_2,self_obj);
+      attack_setup(jackal_tobimber_1,self_obj);
+end
+
+	if fixed_param == 5 then begin
+
+		if counter == 0 then begin
+
+         //explosion(dude_tile, 0, 12);
+			//game_ui_enable;
+			animate_run_to_tile(dude_tile);
+
+			set_local_var(LVAR_destination, 0);
+   set_obj_visibility(obj_green_explosion,false);
+		reg_anim_begin();
+      reg_anim_animate_and_hide(obj_green_explosion, ANIM_stand,-1);
+      reg_anim_end();
+      reg_anim_begin();
+      reg_anim_animate(dude_obj, ANIM_fall_back, -1);
+      reg_anim_end();
+
+			   display_mstr(605);
+
+			   add_timer_event(self_obj,game_ticks(1),5);
+			counter++;
+		end
+
+		else if counter == 1 then begin
+			float_msg(self_obj,mstr(600),2);
+			FadeOut(1000);
+
+			add_timer_event(self_obj,game_ticks(2),5);
+		counter++;
+		end
+
+		else if counter == 2 then begin
+
+         move_to(self_obj, tile_num_in_direction(dude_tile, 3, 2),0);
+         Face_Critter(dude_obj, self_obj);
+         FadeIn(1000);
+         reg_anim_begin();
+         reg_anim_animate(self_obj, ANIM_kick_leg, -1);
+         reg_anim_end();
+			float_msg(self_obj,mstr(601),2);
+			add_timer_event(self_obj,game_ticks(3),5);
+		counter++;
+		end
+
+		else if counter == 3 then begin
+
+			game_ui_enable;
+			start_dialog_at_node(TychoCrash);
+
+		end
+
+
+
+	end
+
+	if fixed_param == 6 then begin
+
+		if counter == 0 then begin
+
+				move_to(self_obj,17323,0);
+				move_to(dude_obj,17325,0);
+				Face_Critter(self_obj,point_tycho);
+				Face_Critter(point_tycho,self_obj);
+				Face_Critter(dude_obj,point_tycho);
+				Face_Critter(point_tycho,dude_obj);
+			   add_timer_event(self_obj,game_ticks(1),6);
+			   game_ui_enable;
+
+		end
+
+		else if counter == 1 then begin
+
+			float_msg(self_obj,mstr(700),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(2),6);
+
+		end
+
+		else if counter == 2 then begin
+
+			float_msg(self_obj,mstr(701),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(3),6);
+
+		end
+
+		else if counter == 3 then begin
+
+			float_msg(self_obj,mstr(702),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(3),6);
+
+		end
+
+		else if counter == 4 then begin
+
+			float_msg(self_obj,mstr(703),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(3),6);
+
+		end
+
+		else if counter == 5 then begin
+
+			float_msg(self_obj,mstr(704),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(6),6);
+
+		end
+
+		else if counter == 6 then begin
+
+			float_msg(self_obj,mstr(705),FLOAT_MSG_NORMAL);
+			if global_var(GVAR_SHADY_TYCHO_CHILD) == 4 then add_timer_event(self_obj,game_ticks(3),6);
+			else add_timer_event(self_obj,game_ticks(6),7);
+
+		end
+
+		else if counter == 7 then begin
+
+			float_msg(self_obj,mstr(709),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(3),6);
+
+		end
+
+		else if counter == 8 then begin
+
+			float_msg(self_obj,mstr(710),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(6),6);
+
+		end
+
+		else if counter == 9 then begin
+
+			float_msg(point_tycho,mstr(706),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(3),6);
+
+		end
+
+		else if counter == 10 then begin
+
+			float_msg(point_tycho,mstr(707),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(3),6);
+
+		end
+
+		else if counter == 11 then begin
+
+			float_msg(self_obj,mstr(708),FLOAT_MSG_NORMAL);
+
+			add_timer_event(self_obj,game_ticks(3),6);
+
+		end
+
+		else if counter == 12 then begin
+
+			fadeout(200);
+			add_timer_event(self_obj,game_ticks(5),8);
+			counter:=0;
+
+		end
+
+		counter++;
+
+	end
+
+	if fixed_param == 7 then begin //nie mowil gracz o radiu nowym
+
+		if counter == 7 then begin
+
+			float_msg(point_tycho,mstr(706),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(3),7);
+
+		end
+
+		else if counter == 8 then begin
+
+			float_msg(point_tycho,mstr(707),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(3),7);
+
+		end
+
+		else if counter == 9 then begin
+
+			float_msg(self_obj,mstr(708),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(3),7);
+
+		end
+
+		else if counter == 10 then begin
+
+			fadeout(200);
+			add_timer_event(self_obj,game_ticks(5),8);
+			counter:=0;
+
+		end
+
+		counter++;
+
+
+	end
+
+	if fixed_param == 8 then begin
+
+		if counter == 1 then begin
+
+			move_to(dude_obj,19927,0);
+			move_to(self_obj,22739,0);
+			move_to(point_tycho,22738,0);
+
+			if tile_distance_objs(dude_obj, self_obj) > 2 then animate_run_to_tile(dude_tile);
+
+			fadein(200);
+			add_timer_event(self_obj,game_ticks(5),8);
+
+		end
+
+		else if counter == 2 then begin
+
+			float_msg(point_tycho,mstr(720),FLOAT_MSG_DARK_GREY);
+			add_timer_event(self_obj,game_ticks(5),8);
+
+		end
+
+		else if counter == 3 then begin
+
+			float_msg(self_obj,mstr(721),FLOAT_MSG_BLACK);
+			add_timer_event(self_obj,game_ticks(5),8);
+
+		end
+
+		else if counter == 4 then begin
+
+			float_msg(point_tycho,mstr(722),FLOAT_MSG_DARK_GREY);
+			add_timer_event(self_obj,game_ticks(5),8);
+
+		end
+
+		else if counter == 5 then begin
+
+			float_msg(self_obj,mstr(723),FLOAT_MSG_BLACK);
+			add_timer_event(self_obj,game_ticks(4),8);
+
+		end
+
+		else if counter == 6 then begin
+
+			set_obj_visibility(obj_ghost,false);
+			animate_move_obj_to_tile(obj_ghost,22136,ANIMATE_WALK);
+			add_timer_event(self_obj,game_ticks(3),8);
+
+		end
+
+		else if counter == 7 then begin
+
+			float_msg(point_tycho,mstr(724),FLOAT_MSG_DARK_GREY);
+			add_timer_event(self_obj,game_ticks(4),8);
+
+		end
+
+		else if counter == 8 then begin
+
+			float_msg(self_obj,mstr(725),FLOAT_MSG_BLACK);
+			add_timer_event(self_obj,game_ticks(4),8);
+
+		end
+
+		else if counter == 9 then begin
+
+			add_timer_event(self_obj,game_ticks(4),8); //19721
+			animate_move_obj_to_tile(obj_ghost,19721,ANIMATE_WALK);
+			animate_move_obj_to_tile(self_obj,19721,ANIMATE_WALK);
+			set_global_var(GVAR_SHADY_FELIX_DEAD,2);
+			add_timer_event(self_obj,game_ticks(7),8);
+
+		end
+
+		else if counter == 10 then begin
+
+			fadeout(200);
+			set_obj_visibility(obj_ghost,true);
+			set_obj_visibility(self_obj,true);
+			move_to(point_tycho,17723,0);
+			set_global_var(GVAR_SHADY_TYCHO_CHILD,8);
+			add_timer_event(self_obj,game_ticks(3),8);
+
+		end
+
+		else if counter == 11 then begin
+
+			fadein(200);
+
+		end
+
+		counter++;
+
+	end
+
+	if fixed_param == 64 then begin
+    call go_radio;
+	end
+
+	if fixed_param == TIMED_EVENT_FAJKI_MSG then float_msg(self_obj, mstr(806), FLOAT_MSG_WHITE);
+
+end
+
+procedure TychoCrash begin
+
+		Reply(mstr(610));
+		NOption(mstr(611),TychoCrash2,001);
+		NOption(mstr(612),TychoCrash_Rude,001);
+
+end
+
+	procedure TychoCrash_Rude begin
+
+			Reply(mstr(620));
+			NOption(mstr(621),TychoCrash_ItsTycho,001);
+			NOption(mstr(622),Node998_1,001);
+
+	end
+
+		procedure Node998_1 begin
+
+			float_msg(self_obj,mstr(625),2);
+			call Node998;
+
+		end
+
+procedure TychoCrash2 begin
+
+			Reply(mstr(630));
+			NOption(mstr(621),TychoCrash_ItsTycho,001);
+			NOption(mstr(622),Node998_1,001);
+
+end
+
+	procedure TychoCrash_ItsTycho begin
+
+			Reply(mstr(640));
+			NOption(mstr(641),Node998_1,001);
+			if global_var(GVAR_SHADY_TYCHO_CHILD) == 4 then NOption(mstr(642),TychoCrash3,001);
+			else NOption(mstr(643),TychoCrash4,001);
+
+	end
+
+procedure TychoCrash3 begin
+
+			Reply(mstr(650));
+			NOption(mstr(651),TychoCrash4,001);
+
+end
+
+procedure TychoCrash4 begin
+
+			Reply(mstr(660));
+			NOption(mstr(671),TychoCrash_GoToTycho2,001);
+			NOption(mstr(662),TychoCrash_GoToTycho,001);
+
+end
+
+procedure TychoCrash_GoToTycho begin
+
+			Reply(mstr(670));
+			NOption(mstr(671),TychoCrash_GoToTycho2,001);
+			NOption(mstr(672),Node998_1,001);
+
+end
+
+	procedure TychoCrash_GoToTycho2 begin
+
+		game_ui_disable;
+		counter:=0;
+		add_timer_event(self_obj,0,6);
+
+	end
+
+	procedure Node_Tycho_Quest begin
+      Reply(mstr(310));
+	   if obj_is_carrying_obj_pid(dude_obj,548) THEN NOption(mstr(800),Node_Tycho_Quest_Go_Out,001);
+		NOption(mstr(802), Node999_HeNeedGoOut, 001);
+   end
+
+      procedure Node999_HeNeedGoOut begin
+         ates(game_ticks(random(3, 6)), TIMED_EVENT_FAJKI_MSG)
+         float_msg(dude_obj, mstr(805), FLOAT_MSG_BLUE);
+      end
+
+   procedure Node_Tycho_Quest_Go_Out begin
+      call go_kiep;
+      rm_obj_from_inven(dude_obj, obj_carrying_pid_obj(dude_obj, 548));
+       floater(801);
+   end

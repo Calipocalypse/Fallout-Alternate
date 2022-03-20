@@ -1,0 +1,93 @@
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_DOOR
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure use_p_proc;
+procedure timed_event_p_proc;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_tile                  (8)
+#define LVAR_TimedEvent_Session         (9)
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+	obj_lock(self_obj);
+	script_overrides;
+	
+	if local_var(LVAR_TimedEvent_Session) == 0 then set_local_var(LVAR_TimedEvent_Session,100);
+	inc_local_var(LVAR_TimedEvent_Session);
+	//display_msg("LVAR_TimedEvent_Session: "+local_var(LVAR_TimedEvent_Session));
+	add_timer_event(self_obj,0,local_var(LVAR_TimedEvent_Session));
+
+end
+
+procedure use_p_proc begin
+		 // <-- to dziala
+		script_overrides;
+		obj_open(self_obj);
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure destroy_p_proc begin
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure timed_event_p_proc begin
+
+	if (fixed_param==0) then begin
+	
+		add_timer_event(self_obj,random(1,5),1);
+	
+	end
+	
+	if (fixed_param==1) then begin
+	
+		obj_unlock(self_obj);
+		script_overrides;
+		obj_open(self_obj);
+	
+	end
+	
+	if (fixed_param==2) then begin
+	
+		set_global_var(GVAR_V13_START_DOOR,3); //teraz supermutanci ruszaja
+	
+	end
+	
+	if (fixed_param==local_var(LVAR_TimedEvent_Session)) then begin
+	
+		if not obj_is_open(self_obj) and global_var(GVAR_V13_START_DOOR) == 1 then begin
+		
+			add_timer_event(self_obj,random(1,6),1);
+			
+			//set_global_var(GVAR_V13_START_DOOR,2);//2 zeby nie powtarzalo skryptu
+			add_timer_event(self_obj,random(50,80),2);
+		
+		end
+	
+		add_timer_event(self_obj,1,local_var(LVAR_TimedEvent_Session));
+	
+	end
+
+end

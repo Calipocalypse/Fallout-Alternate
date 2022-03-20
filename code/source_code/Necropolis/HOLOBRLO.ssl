@@ -1,0 +1,29 @@
+
+#include "..\headers\define.h"
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+#define NAME                    SCRIPT_HOLOBRLO
+
+procedure start;
+procedure use_p_proc;
+procedure description_p_proc;
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+if (global_var(GVAR_HOLODISK_BRO_LOC) != DOWNLOAD_HOLODISK) then begin
+      set_global_var(GVAR_HOLODISK_BRO_LOC,DOWNLOAD_HOLODISK);
+      display_msg(mstr(102));
+end
+else begin
+display_msg(mstr(101));
+end
+end
+
+procedure description_p_proc begin
+script_overrides;
+display_msg(mstr(100));
+end

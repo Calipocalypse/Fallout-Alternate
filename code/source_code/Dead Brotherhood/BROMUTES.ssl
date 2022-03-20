@@ -1,0 +1,175 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_BROMUTES
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure combat_p_proc;
+
+
+procedure add_weapons;
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      override_map_start_hex(tile_num_in_direction(30492,1,9),0,5);
+      
+
+            if map_first_run then begin
+                  critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_BRODEAD_MUTS);
+                  critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_KAMAKAZI);
+                  call add_weapons;
+            end
+end
+
+variable item;
+procedure add_weapons begin
+
+      if self_tile == 24500 or self_tile == 24705 then begin
+            item:=create_object(PID_MINIGUN,0,0);
+            add_obj_to_inven(self_obj,item);
+            wield_obj(item);
+            item:=create_object(PID_5MM_AP,0,0);
+            add_obj_to_inven(self_obj,item);
+            item:=create_object(PID_5MM_AP,0,0);
+            add_obj_to_inven(self_obj,item);
+      end
+      
+      if self_tile == 23886 or self_tile == 23919 or self_tile == 20286 or self_tile == 20320 then begin
+            item:=create_object(PID_LASER_RIFLE,0,0);
+            add_obj_to_inven(self_obj,item);
+            wield_obj(item);
+            item:=create_object(PID_MICRO_FUSION_CELL,0,0);
+            add_obj_to_inven(self_obj,item);
+      end
+      
+      if self_tile == 17286 or self_tile == 17320 then begin
+            item:=create_object(PID_ROCKET_LAUNCHER,0,0);
+            add_obj_to_inven(self_obj,item);
+            wield_obj(item);
+            item:=create_object(PID_ROCKET_AP,0,0);
+            add_obj_to_inven(self_obj,item);
+            item:=create_object(PID_ROCKET_AP,0,0);
+            add_obj_to_inven(self_obj,item);
+            item:=create_object(PID_ROCKET_AP,0,0);
+            add_obj_to_inven(self_obj,item);
+            item:=create_object(PID_ROCKET_AP,0,0);
+            add_obj_to_inven(self_obj,item);
+      end
+      
+      if self_tile == 20705 or self_tile == 20699 then begin
+            item:=create_object(PID_PLASMA_RIFLE,0,0);
+            add_obj_to_inven(self_obj,item);
+            wield_obj(item);
+            item:=create_object(PID_MICRO_FUSION_CELL,0,0);
+            add_obj_to_inven(self_obj,item);
+      end
+      
+end
+
+
+//23886 23919 laser
+//20286 20320 laser
+//17286 17320 rocket
+// 20705 20699 plasma
+
+procedure map_exit_p_proc begin
+/*
+            IF random(1,6) == 6 then item:=create_object(PID_AVENGER_MINIGUN,0,0);
+            add_obj_to_inven(dude_obj,item);
+            wield_obj(item);
+            item:=create_object(PID_5MM_AP,0,0);
+            add_obj_to_inven(dude_obj,item);
+            item:=create_object(PID_COMBAT_ARMOR,0,0);
+            add_obj_to_inven(dude_obj,item);
+            give_exp_points(20000);
+            critter_mod_skill(dude_obj,SKILL_BIG_GUNS,20);
+*/
+end
+
+procedure critter_p_proc begin
+
+      if not combat_is_initialized and obj_can_see_obj(self_obj,dude_obj) then float_msg(self_obj,mstr(200),2);
+      
+      if obj_can_see_obj(self_obj,dude_obj) then begin
+            self_attack_dude;
+            set_global_var(GVAR_BRODEAD_ALARM,1);
+      end
+      //float_msg(self_obj,"lvar: "+self_tile,random(1,12));
+end
+
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+   
+   set_global_var(GVAR_BRODEAD_ALARM,1);
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+end
+
+procedure destroy_p_proc begin
+   display_msg("mutant killedd");
+   inc_global_var(GVAR_BRODEAD_MUTANTS_KILLED);
+   display_msg("It's "+global_var(GVAR_BRODEAD_MUTANTS_KILLED));
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure combat_p_proc begin
+      if global_var(GVAR_BRODEAD_ALARM) == 1 THEN attack(dude_obj);
+end

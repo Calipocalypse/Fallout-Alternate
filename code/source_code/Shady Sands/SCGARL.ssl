@@ -1,0 +1,817 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCGARL
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+      procedure sprawdz_czy_jest_mile_widziany;
+      procedure pilnuj_pozycji;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+      procedure huxley_reward;
+      procedure magazine_reward;
+      procedure go_find_weapon_magazine;
+
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+	procedure map_firstrun_procedures;
+		procedure Home_Tile_Assign;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+	procedure timed_event_garl_adds_maxstone_to_team;
+	procedure timed_event_garl_checks_magazine;
+	procedure timed_event_garl_begins_massacre;
+	procedure timed_event_garl_right_after_massacre;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile						 (8)
+#define LVAR_Where_Conv_Should_Start    (9)
+
+import variable obj_garl;
+import variable map_script_obj;
+
+import variable mutantnormal_1;
+import variable mutantnormal_2;
+import variable mutantnormal_3;
+import variable mutantnormal_4;
+import variable mutantnormal_5;
+import variable mutantstronger_1;
+import variable mutantstronger_2;
+import variable mutantstronger_3;
+import variable mutantstronger_4;
+import variable mutantstronger_5;
+import variable mutantstronger_6;
+import variable mutantstronger_7;
+import variable mutantstronger_8;
+import variable mutantboss;
+import variable mutantweaker_1;
+import variable mutantweaker_2; //te mutanty do wyjebania
+
+//rebels
+import variable rebel_isaac;
+import variable obj_mark;
+import variable obj_matt;
+import variable point_tycho;
+import variable rebel_jerome;
+import variable rebel_anna;
+import variable rebel_mack;
+import variable rebel_peasant1;
+import variable rebel_peasant2;
+import variable rebel_peasant3;
+import variable rebel_peasant4;
+import variable rebel_peasant5;
+import variable rebel_peasant6;
+//guards
+import variable guard_camp_garden1;
+import variable guard_camp_garden2;
+import variable guard_camp_doors1;
+import variable guard_camp_doors2;
+
+/* Dialogue */
+procedure CaveQuest1;
+procedure CaveQuest_preAttackDude;
+procedure CaveQuest_AttackDude;
+procedure CaveQuest2;
+procedure CaveQuest_Exit;
+//MagazineQuest
+procedure MagazineQuest1;
+procedure MagazineQuest_AttackDude;
+procedure MagazineQuest_AttackDude2;
+procedure MagazineQuest2;
+procedure MagazineQuest3;
+procedure MagazineQuest4;
+procedure MagazineQuest5;
+procedure MagazineQuest6;
+procedure MagazineQuest_Accept;
+procedure MagazineQuest_AskForMaxStone;
+procedure MagazineQuest_AskForMaxStone2;
+procedure MagazineQuest_AskForMaxStone_MakeMaxCompanion;
+//PreMassacre
+procedure BackFromMagazine_GoneWrong1;
+procedure BackFromMagazine_Node998;
+procedure PreCampMassacre1;
+procedure BackFromMagazine1;
+procedure BackFromMagazine_AttackDude;
+procedure BackFromMagazine_NotBack;
+procedure BackFromMagazine2;
+procedure BackFromMagazine_Check;
+procedure BackFromMagazine_Gun_SniperRifle;
+procedure BackFromMagazine_Gun_Ripper;
+procedure BackFromMagazine_Gun_Minigun;
+procedure BackFromMagazine_Gun_Bazooka;
+procedure BackFromMagazine_Gun_M60;
+procedure BackFromMagazine_Gun_NotAFlamethrower;
+procedure BackFromMagazine_Gun_Chosen;
+procedure BackFromMagazine_Dontwasteammo;
+procedure LetsTestOurToys;
+procedure LetsTestOurToys2;
+procedure Slavers_Massacre;
+//AfterMassacre
+procedure GoGoGoV15;
+procedure GoGoGoV15_1;
+procedure GoGoGoV15_Spy;
+procedure GoGoGoV15_2;
+procedure GoGoGoV15_3;
+procedure GoGoGoV15_4;
+procedure GoGoGoV15_5;
+procedure GoGoGoV15_6;
+procedure GoGoGoV15_Back;
+procedure GoGoGoV15_Back_V15Travel;
+procedure GoGoGoV15_FastenUp;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then call map_firstrun_procedures;
+
+      obj_garl:=self_obj;
+
+end
+
+	procedure map_firstrun_procedures begin
+		critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_KAMAKAZI);
+		critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+		call Home_Tile_Assign;
+	end
+
+		procedure Home_Tile_Assign begin
+			set_local_var(LVAR_Home_Tile,self_tile);
+		end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   if not combat_is_initialized then call sprawdz_czy_jest_mile_widziany; //zaatakuj wtenczas
+
+   if not combat_is_initialized then call pilnuj_pozycji; //dziala tylko przy okreslonych gvarach
+
+/*
+      float_msg(mutantnormal_1,"zyje",2);
+      float_msg(mutantnormal_2,"zyje",2);
+      float_msg(mutantnormal_3,"zyje",2);
+      float_msg(mutantnormal_4,"zyje",2);
+      float_msg(mutantnormal_5,"zyje",2);
+      float_msg(mutantstronger_1,"zyje",2);
+      float_msg(mutantstronger_2,"zyje",2);
+      float_msg(mutantstronger_3,"zyje",2);
+      float_msg(mutantstronger_4,"zyje",2);
+      float_msg(mutantstronger_5,"zyje",2);
+      float_msg(mutantstronger_6,"zyje",2);
+      float_msg(mutantstronger_7,"zyje",2);
+      float_msg(mutantstronger_8,"zyje",2);
+      float_msg(mutantboss,"zyje",2);
+      float_msg(mutantweaker_1,"zyje",2);
+      float_msg(mutantweaker_2,"zyje",2);
+*/
+end
+
+      procedure sprawdz_czy_jest_mile_widziany begin
+
+            if obj_can_see_obj(dude_obj,self_obj) and global_var(GVAR_QUEST_SHADY_KILL_CHILD) < 3 and global_var(GVAR_SHADY_REBELLION) <= 0 then begin
+
+                  float_msg(self_obj,mstr(70),2);
+                  attack_setup(self_obj,dude_obj);
+
+            end
+      end
+
+      procedure pilnuj_pozycji begin
+
+      	if global_var(GVAR_QUEST_SHADY_MAGAZINE) == 1 then animate_move_to_tile(local_var(LVAR_Home_Tile));
+
+      end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+if global_var(GVAR_SHADY_MASSACRE_EVENT_LISTENER) == 5 then start_dialog_at_node(GoGoGoV15_Back);
+else if global_var(GVAR_SHADY_MASSACRE_EVENT_LISTENER) == 3 then start_dialog_at_node(GoGoGoV15);
+else if local_var(LVAR_Where_Conv_Should_Start) == 1 then start_dialog_at_node(LetsTestOurToys);
+else if global_var(GVAR_QUEST_SHADY_MAGAZINE) == 2 or global_var(GVAR_QUEST_SHADY_MAGAZINE) == 1 then start_dialog_at_node(BackFromMagazine1);
+else if global_var(GVAR_QUEST_SHADY_KILL_HUXLEY) == 3 then start_dialog_at_node(MagazineQuest1);
+else if global_var(GVAR_QUEST_SHADY_KILL_HUXLEY) == 1 then float_msg(self_obj,mstr(230),2);
+else if global_var(GVAR_QUEST_SHADY_KILL_CHILD) == 5 and global_var(GVAR_QUEST_SHADY_KILL_HUXLEY) == 0 then start_dialog_at_node(CaveQuest1);
+end
+
+procedure destroy_p_proc begin
+
+   inc_evil_critter
+   set_global_var(GVAR_DEAD_GARL,1);
+   display_msg("Za smierc Garla zyskujesz 750 PD");
+   give_exp_points(750);
+
+end
+
+procedure look_at_p_proc begin
+
+
+
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+variable counter;
+procedure timed_event_p_proc begin
+
+	if (fixed_param==1) then call timed_event_garl_adds_maxstone_to_team;
+	else if (fixed_param==2) then call timed_event_garl_checks_magazine;
+	else if (fixed_param==3) then call timed_event_garl_begins_massacre;
+	else if (fixed_param==4) then call timed_event_garl_right_after_massacre;
+
+end
+
+	procedure timed_event_garl_adds_maxstone_to_team begin
+
+			counter++;
+
+		if counter==1 then begin
+			add_timer_event(obj_maxstone,0,2);
+			move_to(self_obj,24885,0);
+			move_to(dude_obj,24488,0);
+			move_to(obj_maxstone,24086,0);
+			fadein(100);
+			add_timer_event(self_obj,game_ticks(2),1);
+
+		end
+
+		else if counter==2 then begin
+
+			float_msg(self_obj,mstr(354),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(3),1);
+
+		end
+
+		else if counter==3 then begin
+
+			float_msg(self_obj,mstr(355),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(3),1);
+
+		end
+
+		else if counter==4 then begin
+
+			float_msg(self_obj,mstr(356),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(3),1);
+
+		end
+
+		else if counter==5 then begin
+
+			float_msg(self_obj,mstr(358),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(3),1);
+
+		end
+
+		else if counter==6 then begin
+
+			set_global_var(GVAR_QUEST_SHADY_MAGAZINE,1);
+			add_timer_event(obj_maxstone,0,1);
+			//display_msg("Zaznaczono na mpaie siwata");
+			game_ui_enable;
+
+		end
+
+	end
+
+	procedure timed_event_garl_checks_magazine begin
+
+		counter++;
+
+		if counter == 1 then begin
+			game_ui_disable;
+			fadeout(500);
+			add_timer_event(self_obj,game_ticks(7),2);
+		end
+
+		else if counter == 2 then begin
+			fadein(500);
+			add_timer_event(self_obj,game_ticks(2),2);
+		end
+
+		else if counter == 3 then begin
+			game_ui_enable;
+			if global_var(GVAR_QUEST_SHADY_MAGAZINE) == 2 then start_dialog_at_node(PreCampMassacre1);
+			else if global_var(GVAR_QUEST_SHADY_MAGAZINE) == 3 then start_dialog_at_node(BackFromMagazine_GoneWrong1);
+		end
+
+	end
+
+	procedure timed_event_garl_begins_massacre begin
+
+		counter++;
+
+		if counter == 1 then begin
+			game_ui_disable;
+			fadeout(500);
+			set_global_var(GVAR_SHADY_GRAVE_SPEECH_STATE,1); // wylaczy scenke dialogowa
+			set_global_var(GVAR_SHADY_DAY_NIGHT_DISABLED,1); // wylaczy przemieszczanie wiesniakow w skutek dnia nocy
+			set_global_var(GVAR_SHADY_UNDER_REBELLION,1); //peasant powiadamia cala wioske jesli opcja == 0 i wtedy nas wszyscy atakuja
+			add_timer_event(self_obj,game_ticks(3),3);
+		end
+
+		else if counter == 2 then begin
+			move_to(rebel_isaac,16902,1);
+			move_to(rebel_jerome,16904,1);
+			move_to(rebel_peasant2,16906,1);
+			move_to(rebel_peasant4,16908,1);
+			move_to(rebel_anna,16900,1);
+			move_to(rebel_peasant3,16898,1);
+			move_to(rebel_peasant5,16896,1);
+			move_to(rebel_peasant6,16894,1);
+			move_to(rebel_mack,16892,1);
+
+			move_to(self_obj,tile_num_in_direction(tile_num(rebel_isaac),2,8),1);
+			move_to(dude_obj,tile_num_in_direction(tile_num(self_obj),3,2),1);
+			move_to(MaxStone_Ptr,tile_num_in_direction(tile_num(self_obj),1,2),1);
+			move_to(guard_camp_garden1,16316,1);
+			move_to(guard_camp_garden2,16492,1);
+			move_to(guard_camp_doors1,tile_num_in_direction(tile_num(dude_obj),3,2),1);
+			move_to(guard_camp_doors2,tile_num_in_direction(tile_num(self_obj),1,2),1);
+
+			critter_add_trait(guard_camp_garden1,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+			critter_add_trait(guard_camp_garden2,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+			critter_add_trait(guard_camp_doors1,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+			critter_add_trait(guard_camp_doors2,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+			critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+
+			fadein(500);
+			add_timer_event(self_obj,game_ticks(3),3);
+		end
+
+		else if counter == 3 then begin
+			float_msg(self_obj,mstr(600),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(3),3);
+		end
+
+		else if counter == 4 then begin
+			float_msg(self_obj,mstr(601),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(4),3);
+		end
+
+		else if counter == 5 then begin
+			float_msg(self_obj,mstr(602),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(4),3);
+		end
+
+		else if counter == 6 then begin
+			float_msg(rebel_peasant3,mstr(603),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(3),3);
+		end
+
+		else if counter == 7 then begin
+			float_msg(self_obj,mstr(604),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(3),3);
+		end
+
+		else if counter == 8 then begin
+			float_msg(rebel_peasant2,mstr(605),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(2),3);
+		end
+
+		else if counter == 9 then begin
+			float_msg(rebel_peasant4,mstr(606),FLOAT_MSG_NORMAL);
+			float_msg(rebel_peasant1,mstr(607),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(2),3);
+		end
+
+		else if counter == 10 then begin
+			float_msg(rebel_peasant4,mstr(608),FLOAT_MSG_NORMAL);
+			add_timer_event(self_obj,game_ticks(2),3);
+		end
+
+		else if counter == 11 then begin
+			float_msg(self_obj,mstr(609),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(3),3);
+		end
+
+		else if counter == 12 then begin
+			float_msg(self_obj,mstr(610),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(3),3);
+		end
+
+		else if counter == 13 then begin
+			float_msg(self_obj,mstr(611),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(4),3);
+		end
+
+		else if counter == 14 then begin
+			float_msg(self_obj,mstr(612),FLOAT_MSG_LIGHT_RED);
+			add_timer_event(self_obj,game_ticks(2),3);
+			set_global_var(GVAR_SHADY_MASSACRE_EVENT_LISTENER,1);
+		end
+
+		else if counter == 15 then begin
+			game_ui_enable;
+			attack_setup(rebel_peasant5,self_obj);
+			//add_timer_event(map_script_obj,game_ticks(0),19);
+
+		end
+
+	end
+	variable bounter;
+procedure timed_event_garl_right_after_massacre begin
+
+	bounter++;
+	game_ui_disable;
+
+			if bounter == 1 then begin
+				move_to(dude_obj,tile_num_in_direction(tile_num(self_obj),3,6),1);
+				add_timer_event(self_obj,game_ticks(1),4);
+				critter_add_trait(guard_camp_garden1,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+				critter_add_trait(guard_camp_garden2,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+				critter_add_trait(guard_camp_doors1,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+				critter_add_trait(guard_camp_doors2,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+				critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+			end
+
+			else if bounter == 2 then begin
+				float_msg(self_obj,mstr(650),2);
+				add_timer_event(self_obj,game_ticks(3),4);
+			end
+
+			else if bounter == 3 then begin
+				float_msg(self_obj,mstr(651),2);
+				add_timer_event(self_obj,game_ticks(3),4);
+			end
+
+			else if bounter == 4 then begin
+				fadeout(200);
+				move_to(self_obj,local_var(LVAR_Home_Tile),0);
+				set_global_var(GVAR_SHADY_MASSACRE_EVENT_LISTENER,3);
+				add_timer_event(self_obj,game_ticks(3),4);
+			end
+
+			else if bounter == 5 then begin
+				fadein(200);
+				game_ui_enable;
+			end
+
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure CaveQuest1 begin
+	Reply(mstr(200));
+	NOption(201,CaveQuest2,001);
+	NOption(202,CaveQuest_preAttackDude,001);
+end
+
+	procedure CaveQuest_preAttackDude begin
+	Reply(mstr(210));
+	NOption(211,CaveQuest_AttackDude,001);
+	end
+
+	procedure CaveQuest_AttackDude begin
+		float_msg(self_obj,mstr(223),2);
+		set_local_var(LVAR_Hostile,2);
+	end
+
+procedure CaveQuest2 begin
+	Reply(mstr(220));
+	NOption(221,CaveQuest_Exit,001);
+	NOption(222,CaveQuest_AttackDude,001);
+end
+
+procedure CaveQuest_Exit begin
+	set_global_var(GVAR_QUEST_SHADY_KILL_HUXLEY,1);
+end
+
+/* Back again from cave quest */
+
+procedure MagazineQuest1 begin
+	Reply(mstr(300));
+	if obj_is_carrying_obj_pid(dude_obj,600) then NOption(301,MagazineQuest2,001);
+	NOption(302,MagazineQuest_AttackDude,001);
+	if not obj_is_carrying_obj_pid(dude_obj,600) then NOption(303,MagazineQuest_AttackDude,001);
+end
+
+	procedure MagazineQuest_AttackDude begin
+		float_msg(self_obj,mstr(310),2);
+		set_local_var(LVAR_Hostile,2);
+	end
+
+		procedure MagazineQuest_AttackDude2 begin
+		float_msg(self_obj,mstr(357),2);
+		set_local_var(LVAR_Hostile,2);
+	end
+
+procedure MagazineQuest2 begin
+	Reply(mstr(320));
+	rm_obj_from_inven(dude_obj, obj_carrying_pid_obj(dude_obj, 600));
+	NOption(321,MagazineQuest3,001);
+	NOption(322,MagazineQuest_AttackDude,001);
+end
+
+procedure MagazineQuest3 begin
+	Reply(mstr(340));
+	NOption(341,MagazineQuest4,001);
+end
+
+procedure MagazineQuest4 begin
+	Reply(mstr(342));
+	NOption(343,MagazineQuest5,001);
+end
+
+procedure MagazineQuest5 begin
+	Reply(mstr(344));
+	NOption(345,MagazineQuest6,001);
+end
+
+procedure MagazineQuest6 begin
+	Reply(mstr(346));
+	NOption(347,MagazineQuest_Accept,001);
+	NOption(348,MagazineQuest_AskForMaxStone,001);
+	NOption(349,MagazineQuest_AttackDude2,001);
+end
+
+procedure MagazineQuest_Accept begin
+	Reply(mstr(360));
+	mark_on_map(21)
+	if global_var(GVAR_QUEST_SHADY_MAGAZINE) == 0 then set_global_var(GVAR_QUEST_SHADY_MAGAZINE,1);
+	//Gdy juz byl i nie tknal
+	if global_var(GVAR_QUEST_SHADY_MAGAZINE) == -1 then begin set_global_var(GVAR_QUEST_SHADY_MAGAZINE, 2); give_exp_points(EXP_SHADY_SANDS_MAGAZINE_DISCOVERED_ROOM); display_msg(mstr(100)); end
+	//Tknal
+	if global_var(GVAR_QUEST_SHADY_MAGAZINE) == -2 then begin set_global_var(GVAR_QUEST_SHADY_MAGAZINE, 3); give_exp_points(EXP_SHADY_SANDS_MAGAZINE_DISCOVERED_ROOM); display_msg(mstr(100)); end
+	NOption(361,Node999,001);
+end
+
+procedure MagazineQuest_AskForMaxStone begin
+	Reply(mstr(350));
+	NOption(351,MagazineQuest_AskForMaxStone2,001);
+end
+
+procedure MagazineQuest_AskForMaxStone2 begin
+	mark_on_map(21)
+	set_global_var(GVAR_QUEST_SHADY_MAGAZINE,1);
+	Reply(mstr(352));
+	NOption(353,MagazineQuest_AskForMaxStone_MakeMaxCompanion,001);
+end
+
+	procedure MagazineQuest_AskForMaxStone_MakeMaxCompanion begin
+	game_ui_disable;
+	fadeout(100);
+	add_timer_event(self_obj,0,1);
+	end
+
+/* Back from Magazine */
+procedure BackFromMagazine1 begin
+	Reply(mstr(400)+global_var(GVAR_QUEST_SHADY_MAGAZINE));
+	if global_var(GVAR_QUEST_SHADY_MAGAZINE) >= 2 then NOption(401,BackFromMagazine2,001);
+	NOption(402,BackFromMagazine_AttackDude,001);
+	NOption(403,BackFromMagazine_NotBack,001);
+end
+
+	procedure BackFromMagazine_AttackDude begin
+		float_msg(self_obj,mstr(410),2);
+		set_local_var(LVAR_Hostile,2);
+	end
+
+	procedure BackFromMagazine_NotBack begin
+		float_msg(self_obj,mstr(420),2);
+	end
+
+procedure BackFromMagazine2 begin
+	Reply(mstr(430));
+	NOption(431,BackFromMagazine_Check,001);
+end
+
+	procedure BackFromMagazine_Check begin
+	counter:=0;
+	add_timer_event(self_obj,0,2);
+	end
+
+	/* Back again from magazine by Garl */
+
+	/* Doors were touched */
+
+	procedure BackFromMagazine_GoneWrong1 begin
+	Reply(mstr(470));
+	NOption(471,BackFromMagazine_Node998,001);
+	NOption(472,BackFromMagazine_Node998,001);
+	end
+
+	procedure BackFromMagazine_Node998 begin
+    float_msg(obj_garl, mstr(475), 2);
+	end
+
+	/* Everything fine down there */
+
+procedure PreCampMassacre1 begin
+   set_global_var(GVAR_QUEST_SHADY_MAGAZINE, 4);
+	Reply(mstr(440));
+	NOption(441,BackFromMagazine_Gun_SniperRifle,001);
+	NOption(442,BackFromMagazine_Gun_Ripper,001);
+	NOption(443,BackFromMagazine_Gun_Minigun,001);
+	NOption(444,BackFromMagazine_Gun_Bazooka,001);
+	NOption(445,BackFromMagazine_Gun_M60,001);
+	NOption(446,BackFromMagazine_Gun_NotAFlamethrower,001);
+end
+
+variable gun;
+
+	procedure BackFromMagazine_Gun_SniperRifle begin
+		gun:=create_object(PID_SNIPER_RIFLE,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		wield_obj_critter(dude_obj,gun);
+		gun:=create_object(PID_223_FMJ,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		call BackFromMagazine_Gun_Chosen;
+
+	end
+
+	procedure BackFromMagazine_Gun_Ripper begin
+		gun:=create_object(PID_RIPPER,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		wield_obj_critter(dude_obj,gun);
+		gun:=create_object(PID_SMALL_ENERGY_CELL,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		call BackFromMagazine_Gun_Chosen;
+	end
+
+	procedure BackFromMagazine_Gun_Minigun begin
+		gun:=create_object(PID_MINIGUN,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		wield_obj_critter(dude_obj,gun);
+		gun:=create_object(PID_5MM_JHP,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		call BackFromMagazine_Gun_Chosen;
+	end
+
+	procedure BackFromMagazine_Gun_Bazooka begin
+		gun:=create_object(PID_ROCKET_LAUNCHER,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		wield_obj_critter(dude_obj,gun);
+		gun:=create_object(PID_EXPLOSIVE_ROCKET,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		gun:=create_object(PID_EXPLOSIVE_ROCKET,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		gun:=create_object(PID_EXPLOSIVE_ROCKET,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		call BackFromMagazine_Gun_Chosen;
+	end
+
+	procedure BackFromMagazine_Gun_M60 begin
+		gun:=create_object(PID_M60,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		wield_obj_critter(dude_obj,gun);
+		gun:=create_object(PID_7_62MM_AMMO,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		gun:=create_object(PID_7_62MM_AMMO,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		call BackFromMagazine_Gun_Chosen;
+	end
+
+	procedure BackFromMagazine_Gun_NotAFlamethrower begin
+		gun:=create_object(PID_FLAMER,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		wield_obj_critter(dude_obj,gun);
+		gun:=create_object(PID_FLAMETHROWER_FUEL,0,0);
+		add_obj_to_inven(dude_obj,gun);
+		call BackFromMagazine_Gun_Chosen;
+	end
+
+procedure BackFromMagazine_Gun_Chosen begin
+	Reply(mstr(450));
+	set_global_var(GVAR_SHADY_STOP_GIVING_WEAPONS,1);
+	NOption(452,BackFromMagazine_Dontwasteammo,001);
+	NOption(451,Node999,001);
+
+	set_local_var(LVAR_Where_Conv_Should_Start,1);
+
+	set_obj_visibility(obj_matt,true);//znika matt
+	set_obj_visibility(obj_mark,true);//znika mark
+	set_obj_visibility(point_tycho,true);//znika tycho
+	//znika jedna wtyka straznikow pustkowii
+	//znika druga wtyka straznikow pustkowii
+	counter:=0;
+	add_timer_event(self_obj,0,3);
+
+end
+
+	procedure BackFromMagazine_Dontwasteammo begin
+		float_msg(self_obj,mstr(460),2);
+		set_local_var(LVAR_Hostile,2);
+	end
+
+/* Powrot do Garla zeby pobawic sie nowymi zabawkami */
+
+procedure LetsTestOurToys begin
+	Reply(mstr(500));
+	NOption(501,LetsTestOurToys2,001);
+	NOption(502,Node999,001);
+end
+
+procedure LetsTestOurToys2 begin
+	Reply(mstr(505));
+	NOption(506,Slavers_Massacre,001);
+end
+
+	procedure Slavers_Massacre begin
+		counter:=0;
+		add_timer_event(self_obj,0,3);
+	end
+
+/* Go go go To V15 */
+
+procedure GoGoGoV15 begin
+	Reply(mstr(700));
+	NOption(701,GoGoGoV15_1,001);
+end
+
+procedure GoGoGoV15_1 begin
+	Reply(mstr(705));
+	NOption(706,GoGoGoV15_2,001);
+	NOption(707,GoGoGoV15_Spy,001);
+end
+
+	procedure GoGoGoV15_Spy begin
+		float_msg(self_obj,mstr(710),2);
+		set_local_var(LVAR_Hostile,2);
+	end
+
+procedure GoGoGoV15_2 begin
+	Reply(mstr(715));
+	NOption(716,GoGoGoV15_3,001);
+end
+
+procedure GoGoGoV15_3 begin
+	Reply(mstr(717));
+	NOption(718,Node998,001);
+	NOption(719,GoGoGoV15_4,001);
+end
+
+procedure GoGoGoV15_4 begin
+	Reply(mstr(720));
+	NOption(721,GoGoGoV15_5,001);
+end
+
+procedure GoGoGoV15_5 begin
+	Reply(mstr(722));
+	NOption(723,GoGoGoV15_6,001);
+end
+
+procedure GoGoGoV15_6 begin
+	Reply(mstr(724));
+	NOption(725,Node999,001);
+	set_global_var(GVAR_SHADY_MASSACRE_EVENT_LISTENER,5);
+end
+
+//Wraca przed 5 minut
+
+procedure GoGoGoV15_Back begin
+	Reply(mstr(730));
+	NOption(731,GoGoGoV15_Back_V15Travel,001);
+	NOption(732,GoGoGoV15_FastenUp,001);
+end
+
+	procedure GoGoGoV15_FastenUp begin
+		float_msg(self_obj,mstr(735),FLOAT_MSG_LIGHT_RED);
+	end
+
+procedure GoGoGoV15_Back_V15Travel begin
+	//tak to jest to miejsce gdzie trzeba ustawic procedury wejscia w V15
+	load_map(20,0);
+end

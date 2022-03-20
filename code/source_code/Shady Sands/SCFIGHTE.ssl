@@ -1,0 +1,344 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCFIGHTE
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+import variable tamara;
+import variable fighter;
+
+import variable person_khan1_inside;
+import variable person_khan2_inside;
+import variable person_khan3_inside;
+import variable person_khan4_inside;
+
+
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_learn_played               (8)
+#define LVAR_Home_Tile                  (9)
+
+#define floater_can_hear(X) if tile_distance_objs(self_obj, dude_obj) > 15 then float_msg(self_obj, mstr(X), FLOAT_MSG_BLACK); else floater(X)
+#define reward_if_can_hear if tile_distance_objs(self_obj, dude_obj) <= 15 then begin critter_mod_skill(dude_obj,SKILL_MELEE,2); display_mstr(250); end
+
+#define move_to_khans_for_lesson if get_critter_stat(person_khan1_inside,STAT_current_hp) > 0 then move_to(person_khan1_inside,16672,0); \
+if get_critter_stat(person_khan2_inside,STAT_current_hp) > 0 then  move_to(person_khan2_inside,17067,0); \
+if get_critter_stat(person_khan3_inside,STAT_current_hp) > 0 then  move_to(person_khan3_inside,17064,0); \
+if get_critter_stat(person_khan4_inside,STAT_current_hp) > 0 then  move_to(person_khan4_inside,16661,0);
+
+#define face_khans_with_teacher Face_Critter(self_obj, person_khan1_inside);Face_Critter(self_obj, person_khan2_inside);Face_Critter(self_obj, person_khan3_inside);Face_Critter(self_obj, person_khan4_inside);
+
+#define move_back_khans_to_buliding if get_critter_stat(person_khan1_inside,STAT_current_hp) > 0 then add_timer_event(person_khan1_inside,0,10); \
+if get_critter_stat(person_khan2_inside,STAT_current_hp) > 0 then add_timer_event(person_khan2_inside,0,10); \
+if get_critter_stat(person_khan3_inside,STAT_current_hp) > 0 then add_timer_event(person_khan3_inside,0,10); \
+if get_critter_stat(person_khan4_inside,STAT_current_hp) > 0 then add_timer_event(person_khan4_inside,0,10);
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+fighter:=self_obj;
+
+   IF map_first_run then set_local_var(LVAR_Home_Tile, self_tile);
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   if self_can_see_dude and local_var(LVAR_learn_played) == 0 and not combat_is_initialized and not shady_dude_has_started_rebellion then begin
+      inc_local_var(LVAR_learn_played);
+      add_timer_event(self_obj,20,0);
+   end
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+//15666
+variable wlocznia;
+variable floater;
+procedure timed_event_p_proc begin
+
+      if (fixed_param==0) then begin
+      inc_local_var(LVAR_learn_played);
+
+            if local_var(LVAR_learn_played) == 2 then begin
+            floater(200);
+            add_timer_event(self_obj,30,0);
+            //set_global_var(GVAR_SHADY_ENDOFSHOW,1);
+            FadeOut(100);
+            move_to_khans_for_lesson
+            face_khans_with_teacher
+            FadeIn(100);
+            end
+
+            if local_var(LVAR_learn_played) == 3 then begin
+            wlocznia:=create_object(PID_SPEAR,0,0);
+            add_obj_to_inven(self_obj,wlocznia);
+            wield_obj_critter(self_obj,wlocznia);
+            floater_can_hear(201);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 4 then begin
+            floater_can_hear(202);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 5 then begin
+            floater_can_hear(203);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 6 then begin
+            floater_can_hear(204);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 7 then begin
+            floater_can_hear(205);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 8 then begin
+            floater_can_hear(206);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 9 then begin
+            floater_can_hear(207);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 10 then begin
+            floater_can_hear(208);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 11 then begin
+            floater_can_hear(209);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 12 then begin
+            floater_can_hear(210);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 13 then begin
+            floater_can_hear(211);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 14 then begin
+            floater_can_hear(212);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 15 then begin
+            floater_can_hear(213);
+            add_timer_event(self_obj,30,0);
+            reward_if_can_hear
+            end
+
+            if local_var(LVAR_learn_played) == 16 then begin
+            floater_can_hear(214);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 17 then begin
+            floater_can_hear(215);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 18 then begin
+            floater_can_hear(216);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 19 then begin
+            floater_can_hear(217);
+            add_timer_event(self_obj,30,0);
+            reward_if_can_hear
+            end
+
+            if local_var(LVAR_learn_played) == 20 then begin
+            floater_can_hear(218);
+            add_timer_event(self_obj,30,0);
+            reward_if_can_hear
+            end
+
+            if local_var(LVAR_learn_played) == 21 then begin
+            floater_can_hear(219);
+            add_timer_event(self_obj,30,0);
+            reward_if_can_hear
+            end
+
+            if local_var(LVAR_learn_played) == 22 then begin
+            floater_can_hear(220);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 23 then begin
+            floater_can_hear(221);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 24 then begin
+            floater_can_hear(222);
+            add_timer_event(self_obj,30,0);
+            reward_if_can_hear
+            end
+
+            if local_var(LVAR_learn_played) == 25 then begin
+            floater_can_hear(223);
+            add_timer_event(self_obj,30,0);
+            reward_if_can_hear
+            end
+
+            if local_var(LVAR_learn_played) == 26 then begin
+            floater_can_hear(224);
+            add_timer_event(self_obj,30,0);
+            animate_move_obj_to_tile(self_obj,15666,ANIMATE_WALK);
+            end
+
+
+            if local_var(LVAR_learn_played) == 27 then begin
+            Face_Critter(tamara,fighter);
+            Face_Critter(fighter,tamara);
+            floater_can_hear(225);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 28 then begin
+            floater_can_hear(226);
+            add_timer_event(self_obj,30,0);
+            animate_move_obj_to_tile(tamara,tile_num_in_direction(self_tile,1,1),ANIMATE_WALK);
+            end
+
+            if local_var(LVAR_learn_played) == 29 then begin
+            floater_can_hear(227);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 30 then begin
+            floater_can_hear(228);
+            add_timer_event(self_obj,30,0);
+            reward_if_can_hear
+
+            reg_anim_begin();
+            Face_Critter(tamara,fighter);
+            Face_Critter(fighter,tamara);
+            reg_anim_animate(fighter, ANIM_thrust_anim, -1);
+            reg_anim_animate(tamara, ANIM_fall_back, -1);
+            reg_anim_end();
+            end
+
+            if local_var(LVAR_learn_played) == 31 then begin
+            floater_can_hear(229);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 32 then begin
+            floater_can_hear(230);
+            add_timer_event(self_obj,30,0);
+            reg_anim_begin();
+            reg_anim_animate(tamara, ANIM_back_to_standing, -1);
+            reg_anim_end();
+            end
+
+            if local_var(LVAR_learn_played) == 33 then begin
+            floater_can_hear(231);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 34 then begin
+            floater_can_hear(232);
+            add_timer_event(self_obj,30,0);
+            end
+
+            if local_var(LVAR_learn_played) == 35 then begin
+            floater_can_hear(233);
+            add_timer_event(self_obj,30,0);
+            set_global_var(GVAR_SHADY_ENDOFSHOW,1);
+            Fadeout(200);
+            move_back_khans_to_buliding
+            move_to(self_obj, local_var(LVAR_Home_Tile), self_tile);
+            ate(tamara, 0, 0);
+            anim(tamara, ANIMATE_ROTATION, 3);
+            anim(self_obj, ANIMATE_ROTATION, 2);
+            FadeIn(100);
+            end
+
+      end
+
+end

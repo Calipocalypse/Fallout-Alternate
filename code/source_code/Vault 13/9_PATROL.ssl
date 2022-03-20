@@ -1,0 +1,191 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_MUTANT
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure check_closest_tile;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Patrol                     (8)
+#define LVAR_Patrol_Point               (9)
+
+#define Patrol local_var(LVAR_Patrol)
+#define Patrol_Point local_var(LVAR_Patrol_Point)
+#define TILE1 17691
+#define TILE2 20891
+#define TILE3 25296
+#define TILE4 26339
+
+import variable cave_patrol1;
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   if map_first_run then begin
+
+         critter_ai(AI_SUPER_MUTANT)
+         critter_team(TEAM_V13_SUPERMUTANTS)
+   end
+
+   flush_add_timer_event(self_obj,0,0);
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+
+   if (((local_var(LVAR_Hostile) == 2) or global_var(GVAR_VAULT13MUT_ALARM) == DUDE_IS_ENEMY) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+     // if obj_can_hear_obj(self_obj, dude_obj) then float_msg(self_obj, "widze cie skruwysynku", 2);
+
+end
+
+procedure combat_p_proc begin
+      if global_var(GVAR_VAULT13MUT_ALARM) == DUDE_IS_ENEMY then begin
+         attack(dude_obj);
+      end
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       set_global_var(GVAR_VAULT13MUT_ALARM, DUDE_IS_ENEMY);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+   if get_critter_stat(self_obj,STAT_dmg_resist) < 30 then float_msg(self_obj,mstr(random(200,206)),FLOAT_MSG_GREEN);
+   else float_msg(self_obj, mstr(random(300, 305)), FLOAT_MSG_GREEN);
+
+end
+
+procedure destroy_p_proc begin
+
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+   if fixed_param==0 then begin
+
+      if Patrol==0 then begin
+         set_local_var(LVAR_Patrol_Point, TILE2);
+         animate_move_obj_to_tile(self_obj, Patrol_Point,ANIMATE_WALK);
+         add_timer_event(self_obj, game_ticks(3), 0);
+         if tile_distance(self_tile,TILE2) < 3 then begin
+            set_local_var(LVAR_Patrol_Point, TILE3);
+            set_local_var(LVAR_Patrol, 1);
+            add_timer_event(self_obj, game_ticks(random(15,25)), 0);
+         end
+
+      end
+
+      else if Patrol==1 then begin
+         animate_move_obj_to_tile(self_obj, Patrol_Point,ANIMATE_WALK);
+         add_timer_event(self_obj, game_ticks(3), 0);
+         if tile_distance(self_tile,TILE3) < 3 then begin
+            set_local_var(LVAR_Patrol_Point, TILE4);
+            set_local_var(LVAR_Patrol, 2);
+            add_timer_event(self_obj, game_ticks(random(15,25)), 0);
+         end
+
+      end
+
+      else if Patrol==2 then begin
+         animate_move_obj_to_tile(self_obj, Patrol_Point,ANIMATE_WALK);
+         add_timer_event(self_obj, game_ticks(3), 0);
+         if tile_distance(self_tile,TILE4) < 3 then begin
+            set_local_var(LVAR_Patrol_Point, TILE3);
+            set_local_var(LVAR_Patrol, 3);
+            add_timer_event(self_obj, game_ticks(random(15,25)), 0);
+         end
+
+      end
+
+      else if Patrol==3 then begin
+         animate_move_obj_to_tile(self_obj, Patrol_Point,ANIMATE_WALK);
+         add_timer_event(self_obj, game_ticks(3), 0);
+         if tile_distance(self_tile,TILE3) < 3 then begin
+            set_local_var(LVAR_Patrol_Point, TILE2);
+            set_local_var(LVAR_Patrol, 4);
+            add_timer_event(self_obj, game_ticks(random(15,25)), 0);
+         end
+
+      end
+
+      else if Patrol==4 then begin
+         animate_move_obj_to_tile(self_obj, Patrol_Point,ANIMATE_WALK);
+         add_timer_event(self_obj, game_ticks(3), 0);
+         if tile_distance(self_tile,TILE2) < 3 then begin
+            set_local_var(LVAR_Patrol_Point, TILE1);
+            set_local_var(LVAR_Patrol, 5);
+            add_timer_event(self_obj, game_ticks(random(15,25)), 0);
+         end
+
+      end
+
+      else if Patrol==5 then begin
+         animate_move_obj_to_tile(self_obj, Patrol_Point,ANIMATE_WALK);
+         add_timer_event(self_obj, game_ticks(3), 0);
+         if tile_distance(self_tile,TILE1) < 3 then begin
+            set_local_var(LVAR_Patrol, 0);
+            add_timer_event(self_obj, game_ticks(random(15,25)), 0);
+         end
+
+      end
+
+   end
+end

@@ -1,0 +1,72 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_CSRADIAT
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure spatial_p_proc;
+procedure timed_event_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+variable under_radiation;
+procedure spatial_p_proc begin
+
+      if under_radiation==0 then begin
+      
+            if global_var(GVAR_SEEN_CRATER) !=2 then begin
+                  under_radiation:=1;
+                  add_timer_event(self_obj,0,1);
+            end
+            
+            else under_radiation:=0;
+            
+      end
+
+end
+
+
+
+variable radiation;
+variable distance_from_spatial;
+procedure timed_event_p_proc begin
+
+      if (fixed_param==1) then begin
+      
+             if global_var(GVAR_SEEN_CRATER) != 2 then begin     
+                  distance_from_spatial:=tile_distance_objs(self_obj,dude_obj);
+                  distance_from_spatial:=50-distance_from_spatial;
+                  radiation:=distance_from_spatial*random(32,55);
+                  if radiation>500 then radiation:=500;
+                  //display_msg("dstfromspt "+radiation);
+                  if radiation<0 then radiation:=0;
+                  radiation_inc(dude_obj,radiation);
+                  
+                  if distance_from_spatial<=50 then add_timer_event(self_obj,random(8,15),1); else under_radiation:=0;
+             end
+             
+             else begin
+                  set_global_var(GVAR_SEEN_CRATER,1);
+                  add_timer_event(self_obj,random(90,165),1);
+             end
+      
+      end
+
+end

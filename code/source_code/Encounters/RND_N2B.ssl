@@ -1,0 +1,305 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Critters template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME SCRIPT_RND_N2B
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure critter_p_proc;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure timed_event_p_proc;
+
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+variable rifle;
+   if map_first_run then begin
+      game_ui_disable;
+      critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_TEAM_NUM, TEAM_KHANS);
+      critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_AI_PACKET, AI_GENERIC_GUARDS);
+      rifle := create_object(PID_HUNTING_RIFLE, 0, 0);
+      add_obj_to_inven(self_obj, rifle);
+      wield_obj_critter(self_obj, rifle);
+      add_obj_to_inven(self_obj, create_object(PID_5MM_JHP,0,0));
+      add_timer_event(self_obj, 0, 0);
+      Face_Critter(dude_obj, self_obj);
+      Face_Critter(self_obj, dude_obj);
+   end
+end
+
+
+procedure map_enter_p_proc begin
+
+end
+
+procedure critter_p_proc begin
+
+
+end
+
+procedure look_at_p_proc begin
+	script_overrides;
+	display_msg(mstr(100));
+end
+
+procedure description_p_proc begin
+	script_overrides;
+	display_msg(mstr(101));
+end
+
+procedure pickup_p_proc begin
+   //script_overrides;
+
+end
+
+procedure talk_p_proc begin
+
+end
+
+procedure use_skill_on_p_proc begin
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure destroy_p_proc begin
+
+end
+
+variable counter;
+procedure timed_event_p_proc begin
+
+   if fixed_param==0 then begin
+
+      if counter==0 then begin
+         animate_move_to_tile(18707);
+         if self_tile == 18707 then counter++;
+         add_timer_event(self_obj, 1, 0);
+         set_global_var(GVAR_BASE_PROGRESS, BASE_MET_FRANZ);
+      end
+
+      else if counter==1 then begin
+         Face_Critter(dude_obj, self_obj);
+         counter := 0;
+         if dude_wearing_armor then add_timer_event(self_obj, 0, 1);
+         else add_timer_event(self_obj, 0, 2);
+      end
+
+   end
+
+   if fixed_param==1 then begin
+
+      if counter==0 then begin
+      floater(300);
+      add_timer_event(self_obj, game_ticks(2), 1);
+      end
+
+      else if counter==1 then begin
+      floater(301);
+      add_timer_event(self_obj, game_ticks(3), 1);
+      end
+
+      else if counter==2 then begin
+      floater(302);
+      add_timer_event(self_obj, game_ticks(3), 1);
+      end
+
+      else if counter==3 then begin
+      floaterdude(200)
+      add_timer_event(self_obj, game_ticks(3), 1);
+      end
+
+      else if counter==4 then begin
+      floater(303);
+      add_timer_event(self_obj, game_ticks(3), 1);
+      end
+
+      else if counter==5 then begin
+      floaterdude(304)
+      add_timer_event(self_obj, game_ticks(6), 1);
+      end
+
+      else if counter==6 then begin
+      floater(305);
+      add_timer_event(self_obj, game_ticks(3), 1);
+      end
+
+      else if counter==7 then begin
+      floater(306);
+      add_timer_event(self_obj, game_ticks(3), 1);
+      end
+
+      else if counter==8 then begin
+      floaterdude(307)
+      add_timer_event(self_obj, game_ticks(3), 1);
+      end
+
+      else if counter==9 then begin
+      floater(308);
+      counter := -1;
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+
+      counter++;
+
+   end
+
+   if fixed_param==2 then begin
+
+      if counter==0 then begin
+      floater(200);
+      counter++;
+      add_timer_event(self_obj, game_ticks(3), 2);
+      end
+
+      else if counter==1 then begin
+      floater(201);
+      counter := 0;
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+
+   end
+
+   if fixed_param == 3 then begin
+
+      if counter==0 then begin
+      floaterdude(400)
+      animate_move_obj_to_tile(self_obj,(tile_num_in_direction(dude_tile, 3, 3)), ANIMATE_WALK);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 1 then begin
+      floaterdude(401)
+      Face_Critter(dude_obj, self_obj);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 2 then begin
+      floater(402);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 3 then begin
+      floater(403);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 4 then begin
+      floaterdude(404)
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 5 then begin
+      floaterdude(405)
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 6 then begin
+      floaterdude(406)
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 7 then begin
+      floater(407);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 8 then begin
+      floater(408);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 9 then begin
+      floater(409);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 10 then begin
+      floater(410);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 11 then begin
+      floaterdude(411)
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 12then begin
+      floaterdude(412)
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 13 then begin
+      floater(413);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 14 then begin
+      floater(414);
+      animate_move_obj_to_tile(self_obj,(tile_num_in_direction(dude_tile, 3, 1)), ANIMATE_WALK);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 15 then begin
+      floater(415);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 16 then begin
+      fadeout(500);
+      move_to(self_obj, (tile_num_in_direction(dude_tile, 3, 3)), 0);
+      fadein(200);
+      mark_on_map(23)
+      floater(416);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 17 then begin
+      floater(417);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 18 then begin
+      floater(418);
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+      else if counter == 19 then begin
+      FadeOut(200);
+      set_self_invisible
+      fadein(200);
+      game_ui_enable;
+      add_timer_event(self_obj, game_ticks(3), 3);
+      end
+
+      counter++;
+
+   end
+
+end
+
+                                                                                                                                                                        

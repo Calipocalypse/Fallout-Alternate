@@ -1,0 +1,522 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_LAURA
+#include "..\headers\command.h"
+#include "..\headers\PARTY.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+   procedure watch_dude_suit;
+procedure talk_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+procedure damage_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+
+
+
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+
+
+procedure PreCompanion_Start;
+procedure Node002;
+procedure Node003;
+procedure PreCompanion_HereAgain;
+// party member default nodes
+procedure PartyOptions; //Main party member node
+procedure PartyOption_HealYourself; // heal yourself //1
+procedure PartyOption_Wait; // wait here //2
+procedure PartyOption_PutDownTheWeapon; // put your weapon away //3
+procedure PartyOption_FollowClose; // follow close //4
+procedure PartyOption_FollowMedium; // follow medium //5
+procedure PartyOption_FollowFar; // follow far //6
+procedure PartyOption_FollowOptions; // Distance //7
+procedure PartyOption_GearMenu; // Gear .. but he doesn't have any //8
+procedure PartyOption_RemoveArmor; // Remove armor //9
+procedure PartyOption_Tell_Good_Weapons; // Weapons that Can be used... NA //10
+procedure PartyOption_StopWaiting; // rejoin party /1100
+
+procedure giveweapon;
+procedure cutscene_forced;
+   procedure cutscene_forced_give_ripper;
+procedure cutscene_forced_blue;
+   procedure cutscene_forced_blue_dialogue_truthorfalse;
+   procedure cutscene_forced_blue_dialogue_false; procedure cutscene_forced_blue_dialogue_false2;
+   procedure cutscene_forced_blue_dialogue_true; procedure cutscene_forced_blue_dialogue_true_paid; procedure cutscene_forced_blue_dialogue_true_explain; procedure cutscene_forced_blue_dialogue_true_explain2;
+procedure cutscene_forced_other;
+procedure cutscene_forced_purple; procedure cutscene_forced_purple_dialogue; procedure cutscene_forced_purple_dialogue_speech; procedure cutscene_forced_purple_dialogue_fight; procedure cutscene_forced_purple_dialogue_fight2; procedure cutscene_forced_purple_dialogue_fight_alternate;
+procedure cutscene_forced_purple_dialogue_speech; procedure cutscene_forced_purple_dialogue_speech2; procedure cutscene_forced_purple_dialogue_speech3; procedure cutscene_forced_purple_dialogue_speech4; procedure cutscene_forced_purple_dialogue_speech5;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+
+/* Local Variables which are saved. All Local Variables need to be
+   prepended by LVAR_ */
+#define LVAR_WAITING                      (0)
+#define LVAR_FOLLOW_DISTANCE              (1)
+#define LVAR_TEAM                         (2)
+#define LVAR_Herebefore                   (3)
+#define LVAR_YesNo                        (4)
+   #define bit_SeenVaultSuit              (bit_1)
+#define LVAR_Hostile                      (5)
+#define LVAR_Personal_Enemy               (6)
+
+#define PARAM_CUTSCENE_FORCED             (5)
+#define PARAM_CUTSCENE_FORCED_BLUE        (6)
+#define PARAM_CUTSCENE_FORCED_PURPLE      (7)
+#define PARAM_CUTSCENE_FORCED_OTHER       (8)
+
+#define PARTY_NODE_X                      PartyOptions
+
+
+#define original_team                     TEAM_CHILDRN
+
+#define SET_SELF_LAURA                    set_global_var(GVAR_POINTER_LAURA, self_obj);
+
+/* Local variables which do not need to be saved between map changes. */
+variable Only_Once:=0;
+variable cutscene := 0;
+
+
+procedure start begin
+end
+
+
+procedure map_enter_p_proc begin
+   party_member_map_enter;
+   if global_var(GVAR_LAURA_STATE) == LAURA_STATE_TRIGGERED then begin
+      set_global_var(GVAR_LAURA_STATE, 3);
+      ates(0, PARAM_CUTSCENE_FORCED)
+   end
+
+   Only_Once:=0;
+
+   SET_SELF_LAURA
+
+   if party_member_obj(obj_pid(self_obj)) then begin
+      critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+   end else begin
+      critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,original_team);
+   end
+end
+
+
+procedure critter_p_proc begin
+   if party_member_obj(obj_pid(self_obj)) and (party_is_waiting == false) then begin
+      party_member_follow_dude
+   end
+
+   if global_var(GVAR_LAURA_STATE) == LAURA_STATE_LISTEN then call watch_dude_suit;
+
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       critter_team(260)
+       attack(dude_obj);
+   end
+
+end
+
+   procedure watch_dude_suit begin
+
+      dude_wearing_vault_suit
+      begin
+         if lvar_bit(LVAR_YesNo,bit_SeenVaultSuit) == 0 then begin
+            set_lvar_bit_on(LVAR_YesNo, bit_SeenVaultSuit);
+            float_msg(self_obj, mstr(1010), FLOAT_MSG_BLUE);
+         end
+      end
+
+   end
+
+
+procedure talk_p_proc begin
+   if global_var(GVAR_LAURA_STATE) == 0 then begin
+      floater(1000);
+   end
+
+   else if global_var(GVAR_LAURA_STATE) == LAURA_STATE_LISTEN then begin
+      floater_rand(1001, 1003);
+   end
+
+   else begin
+       start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+       if not party_member_obj(obj_pid(self_obj)) then
+         if local_var(LVAR_Herebefore) == 0 then
+         	call PreCompanion_Start;
+         else
+         	call PreCompanion_HereAgain;
+       else
+         call PartyOptions;
+       gSay_End;
+       end_dialogue;
+
+   end
+end
+
+
+procedure Node998 begin
+end
+
+
+procedure Node999 begin
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       display_msg("set as anemy");
+       if global_var(GVAR_SHADY_UNDER_REBELLION) == 0 then set_global_var(GVAR_ALARM_SHADYSANDS,1);
+   end
+end
+
+procedure timed_event_p_proc begin
+   if fixed_param==TIMED_ADD_PARTY then begin
+      party_add_self;
+   end
+   else if fixed_param == PARAM_CUTSCENE_FORCED then begin
+      call cutscene_forced;
+   end
+   else if fixed_param == PARAM_CUTSCENE_FORCED_BLUE then begin
+      call cutscene_forced_blue;
+   end
+   else if fixed_param == PARAM_CUTSCENE_FORCED_PURPLE then begin
+      call cutscene_forced_purple;
+   end
+   else if fixed_param == PARAM_CUTSCENE_FORCED_OTHER then begin
+      call cutscene_forced_other;
+   end
+end
+
+procedure PreCompanion_Start begin
+   Reply("Do you want me to join your party?");
+   NOption("Sure.",Node002,001);
+   NOption("Not really.",Node999,001);
+end
+
+
+procedure Node002 begin
+   if (dude_at_max_party_size) then begin
+      Reply("You don't seem to have room for me.");
+      NOption(g_mstr(10007),Node999,001);
+   end else begin
+      party_add_self;
+      Call PartyOptions;
+   end
+end
+
+procedure PreCompanion_HereAgain begin
+   Reply("You are here again. Wanna join me to your party?");
+   NOption("Sure.",Node002,001);
+   NOption("Not really.",Node999,001);
+end
+
+
+#define DEF_PM_OPTIONS  \
+   party_member_options(def_heal_msg, def_follow_msg, 0, def_wait_msg, def_nowait_msg, def_end_msg, def_stupid_msg)
+#define DEF_PM_FOLLOW \
+   party_follow_options(def_close_msg, def_med_msg, def_far_msg, "That's fine.")
+
+
+procedure PartyOptions begin
+   Reply("Yes?");
+   DEF_PM_OPTIONS;
+end
+
+
+procedure PartyOption_HealYourself begin // heal yourself
+   obj_heal(self_obj)
+   global_temp := 0;
+   if (party_healed_max) then begin
+      Reply("I'm all better now.");
+   end else if (party_healed_good) then begin
+      Reply("Feels good.");
+   end else if (party_healed_hurt) then begin
+      Reply("I could be better.");
+   end else begin
+      Reply("I'm still pretty busted up.");
+   end
+   DEF_PM_OPTIONS;
+end
+
+
+procedure PartyOption_Wait begin // wait here
+   set_party_waiting;
+   Reply("I'll wait here.");
+   DEF_PM_OPTIONS;
+end
+
+
+procedure PartyOption_PutDownTheWeapon begin // put your weapon away
+   inven_unwield(self_obj);
+   call PartyOption_FollowOptions;
+end
+
+
+procedure PartyOption_FollowClose begin // follow close
+   set_follow_close;
+   call PartyOption_FollowOptions;
+end
+
+
+procedure PartyOption_FollowMedium begin// follow medium
+   set_follow_medium;
+   call PartyOption_FollowOptions;
+end
+
+
+procedure PartyOption_FollowFar begin // follow far
+   set_follow_far;
+   call PartyOption_FollowOptions;
+end
+
+
+procedure PartyOption_FollowOptions begin
+   if (local_var(LVAR_FOLLOW_DISTANCE) == FOLLOW_DISTANCE_CLOSE) then begin
+      Reply("I'm staying close.");
+   end else if (local_var(LVAR_FOLLOW_DISTANCE) == FOLLOW_DISTANCE_MEDIUM) then begin
+      Reply("I'm keeping some distance.");
+   end else if (local_var(LVAR_FOLLOW_DISTANCE) == FOLLOW_DISTANCE_FAR) then begin
+      Reply("I'm giving you your space.");
+   end
+   DEF_PM_FOLLOW;
+end
+
+
+procedure PartyOption_GearMenu begin
+
+end
+
+
+procedure PartyOption_RemoveArmor begin
+remove_armor(self_obj)
+end
+
+
+procedure PartyOption_Tell_Good_Weapons begin
+end
+
+
+
+
+procedure PartyOption_StopWaiting begin // rejoin party
+   if (dude_at_max_party_size) then begin
+      Reply("You don't seem to have room for me.");
+      NOption(g_mstr(10007),Node999,001);
+   end else begin
+      end_party_waiting;
+      Reply("Glad to be back.");
+      DEF_PM_OPTIONS;
+   end
+end
+
+procedure cutscene_forced begin
+
+   if (cutscene==0) then begin
+      game_ui_disable;
+      set_global_var(GVAR_LAURA_STATE, 3);
+      party_remove_self;
+      critter_team(TEAM_CHILDRN)
+      animate_move_obj_to_tile(self_obj, tile_num_in_direction(self_tile, 1, 3), ANIMATE_WALK);
+      animate_move_obj_to_tile(dude_obj, tile_num_in_direction(dude_tile, 1, 8), ANIMATE_WALK);
+      ates(game_ticks(2),PARAM_CUTSCENE_FORCED)
+   end
+
+   else if (cutscene==1) then begin
+      float_msg(self_obj, mstr(1015), FLOAT_MSG_NORMAL);
+      Face_Critter(dude_obj, self_obj);
+      ates(game_ticks(4),PARAM_CUTSCENE_FORCED)
+   end
+
+   else if (cutscene==2) then begin
+      float_msg(self_obj, mstr(1016), FLOAT_MSG_NORMAL);
+      Face_Critter(dude_obj, self_obj);
+      ates(game_ticks(4),PARAM_CUTSCENE_FORCED)
+   end
+
+   else if (cutscene==3) then begin
+      float_msg(dude_obj, mstr(1017), FLOAT_MSG_BLUE);
+      Face_Critter(dude_obj, self_obj);
+      ates(game_ticks(3),PARAM_CUTSCENE_FORCED)
+   end
+
+   else if (cutscene==4) then begin
+      Face_Critter(self_obj, dude_obj);
+      cutscene := 0;
+      if not dude_wearing_armor or lvar_bit(LVAR_YesNo, bit_SeenVaultSuit) == 1 then ates(0, PARAM_CUTSCENE_FORCED_BLUE)
+      else if obj_pid(critter_inven_obj(dude_obj,INVEN_TYPE_WORN)) == PID_PURPLE_ROBE then ates(0, PARAM_CUTSCENE_FORCED_PURPLE)
+      //else ates(0, PARAM_CUTSCENE_FORCED_OTHER) UZNALEM ZE NIE MA CO SIE NA TYM SKUPIAC TERAZ
+      else ates(0, PARAM_CUTSCENE_FORCED_PURPLE)
+   end
+
+   cutscene++;
+end
+
+   procedure cutscene_forced_give_ripper begin
+      variable ripper := create_object(PID_RIPPER, 0, 0);
+      add_obj_to_inven(self_obj, ripper);
+      wield_obj(ripper);
+   end
+
+procedure cutscene_forced_blue begin
+   if (cutscene==0) then begin
+      ates(0, PARAM_CUTSCENE_FORCED_BLUE)
+   end
+   else if (cutscene==1) then begin
+      call cutscene_forced_give_ripper;
+      start_dialog_at_node(cutscene_forced_blue_dialogue_truthorfalse);
+   end
+
+   cutscene++;
+end
+
+   procedure cutscene_forced_blue_dialogue_truthorfalse begin
+      Reply(mstr(1101));
+      NOption(mstr(1103),cutscene_forced_blue_dialogue_false, 001);
+      NOption(mstr(1102),cutscene_forced_blue_dialogue_true, 001);
+   end
+
+   procedure cutscene_forced_blue_dialogue_false begin
+      Reply(mstr(1105));
+      NOption(mstr(1106),cutscene_forced_blue_dialogue_false2, 001);
+   end
+
+   procedure cutscene_forced_blue_dialogue_false2 begin
+      call cutscene_forced_give_ripper;
+      attack_setup(self_obj, dude_obj);
+   end
+
+   procedure cutscene_forced_blue_dialogue_true begin
+      Reply(mstr(1115));
+      NOption(mstr(1116),cutscene_forced_blue_dialogue_true_paid, 001);
+      if global_var(GVAR_QUEST_SHADY_KILL_CHILD) > 0 then NOption(mstr(1117),cutscene_forced_blue_dialogue_true_explain, 001);
+      else NOption(mstr(1118),cutscene_forced_blue_dialogue_true_explain, 001);
+   end
+
+   procedure cutscene_forced_blue_dialogue_true_paid begin
+      float_msg(self_obj, mstr(1125), 2);
+      call cutscene_forced_give_ripper;
+      attack_setup(self_obj, dude_obj);
+   end
+
+   procedure cutscene_forced_blue_dialogue_true_explain begin
+      Reply(mstr(1126));
+      NOption(mstr(1127),cutscene_forced_blue_dialogue_true_explain2, 001);
+   end
+
+   procedure cutscene_forced_blue_dialogue_true_explain2 begin
+      Reply(mstr(1128));
+      NOption(mstr(1129),Node999, 001);
+      party_add_self;
+   end
+
+procedure cutscene_forced_purple begin
+   if (cutscene==0) then begin
+      ates(0, PARAM_CUTSCENE_FORCED_PURPLE)
+   end
+
+   else if (cutscene==1) then begin
+      float_msg(self_obj, mstr(1200), FLOAT_MSG_NORMAL);
+      Face_Critter(dude_obj, self_obj);
+      ates(game_ticks(4),PARAM_CUTSCENE_FORCED_PURPLE)
+   end
+
+   else if (cutscene==2) then begin
+      float_msg(self_obj, mstr(1201), FLOAT_MSG_NORMAL);
+      Face_Critter(dude_obj, self_obj);
+      ates(game_ticks(4),PARAM_CUTSCENE_FORCED_PURPLE)
+   end
+
+   else if (cutscene==3) then begin
+      float_msg(self_obj, mstr(1202), FLOAT_MSG_NORMAL);
+      Face_Critter(dude_obj, self_obj);
+      ates(game_ticks(4),PARAM_CUTSCENE_FORCED_PURPLE)
+   end
+
+   else if (cutscene==4) then begin
+      float_msg(self_obj, mstr(1203), FLOAT_MSG_NORMAL);
+      Face_Critter(dude_obj, self_obj);
+      ates(game_ticks(4),PARAM_CUTSCENE_FORCED_PURPLE)
+   end
+
+   else if (cutscene==5) then begin
+      game_ui_enable;
+      start_dialog_at_node(cutscene_forced_purple_dialogue);
+   end
+
+   cutscene++;
+end
+
+   procedure cutscene_forced_purple_dialogue begin
+      Reply(mstr(1203));
+      NOption(mstr(1211), cutscene_forced_purple_dialogue_speech, 001);
+      NOption(mstr(1212), cutscene_forced_purple_dialogue_fight, 001);
+      NOption(mstr(1213), cutscene_forced_purple_dialogue_fight_alternate, 001);
+   end
+
+   procedure cutscene_forced_purple_dialogue_fight begin
+      Reply(mstr(1220));
+      NOption(mstr(1221), cutscene_forced_purple_dialogue_fight2, 001);
+   end
+
+   procedure cutscene_forced_purple_dialogue_fight2 begin
+      float_msg(self_obj, mstr(1226), 2);
+      call cutscene_forced_give_ripper;
+      attack_setup(self_obj, dude_obj);
+   end
+
+   procedure cutscene_forced_purple_dialogue_fight_alternate begin
+      float_msg(self_obj, mstr(1225), 2);
+      call cutscene_forced_give_ripper;
+      attack_setup(self_obj, dude_obj);
+   end
+
+   procedure cutscene_forced_purple_dialogue_speech begin
+      Reply(mstr(1230));
+      NOption(mstr(1231), cutscene_forced_purple_dialogue_speech2, 001);
+   end
+
+   procedure cutscene_forced_purple_dialogue_speech2 begin
+      Reply(mstr(1235));
+      NOption(mstr(1236), cutscene_forced_purple_dialogue_speech3, 001);
+   end
+
+   procedure cutscene_forced_purple_dialogue_speech3 begin
+      Reply(mstr(1240));
+      NOption(mstr(1241), cutscene_forced_purple_dialogue_speech4, 001);
+   end
+
+   procedure cutscene_forced_purple_dialogue_speech4 begin
+      Reply(mstr(1250));
+      NOption(mstr(1251), cutscene_forced_purple_dialogue_speech5, 001);
+   end
+
+   procedure cutscene_forced_purple_dialogue_speech5 begin
+      Reply(mstr(1260));
+      NOption(mstr(1261), Node999, 001);
+      party_add_self;
+      float_msg(self_obj, mstr(1262), FLOAT_MSG_GREEN);
+   end
+
+procedure cutscene_forced_other begin
+   if (cutscene==0) then begin
+      ates(0, PARAM_CUTSCENE_FORCED_OTHER)
+   end
+   else if (cutscene==1) then begin
+      display_msg("other");
+
+   end
+
+   cutscene++;
+end

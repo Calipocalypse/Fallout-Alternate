@@ -1,0 +1,120 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MBSUPMUT
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure map_enter_p_proc;
+      procedure assign_home_tile;
+procedure critter_p_proc;
+      procedure sprawdz_czy_gracz_nosi_szaty;
+procedure combat_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then call assign_home_tile;
+      if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_MB_MUTANTS);
+      if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_SUPER_MUTANT);
+      call assign_home_tile;
+
+end
+
+      procedure assign_home_tile begin
+
+            set_local_var(LVAR_Home_Tile,self_tile);
+
+      end
+
+procedure combat_p_proc begin
+   if global_var(GVAR_MB_ALARM) == 1 then attack(dude_obj);
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       set_global_var(GVAR_MB_ALARM, 1);
+       attack(dude_obj);
+   end
+
+   call sprawdz_czy_gracz_nosi_szaty;
+
+end
+
+      procedure sprawdz_czy_gracz_nosi_szaty begin
+            if (obj_pid(critter_inven_obj(dude_obj,INVEN_TYPE_WORN)) != PID_PURPLE_ROBE) and obj_can_see_obj(self_obj,dude_obj) then begin
+                  set_global_var(GVAR_MB_ALARM, 1);
+                  self_attack_dude;
+                  float_msg(self_obj,mstr(400),2);
+            end
+      end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_global_var(GVAR_MB_ALARM, 1);
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+      if local_var(LVAR_Home_Tile) == 22106 or local_var(LVAR_Home_Tile) == 19126 then floater_rand(300,305);
+      else floater_rand(200,206);
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+

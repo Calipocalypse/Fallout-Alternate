@@ -1,0 +1,169 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCMACK
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+      procedure assign_home_tile;
+      procedure assign_basic_eq;
+      procedure day_night_position;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_Night_Tile                 (9)
+
+import variable rebel_mack;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then call assign_home_tile;
+      if map_first_run then call assign_basic_eq;
+
+      if not is_loading_game then add_timer_event(self_obj,0,0); /* Jest to zapobieganie nakladania sie timed_event_p_proc na timed_event_p_proc, chyba xD */
+      //day_night_position /\
+
+      critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+
+      rebel_mack:=self_obj;
+
+end
+
+      procedure assign_home_tile begin
+            set_local_var(LVAR_Home_Tile,self_tile);
+            set_local_var(LVAR_Night_Tile,10872);
+      end
+
+      variable item;
+      procedure assign_basic_eq begin
+            item:=create_object(PID_FROZEN_DINNER,0,0);
+            add_obj_to_inven(self_obj,item);
+            item:=create_object(PID_MUTATED_FRUIT,0,0);
+            add_obj_to_inven(self_obj,item);
+      end
+
+      procedure day_night_position begin
+
+            if global_var(GVAR_SHADY_DAY_NIGHT_DISABLED) == 0 then begin
+
+                  if day then move_to(self_obj,local_var(LVAR_Home_Tile),1); // w innych przypadkach moze byc problem z elewacj?
+                  else if game_time_hour==1800 then move_to(self_obj,local_var(LVAR_Night_Tile),1);
+                  else move_to(self_obj,local_var(LVAR_Night_Tile),1); // w innych przypadkach moze byc problem z elewacj?
+                  add_timer_event(self_obj,15,0);
+
+                  /*
+
+                  if (not day) or game_time_hour==1800 then begin
+
+                  reg_anim_begin();
+                  reg_anim_animate(self_obj, ANIM_fall_front_sf, -1);
+                  reg_anim_end();
+                  display_msg("noc");
+
+                  end
+
+                  else begin
+                  display_msg("dzien");
+                  reg_anim_begin();
+                  reg_anim_clear(self_obj);
+                  reg_anim_end();
+                  end
+                  */
+
+            end
+
+      end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+end
+
+procedure damage_p_proc begin
+
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       if global_var(GVAR_SHADY_UNDER_REBELLION) == 0 then set_global_var(GVAR_ALARM_SHADYSANDS,1);
+   end
+
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+      if not day then float_msg(self_obj,"Hrrrrr",FLOAT_MSG_NORMAL);
+      else begin
+            float_msg(self_obj,"Start kownersacji",2);
+      end
+
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+
+variable test;
+procedure timed_event_p_proc begin
+
+      if (fixed_param==0) then begin
+
+            //test+=1;
+            //display_msg("test"+test);
+
+            call day_night_position;
+
+      end
+
+end

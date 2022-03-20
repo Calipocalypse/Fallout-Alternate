@@ -1,0 +1,501 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCANNA
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+      procedure assign_home_tile;
+      procedure assign_basic_eq;
+      procedure day_night_position;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+//0
+procedure FirstTalk_Start;
+procedure FirstTalk_Start2;
+procedure FirstTalk_Start3;
+procedure cutscene_story_about_losing_Simon;
+procedure FirstTalk_Start4;
+procedure FirstTalk_Start5;
+procedure FirstTalk_Start6;
+procedure FirstTalk_Start6_LastChance;
+
+//3-5
+procedure FoundButNotThere_Nixon1;
+procedure FoundButNotThere_Nixon2;
+
+//7
+procedure FoundButDead;
+procedure FoundButDead_Suicide;
+procedure FoundButDead_Suicide2;
+
+//6 found
+procedure ThankYou1;
+procedure ThankYou1_Free;
+procedure ThankYou1_Caps;
+procedure ThankYou1_Sex;
+procedure XP_Reward;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_Night_Tile                 (9)
+
+import variable rebel_anna;
+import variable rebel_annadaughter;
+
+import variable obj_surface_rat1;
+import variable obj_surface_rat2;
+import variable obj_surface_rat3;
+import variable rebel_jerome;
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then call assign_home_tile;
+      if map_first_run then call assign_basic_eq;
+
+      if not is_loading_game then add_timer_event(self_obj,0,0); /* Jest to zapobieganie nakladania sie timed_event_p_proc na timed_event_p_proc, chyba xD */
+      //day_night_position /\
+
+      critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+
+      rebel_anna:=self_obj;
+
+end
+
+      procedure assign_home_tile begin
+            set_local_var(LVAR_Home_Tile,self_tile);
+            set_local_var(LVAR_Night_Tile,13501);
+      end
+
+      variable item;
+      procedure assign_basic_eq begin
+            item:=create_object(PID_FROZEN_DINNER,0,0);
+            add_obj_to_inven(self_obj,item);
+            item:=create_object(PID_MUTATED_FRUIT,0,0);
+            add_obj_to_inven(self_obj,item);
+      end
+
+      procedure day_night_position begin
+
+            if global_var(GVAR_SHADY_DAY_NIGHT_DISABLED) == 0 then begin
+
+                  if day then move_to(self_obj,local_var(LVAR_Home_Tile),1); // w innych przypadkach moze byc problem z elewacj?
+                  else if game_time_hour==1800 then move_to(self_obj,local_var(LVAR_Night_Tile),1);
+                  else move_to(self_obj,local_var(LVAR_Night_Tile),1); // w innych przypadkach moze byc problem z elewacj?
+                  add_timer_event(self_obj,15,0);
+
+                  /*
+
+                  if (not day) or game_time_hour==1800 then begin
+
+                  reg_anim_begin();
+                  reg_anim_animate(self_obj, ANIM_fall_front_sf, -1);
+                  reg_anim_end();
+                  display_msg("noc");
+
+                  end
+
+                  else begin
+                  display_msg("dzien");
+                  reg_anim_begin();
+                  reg_anim_clear(self_obj);
+                  reg_anim_end();
+                  end
+                  */
+
+            end
+
+      end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   float_msg(self_obj,"G: "+global_var(GVAR_QUEST_SHADYCAMP_ANNASON),2);
+
+end
+
+procedure damage_p_proc begin
+
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       if global_var(GVAR_SHADY_UNDER_REBELLION) == 0 then set_global_var(GVAR_ALARM_SHADYSANDS,1);
+   end
+
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+      if not day then float_msg(self_obj,"Hrrrrr",FLOAT_MSG_NORMAL);
+      else begin
+
+         //dead son
+         if global_var(GVAR_QUEST_SHADYCAMP_ANNASON)== 7 then start_dialog_at_node(FoundButDead);
+
+         //found son and brought
+        // else if global_var(GVAR_QUEST_SHADYCAMP_ANNASON == 5) then
+
+         //brought son
+         else if global_var(GVAR_QUEST_SHADYCAMP_ANNASON) == 6 then begin
+            start_dialog_at_node(ThankYou1);
+         end
+
+         else if global_var(GVAR_QUEST_SHADYCAMP_ANNASON) < 6 and global_var(GVAR_QUEST_SHADYCAMP_ANNASON) >= 2 then begin
+            floater(305);
+         end
+
+         //after taking quest and no progress
+         else if global_var(GVAR_QUEST_SHADYCAMP_ANNASON) == 2 then floater(305);
+
+         //first talk
+         else if global_var(GVAR_QUEST_SHADYCAMP_ANNASON) == 0 or global_var(GVAR_QUEST_SHADYCAMP_ANNASON) == 1 then begin
+               if local_var(LVAR_Herebefore) == 1 then      start_dialog_at_node(FirstTalk_Start3);
+               else if local_var(LVAR_Herebefore) == 0 then start_dialog_at_node(FirstTalk_Start);
+         end
+      end
+
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+   set_global_var(GVAR_SHADY_ANNA_DEAD,1);
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+
+variable test;
+procedure timed_event_p_proc begin
+
+      if (fixed_param==0) then begin
+
+            //test+=1;
+            //display_msg("test"+test);
+
+            call day_night_position;
+
+      end
+
+      if (fixed_param==1) then begin
+
+         call cutscene_story_about_losing_Simon;
+
+      end
+
+      if (fixed_param==2) then begin
+
+         start_dialog_at_node(FirstTalk_Start6);
+
+      end
+
+      if (fixed_param==3) then begin
+
+         kill_critter(self_obj,ANIM_fall_front_blood_sf);
+
+      end
+
+end
+
+procedure FirstTalk_Start begin
+Reply(mstr(200));
+NOption(201,Node999,001);
+NOption(202,FirstTalk_Start2,001);
+end
+
+procedure FirstTalk_Start2 begin
+Reply(mstr(210));
+NOption(211,FirstTalk_Start4,001);
+NOption(212,Node999,001);
+
+set_local_var(LVAR_Herebefore,1);
+end
+
+//After Node999 in Start2
+procedure FirstTalk_Start3 begin
+Reply(mstr(220));
+NOption(211,FirstTalk_Start4,001);
+NOption(222,Node999,001);
+end
+
+//Continuation of Start2
+procedure FirstTalk_Start4 begin
+Reply(mstr(230));
+NOption(231,FirstTalk_Start5,001);
+NOption(231,FirstTalk_Start5,001);
+set_local_var(LVAR_Herebefore,2);
+end
+
+procedure FirstTalk_Start5 begin
+   game_ui_disable;
+   floater(250);
+   add_timer_event(self_obj,game_ticks(5),1);
+end
+
+variable counter;
+procedure cutscene_story_about_losing_Simon begin
+
+   if counter == 0 then begin
+   fadeout(200);
+   tile_set_center(15125);
+      move_to(self_obj,15125,self_elevation);
+      move_to(rebel_annadaughter,tile_num_in_direction(15125,0,3),self_elevation);
+      animate_move_obj_to_tile(self_obj,13327,ANIMATE_WALK);
+      animate_move_obj_to_tile(rebel_annadaughter,tile_num_in_direction(13327,0,2),ANIMATE_WALK);
+
+      set_obj_visibility(rebel_jerome, true);
+      set_obj_visibility(obj_surface_rat1, true);
+      set_obj_visibility(obj_surface_rat2, true);
+      set_obj_visibility(obj_surface_rat3, true);
+      set_obj_visibility(dude_obj, true);
+
+   fadein(200);
+   add_timer_event(self_obj,game_ticks(1),1);
+   end
+
+   else if counter == 1 then begin
+      if tile_distance(self_tile,13327) != 0 or tile_distance(tile_num(rebel_annadaughter),tile_num_in_direction(13327,0,2))!=0 then begin
+         counter:=0;
+         animate_move_obj_to_tile(self_obj,13327,ANIMATE_WALK);
+         animate_move_obj_to_tile(rebel_annadaughter,tile_num_in_direction(13327,0,2),ANIMATE_WALK);
+      end
+      add_timer_event(self_obj,1,1);
+   end
+
+   else if counter == 2 then begin
+      Face_Critter(rebel_annadaughter,self_obj);
+      Face_Critter(self_obj,rebel_annadaughter);
+
+      add_timer_event(self_obj,game_ticks(3),1);
+   end
+
+   else if counter == 3 then begin
+      floater(251);
+
+      add_timer_event(self_obj,game_ticks(3),1);
+   end
+
+   else if counter == 4 then begin
+      floater(252);
+      add_timer_event(self_obj,game_ticks(5),1);
+   end
+
+   else if counter == 5 then begin
+      float_msg(rebel_annadaughter,mstr(253),FLOAT_MSG_NORMAL);
+
+      add_timer_event(self_obj,game_ticks(3),1);
+   end
+
+   else if counter == 6 then begin
+      float_msg(rebel_annadaughter,mstr(254),FLOAT_MSG_LIGHT_RED);
+
+      add_timer_event(self_obj,game_ticks(3),1);
+   end
+
+   else if counter == 7 then begin
+      floater(255);
+      add_timer_event(self_obj,game_ticks(2),1);
+   end
+
+   else if counter == 8 then begin
+      floater(256);
+      add_timer_event(self_obj,game_ticks(2),1);
+   end
+
+   else if counter == 9 then begin
+      floater(257);
+      add_timer_event(self_obj,game_ticks(2),1);
+   end
+
+   else if counter == 10 then begin
+      floater(258);
+      add_timer_event(self_obj,game_ticks(2),1);
+      animate_move_obj_to_tile(rebel_annadaughter,12126,ANIMATE_WALK);
+   end
+
+   else if counter == 11 then begin
+      if tile_num(rebel_annadaughter) != 12126 then begin
+         counter:=11;
+      end
+      else begin
+         float_msg(rebel_annadaughter,mstr(259),FLOAT_MSG_RED);
+         move_to(rebel_annadaughter,13508,2);
+         anim(rebel_annadaughter,ANIM_stand,4);
+      end
+      add_timer_event(self_obj,game_ticks(2),1);
+   end
+
+   else if counter == 12 then begin
+      floater(260);
+      add_timer_event(self_obj,game_ticks(2),1);
+   end
+
+   else if counter == 13 then begin
+      floater(261);
+      add_timer_event(self_obj,game_ticks(2),1);
+   end
+
+   else if counter == 14 then begin
+      animate_run_to_tile(12727);
+      add_timer_event(self_obj,game_ticks(2),1);
+   end
+
+   else if counter == 15 then begin
+      floater(262);
+      add_timer_event(self_obj,game_ticks(5),1);
+   end
+
+   else if counter == 16 then begin
+      fadeout(200);
+      move_to(self_obj,local_var(LVAR_Home_Tile),self_elevation);
+      tile_set_center(self_tile);
+      set_obj_visibility(rebel_jerome, false);
+      set_obj_visibility(obj_surface_rat1, false);
+      set_obj_visibility(obj_surface_rat2, false);
+      set_obj_visibility(obj_surface_rat3, false);
+      set_obj_visibility(dude_obj, false);
+      add_timer_event(rebel_annadaughter, 0, 4);
+      fadein(200);
+      add_timer_event(self_obj,game_ticks(2),1);
+   end
+
+   else if counter == 17 then begin
+      game_ui_enable;
+      add_timer_event(self_obj,0,2);
+   end
+
+   counter++;
+
+end
+
+procedure FirstTalk_Start6 begin
+Reply(mstr(270));
+NOption(271,FirstTalk_Start6_LastChance,001);
+NOption(272,FirstTalk_Start6_LastChance,001);
+Face_Critter(self_obj,dude_obj);
+Face_Critter(dude_obj,self_obj);
+set_global_var(GVAR_QUEST_SHADYCAMP_ANNASON,2);
+end
+
+   procedure FirstTalk_Start6_LastChance begin
+      floater(274);
+   end
+
+
+
+//Nixon 3-4
+procedure FoundButNotThere_Nixon1 begin
+   Reply(mstr(300));
+   NOption(350,FoundButNotThere_Nixon2,001);
+   NOption(302,Node999,001);
+end
+
+procedure FoundButNotThere_Nixon2 begin
+   Reply(mstr(351));
+   NOption(352,Node999,001);
+   item:=create_object(PID_MR_NIXON_DOLL,0,0);
+   add_obj_to_inven(dude_obj,item);
+   set_local_var(LVAR_Herebefore,3);
+end
+
+//7
+
+procedure FoundButDead begin
+   Reply(mstr(300));
+   NOption(360,FoundButDead_Suicide,001);
+   NOption(302,Node999,001);
+end
+
+procedure FoundButDead_Suicide begin
+   Reply(mstr(361));
+   NOption(362,FoundButDead_Suicide2,001);
+end
+
+procedure FoundButDead_Suicide2 begin
+   add_timer_event(self_obj,1,3);
+end
+
+//6
+procedure ThankYou1 begin
+   Reply(mstr(400));
+   NOption(401,ThankYou1_Free,001);
+   NOption(402,ThankYou1_Caps,001);
+   NOption(403,ThankYou1_Sex,001);
+end
+
+procedure ThankYou1_Free begin
+   Reply(mstr(410));
+   NOption(411,Node999,001);
+   //increase karma here
+   call XP_Reward;
+end
+
+procedure ThankYou1_Caps begin
+   Reply(mstr(420));
+   NOption(421,Node999,001);
+   item_caps_adjust(dude_obj,random(80,130));
+   call XP_Reward;
+end
+
+procedure ThankYou1_Sex begin
+   Reply(mstr(430));
+   NOption(431,Node999,001);
+   NOption(432,Node999,001);
+   ////increase karma here but half of this up there
+   call XP_Reward;
+end
+
+procedure XP_Reward begin
+   give_exp_points(250);
+   display_msg(mstr(440));
+   set_global_var(GVAR_QUEST_SHADYCAMP_ANNASON,9);
+end

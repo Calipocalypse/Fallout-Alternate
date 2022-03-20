@@ -1,0 +1,121 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Critters template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure critter_p_proc;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure timed_event_p_proc;
+procedure FirstNodeKurwa;
+procedure IWillLeadYou;
+/* Defines */
+
+#define NAME SCRIPT_ECSH_BL1
+#define LVAR_Can_Talk   (0)
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+
+end
+
+procedure map_enter_p_proc begin
+
+   //if map_first_run then move_to(self_obj, tile_num_in_direction(tile_num(global_var(CRITTER1)), 5, 3), dude_elevation);
+   flush_add_timer_event(self_obj, 1, 1);
+
+end
+
+procedure critter_p_proc begin
+
+display_msg("DD: " + global_var(CRITTER1));
+
+end
+
+procedure look_at_p_proc begin
+	script_overrides;
+	display_msg(mstr(100));
+end
+
+procedure description_p_proc begin
+	script_overrides;
+	display_msg(mstr(101));
+end
+
+procedure pickup_p_proc begin
+   //script_overrides;
+
+end
+
+procedure talk_p_proc begin
+   if global_var(CRITTER1) == 1 then start_dialog_at_node(FirstNodeKurwa);
+end
+
+   procedure FirstNodeKurwa begin
+      Reply(200);
+      NOption(201,IWillLeadYou, 001);
+   end
+
+   procedure IWillLeadYou begin
+   set_global_var(GVAR_SHED_TRAVIS, SHED_TRAVIS_RESCUED);
+   game_time_advance(game_ticks(3600 * 12));
+   load_map(21, 2);
+   end
+
+procedure use_skill_on_p_proc begin
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure destroy_p_proc begin
+   set_global_var(GVAR_SHED_TRAVIS, SHED_TRAVIS_DEAD);
+end
+
+procedure timed_event_p_proc begin
+
+   if (fixed_param==0) then begin
+      game_ui_enable;
+   end
+
+end

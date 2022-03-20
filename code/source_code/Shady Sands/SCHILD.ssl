@@ -1,0 +1,132 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCHILD
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+procedure assign_home_tile;
+
+procedure sprawdz_czy_dobre_druzyny;
+procedure MakeUsChildTeam;
+procedure MakeUsKhanFriends;
+
+import variable childrn_obj;
+import variable childrn2_obj;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if local_var(LVAR_Home_Tile) == 0 then call assign_home_tile;
+      call assign_home_tile;
+      
+end
+
+procedure assign_home_tile begin
+
+      set_local_var(LVAR_Home_Tile,self_tile);
+      
+      if local_var(LVAR_Home_Tile) == 23924 then childrn_obj:= self_obj;
+      if local_var(LVAR_Home_Tile) == 24323 then childrn2_obj:= self_obj;
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+   
+   /* Sprawdza czy TEAMS sa poprawnie ustawione i ewentualnie zmienia druzyny gdy potrzeba */
+   call sprawdz_czy_dobre_druzyny;
+   
+   //float_msg(self_obj,"moja pozycja: "+self_tile,4);
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+//float_msg(self_obj," "+self_fid,2);
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure sprawdz_czy_dobre_druzyny begin
+
+      if global_var(GVAR_ENEMYOF_CHILRED_KHANS) == 0 then call MakeUsKhanFriends;
+      else if global_var(GVAR_ENEMYOF_CHILRED_KHANS) == 1 then call MakeUsChildTeam;
+
+end
+
+procedure MakeUsChildTeam begin
+critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SHADY_CHILD);
+end
+
+procedure MakeUsKhanFriends begin
+critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+end
+

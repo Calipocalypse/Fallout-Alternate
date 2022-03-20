@@ -1,0 +1,340 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCBIMBER
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+procedure combat_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+procedure animate_pedzenie_bimbru;
+
+procedure hit_bimber_quest;
+procedure hit_bimber_quest2;
+procedure hit_bimber_quest2_goaway;
+procedure hit_bimber_quest2_inteligence;
+procedure hit_bimber_quest2_speech;
+
+procedure punch_way;
+procedure punch_way_text;
+procedure wywolaj_rozmowe_quest_bimber;
+procedure wywolaj_khan_cutscene;
+
+import variable person_1bimber;
+import variable person_2bimber;
+import variable person_radio1khan;
+import variable person_radio2khan;
+
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_HIT_TIMES                  (9)
+#define LVAR_cutscene_counter           (10)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+      if map_first_run then begin
+            critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_BIMBROWNICY);
+            set_local_var(LVAR_Home_Tile,self_tile);
+            //display_msg("c: "+local_var(LVAR_Home_Tile)); //14677 14679
+      end
+
+      add_timer_event(self_obj,0,0);
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+if not shady_dude_has_started_rebellion then begin
+   if local_var(LVAR_Home_Tile) != self_tile then animate_move_to_tile(local_var(LVAR_Home_Tile));
+   //float_msg(self_obj,""+local_var(LVAR_Home_Tile),random(1,12)); //14679
+end
+   if local_var(LVAR_Home_Tile) == 14679 then person_1bimber:=self_obj; else person_2bimber:=self_obj;
+
+
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+   if global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) == 1 THEN inc_local_var(LVAR_HIT_TIMES);
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   if global_var(GVAR_SHADY_REBELLION) == 0 then begin
+      if global_var(GVAR_QUEST_SHADYSANDS_BIMBER) == 1 then start_dialog_at_node(hit_bimber_quest); else
+      float_msg(self_obj,mstr(200),FLOAT_MSG_NORMAL);
+   end
+   else floater(1000);
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+   if (source_obj == dude_obj) then set_global_var(GVAR_ALARM_SHADYSANDS,1);
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+      if (fixed_param==0) then begin
+            if not shady_dude_has_started_rebellion then call animate_pedzenie_bimbru;
+      end
+
+      if (fixed_param==1) then begin
+            call wywolaj_rozmowe_quest_bimber;
+      end
+
+      if (fixed_param==2) then begin
+            call wywolaj_khan_cutscene;
+      end
+end
+
+procedure animate_pedzenie_bimbru begin
+      //display_msg("pedzimy bimber");
+
+      if local_var(LVAR_Home_Tile) == 14677 and self_tile==14677 then begin
+
+            if random(1,6) == 3 then animate_rotation(1); else animate_rotation(5);
+
+            reg_anim_begin();
+            reg_anim_animate(self_obj, 11, -1);
+            reg_anim_end();
+
+      end
+
+      if local_var(LVAR_Home_Tile) == 14679 and self_tile==14679 then begin
+
+            animate_rotation(5);
+
+            reg_anim_begin();
+            reg_anim_animate(self_obj, 11, -1);
+            reg_anim_end();
+
+      end
+
+      add_timer_event(self_obj,random(8,20),0);
+end
+
+procedure hit_bimber_quest begin
+      Reply(mstr(200));
+      NOption(mstr(201),hit_bimber_quest2,001);
+      NOption(mstr(202),Node999,001);
+end
+
+procedure hit_bimber_quest2 begin
+      Reply(mstr(210));
+      NOption(mstr(211),hit_bimber_quest2_INTELIGENCE,001);
+      if dude_charisma > 6 or has_skill(dude_obj,SKILL_CONVERSANT) > 55 then NOption(mstr(212),hit_bimber_quest2_SPEECH,001);
+      NOption(mstr(213),hit_bimber_quest2_goaway,001);
+      NOption(mstr(214),Node999,001);
+end
+
+procedure hit_bimber_quest2_goaway begin
+      Reply(mstr(220));
+      NOption(mstr(221),Node999,001);
+end
+
+procedure hit_bimber_quest2_INTELIGENCE begin
+      Reply(mstr(230));
+      set_global_var(GVAR_QUEST_SHADYSANDS_BIMBER,3);
+      NOption(mstr(231),Node999,001);
+end
+
+PROCEDURE hit_bimber_quest2_SPEECH BEGIN
+
+      Reply(mstr(240));
+      set_global_var(GVAR_QUEST_SHADYSANDS_BIMBER,3);
+      NOption(mstr(241),Node999,001);
+
+END
+
+procedure combat_p_proc begin
+
+      //display_msg("hit times: "+local_var(LVAR_HIT_TIMES));
+      if local_var(LVAR_HIT_TIMES) >= 1 and global_var(GVAR_QUEST_SHADYSANDS_BIMBER) == 1  then call punch_way;
+
+end
+
+procedure punch_way begin
+
+      terminate_combat;
+      game_ui_disable;
+      move_to(dude_obj,dude_tile,0);
+      set_local_var(LVAR_HIT_TIMES,0);
+      add_timer_event(self_obj,20,1);
+      critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+
+end
+
+procedure punch_way_text begin
+
+      Reply(mstr(300));
+      NOption(mstr(301),Node999,001);
+      set_global_var(GVAR_QUEST_SHADYSANDS_BIMBER,3);
+      float_msg(self_obj,mstr(302),FLOAT_MSG_LIGHT_RED);
+
+
+end
+
+procedure wywolaj_rozmowe_quest_bimber begin
+      game_ui_enable;
+      start_dialog_at_node(punch_way_text);
+end
+
+variable baton;
+procedure wywolaj_khan_cutscene begin
+
+      inc_local_var(LVAR_cutscene_counter);
+
+      if local_var(LVAR_cutscene_counter) == 1 then begin
+
+            game_ui_disable;
+            animate_move_obj_to_tile(dude_obj,15282,ANIMATE_WALK);
+            inven_unwield(person_radio1khan);
+            baton:=create_object(PID_CLUB,0,0);
+            add_obj_to_inven(person_radio1khan,baton);
+            wield_obj_critter(person_radio1khan,baton);
+            set_global_var(GVAR_QUEST_SHADYSANDS_BIMBER,2);
+            add_timer_event(self_obj,game_ticks(2),2); //15282
+
+      end
+
+      if local_var(LVAR_cutscene_counter) == 2 then begin
+
+            animate_move_obj_to_tile(person_radio1khan,14879,ANIMATE_WALK);
+            add_timer_event(self_obj,game_ticks(5),2);
+
+      end
+
+      if local_var(LVAR_cutscene_counter) == 3 then begin
+
+            Face_Critter(person_2bimber,dude_obj);
+            Face_Critter(person_2bimber,person_radio1khan);
+            animate_move_obj_to_tile(person_radio1khan,14879,ANIMATE_WALK);
+            add_timer_event(self_obj,game_ticks(2),2);
+
+      end
+
+      if local_var(LVAR_cutscene_counter) == 4 then begin
+            add_timer_event(self_obj,game_ticks(3),2);
+            float_msg(person_radio1khan, mstr(250), FLOAT_MSG_LIGHT_RED);
+      end
+
+      if local_var(LVAR_cutscene_counter) == 5 then begin
+            add_timer_event(self_obj,game_ticks(3),2);
+            float_msg(person_radio1khan, mstr(251), FLOAT_MSG_LIGHT_RED);
+      end
+
+
+      if local_var(LVAR_cutscene_counter) == 6 then begin
+            add_timer_event(self_obj,game_ticks(2),2);
+            float_msg(person_radio1khan, mstr(252), FLOAT_MSG_LIGHT_RED);
+      end
+
+
+      if local_var(LVAR_cutscene_counter) == 7 then begin
+            add_timer_event(self_obj,game_ticks(4),2);
+            float_msg(person_radio1khan, mstr(253), FLOAT_MSG_LIGHT_RED);
+      end
+
+
+      if local_var(LVAR_cutscene_counter) == 8 then begin
+            add_timer_event(self_obj,game_ticks(1),2);
+            float_msg(person_1bimber, mstr(254), FLOAT_MSG_NORMAL);
+      end
+
+
+      if local_var(LVAR_cutscene_counter) == 9 then begin
+            add_timer_event(self_obj,game_ticks(3),2);
+            float_msg(person_radio1khan, mstr(255), FLOAT_MSG_LIGHT_RED);
+      end
+
+
+      if local_var(LVAR_cutscene_counter) == 10 then begin
+            add_timer_event(self_obj,game_ticks(2),2);
+            float_msg(person_radio1khan, mstr(256), 2);
+      end
+
+
+      if local_var(LVAR_cutscene_counter) == 11 then begin
+            add_timer_event(self_obj,game_ticks(2),2);
+            float_msg(person_1bimber, mstr(257), FLOAT_MSG_NORMAL);
+      end
+
+      if local_var(LVAR_cutscene_counter) == 12 then begin
+
+            add_timer_event(self_obj,game_ticks(2),2);
+            game_ui_enable;
+            set_global_var(GVAR_QUEST_SHADYSANDS_BIMBER,3);
+      end
+
+end
+
+//120% normy albo znowu tu przyjde
+//i
+//bede
+//cie
+//o!
+//wlasnie
+//tak
+//napierdal!

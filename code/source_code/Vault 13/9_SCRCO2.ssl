@@ -1,0 +1,101 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_9_SCRCO2
+
+/* Standard Script Procedures */
+procedure start;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure damage_p_proc;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+import variable master_screen;
+import variable normal_screen;
+
+procedure start begin
+
+end
+
+procedure map_enter_p_proc begin
+
+   master_screen := self_obj;
+
+   if map_first_run then set_self_invisible
+   reg_anim_begin();
+   reg_anim_animate_forever(self_obj, ANIM_stand);
+   reg_anim_end();
+end
+
+procedure map_update_p_proc begin
+   if (combat_is_initialized == 0) then
+   begin
+      reg_anim_begin();
+      reg_anim_animate_forever(self_obj, ANIM_stand);
+      reg_anim_end();
+   end
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+
+end
+
+procedure description_p_proc begin
+   script_overrides;
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure use_p_proc begin
+
+end
+
+procedure use_obj_on_p_proc begin
+
+end
+
+procedure use_skill_on_p_proc begin
+
+end

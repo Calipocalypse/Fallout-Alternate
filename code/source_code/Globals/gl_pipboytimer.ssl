@@ -1,0 +1,210 @@
+/*
+
+   Adds Fallout 1 water chip note to the pipboy screen.
+   Also other shit related to the counter
+
+*/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\sfall.h"
+#include "..\headers\sfall.rotators.h"
+
+/* Standard Script Procedures */
+procedure start;
+
+procedure pipboy_note;
+procedure pipboy_note_refresh;
+
+procedure check_transitiontimer;
+      procedure setting_all_gvars_to_minus_1;
+procedure check_invasions;
+
+procedure KeyPressHandler;
+procedure show_note;
+procedure show_days;
+procedure delete_all;
+
+variable lastDay;
+
+variable Scr_Width;
+variable Scr_Height;
+
+#define timer_active       ((global_var(GVAR_MAIN_DAYS_TO_TRANSITION) > 0))
+
+procedure start begin
+   if (game_loaded) then begin
+      set_global_script_repeat(1000);
+      set_global_script_type(1);
+
+      register_hook_proc(HOOK_GAMEMODECHANGE, pipboy_note);
+      register_hook_proc(HOOK_RESTTIMER, pipboy_note_refresh);
+   end
+
+   if not(combat_is_initialized) then begin
+      // Find the Water Chip for V13:
+      if (timer_active) then
+         call check_transitiontimer;
+
+/* Turned off by ffffffffff
+      // Invasion timers
+      // TODO: Toggle like in Fixt? Master or Vats or both required?
+      if not(cathedral_destroyed) then
+         call check_invasions;
+*/
+   end
+
+   //display_msg("Days to transition: "+(days_to_great_transition));
+
+end
+
+procedure pipboy_note begin
+   // Show the pipboy note if the remaining water timer is > 0 days:
+   if (timer_active) then begin
+
+      if ((get_game_mode == PIPBOY) and (days_to_great_transition > 0)) then begin
+         if (get_sfall_global_int("opennote") != 1) then begin
+            set_sfall_global("opennote", 1);
+            call show_note;
+         end
+      end
+      else if (get_sfall_global_int("opennote") != 0) then begin
+         set_sfall_global("opennote", 0);
+         call delete_all;
+      end
+
+   end
+end
+
+procedure pipboy_note_refresh begin
+   if (get_game_mode == PIPBOY) then begin
+      if (game_time > get_sfall_global_int("lastchek")) then begin
+         set_sfall_global("lastchek", game_time + ONE_GAME_MINUTE * ((ticks_til_hour(0) / 60) / 10));
+         call show_days;
+      end
+   end
+end
+
+procedure check_transitiontimer begin
+   //debug("water days left: " + get_water_days_left);
+
+   if days_to_great_transition <= 200 and (global_var(GVAR_MAIN_FEV_IN_V13_REMINDER) == 0) then begin
+      set_global_var(GVAR_MAIN_FEV_IN_V13_REMINDER, 1);
+      play_gmovie(12);
+   end
+   else if days_to_great_transition <= 120 and (global_var(GVAR_MAIN_FEV_IN_V13_REMINDER) == 1) then begin
+      set_global_var(GVAR_MAIN_FEV_IN_V13_REMINDER, 2);
+      play_gmovie(13);
+   end
+   else if days_to_great_transition <= 60 and (global_var(GVAR_MAIN_FEV_IN_V13_REMINDER) == 2) then begin
+      set_global_var(GVAR_MAIN_FEV_IN_V13_REMINDER, 3);
+      play_gmovie(14);
+   end
+
+   else if days_to_great_transition <= 25 and (global_var(GVAR_MAIN_FEV_IN_V13_REMINDER) == 3) then begin
+      set_global_var(GVAR_MAIN_FEV_IN_V13_REMINDER, 4);
+      play_gmovie(15);
+   end
+
+   if days_to_great_transition <= 0 then begin
+      call setting_all_gvars_to_minus_1;
+      signal_end_game;
+   end
+
+end
+
+variable actual_gvar, last_gvar;
+      procedure setting_all_gvars_to_minus_1 begin
+      actual_gvar:=791; //it's first one gvar
+      last_gvar:=866;
+            while(actual_gvar<=last_gvar) do begin
+                  set_global_var(actual_gvar,-1);
+                  debug_msg(" "+actual_gvar+": "+global_var(actual_gvar));
+                  actual_gvar++;
+            end
+      set_global_var(GVAR_MAIN_TRANSITION_HAPPENED,1);
+      end
+
+procedure check_invasions begin
+/*
+   if get_v13_days_left <= 0 and not(v13_invaded) then begin
+      set_global_var(GVAR_VAULT_13_WAS_INVADED, 1);
+
+      play_gmovie(OVERRUN_MOVIE);
+      signal_end_game;
+      debug("v13 just got invaded!");
+   end
+*/
+
+/*
+
+   // Only check for invasions when on the worldmap.
+   // This way, they only get triggered after the player left the location.
+   if (get_game_mode == WORLDMAP) then begin
+      if (get_hub_days_left <= 0) and not(hub_invaded) then begin
+         set_global_var(GVAR_THE_HUB_WAS_INVADED, 1);
+         debug("the hub just got invaded!");
+      end
+      if (get_bos_days_left <= 0) and not(bos_invaded) then begin
+         set_global_var(GVAR_BROTHERHOOD_WAS_INVADED, 1);
+         debug("the bos just got invaded!");
+      end
+      if (get_boneyard_days_left <= 0) and not(boneyard_invaded) then begin
+         set_global_var(GVAR_FOLLOWERS_INVADED, 1);
+         debug("boneyard just got invaded!");
+      end
+      if (get_necropolis_days_left <= 0) and not(necropolis_invaded) then begin
+         set_global_var(GVAR_NECROPOLIS_WAS_INVADED, 1);
+         debug("necropolis just got invaded!");
+      end
+      if (get_shady_days_left <= 0) and not(shady_invaded) then begin
+         set_global_var(GVAR_SHADY_SANDS_WAS_INVADED, 1);
+         debug("shady sands just got invaded!");
+      end
+      if (get_junktown_days_left <= 0) and not(junktown_invaded) then begin
+         set_global_var(GVAR_JUNKTOWN_WAS_INVADED, 1);
+         debug("junktown just got invaded!");
+      end
+   end
+*/
+end
+
+procedure show_note begin
+   Scr_Width := (get_screen_width / 2);
+   Scr_Height := (get_screen_height / 2);
+
+   if (get_ini_setting("f2_res.ini|IFACE|IFACE_BAR_MODE") == 1) then begin
+      Scr_Height := Scr_Height + 50;
+   end
+
+   // If using original resolution for whatever weird reason
+   if (Scr_Height == 240) then begin
+      Scr_Height := Scr_Height + 50;
+   end
+
+   create_win("win_note", (Scr_Width - 288), (Scr_Height - 207), 148, 227);
+   SelectWin("win_note");
+   sfall_func("draw_image_scaled", "art\\intrface\\PIP2.frm");
+   ShowWin;
+
+   call show_days;
+end
+
+// Initial "days left" when opening the PipBoy:
+procedure show_days begin
+   // We only have 250 images, so bigger than that can't be shown:
+   // YES I KNOW THESE ARE 250 IMAGES, BUT IF YOU WANT IT TO LOOK EXACTLY
+   // THE SAME AS IN FALLOUT 1, IT IS A NECESSARY THING TO DO. Sue me.
+   // We will rework this shit some day in the future. Promise.
+   SelectWin("win_note");
+   if (days_to_great_transition <= 250) then
+      draw_image("art\\INTRFACE\\days.frm", (days_to_great_transition-1), 35, 97, 0);
+   else
+      draw_image("art\\INTRFACE\\days.frm", 250, 35, 97, 0);
+   ShowWin;
+end
+
+procedure delete_all begin
+   DeleteWin("win_note");
+end

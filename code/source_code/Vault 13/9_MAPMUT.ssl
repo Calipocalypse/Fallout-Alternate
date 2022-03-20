@@ -1,0 +1,329 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Arroyo Bridge
+        Location: Arroyo
+        Description: This is the Map Script for the Bridge of Arroyo
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created: December 04, 1997
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+#include "..\headers\ArDead.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_9_MAPMUT
+
+#include "..\headers\command.h"
+
+export variable luggage1_1;
+export variable luggage1_2;
+export variable luggage1_3;
+export variable luggage1_4;
+export variable caravan_mut_1_1;
+export variable caravan_mut_1_2;
+export variable caravan_mut_1_3;
+export variable centaur1_1;
+export variable centaur1_2;
+export variable guide1_1;
+export variable guide1_2;
+
+export variable luggage_2;
+export variable caravan_mut_2_1;
+export variable caravan_mut_2_2;
+export variable centaur2_2;
+export variable guide2_1;
+
+export variable luggage_3;
+export variable caravan_mut_3_1;
+export variable caravan_mut_3_2;
+export variable centaur3_2;
+export variable guide3_1;
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+      procedure cutscene_too_fast_ending;
+      procedure caravans;
+      procedure check_supermuts_dead;
+
+export variable obj_cut_lieu;
+export variable obj_cut_gat;
+
+export variable obj_cliff1;
+export variable obj_cliff2;
+
+export variable obj_mut_terminal;
+export variable obj_terminal;
+
+export variable door1;
+export variable door2;
+
+export variable obj_fevguy;
+
+export variable obj_green_explosion;
+
+export variable static_mut1;
+export variable static_mut2;
+export variable static_mut3;
+export variable static_mut4;
+export variable static_mut5;
+
+export variable obj_lieu;
+
+export variable master_screen;
+export variable normal_screen;
+export variable obj_gregory;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+	Lighting;
+	call caravans;
+
+	if map_first_run then display_mstr(200);
+
+	flush_add_timer_event(self_obj,5,1);
+
+end
+
+procedure map_exit_p_proc begin
+
+
+end
+
+procedure map_update_p_proc begin
+	add_timer_event(self_obj,1,0);
+   Lighting;
+
+end
+
+variable item;
+variable counter;
+procedure timed_event_p_proc begin
+
+      if (fixed_param==0) then begin
+            call caravans;
+      end
+
+      if (fixed_param==1) then begin
+            call check_supermuts_dead;
+      end
+
+      if (fixed_param==2) then begin
+            call cutscene_too_fast_ending;
+      end
+
+end
+
+variable counter2;
+procedure cutscene_too_fast_ending begin
+
+      if counter==0 then begin
+      game_ui_disable;
+      fadeout(2000);
+      set_obj_visibility(obj_lieu,false);
+      move_to(dude_obj,18115,dude_elevation);
+      animate_move_obj_to_tile(dude_obj,16110,ANIMATE_RUN);
+      move_to(obj_lieu,15302,dude_elevation);
+      animate_move_obj_to_tile(obj_lieu,15306,ANIMATE_RUN);
+      ates(game_ticks(3),2)
+      end
+
+      else if counter==1 then begin
+      fadein(2000);
+      ates(game_ticks(3),2)
+      end
+
+      else if counter==2 then begin
+      ates(game_ticks(3),2)
+      floaterdude(400)
+      end
+
+      else if counter==3 then begin
+      ates(game_ticks(3),2)
+      floaterdude(401)
+      end
+
+      else if counter==4 then begin
+      ates(game_ticks(3),2)
+      float_msg(obj_lieu,mstr(402),FLOAT_MSG_GREEN);
+      end
+
+      else if counter==5 then begin
+      ates(game_ticks(3),2)
+      float_msg(obj_lieu,mstr(403),FLOAT_MSG_GREEN);
+      end
+
+      else if counter==6 then begin
+      ates(game_ticks(3),2)
+      game_ui_enable;
+      add_timer_event(obj_lieu,0,0);
+      end
+
+      counter++;
+end
+
+variable obj, arrayz, mutants_dead, all_mutants_visible, all_mutants, x;
+procedure check_supermuts_dead begin
+
+      all_mutants:=25;
+
+      arrayz:= temp_array(all_mutants,0);
+      arrayz[0]=caravan_mut_1_1;
+      arrayz[1]=caravan_mut_1_2;
+      arrayz[2]=caravan_mut_1_3;
+      arrayz[3]=centaur1_1;
+      arrayz[4]=centaur1_2;
+      arrayz[5]=guide1_1;
+      arrayz[6]=guide1_2;
+      arrayz[7]=caravan_mut_2_1;
+      arrayz[8]=caravan_mut_2_2;
+      arrayz[9]=centaur2_2;
+      arrayz[10]=guide2_1;
+      arrayz[11]=caravan_mut_3_1;
+      arrayz[12]=caravan_mut_3_2;
+      arrayz[13]=centaur3_2;
+      arrayz[14]=guide3_1;
+      arrayz[15]=obj_fevguy;
+      arrayz[16]=obj_cliff1;
+      arrayz[17]=obj_cliff2;
+      arrayz[18]=obj_mut_terminal;
+      arrayz[19]=obj_cut_gat;
+      arrayz[20]=static_mut1;
+      arrayz[21]=static_mut2;
+      arrayz[22]=static_mut3;
+      arrayz[23]=static_mut4;
+      arrayz[24]=static_mut5;
+
+      foreach(obj in arrayz ) begin
+            if obj_is_visible_flag(obj) then begin
+                  all_mutants_visible++;
+                  if get_critter_stat(obj,STAT_current_hp) == 0 then mutants_dead++;
+            end
+      end
+
+      if all_mutants_visible == mutants_dead then begin
+            terminate_combat;
+            ates(0,2)
+      end
+
+      //display_msg(" "+dude_tile);
+      //debug_msg("visible: "+all_mutants_visible+" mutants_dead "+mutants_dead);
+
+      mutants_dead:=0;
+      all_mutants_visible:=0;
+      x:=0;
+
+      ates(5,1)
+
+end
+
+procedure caravans begin
+
+
+
+	if get_day > 3 and get_day <17 then begin
+
+		//EKIPA1
+		set_obj_visibility(guide1_1,false);
+		set_obj_visibility(guide1_2,false);
+		set_obj_visibility(luggage1_1,false);
+		set_obj_visibility(luggage1_2,false);
+		set_obj_visibility(luggage1_3,false);
+		set_obj_visibility(luggage1_4,false);
+		set_obj_visibility(centaur1_1,false);
+		set_obj_visibility(centaur1_2,false);
+		set_obj_visibility(caravan_mut_1_1,false);
+		set_obj_visibility(caravan_mut_1_2,false);
+		set_obj_visibility(caravan_mut_1_3,false);
+
+	end
+
+	else begin
+
+		//EKIPA1
+		set_obj_visibility(guide1_1,true);
+		set_obj_visibility(guide1_2,true);
+		set_obj_visibility(luggage1_1,true);
+		set_obj_visibility(luggage1_2,true);
+		set_obj_visibility(luggage1_3,true);
+		set_obj_visibility(luggage1_4,true);
+		set_obj_visibility(centaur1_1,true);
+		set_obj_visibility(centaur1_2,true);
+		set_obj_visibility(caravan_mut_1_1,true);
+		set_obj_visibility(caravan_mut_1_2,true);
+		set_obj_visibility(caravan_mut_1_3,true);
+
+
+	end
+
+	if get_day < 9 or get_day > 25 then begin
+
+		//EKIPA2
+		set_obj_visibility(guide2_1,false);
+		set_obj_visibility(luggage_2,false);
+		set_obj_visibility(centaur2_2,false);
+		set_obj_visibility(caravan_mut_2_1,false);
+		set_obj_visibility(caravan_mut_2_2,false);
+
+	end
+
+	else begin
+
+		//EKIPA2
+			set_obj_visibility(guide2_1,true);
+			set_obj_visibility(luggage_2,true);
+			set_obj_visibility(centaur2_2,true);
+			set_obj_visibility(caravan_mut_2_1,true);
+			set_obj_visibility(caravan_mut_2_2,true);
+
+	end
+
+	if get_day > 4 and get_day < 12 then begin
+
+		//EKIPA3
+		set_obj_visibility(guide3_1,false);
+		set_obj_visibility(luggage_3,false);
+		set_obj_visibility(centaur3_2,false);
+		set_obj_visibility(caravan_mut_3_1,false);
+		set_obj_visibility(caravan_mut_3_2,false);
+
+	end
+
+	else begin
+
+		//EKIPA3
+		set_obj_visibility(guide3_1,true);
+		set_obj_visibility(luggage_3,true);
+		set_obj_visibility(centaur3_2,true);
+		set_obj_visibility(caravan_mut_3_1,true);
+		set_obj_visibility(caravan_mut_3_2,true);
+
+	end
+
+		if luggage_2 == 0 or guide1_1 == 0 then add_timer_event(self_obj,1,0);
+
+end
+

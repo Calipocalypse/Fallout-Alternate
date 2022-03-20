@@ -1,0 +1,193 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_MUTGAT
+//#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+import variable obj_cut_gat;
+
+procedure start;
+procedure critter_p_proc;
+	procedure listen_first_encounter;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+	procedure StopHooman;
+		procedure Rude;
+		procedure Speech_Way;
+		procedure Speech_Way2;
+		procedure Youshouldknow;
+		procedure Accepted;
+		procedure Yousholuttakecareofthem;
+		procedure Sirius;
+		procedure GoWithHim;
+		procedure ImportantMessage;
+		procedure Iwillgoalone;
+		procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_First_Encounter            (8)
+#define LVAR_Shown_Insignium            (9)
+#define LVAR_Was_Away                   (10)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+      obj_cut_gat:=self_obj;
+
+		critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_SUPER_MUTANT);
+		critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_V13_SUPERMUTANTS);
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   if local_var(LVAR_First_Encounter) == 0 then call listen_first_encounter;
+
+   if (local_var(LVAR_Was_Away) == 0 or local_var(LVAR_Was_Away) == 2) and tile_distance_objs(self_obj,dude_obj) > 15 then set_local_var(LVAR_Was_Away,1);
+   if local_var(LVAR_Was_Away) == 1 and local_var(LVAR_Shown_Insignium) == 1 and tile_distance_objs(self_obj,dude_obj) < 6 then begin floater(290); set_local_var(LVAR_Was_Away,2); end
+
+end
+
+	procedure listen_first_encounter begin
+		if tile_distance_objs(self_obj,dude_obj) < 7 or tile_distance(tile_num(dude_obj),21110) < 7 then start_dialog_at_node(StopHooman);
+	end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+	floater_rand(400,405);
+
+end
+
+	procedure StopHooman begin
+
+		set_local_var(LVAR_First_Encounter,1);
+
+		begin
+		Reply(mstr(200));
+		NOption(203,Youshouldknow,001);
+		NOption(201,Yousholuttakecareofthem,001);
+		NOption(204,Rude,001);
+		if obj_is_carrying_obj_pid(dude_obj,PID_BLACK_COC_BADGE) then NOption(205,Accepted,001);
+		if obj_is_carrying_obj_pid(dude_obj,PID_RED_COC_BADGE) then  NOption(206,Accepted,001);
+		//if obj_is_carrying_obj_pid(dude_obj,PID_BLUE_COC_BADGE) then //NOption(207,Accepted,001);
+		NOption(208,Speech_Way,001);
+		set_local_var(LVAR_Was_Away,2); //dodaje tutaj bo on za pierwszym razem odpierdala po skonczeniu rozmowy
+		end
+
+	end
+
+		procedure Yousholuttakecareofthem begin
+			Reply(mstr(250));
+			NOption(251,Sirius,001); //dodaj warunek jesli ma holodysk w eq
+			NOption(252,Node998,001);
+			NOption(253,ImportantMessage,001);
+		end
+
+			procedure Sirius begin
+			Reply(mstr(300));
+			NOption(301,Node999,001);
+			set_local_var(LVAR_Shown_Insignium,1);
+			end
+
+			procedure ImportantMessage begin
+			Reply(mstr(260));
+			NOption(261,GoWithHim,001);
+			NOption(262,Iwillgoalone,001);
+			end
+
+			procedure Iwillgoalone begin
+			Reply(mstr(263));
+			NOption(264,GoWithHim,001);
+			NOption(265,Node998,001);
+			end
+
+				procedure GoWithHim begin
+				set_global_var(GVAR_V13_CUTSCENE_LIEU_GATE,1);
+				load_map(40,0);
+				end
+
+		procedure Rude begin
+			float_msg(self_obj,mstr(210),FLOAT_MSG_GREEN);
+			call Node998;
+		end
+
+		procedure Speech_Way begin
+		Reply(mstr(270));
+		if has_skill(dude_obj,SKILL_CONVERSANT) > 59 then NOption(271,Speech_Way2,001);
+		NOption(272,Rude, 001);
+		end
+
+		procedure Speech_Way2 begin
+		Reply(mstr(280));
+		NOption(281,Node999,001);
+		set_local_var(LVAR_Shown_Insignium,1);
+		display_mstr(283);
+		display_mstr(282);
+		end
+
+		procedure Youshouldknow begin
+		Reply(mstr(220));
+		NOption(222,Node998,001);
+		NOption(221,Node998,001);
+		end
+
+		procedure Accepted begin
+		set_local_var(LVAR_Shown_Insignium,1);
+		float_msg(self_obj,mstr(230),FLOAT_MSG_GREEN);
+		end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end

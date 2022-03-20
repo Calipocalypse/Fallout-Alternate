@@ -1,0 +1,56 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Toilet
+        Location: Modoc Inn outhouse toilet
+        Description:
+
+        Log:
+
+           Created: June 4, 1998
+
+           Updated:
+*/
+
+/* Include Files */
+#include "..\headers\define.h"
+#define NAME                    SCRIPT_SSFENCE2
+#include "..\headers\command.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure agility_check;
+
+#define LVAR_Examined 0
+#define LVAR_Roped 1
+
+import variable rebel_annadaughter;
+
+procedure start begin
+end
+
+procedure description_p_proc begin
+   if (obj_is_open(self_obj)) then begin
+      script_overrides;
+      set_local_var(LVAR_Examined, true);
+      display_mstr(100);
+      float_msg(self_obj,"PID: "+self_pid,FLOAT_MSG_GREEN);
+   end
+end
+
+procedure use_p_proc begin
+
+
+end
+
+procedure use_obj_on_p_proc begin
+   if ((obj_pid(obj_being_used_with) == PID_MULTI_TOOL)) then begin
+   
+      create_object(PID_MULTI_TOOL,self_tile,self_elevation);
+   
+   end
+end

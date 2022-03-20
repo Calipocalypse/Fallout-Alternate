@@ -1,0 +1,1364 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCMARK
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+#include "..\headers\sfall.h"
+
+procedure start;
+procedure critter_p_proc;
+   procedure rotation;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+procedure combat_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;
+procedure Node999;
+procedure CheckHowMuchQuestionsAsked;
+// The next lines are added in by the Designer Tool.
+// Do NOT add in any lines here.
+//~~~~~~~~~~~~~~~~ DESIGNER TOOL STARTS HERE
+procedure FirstTime;
+procedure NotFirstTime;
+procedure After_Thanks_NotFirstTime;
+procedure StartRollback;
+
+procedure ThisPlaceIS;
+procedure ThisPlaceISagain;
+procedure ThisPlaceISback;
+procedure Quest_ChildsLeft;
+
+procedure WhatIsOnEast;
+procedure WhatIsInShop;
+procedure Doyouhavesomethingagainstsupermutants;
+procedure abar;
+procedure WhoAreYou;
+procedure WhatAreYouDoingHere;
+procedure IsHeDifferent;
+procedure Tandi;
+procedure Whoisshe;
+procedure Whyheneedsher;
+
+procedure ahospital;
+procedure noneofyourbusiness;
+procedure apologiesaccepted;
+procedure speechsucces1;
+
+procedure caravans;
+procedure gunrunners;
+procedure gunrunners2;
+procedure MayIHelp;
+
+procedure Friends;
+procedure CanISeewithmyfriend;
+procedure LOLcantspeak;
+procedure CanIsavehim;
+procedure caps;
+
+procedure Theyhaveattackedus;
+procedure Theyhaveattackedus1;
+
+procedure Quest_Shadysands_Childrenkill_Idontwheretolook;
+procedure Quest_Shadysands_Childrenkill_start_node;
+procedure ahospital_i_am_proof;
+procedure ahospital_i_am_proof2;
+
+//quest childrn
+procedure letsgototheshop;
+procedure Quest_proof1;
+procedure Quest_proof2;
+procedure Quest_proof3;
+procedure Quest_proof4;
+procedure Quest_proof5;
+procedure Quest_proof6;
+procedure Quest_proof6B;
+procedure quest_proof_uczestniczyl_end;
+procedure QuestA_node999;
+
+procedure Quest_State1;
+procedure Quest_State1_1;
+procedure Quest_State_begin;
+
+procedure letsgototheDarion;
+procedure fuck_you_guard;
+
+procedure Quest_State2;
+procedure Quest_State3;
+
+procedure ThankYouForKillingChilds;
+procedure ThankYouForKillingChilds2;
+procedure ThankYouForKillingChilds3;
+
+//fillars
+procedure aboutplacefillar;
+procedure starfillar;
+
+
+procedure Quest_ShadySands_Child_checkdead;
+
+//Gvar80 REBELLION
+      procedure force_conversation_GVAR_REBELLION_80;
+            procedure Rebellion80;
+            procedure Rebellion80_GoV15;
+            procedure Node999_80;
+
+//~~~~~~~~~~~~~~~~ DESIGN TOOL ENDS HERE
+// The Following lines are for anything that is not needed to be
+// seen by the design Tool
+
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_First_See                  (8)
+#define LVAR_First_Talk                 (9)
+#define LVAR_How_Much_Asked             (10)
+
+//asked about
+#define LVAR_WhoAreYou                    (11)
+#define LVAR_Asked_bar                    (12)
+#define LVAR_Asked_children               (13)
+#define LVAR_Asked_east                   (14)
+#define LVAR_Asked_shop                   (15)
+#define LVAR_Asked_friends                (16)
+#define LVAR_Asked_tandi                  (17)
+#define LVAR_Asked_for_help               (18)
+
+#define LVAR_Asked_Gunrunners             (19)
+#define LVAR_Asked_caravans               (20)
+
+#define LVAR_Asked_WHATSthatPlace         (21)
+
+#define LVAR_Asked_Can_I_see_with_him     (22)
+#define LVAR_Asked_No_single_word         (23)
+#define LVAR_Asked_How_to_save_him        (24)
+
+#define LVAR_destination                  (25)
+#define LVAR_shopping                     (26)
+#define LVAR_Only_Once1                   (27)
+#define LVAR_Quest_State                  (28) // 1- rozpoczety quest z dziecmi katedry, mark czeka na kupno pukawki 2- podczas ataku na domek 3- podczas oczekiwania na powrot z jaskini 0- normalna rozmowa
+
+#define LVAR_Thanked_After_Quest          (29)
+#define LVAR_Asked_Bit                    (30)
+#define LVAR_Home_Tile                    (31)
+#define LVAR_Home_Rotation                (32)
+
+#define bit_asked_for_v13_help            (bit_1)
+#define bit_thanked_for_moving_childs_out (bit_2)
+
+#define HOME_ROTATION local_var(LVAR_Home_Rotation)
+
+
+variable shop;
+variable gate;
+variable infrontof_guard;
+variable infrontof_darion2;
+
+variable mark_actual_pos;
+variable player_actual_pos;
+
+
+variable shopping_done;
+
+variable item;
+variable sound;
+
+variable counter;
+variable counter1;
+variable counter2;
+variable only_once1;
+
+import variable jackal_door;
+import variable jasper_obj;
+import variable childrn_obj;
+import variable childrn2_obj;
+import variable laura_obj;
+import variable person_khan1_inside;
+import variable person_khan2_inside;
+import variable person_khan3_inside;
+import variable person_khan4_inside;
+import variable obj_garl;
+import variable obj_matt;
+import variable point_tycho;
+import variable obj_floater;
+
+procedure checktile;
+procedure shop_talk;
+procedure Node998;
+procedure Node999;
+
+
+import variable obj_mark;
+import variable rebelia_script;
+
+procedure core_startNode;
+procedure startNode;
+procedure again_startNode;
+procedure back_startNode;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      obj_mark:=self_obj;
+
+
+      if map_first_run then begin
+            float_msg(obj_mark,mstr(21),FLOAT_MSG_WHITE);
+            critter_add_trait(person_khan1_inside,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+            set_local_var(LVAR_Home_Rotation, obj_get_rot(self_obj));
+            set_local_var(LVAR_Home_Tile, self_tile);
+      end
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   if local_var(LVAR_Thanked_After_Quest) == 0 and global_var(GVAR_QUEST_SHADY_KILL_CHILD) == 5 and tile_distance_objs(dude_obj,self_obj) < 7 then start_dialog_at_node(ThankYouForKillingChilds);
+
+   call force_conversation_GVAR_REBELLION_80;
+   //display_msg("LUARA: "+laura_obj);
+
+   //float_msg(childrn2_obj,"Zyjemy",random(1,12));
+   //float_msg(childrn_obj,"Zyjemy",random(1,12));
+   //float_msg(laura_obj,"Zyjemy",random(1,12));
+   //float_msg(person_khan1_inside,"Zyjemy",random(1,12));
+   //float_msg(person_khan2_inside,"Zyjemy",random(1,12));
+   //float_msg(person_khan3_inside,"Zyjemy",random(1,12));
+   //float_msg(childrn2_obj,"Zyjemy",random(1,12));
+
+   if self_tile != HOME_TILE then call rotation;
+
+end
+
+   procedure rotation begin
+      if not obj_can_see_obj(self_obj,dude_obj) then begin
+         if self_tile == HOME_TILE  and obj_get_rot(self_obj) != HOME_ROTATION and anim_busy(self_obj) == 0 then anim(self_obj, ANIMATE_ROTATION, HOME_ROTATION);
+      end
+      else begin
+         if self_tile == HOME_TILE and anim_busy(self_obj) == 0 then Face_Critter(dude_obj, self_obj);
+      end
+   end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       set_global_var(GVAR_SHADY_RANGERS_PERSONAL_ENEMY, 1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   if global_var(GVAR_SHADY_REBELLION) == 0 then begin
+      Evil_Critter:=0;
+      Slavery_Tolerant:=SLAVE_TOLERANT;
+      Karma_Perception:=KARMA_PERCEPTION1;
+
+      CheckKarma;
+
+      GetReaction;
+
+      start_gdialog(NAME,self_obj,4,-1,-1);
+          gSay_Start;
+          	if local_var(LVAR_Thanked_After_Quest) == 0 and global_var(GVAR_QUEST_SHADY_KILL_CHILD) == 5 then call ThankYouForKillingChilds;
+   	          else begin
+   	            if global_var(GVAR_QUEST_SHADY_KILL_CHILD) == 2 then call Quest_State1;
+   	            else if global_var(GVAR_QUEST_SHADY_KILL_CHILD) == 3 then call Quest_State2;
+   	            else if global_var(GVAR_QUEST_SHADY_KILL_CHILD) == 4 then call Quest_State3;
+   	            else begin
+   	                 if local_var(LVAR_First_Talk) != 1 then begin
+   		                 	call FirstTime;
+   		                 	set_local_var(LVAR_First_Talk,1);
+   	                 end
+   	                 else begin
+   	                 		call NotFirstTime;
+   	                 end
+   	            end
+            end
+
+       gSay_End;
+       end_dialogue;
+   end
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+// DIALOGUE
+procedure FirstTime begin
+Reply(mstr(100));
+Call starfillar;
+end
+
+procedure NotFirstTime begin
+Reply(mstr(99));
+Call starfillar;
+end
+
+procedure After_Thanks_NotFirstTime begin
+Reply(mstr(1406));
+Call starfillar;
+end
+
+procedure StartRollback begin
+Reply(mstr(98));
+Call starfillar;
+end
+
+procedure ThisPlaceIS begin
+if (local_var(LVAR_Asked_WHATSthatPlace) == 0) then Reply(mstr(200));
+if (local_var(LVAR_Asked_WHATSthatPlace) == 1) then Reply(mstr(207));
+set_local_var(LVAR_Asked_WHATSthatPlace,1);
+Call aboutplacefillar;
+end
+
+procedure ThisPlaceISback begin
+Reply(mstr(216));
+Call aboutplacefillar;
+end
+
+procedure ThisPlaceISagain begin
+Reply(mstr(219));
+Call aboutplacefillar;
+end
+
+procedure WhatIsOnEast begin
+Reply(mstr(210));
+set_local_var(LVAR_Asked_east,1);
+NOption(211,noneofyourbusiness,001);
+NOption(212,apologiesaccepted,001);
+if (has_skill(dude_obj,SKILL_CONVERSANT) >= 50) then NOption(213,speechsucces1,001);
+end
+
+procedure noneofyourbusiness begin
+Reply(mstr(214));
+NOption(215,apologiesaccepted,001);
+end
+
+procedure speechsucces1 begin
+Reply(mstr(217));
+give_exp_points(100); display_mstr(10); play_sfx("CMBTFLX");
+NOption(218,noneofyourbusiness,001);
+NOption(224,apologiesaccepted,001);
+end
+procedure apologiesaccepted begin
+Reply(mstr(216));
+
+Call aboutplacefillar;
+end
+
+procedure WhatIsInShop begin
+Reply(mstr(220));
+set_local_var(LVAR_Asked_shop,1);
+NOption(222,Doyouhavesomethingagainstsupermutants,001);
+end
+
+procedure Doyouhavesomethingagainstsupermutants begin
+Reply(mstr(230));
+
+NOption(231,gunrunners,001);
+end
+// fillars
+procedure aboutplacefillar begin
+if (local_var(LVAR_Asked_east) != 1) then NOption(201,WhatIsOnEast,001);
+if (local_var(LVAR_Asked_shop) != 1) then NOption(202,WhatIsInShop,001);
+if (local_var(LVAR_Asked_bar) != 1) then NOption(203,abar,001);
+if global_var(GVAR_QUEST_SHADY_KILL_CHILD) == 0 then NOption(204,ahospital,001);
+NOption(205,StartRollback,001);
+NOption(206,Node999,001);
+end
+
+procedure starfillar begin
+
+//if (global_var(GVAR_SH_QUEST_PROOF_AGAINST_CHILDRN_STATUS) == 5) then NOption(1000,Quest_proof1,001);
+if obj_is_carrying_obj_pid(dude_obj,598) and global_var(GVAR_QUEST_SHADY_KILL_CHILD) == 1 and global_var(GVAR_VAULT13MUT_JASPER) == 0 then NOption(1000,Quest_proof1,001); //HOLODYSK MYSTERIOUS TRANSMISSION
+if global_var(GVAR_VAULT13MUT_JASPER) > 0 and lvar_bit(LVAR_Asked_Bit,bit_thanked_for_moving_childs_out) == false then NOption(190,Quest_ChildsLeft,001);
+//if (local_var(LVAR_Asked_children) == 1) and (global_var(GVAR_SH_QUEST_PROOF_AGAINST_CHILDRN_STATUS) == 0) then NOption(359,Quest_Shadysands_Childrenkill_start_node,001);
+if (local_var(LVAR_Asked_WHATSthatPlace) == 0) then NOption(101,ThisPlaceIS,001);
+if (local_var(LVAR_Asked_WHATSthatPlace) == 1) then NOption(208,ThisPlaceIS,001);
+if (local_var(LVAR_WhoAreYou) != 1) then NOption(102,WhoAreYou,001);
+NOption(103,Tandi,001);
+NOption(104,Friends,001);
+//if (local_var(LVAR_Asked_Gunrunners) == 1) and (local_var(LVAR_Asked_caravans) == 1) and (global_var(GVAR_SHADYSANDS_PLAYER_KNOW_ABOUT_LOST_CARAVAN) == 0) then NOption(108,MayIHelp,001);
+if not lvar_bit(LVAR_Asked_Bit,bit_asked_for_v13_help) then NOption(105,Theyhaveattackedus,001);
+/* Jesli Tycho zleci nam zapytac sie o Dzieci Katedry i quest nie zostanie rozpoczety to wtedy opcja ta pojawia sie */
+if global_var(GVAR_SHADY_TYCHO_CHILD) == 1 and global_var(GVAR_QUEST_SHADY_KILL_CHILD) == 0 and global_var(GVAR_VAULT13MUT_JASPER) == 0 then NOption(110,ahospital,001);
+NOption(405,Node999,001);
+
+end
+
+   procedure Quest_ChildsLeft begin
+      Reply(191);
+      NOption(192, Node999, 001);
+      give_xp(400);
+      item_caps_adjust(dude_obj,random(400,600));
+      set_lvar_bit_on(LVAR_Asked_Bit, bit_thanked_for_moving_childs_out);
+   end
+
+//
+procedure abar begin
+Reply(mstr(300));
+set_local_var(LVAR_Asked_bar,1);
+NOption(253,ThisPlaceISback,001);
+NOption(254,Node999,001);
+end
+
+procedure ahospital begin
+Reply(mstr(350));
+NOption(351,ahospital_i_am_proof,001);
+NOption(352,Quest_Shadysands_Childrenkill_start_node,001);
+NOption(353,Node999,001);
+set_global_var(GVAR_SHADY_TYCHO_CHILD,2);
+end
+
+procedure ahospital_i_am_proof begin
+Reply(mstr(354));
+NOption(355,ahospital_i_am_proof2,001);
+end
+
+procedure ahospital_i_am_proof2 begin
+Reply(mstr(356));
+NOption(357,Node999,001);
+NOption(352,Quest_Shadysands_Childrenkill_start_node,001);
+end
+
+procedure Quest_Shadysands_Childrenkill_start_node begin
+Reply(mstr(358));
+set_global_var(GVAR_QUEST_SHADY_KILL_CHILD,1);
+display_mstr(11);
+NOption(360,Quest_Shadysands_Childrenkill_Idontwheretolook,001);
+NOption(361,Node999,001);
+end
+
+procedure Quest_Shadysands_Childrenkill_Idontwheretolook begin
+Reply(mstr(362));
+NOption(363,Node999,001);
+end
+
+procedure gunrunners begin
+Reply(mstr(240));
+
+NOption(241,gunrunners2,001);
+NOption(242,caravans,001);
+end
+
+procedure gunrunners2 begin
+Reply(mstr(260));
+set_local_var(LVAR_Asked_Gunrunners,1);
+if (local_var(LVAR_Asked_caravans) != 1) then NOption(242,caravans,001);
+if (local_var(LVAR_Asked_Gunrunners) == 1) and (local_var(LVAR_Asked_caravans) == 1) then NOption(232,MayIHelp,001);
+if (local_var(LVAR_Asked_Gunrunners) == 1) and (local_var(LVAR_Asked_caravans) == 1) then NOption(253,ThisPlaceISback,001);
+if (local_var(LVAR_Asked_Gunrunners) == 1) and (local_var(LVAR_Asked_caravans) == 1) then NOption(254,Node999,001);
+end
+
+procedure caravans begin
+Reply(mstr(250));
+set_local_var(LVAR_Asked_caravans,1);
+if (local_var(LVAR_Asked_Gunrunners) != 1) then NOption(241,gunrunners2,001);
+if (local_var(LVAR_Asked_Gunrunners) == 1) and (local_var(LVAR_Asked_caravans) == 1) then NOption(232,MayIHelp,001);
+if (local_var(LVAR_Asked_Gunrunners) == 1) and (local_var(LVAR_Asked_caravans) == 1) then NOption(253,ThisPlaceISback,001);
+if (local_var(LVAR_Asked_Gunrunners) == 1) and (local_var(LVAR_Asked_caravans) == 1) then NOption(254,Node999,001);
+end
+
+procedure MayIHelp begin
+Reply(mstr(255));
+//set_global_var(GVAR_SHADYSANDS_PLAYER_KNOW_ABOUT_LOST_CARAVAN,1);
+NOption(224,StartRollback,001);
+NOption(225,Node999,001);
+end
+
+/* Who are you */
+
+procedure WhoAreYou begin
+Reply(mstr(400));
+NOption(402,IsHeDifferent,001);
+end
+
+procedure IsHeDifferent begin
+Reply(mstr(420));
+NOption(401,WhatAreYouDoingHere,001);
+end
+
+procedure WhatAreYouDoingHere begin
+set_local_var(LVAR_WhoAreYou,1);
+Reply(mstr(410));
+NOption(403,StartRollback,001);
+NOption(404,Node999,001);
+end
+
+/* Tandi */
+
+procedure Tandi begin
+Reply(mstr(500));
+
+NOption(501,Whoisshe,001);
+NOption(502,Whyheneedsher,001);
+end
+
+procedure Whoisshe begin
+Reply(mstr(510));
+
+NOption(502,Whyheneedsher,001);
+NOption(403,StartRollback,001);
+NOption(404,Node999,001);
+end
+
+procedure Whyheneedsher begin
+Reply(mstr(520));
+
+NOption(501,Whoisshe,001);
+NOption(403,StartRollback,001);
+NOption(404,Node999,001);
+end
+
+/* Friends */
+
+procedure Friends begin
+Reply(mstr(600));
+
+NOption(601,CanISeewithmyfriend,001);
+NOption(602,LOLcantspeak,001);
+NOption(603,CanIsavehim,001);
+end
+
+procedure CanISeewithmyfriend begin
+Reply(mstr(610));
+NOption(602,LOLcantspeak,001);
+NOption(603,CanIsavehim,001);
+NOption(403,StartRollback,001);
+NOption(404,Node999,001);
+end
+
+procedure LOLcantspeak begin
+Reply(mstr(620));
+NOption(601,CanISeewithmyfriend,001);
+NOption(603,CanIsavehim,001);
+NOption(403,StartRollback,001);
+NOption(404,Node999,001);
+end
+
+procedure CanIsavehim begin
+Reply(mstr(630));
+NOption(601,CanISeewithmyfriend,001);
+NOption(602,LOLcantspeak,001);
+NOption(403,StartRollback,001);
+NOption(404,Node999,001);
+end
+
+procedure caps begin
+NOption(403,Node999,001);
+NOption(404,Node999,001);
+end
+
+procedure CheckHowMuchQuestionsAsked begin
+
+end
+
+/* HELP US!!! */
+
+procedure Theyhaveattackedus begin
+Reply(mstr(700));
+NOption(701,Theyhaveattackedus1,001);
+set_lvar_bit_on(LVAR_Asked_Bit, bit_asked_for_v13_help);
+end
+
+procedure Theyhaveattackedus1 begin
+Reply(mstr(710));
+NOption(702,Friends,001);
+NOption(712,StartRollback,001);
+NOption(711,Node999,001);
+end
+
+
+/* Quest Proof against childrn*/
+
+procedure Quest_proof1 begin
+Reply(mstr(1001));
+set_global_var(GVAR_QUEST_SHADY_KILL_CHILD,2);
+NOption(1002,Quest_proof2,001);
+end
+
+procedure Quest_proof2 begin
+Reply(mstr(1003));
+NOption(1001,Quest_proof3,001);
+NOption(1005,Quest_proof3,001);
+end
+
+procedure Quest_proof3 begin
+Reply(mstr(1006));
+NOption(1007,Quest_proof4,001);
+end
+
+procedure Quest_proof4 begin
+give_exp_points(250); display_mstr(1089);
+Reply(mstr(1008));
+NOption(1009,Quest_proof5,001);
+end
+
+procedure Quest_proof5 begin
+Reply(mstr(1010));
+NOption(1011,Quest_proof6,001);
+NOption(1012,Quest_proof6B,001);
+end
+
+procedure Quest_proof6 begin
+Reply(mstr(1030));
+NOption(1014,quest_proof_uczestniczyl_end,001);
+NOption(1015,QuestA_node999,001);
+end
+
+procedure Quest_proof6B begin
+Reply(mstr(1013));
+NOption(1014,quest_proof_uczestniczyl_end,001);
+NOption(1015,QuestA_node999,001);
+end
+
+procedure QuestA_node999 begin
+item_caps_adjust(dude_obj,random(400,600));
+display_mstr(1088);
+
+end
+
+procedure quest_proof_uczestniczyl_end begin
+Reply(mstr(1020));
+NOption(1015,QuestA_node999,001);
+end
+
+procedure letsgototheDarion begin
+Reply(mstr(1040));
+NOption(1015,Node999,001);
+set_local_var(LVAR_destination,infrontof_guard);
+end
+
+procedure fuck_you_guard begin // conversation beetwen Mark and guard
+only_once1 := 1;
+move_to(dude_obj,player_actual_pos,0);
+game_ui_disable;
+counter:=0;
+//Face_Critter( self_obj, jackal_door );
+add_timer_event( self_obj, game_ticks(3), 0);
+//Face_Critter( jackal_door, self_obj );
+
+end
+
+procedure Quest_State1 begin
+Reply(mstr(1090));
+NOption(1091,Quest_State_begin,001);
+NOption(1092,Quest_State1_1,001);
+end
+
+procedure Quest_State1_1 begin
+Reply(mstr(1093));
+NOption(1094,Node999,001);
+end
+
+procedure Quest_State_begin begin
+fadeout(12);
+/* Ustawic GVAR zeby gosc obok drzwi nie wracal do nich automatycznie */
+set_global_var(GVAR_QUEST_SHADY_KILL_CHILD,3);
+/* Przejscie do cutscenki 0 "Zebys wypierdalal" */
+counter:=0;
+add_timer_event( self_obj, game_ticks(3), 0);
+game_ui_disable;
+end
+
+procedure Quest_State2 begin
+
+end
+
+procedure Quest_State3 begin
+
+end
+
+procedure ThankYouForKillingChilds begin
+	Reply(mstr(1400));
+	set_local_var(LVAR_Thanked_After_Quest,1);
+	NOption(1401,ThankYouForKillingChilds2,001);
+end
+
+procedure ThankYouForKillingChilds2 begin
+	Reply(mstr(1402));
+	NOption(1403,ThankYouForKillingChilds3,001);
+end
+
+procedure ThankYouForKillingChilds3 begin
+	Reply(mstr(1404));
+	NOption(1405,After_Thanks_NotFirstTime,001);
+end
+
+/* FIXED PARAM */
+/*
+0 - "Zebys wypierdalal"
+1 - "Rozmowa z Garlem"
+2 - "Cutscenka u Dzieci Katedry"
+*/
+
+variable x;
+procedure timed_event_p_proc begin
+      if (fixed_param == 0) then begin
+      move_to(jackal_door,23899,0);
+             if counter == 0 then begin
+                  /* Zmienic pozyjce */
+                  move_to(dude_obj,23301,0);
+                  move_to(self_obj,23702,0);
+                  move_to(jackal_door,23899,0);
+                  /* Odwrocic ryje do siebie */
+                  Face_Critter(jackal_door, dude_obj);
+                  Face_Critter(self_obj, jackal_door);
+                  Face_Critter(jackal_door, self_obj);
+                  /* Wlaczyc obraz */
+                  fadein(12);
+                  /* Odgrywac w koncu scenke */
+                  float_msg(self_obj,mstr(1100),8);
+                  /* Wlacza kolejna scene */
+                  add_timer_event( self_obj, game_ticks(6), 0);
+                  counter+= 1;
+            end
+
+            else if counter == 1 then begin
+                  float_msg(jackal_door,mstr(1101),8);
+                  add_timer_event( self_obj, game_ticks(2), 0);
+                  //counter+= 1;
+                  counter:=15;
+            end
+
+                  else if counter == 2 then begin
+                  float_msg(jackal_door,mstr(1102),8);
+                  add_timer_event( self_obj, game_ticks(5), 0);
+                  counter+= 1;
+                  end
+
+                  else if counter == 3 then begin
+                  float_msg(self_obj,mstr(1103),8);
+                  add_timer_event( self_obj, game_ticks(4), 0);
+                  counter+= 1;
+                  end
+
+                  else if counter == 4 then begin
+                  float_msg(self_obj,mstr(1104),8);
+                  add_timer_event( self_obj, game_ticks(4), 0);
+                  counter+= 1;
+                  ENd
+
+                  else if counter == 5 then begin
+                  float_msg(jackal_door,mstr(1105),8);
+                  add_timer_event( self_obj, game_ticks(3), 0);
+                  counter+= 1;
+                  ENd
+
+                  else if counter == 6 then begin
+                  float_msg(jackal_door,mstr(1106),8);
+                  add_timer_event( self_obj, game_ticks(3), 0);
+                  counter+= 1;
+                  ENd
+
+                  else if counter == 7 then begin
+                  float_msg(jackal_door,mstr(1107),8);
+                  add_timer_event( self_obj, game_ticks(4), 0);
+                  counter+= 1;
+                  ENd
+
+                  else if counter == 8 then begin
+                  float_msg(jackal_door,mstr(1108),8);
+                  add_timer_event( self_obj, game_ticks(4), 0);
+                  counter+= 1;
+                  ENd
+
+                  else if counter == 9 then begin
+                  float_msg(self_obj,mstr(1109),8);
+                  add_timer_event( self_obj, game_ticks(4), 0);
+                  counter+= 1;
+                  ENd
+
+                  else if counter == 10 then begin
+                  float_msg(jackal_door,mstr(1110),8);
+                  add_timer_event( self_obj, game_ticks(4), 0);
+                  counter+= 1;
+                  ENd
+
+                  else if counter == 11 then begin
+                  float_msg(jackal_door,mstr(1111),8);
+                  add_timer_event( self_obj, game_ticks(5), 0);
+                  counter+= 1;
+                  ENd
+
+                  else if counter == 12 then begin
+                  float_msg(self_obj,mstr(1112),2);
+                  set_local_var(LVAR_destination,23700);
+                  add_timer_event( self_obj, game_ticks(1), 0);
+                  counter+= 1;
+                  ENd
+
+                  else if counter == 13 then begin
+                  float_msg(self_obj,mstr(1113),2);
+                  reg_anim_begin();
+                  reg_anim_animate(self_obj, ANIM_kick_leg, -1);
+                  reg_anim_animate(jackal_door, ANIM_fall_front, 0);
+                  reg_anim_end();
+
+                  add_timer_event( self_obj, game_ticks(1), 0);
+                  counter+= 1;
+                  end
+
+                  else if counter == 14 then begin
+                  float_msg(person_khan1_inside,mstr(1115),2); // co tam sie odpierdala!!!
+                  add_timer_event( self_obj, game_ticks(2), 0);
+                  counter+= 1;
+                  end
+
+                  else if counter == 15 then begin
+                  //float_msg(darion_obj,mstr(1115),2);
+                  add_timer_event( self_obj, game_ticks(2), 1);
+                  counter:=0;
+                  gfade_out(ONE_GAME_SECOND);
+                  end
+
+      end
+
+      if (fixed_param == 1) then begin
+      /* Cutscenka z Garlem - do zrobienia */
+            if counter == 0 then begin
+
+                  move_to(dude_obj,25090,0);
+                  move_to(self_obj,24690,0);
+                  set_local_var(LVAR_destination,24690);
+                  Face_Critter(obj_garl,self_obj);
+                  Face_Critter(dude_obj,self_obj);
+                  gfade_in(ONE_GAME_SECOND);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(3), 1);
+            end
+
+           else if counter == 1 then begin
+
+                  float_msg(obj_garl,mstr(1200),FLOAT_MSG_NORMAL);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(3), 1);
+
+           end
+
+           else if counter == 2 then begin
+
+                  float_msg(obj_garl,mstr(1201),FLOAT_MSG_NORMAL);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(3), 1);
+
+           end
+
+           else if counter == 3 then begin
+
+                  float_msg(obj_garl,mstr(1202),2);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(3), 1);
+
+           end
+
+           else if counter == 4 then begin
+
+                  float_msg(obj_garl,mstr(1203),2);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(3), 1);
+
+           end
+
+           else if counter == 5 then begin
+
+                  float_msg(obj_garl,mstr(1204),2);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(3), 1);
+
+           end
+
+           else if counter == 6 then begin
+
+                  float_msg(obj_garl,mstr(1205),2);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(3), 1);
+
+           end
+
+           else if counter == 7 then begin
+
+                  float_msg(obj_garl,mstr(1206),2);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(3), 1);
+
+           end
+
+           else if counter == 8 then begin
+
+                  float_msg(obj_garl,mstr(1207),2);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(3), 1);
+
+           end
+
+           else if counter == 9 then begin
+
+                  float_msg(obj_garl,mstr(1208),2);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 10 then begin
+
+                  float_msg(self_obj,mstr(1209),FLOAT_MSG_NORMAL);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 11 then begin
+
+                  float_msg(self_obj,mstr(1211),FLOAT_MSG_GREEN);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 12 then begin
+
+                  float_msg(self_obj,mstr(1212),5);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 13 then begin
+
+                  float_msg(self_obj,mstr(1213),5);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 14 then begin
+
+                  float_msg(self_obj,mstr(1214),5);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 15 then begin
+
+                  float_msg(self_obj,mstr(1215),5);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 16 then begin
+
+                  float_msg(self_obj,mstr(1216),5);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 17 then begin
+
+                  float_msg(self_obj,mstr(1217),5);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 18 then begin
+
+                  float_msg(obj_garl,mstr(1220),2);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 19 then begin
+
+                  float_msg(obj_garl,mstr(1221),2);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 20 then begin
+
+                  float_msg(obj_garl,mstr(1222),2);
+                  counter++;
+                  add_timer_event( self_obj, game_ticks(5), 1);
+
+           end
+
+           else if counter == 21 then begin
+
+                  counter:=0;
+                  gfade_out(200);
+                  add_timer_event( self_obj, game_ticks(5), 2);
+
+           end
+
+
+      //add_timer_event( self_obj, game_ticks(3), 2);
+      end
+
+      if (fixed_param == 2) then begin
+      /* Cutscenka z Dziecmi Katedry */
+                  if counter1 == 0 then begin
+                        set_global_var(GVAR_ENEMYOF_CHILRED_KHANS,1);
+                        set_global_var(GVAR_QUEST_SHADY_KILL_CHILD,4);
+                        /* Mark */
+                        move_to(self_obj,14108,0);
+                        set_local_var(LVAR_destination,14108);
+                        /* Dzieci */
+                        move_to(jasper_obj,23930,0);
+                        move_to(laura_obj,24323,0);
+                        critter_add_trait(laura_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                        move_to(childrn_obj,24124,0);
+                        move_to(childrn2_obj,23927,0);
+                        /* Khans */
+                        move_to(dude_obj,24731,0);
+                        move_to(person_khan1_inside,24928,0);
+                        move_to(person_khan2_inside,24932,0);
+                        move_to(person_khan4_inside,24729,0);
+                        move_to(obj_garl,24530,0);
+                        critter_add_trait(person_khan1_inside,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                        critter_add_trait(person_khan2_inside,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                        critter_add_trait(person_khan4_inside,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                        critter_add_trait(obj_garl,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                        x := get_critter_stat(obj_floater, STAT_current_hp) / 5 * 3 * (-1);
+                        critter_heal(obj_floater, x);
+
+                        FadeIn(200);
+
+                        add_timer_event( self_obj, game_ticks(3), 2);
+                        //float_msg(darion_obj,mstr(1118),2);
+                  end
+
+                  else if counter1 == 1 then begin
+                     float_msg(jasper_obj, mstr(800), FLOAT_MSG_LIGHT_RED);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                  end
+
+                  else if counter1 == 2 then begin
+                     float_msg(jasper_obj, mstr(801), FLOAT_MSG_LIGHT_RED);
+                     add_timer_event( self_obj, game_ticks(4), 2);
+                  end
+
+                  else if counter1 == 3 then begin
+                     float_msg(jasper_obj, mstr(802), FLOAT_MSG_LIGHT_RED);
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                  end
+
+                  else if counter1 == 4 then begin
+                     float_msg(obj_garl, mstr(803), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                  end
+
+                  else if counter1 == 5 then begin
+                     float_msg(obj_garl, mstr(804), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                  end
+
+                  else if counter1 == 6 then begin
+                     float_msg(jasper_obj, mstr(805), FLOAT_MSG_LIGHT_RED);
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                  end
+
+                  else if counter1 == 7 then begin
+                     float_msg(obj_garl, mstr(806), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                  end
+
+                  else if counter1 == 8 then begin
+                     float_msg(obj_garl, mstr(807), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                  end
+
+                  else if counter1 == 9 then begin
+                     float_msg(obj_garl, mstr(808), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                  end
+
+                  else if counter1 == 10 then begin
+                     float_msg(obj_garl, mstr(809), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                  end
+
+                  else if counter1 == 11 then begin
+                     float_msg(obj_garl, mstr(810), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(4), 2);
+                  end
+
+                  else if counter1 == 12 then begin
+                     float_msg(obj_garl, mstr(811), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                  end
+
+                  else if counter1 == 13 then begin
+                     float_msg(obj_garl, mstr(812), FLOAT_MSG_GREY);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                  end
+
+                  else if counter1 == 14 then begin
+                     FadeOut(200);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                  end
+
+                  else if counter1 == 15 then begin
+                     FadeIn(200);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                     float_msg(obj_garl, mstr(813), FLOAT_MSG_GREY);
+                  end
+
+                  else if counter1 == 16 then begin
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                     float_msg(jasper_obj, mstr(814), FLOAT_MSG_LIGHT_RED);
+                  end
+
+                  else if counter1 == 17 then begin
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                     float_msg(jasper_obj, mstr(815), FLOAT_MSG_LIGHT_RED);
+                  end
+
+                  else if counter1 == 18 then begin
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                     float_msg(jasper_obj, mstr(816), FLOAT_MSG_LIGHT_RED);
+                  end
+
+                  else if counter1 == 19 then begin
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                     float_msg(jasper_obj, mstr(817), FLOAT_MSG_LIGHT_RED);
+                  end
+
+                  else if counter1 == 20 then begin
+                     float_msg(obj_garl, mstr(818), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                  end
+
+                  else if counter1 == 21 then begin
+                     float_msg(obj_garl, mstr(819), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                  end
+
+                  else if counter1 == 22 then begin
+                     float_msg(obj_garl, mstr(820), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(6), 2);
+                     move_to(obj_floater, 23330, 0);
+                  end
+
+                  else if counter1 == 23 then begin
+                     float_msg(obj_garl, mstr(821), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(6), 2);
+                  end
+
+                  else if counter1 == 24 then begin
+                     float_msg(obj_garl, mstr(822), FLOAT_MSG_NORMAL);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                  end
+
+                  else if counter1 == 25 then begin
+                     animate_move_obj_to_tile(childrn_obj, tile_num_in_direction(23330, 5, 1), ANIMATE_WALK);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                  end
+
+                  else if counter1 == 26 then begin
+                     float_msg(jasper_obj, mstr(823), FLOAT_MSG_LIGHT_RED);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                  end
+
+                  else if counter1 == 27 then begin
+                     float_msg(obj_floater, mstr(824), FLOAT_MSG_RED);
+                     animate_move_obj_to_tile(obj_floater, tile_num_in_direction(tile_num(jasper_obj), 0, 1), ANIMATE_WALK);
+                     add_timer_event( self_obj, game_ticks(2), 2);
+                  end
+
+                  else if counter1 == 28 then begin
+                     float_msg(obj_garl, mstr(825), FLOAT_MSG_RED);
+                     add_timer_event( self_obj, game_ticks(1), 2);
+                  end
+
+                  else if counter1 == 29 then begin
+                     float_msg(person_khan2_inside, mstr(826), FLOAT_MSG_RED);
+                     add_timer_event( self_obj, game_ticks(3), 2);
+                  end
+
+                  else if counter1 == 30 then begin
+                     float_msg(obj_garl, mstr(827), FLOAT_MSG_RED);
+                     add_timer_event( self_obj, game_ticks(1), 2);
+                  end
+
+                  else if counter1 == 31 then begin
+                        game_ui_enable;
+                        attack_setup(jasper_obj,obj_garl);
+                  end
+
+                  counter1++;
+
+      end
+
+      if (fixed_param == 3) then begin
+            /* Cutscenka z Garlem mowiacym do gracza ze chce go widziec u siebie */
+
+            if counter2 == 0 then begin
+
+                  Face_Critter(dude_obj,obj_garl);
+                  Face_Critter(obj_garl,dude_obj);
+                  animate_move_obj_to_tile(obj_garl,dude_tile,ANIMATE_WALK);
+                  game_ui_disable;
+                  critter_add_trait(person_khan1_inside,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  critter_add_trait(person_khan2_inside,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  critter_add_trait(person_khan4_inside,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  critter_add_trait(obj_garl,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  critter_add_trait(laura_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  critter_add_trait(obj_mark,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  set_global_var(GVAR_QUEST_SHADY_KILL_CHILD,5);
+                  counter2++;
+                  add_timer_event( self_obj, 1, 3); //bedzie sprawdzal jak blisko gracza jest garl
+
+
+            end
+
+            else if counter2 == 1 then begin
+                  game_ui_disable;
+                  if tile_distance_objs(dude_obj,obj_garl) < 6  then counter2++;
+                  else animate_move_obj_to_tile(obj_garl,dude_tile,ANIMATE_WALK);
+                  add_timer_event( self_obj, 1, 3);
+
+
+            end
+
+            else if counter2 == 2 then begin
+                  game_ui_disable;
+                  animate_stand_obj(obj_garl);
+                  float_msg(obj_garl,mstr(1381),FLOAT_MSG_NORMAL);
+                  counter2++;
+                  add_timer_event( self_obj, game_ticks(2), 3);
+
+            end
+
+            else if counter2 == 3 then begin
+
+                  float_msg(obj_garl,mstr(1390),FLOAT_MSG_NORMAL);
+                  add_timer_event( self_obj, game_ticks(2), 3);
+                  counter2++;
+
+            end
+
+            else if counter2 == 4 then begin
+
+                  float_msg(obj_garl,mstr(1391),FLOAT_MSG_NORMAL);
+                  add_timer_event( self_obj, game_ticks(2), 3);
+                  counter2++;
+
+            end
+
+            else if counter2 == 5 then begin
+
+                  fadeout(500);
+                  add_timer_event( self_obj, game_ticks(2), 3);
+                  counter2++;
+
+            end
+
+            else if counter2 == 6 then begin
+
+                  move_to(obj_garl,25093,0);
+                  fadein(500);
+                  game_ui_enable;
+
+            end
+
+      end
+
+end
+
+procedure Quest_ShadySands_Child_checkdead begin
+
+      if  critter_state(childrn2_obj) == CRITTER_IS_DEAD and critter_state(childrn_obj) == CRITTER_IS_DEAD and critter_state(jasper_obj) == CRITTER_IS_DEAD and critter_state(obj_floater) == CRITTER_IS_DEAD then begin
+            set_global_var(GVAR_QUEST_SHADY_KILL_CHILD,5);
+            give_exp_points(500);
+            display_mstr(4000);
+            critter_add_trait(obj_garl,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+            critter_add_trait(person_khan1_inside,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+            critter_add_trait(person_khan2_inside,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+            critter_add_trait(person_khan4_inside,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+            terminate_combat;
+            counter:=0;
+            add_timer_event( self_obj, 0, 3);
+      end
+
+end
+
+procedure combat_p_proc begin
+   if global_var(GVAR_SHADY_REBELLION) == 61 then add_timer_event(rebelia_script, 0, 12); //PARAM_CHECK_FOR_TEAMS_FINAL_FIGHT
+   if global_var(GVAR_QUEST_SHADY_KILL_CHILD) == 4 then call Quest_ShadySands_Child_checkdead;
+end
+
+      procedure force_conversation_GVAR_REBELLION_80 begin
+
+            if global_var(GVAR_SHADY_REBELLION) == 80 and tile_distance_objs(dude_obj,self_obj)<6 and critter_state(point_tycho) == CRITTER_IS_DEAD then begin
+
+                  start_dialog_at_node(Rebellion80);
+
+            end
+
+      end
+
+            procedure Rebellion80 begin
+
+                  Reply("Wziales juz rzeczy? Bo idziemy do v15");
+                  NOption("Zara wracam",Node999_80,001);
+                  NOption("Idziemy",Rebellion80_GoV15,001);
+
+            end
+
+            procedure Rebellion80_GoV15 begin
+                  set_global_var(GVAR_SHADY_INFOFORV15,2);
+                  load_map(20,0);
+            end
+
+            procedure Node999_80 begin
+                  move_to(dude_obj,15110,0);
+            end

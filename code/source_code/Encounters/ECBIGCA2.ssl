@@ -1,0 +1,252 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure damage_p_proc;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+procedure drop_p_proc;
+procedure is_dropping_p_proc;
+procedure pickup_p_proc;
+procedure map_enter_p_proc;
+
+procedure set_up_caravan;
+
+/* Defines */
+
+#define NAME SCRIPT_ECBIGCA2
+
+#define Lvar_Only_Once    (0)
+#define LVAR_CARAVAN_TILE (1)
+
+#define CARAVAN_TILE      local_var(LVAR_CARAVAN_TILE)
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+
+end
+
+procedure map_enter_p_proc begin
+   if local_var(Lvar_Only_Once) == 0 then call set_up_caravan;
+   set_local_var(Lvar_Only_Once, 1);
+   set_self_invisible
+end
+
+procedure set_up_caravan begin
+variable caravan_master;
+variable critter;
+variable brahmin;
+variable item;
+variable randome;
+variable randome2;
+
+   set_local_var(LVAR_CARAVAN_TILE, tile_num_in_direction(dude_tile,random(4,4), random(5, 8)));
+
+   caravan_master := create_object_sid(16777277, CARAVAN_TILE, dude_elevation, 1453);
+   item := create_object(PID_10MM_SMG, 0, 0);
+   add_obj_to_inven(caravan_master, item);
+   wield_obj(item);
+   wield_obj_critter(caravan_master,item);
+   Face_Critter(dude_obj, caravan_master);
+   set_global_var(CRITTER1, caravan_master);
+   critter_add_trait(caravan_master,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+
+   /* Straznicy do gory */
+
+   critter := create_object_sid(16777477, tile_num_in_direction(CARAVAN_TILE,5,2), dude_elevation, 1454);
+   item := create_object(PID_LASER_RIFLE, 0, 0);
+   add_obj_to_inven(critter, item);
+   wield_obj_critter(critter,item);
+   Face_Critter(dude_obj, critter);
+   set_global_var(CRITTER2, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+
+   critter := create_object_sid(16777477, tile_num_in_direction(CARAVAN_TILE,5,4), dude_elevation, 1454);
+   item := create_object(PID_PLASMA_RIFLE, 0, 0);
+   add_obj_to_inven(critter, item);
+   wield_obj_critter(critter,item);
+   Face_Critter(dude_obj, critter);
+   set_global_var(CRITTER3, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+
+   critter := create_object_sid(16777477, tile_num_in_direction(CARAVAN_TILE,5,6), dude_elevation, 1454);
+   item := create_object(PID_PLASMA_RIFLE, 0, 0);
+   add_obj_to_inven(critter, item);
+   wield_obj_critter(critter,item);
+   Face_Critter(dude_obj, critter);
+   set_global_var(CRITTER4, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+
+   /* Straznicy w dol */
+
+   critter := create_object_sid(16777477, tile_num_in_direction(CARAVAN_TILE,3,2), dude_elevation, 1454);
+   item := create_object(PID_LASER_RIFLE, 0, 0);
+   add_obj_to_inven(critter, item);
+   wield_obj_critter(critter,item);
+   Face_Critter(dude_obj, critter);
+   set_global_var(CRITTER5, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+
+   critter := create_object_sid(16777477, tile_num_in_direction(CARAVAN_TILE,3,4), dude_elevation, 1454);
+   item := create_object(PID_ROCKET_LAUNCHER, 0, 0);
+   add_obj_to_inven(critter, item);
+   wield_obj_critter(critter,item);
+   Face_Critter(dude_obj, critter);
+   set_global_var(CRITTER6, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+
+   critter := create_object_sid(16777477, tile_num_in_direction(CARAVAN_TILE,3,6), dude_elevation, 1454);
+   item := create_object(PID_ROCKET_LAUNCHER, 0, 0);
+   add_obj_to_inven(critter, item);
+   wield_obj_critter(critter,item);
+   Face_Critter(dude_obj, critter);
+   set_global_var(CRITTER7, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+
+   /* Straznicy z przodu */
+
+   critter := create_object_sid(16777477, tile_num_in_direction(CARAVAN_TILE,0,7), dude_elevation, 1454);
+   item := create_object(PID_FLAMER, 0, 0);
+   add_obj_to_inven(critter, item);
+   wield_obj_critter(critter,item);
+   Face_Critter(caravan_master, critter);
+   set_global_var(CRITTER8, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+
+   critter := create_object_sid(16777477, tile_num_in_direction(CARAVAN_TILE,2,7), dude_elevation, 1454);
+   item := create_object(PID_FLAMER, 0, 0);
+   add_obj_to_inven(critter, item);
+   wield_obj_critter(critter,item);
+   Face_Critter(caravan_master, critter);
+   set_global_var(CRITTER9, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+
+   /* Brahminy */
+   brahmin := create_object_sid(PID_BRAHMIN, tile_num_in_direction(CARAVAN_TILE, 4, 3), dude_elevation, 1455);
+   critter_add_trait(brahmin,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+   set_global_var(CRITTER10, brahmin);
+   critter := create_object_sid(PID_BRAHMIN, tile_num_in_direction(tile_num(brahmin), 5, 8), dude_elevation, 1455);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+   set_global_var(CRITTER11, critter);
+   critter := create_object_sid(PID_BRAHMIN, tile_num_in_direction(tile_num(brahmin), 3, 8), dude_elevation, 1455);
+   set_global_var(CRITTER12, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CARAVAN);
+
+   randome := 55;
+   while (randome>3) do begin
+      randome := random(0, 3);
+   end
+   /*Szpony*/
+
+   critter := create_object(16777224, tile_num_in_direction(CARAVAN_TILE,randome,  20), dude_elevation);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SUPER_MUTANT);
+   set_global_var(CRITTER13, critter);
+   Face_Critter(caravan_master, critter);
+
+   if random(0,1) == 1 then begin
+   critter := create_object(16777224, tile_num_in_direction(tile_num(critter), random(0,5), 9), dude_elevation);
+   set_global_var(CRITTER14, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SUPER_MUTANT);
+   Face_Critter(caravan_master, critter);
+   end
+
+   if random(0,1) == 1 then begin
+   critter := create_object(16777224, tile_num_in_direction(tile_num(critter), random(0,5), 12), dude_elevation);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SUPER_MUTANT);
+   set_global_var(CRITTER15, critter);
+   Face_Critter(caravan_master, critter);
+   end
+
+   if random(0,1) == 1 then begin
+   critter := create_object(16777224, tile_num_in_direction(tile_num(critter), random(0,5), 5), dude_elevation);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SUPER_MUTANT);
+   set_global_var(CRITTER16, critter);
+   Face_Critter(caravan_master, critter);
+   end
+   critter := create_object(16777224, tile_num_in_direction(tile_num(critter), random(0,5), 3), dude_elevation);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SUPER_MUTANT);
+   set_global_var(CRITTER17, critter);
+   Face_Critter(caravan_master, critter);
+   critter := create_object(16777224, tile_num_in_direction((tile_num(critter)), random(0,5), 7), dude_elevation);
+   set_global_var(CRITTER18, critter);
+   critter_add_trait(critter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SUPER_MUTANT);
+   Face_Critter(caravan_master, critter);
+   attack_setup(critter, brahmin);
+
+
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+
+end
+
+procedure description_p_proc begin
+   script_overrides;
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure use_p_proc begin
+
+end
+
+procedure use_obj_on_p_proc begin
+
+end
+
+procedure use_skill_on_p_proc begin
+
+end
+
+procedure drop_p_proc begin
+
+end
+
+procedure is_dropping_p_proc begin
+
+end
+
+procedure pickup_p_proc begin
+
+end

@@ -1,0 +1,119 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Critters template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure critter_p_proc;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+
+#define LVAR_Home_Tile (0)
+
+#define NAME SCRIPT_ECDUCGUA
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+
+end
+
+procedure map_enter_p_proc begin
+
+   critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_TEAM_NUM, TEAM_DUC);
+   critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_AI_PACKET, AI_GENERIC_GUARDS);
+   if map_first_run then set_local_var(LVAR_Home_Tile, self_tile);
+   flush_add_timer_event(self_obj, random(1,20), 0);
+
+   if random (1,2) == 1 and map_first_run then begin
+      wield_obj(create_object(PID_SNIPER_RIFLE, 0, 0));
+   end
+
+   else if map_first_run then begin
+      wield_obj(create_object(PID_ASSAULT_RIFLE,0,0));
+      add_obj_to_inven(self_obj, create_object(PID_5MM_JHP, 0, 0));
+   end
+
+end
+
+procedure critter_p_proc begin
+
+
+end
+
+procedure look_at_p_proc begin
+	script_overrides;
+	display_msg(mstr(100));
+end
+
+procedure description_p_proc begin
+	script_overrides;
+	display_msg(mstr(101));
+end
+
+procedure pickup_p_proc begin
+   //script_overrides;
+
+end
+
+procedure talk_p_proc begin
+   float_msg(self_obj, mstr(random(100, 106)), FLOAT_MSG_GREEN);
+end
+
+procedure use_skill_on_p_proc begin
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure destroy_p_proc begin
+
+end
+
+procedure timed_event_p_proc begin
+   if (fixed_param==0) then begin
+   animate_move_to_tile(tile_num_in_direction(local_var(LVAR_Home_Tile),random(0,5), random(3, 12)));
+   add_timer_event(self_obj, game_ticks(random(4,10)), 0);
+   end
+end                                                                                                                        

@@ -1,0 +1,174 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCGWEN
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+	procedure sprawdz_czy_ma_powiedziec_gdzie_jest_graczowi;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Told_Once                  (8)
+#define LVAR_Hereagain                 (9)
+
+import variable obj_gwen;
+
+/* Dialogue */
+procedure CaveQuest1;
+procedure CaveQuest_Fillar;
+procedure CaveQuest_Question1;
+procedure CaveQuest_Question2;
+procedure CaveQuest_Question3;
+procedure CaveQuest_GetBackFast;
+procedure CaveQuest_Go;
+procedure CaveQuest_Go2;
+procedure CaveQuest_HereAgain;
+procedure CaveQuest_Dontpissmeoff;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+      if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_KAMAKAZI);
+      obj_gwen:=self_obj;
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+	call sprawdz_czy_ma_powiedziec_gdzie_jest_graczowi;
+
+end
+
+	procedure sprawdz_czy_ma_powiedziec_gdzie_jest_graczowi begin
+		if local_var(LVAR_Told_Once) == 0 and global_var(GVAR_QUEST_SHADY_KILL_HUXLEY) == 1 and tile_distance_objs(self_obj,dude_obj) then begin
+			float_msg(self_obj,mstr(190),FLOAT_MSG_GREEN);
+			set_local_var(LVAR_Told_Once,1);
+		end
+	end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+if global_var(GVAR_QUEST_SHADY_KILL_HUXLEY) == 1 and local_var(LVAR_Hereagain) == 1 then start_dialog_at_node(CaveQuest_HereAgain);
+else if global_var(GVAR_QUEST_SHADY_KILL_HUXLEY) == 1 then start_dialog_at_node(CaveQuest1);
+
+end
+
+procedure destroy_p_proc begin
+
+   inc_evil_critter
+   
+end
+
+procedure look_at_p_proc begin
+
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure CaveQuest1 begin
+	set_local_var(LVAR_Hereagain,1);
+	Reply(mstr(200));
+	call CaveQuest_Fillar;
+end
+	
+	procedure CaveQuest_Fillar begin
+		NOption(201,CaveQuest_Question1,001);
+		NOption(202,CaveQuest_Question2,001);
+		NOption(203,CaveQuest_Question3,001);
+		NOption(204,CaveQuest_Go,001);
+		NOption(213,CaveQuest_GetBackFast,001);
+	end
+	
+procedure CaveQuest_Question1 begin
+	Reply(mstr(210));
+	call CaveQuest_Fillar;
+end	
+
+procedure CaveQuest_Question2 begin
+	Reply(mstr(211));
+	call CaveQuest_Fillar;
+end
+	
+procedure CaveQuest_Question3 begin
+	Reply(mstr(240));
+	call CaveQuest_Fillar;
+end
+
+	procedure CaveQuest_GetBackFast begin
+	Reply(mstr(220));
+	NOption(221,Node999,001);
+	end
+	
+procedure CaveQuest_Go begin
+	Reply(mstr(250));
+	NOption(251,CaveQuest_Go2,001);
+end
+
+procedure CaveQuest_Go2 begin
+	load_map(18,1);
+end
+//tu przybywa do niej z powrotem bo musial sie dozbroic
+
+procedure CaveQuest_HereAgain begin
+	Reply(mstr(230));
+	NOption(231,CaveQuest1,001);
+	NOption(232,CaveQuest_Go,001);
+	NOption(233,CaveQuest_Dontpissmeoff,001);
+end
+
+	procedure CaveQuest_Dontpissmeoff begin
+		float_msg(self_obj,mstr(260),FLOAT_MSG_GREEN);
+	end

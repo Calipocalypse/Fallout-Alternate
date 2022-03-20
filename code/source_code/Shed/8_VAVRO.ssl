@@ -1,0 +1,218 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: NPC template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_8_VAVRO
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+   procedure rotation;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+   procedure map_first_run_proc;
+      procedure basic_eq;
+procedure timed_event_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+// The next lines are added in by the Designer Tool.
+procedure Node000;
+procedure Node000_Again;
+   procedure Node000_2;
+   procedure Node000_Story;
+   procedure Node230;
+   procedure Node240;
+   procedure Node250;
+
+import variable obj_vavro;
+import variable obj_franz;
+import variable obj_anna;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_Home_Rotation              (9)
+#define LVAR_Counter                    (10)
+#define LVAR_Disable_Home_Tile          (11)
+#define LVAR_Talk                       (12)
+
+#define Counter local_var(LVAR_Counter)
+
+#define HOME_TILE local_var(LVAR_Home_Tile)
+#define HOME_ROTATION local_var(LVAR_Home_Rotation)
+#define set_home_tile_disable set_local_var(LVAR_Disable_Home_Tile, 1);
+#define set_home_tile_enable  set_local_var(LVAR_Disable_Home_Tile, 0);
+#define home_tile_disabled local_var(LVAR_Disable_Home_Tile ) == 1
+#define home_tile_enabled  local_var(LVAR_Disable_Home_Tile) == 0
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   obj_vavro := self_obj;
+   if map_first_run then call map_first_run_proc;
+end
+
+   procedure map_first_run_proc begin
+      critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_TEAM_NUM,TEAM_V13);
+      critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_AI_PACKET,3);
+      set_local_var(LVAR_Home_Tile, self_tile);
+      set_local_var(LVAR_Home_Rotation, obj_get_rot(self_obj));
+      call basic_eq;
+   end
+
+      procedure basic_eq begin
+         add_obj_to_inven(self_obj, create_object(PID_SHOTGUN, 0, 0));
+         add_obj_to_inven(self_obj, create_object(PID_SHOTGUN_SHELLS, 0, 0));
+         add_obj_to_inven(self_obj, create_object(PID_STIMPAK, 0, 0));
+         add_obj_to_inven(self_obj, create_object(PID_WATER_FLASK, 0, 0));
+      end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) > 1) and (obj_can_see_obj(self_obj, dude_obj))) then begin
+      set_local_var(LVAR_Hostile,1);
+      self_attack_dude; //Macro made by Tom to keep the critter fleeing.
+   end
+   if home_tile_enabled and tile_num(self_obj)!=HOME_TILE and anim_busy(self_obj)==0 then begin
+      animate_move_to_tile(HOME_TILE);
+      end
+   call rotation;
+end
+
+   procedure rotation begin
+      if not obj_can_see_obj(self_obj,dude_obj) then begin
+         if self_tile == HOME_TILE  and obj_get_rot(self_obj) != HOME_ROTATION and anim_busy(self_obj) == 0 then anim(self_obj, ANIMATE_ROTATION, HOME_ROTATION);
+      end
+      else begin
+         if self_tile == HOME_TILE and anim_busy(self_obj) == 0 then Face_Critter(dude_obj, self_obj);
+      end
+   end
+
+procedure damage_p_proc begin
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy, 1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile, 2);
+   end
+end
+
+procedure talk_p_proc begin
+   if local_var(LVAR_Talk) == 0 then start_dialog_at_node(Node000);
+   else if local_var(LVAR_Talk) == 1 then start_dialog_at_node(Node000_Again);
+end
+
+procedure destroy_p_proc begin
+   //inc_good_critter
+   //inc_evil_critter
+   inc_neutral_critter
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+   display_mstr(101);
+end
+
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile, 2);
+end
+
+
+procedure Node999 begin
+end
+
+procedure Node000 begin
+   Reply(200);
+   NOption(201, Node000_2, 001);
+   set_local_var(LVAR_Talk, 1);
+end
+
+procedure Node000_Again begin
+   Reply(209);
+   NOption(221, Node230, 001);
+   NOption(222, Node240, 001);
+   NOption(212, Node999, 001);
+end
+
+   procedure Node000_2 begin
+      FadeOut(1000);
+      FadeIn(1000);
+      Reply(210);
+      NOption(211, Node000_Story, 001);
+      NOption(212, Node999, 001);
+   end
+
+      procedure Node000_Story begin
+      Reply(220);
+      NOption(221, Node230, 001);
+      NOption(222, Node240, 001);
+      if global_var(GVAR_SHED_DEATHCLAWS) == SHED_DEATHCLAWS_SPOTTED then NOption(213, Node250, 001);
+      NOption(212, Node999, 001);
+      end
+
+      procedure Node230 begin
+      Reply(230);
+      NOption(222, Node240, 001);
+      if global_var(GVAR_SHED_DEATHCLAWS) == SHED_DEATHCLAWS_SPOTTED then NOption(213, Node250, 001);
+      NOption(212, Node999, 001);
+      end
+
+      procedure Node240 begin
+      Reply(240);
+      NOption(221, Node230, 001);
+      if global_var(GVAR_SHED_DEATHCLAWS) == SHED_DEATHCLAWS_SPOTTED then NOption(213, Node250, 001);
+      NOption(212, Node999, 001);
+      end
+
+      procedure Node250 begin
+         float_msg(self_obj, mstr(250), 2);
+      end
+
+procedure timed_event_p_proc begin
+
+   if fixed_param==SHED_DISABLE_HOME_TILE then begin
+      set_home_tile_disable
+   end
+
+   if fixed_param==SHED_ENABLE_HOME_TILE then begin
+      set_home_tile_enable
+   end
+
+end

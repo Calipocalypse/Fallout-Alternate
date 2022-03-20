@@ -1,0 +1,1466 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCISAAC
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+      procedure force_critters_to_walk_or_run_to_tiles;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+      procedure Quest_Oboz;
+      procedure Quest_Ucieczka;
+            procedure move_all_to_szopa;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+      procedure variables_of_timed;
+      procedure assign_home_tile;
+      procedure assign_basic_eq;
+      procedure day_night_position;
+procedure map_exit_p_proc;
+procedure combat_p_proc;
+procedure timed_event_p_proc;
+      procedure szopa_cutscene;
+      procedure lina_cutscene;
+      procedure dynamit_cutscene;
+      procedure peaceful_szopa_cutscene;
+            procedure DecyzjaOSposobieUcieczki;
+            procedure Lina1;
+            procedure Dynamit1;
+            procedure Rebelia;
+                  procedure move_all_to_lina;
+                  procedure move_all_to_za_lina;
+                  procedure move_all_to_za_lina2;
+                  procedure move_all_to_za_lina3;
+                  procedure move_all_to_dynamit;
+                  procedure set_up_player_team;
+                  procedure arm_isaac;
+                  procedure arm_all_rebels;
+      procedure Rebelion_Gvar40;
+      procedure Rebelion_Gvar40_Question1;
+      procedure Rebelion_Gvar40_Question2;
+      procedure Rebelion_Gvar40_FullyQuestioned;
+      procedure Rebelion_Gvar40_WhatAreWeGonnaDo;
+      procedure Rebelion_Gvar40_NoTimeToLose;
+      procedure Rebelion_Gvar40_Again;
+      procedure Gvar40;
+      procedure force_conversation_GVAR_REBELLION_80;
+            procedure Rebellion80;
+            procedure Rebellion80_GoV15;
+            procedure Node999_80;
+
+procedure UnworthyBeggining;
+procedure Quest_Oboz1A; procedure Quest_Oboz1B; procedure Quest_Oboz1C; PROCEDURE Quest_Oboz1A_Radio;
+procedure Questions; procedure Question_WhereYouComeFrom; procedure Question_Tandi; procedure Question_Khans; procedure Question_Hub; procedure Question_WheArePeopleLivedThere;
+procedure Quest_HereAgain;
+
+
+procedure ConvicingIsaacOfNoFighting;
+
+procedure cutscene_standing_with_tycho;
+procedure cutscene_standing_with_isaac;
+
+procedure ConvicingIsaacOfNoFighting;
+procedure ConvicingIsaacOfNoFighting_Loyality;
+procedure ConvicingIsaacOfNoFighting_Loyality2;
+procedure ConvicingIsaacOfNoFighting_True;
+procedure ConvicingIsaacOfNoFighting_True2;
+procedure ConvicingIsaacOfNoFighting_True3;
+
+procedure Node998;
+procedure Node999;
+
+procedure rebellion_call_for_leave_town;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_Night_Tile                 (9)
+#define LVAR_Way_Choosen                (10) // 10 - lina 20 - dynamit 30 - Rebelia 40 - FourEnterTwoLeave
+#define LVAR_RUN_REBEL_STAJNIA          (11)
+#define LVAR_RUN_GUARD_STAJNIA          (12)
+#define LVAR_Talk_Postion               (13) // 1 - agreed to help them
+#define LVAR_Enable_Questions           (14) // 0 - nothing 1 - all
+#define LVAR_Szopa_FullyQuestioned      (15)
+#define LVAR_Conviced                   (16) //Conviced about no fighting
+
+#define PARAM_SZOPA_WITHOUT_RADIO       (10)
+#define PARAM_SZOPA_WITH_RADIO          (11)
+#define PARAM_SZOPA_LINA                (12)
+#define PARAM_SZOPA_DYNAMIT             (13)
+#define PARAM_SZOPA_PREREBEL            (14) // Used before PARAM_SZOPA_WITHOUT_RADIO and PARAM_SZOPA_WITH_RADIO
+
+#define PARAM_STANDING_WITH_ISAAC       (15)
+#define PARAM_STANDING_WITH_TYCHO       (16)
+#define PARAM_LASTFIGHT_SPEECH_WON      (17)
+
+
+import variable rebel_isaac;
+import variable rebel_jerome;
+import variable rebel_anna;
+import variable rebel_annadaughter;
+import variable rebel_mack;
+import variable rebel_mackdog;
+import variable rebel_peasant1;
+import variable rebel_peasant2;
+import variable rebel_peasant3;
+import variable rebel_peasant4;
+import variable rebel_peasant5;
+import variable rebel_peasant6;
+import variable guard_camp_garden1;
+import variable guard_camp_garden2;
+import variable guard_camp_doors1;
+import variable guard_camp_doors2;
+import variable guard_camp_doggo;
+import variable obj_maxstone_shady;
+import variable guard_door_to_camp;
+import variable guard_door_to_camp2;
+
+import variable obj_garl;
+
+import variable map_script_obj;
+import variable lina_dynamit_script;
+import variable rebelia_script;
+
+import variable final_path;
+import variable point_tycho;
+
+import variable obj_ethan;
+import variable person_1drunk;
+import variable person_2drunk;
+import variable obj_pat;
+import variable tamara;
+import variable fighter;
+import variable obj_gwen;
+import variable jasper_obj;
+import variable childrn_obj;
+import variable childrn2_obj;
+import variable laura_obj;
+
+
+procedure start begin
+end
+
+procedure rebellion_call_for_leave_town begin
+   //Ethan
+   set_obj_visibility(obj_ethan, true);
+   set_global_var(GVAR_ETHAN, 1);
+   //Dwaj pijacy
+   // NEUTRALNE OSOBY Z BARU KTORE ZNIKNA */
+   set_obj_visibility(person_2drunk, true);
+   set_obj_visibility(person_1drunk, true);
+   //Pat
+   set_global_var(GVAR_PAT_UCIEKLA, 1);
+   set_obj_visibility(obj_pat, true);
+   //Dwoch na bramie stranizkow bo uwazam ze sa niepotrzebni
+   set_obj_visibility(guard_door_to_camp, true);
+   set_obj_visibility(guard_door_to_camp2, true);
+   //TEAM_SHADY_NEUTRAL Dla Felixa ale oprócz tego trzeba ustawiæ mu ochronê gdyby gracz zaatakowa³ ¿eby wszyscy nie rzucili sie na felixa
+   //Nauczyciele walki
+   set_obj_visibility(tamara, true);
+   set_obj_visibility(fighter, true);
+
+      if critter_state(obj_gwen) != CRITTER_IS_DEAD then set_obj_visibility(obj_gwen, true);
+      if critter_state(jasper_obj) != CRITTER_IS_DEAD then set_obj_visibility(jasper_obj, true);
+      if critter_state(childrn_obj) != CRITTER_IS_DEAD then set_obj_visibility(childrn_obj, true);
+      if critter_state(childrn2_obj) != CRITTER_IS_DEAD then set_obj_visibility(childrn2_obj, true);
+      if critter_state(laura_obj) != CRITTER_IS_DEAD then set_obj_visibility(laura_obj, true);
+   //Childs
+end
+
+procedure map_enter_p_proc begin
+
+      rebel_isaac:=self_obj;
+      if map_first_run then call assign_home_tile;
+      if map_first_run then call assign_basic_eq;
+      call variables_of_timed;
+
+      if not is_loading_game then add_timer_event(self_obj,0,0); /* Jest to zapobieganie nakladania sie timed_event_p_proc na timed_event_p_proc, chyba xD */
+      //day_night_position /\
+
+      critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+
+      set_global_var(GVAR_QUEST_SHADYCAMP_INTRO,5);
+
+end
+
+      variable szopa;
+      variable lina;
+      variable dynamit;
+      variable peaceful_szopa;
+      variable complex_attack_garl;
+      procedure variables_of_timed begin
+            szopa:=1;
+            lina:=2;
+            dynamit:=3;
+            peaceful_szopa:=4;
+            complex_attack_garl:=5;
+      end
+
+      procedure assign_home_tile begin
+            set_local_var(LVAR_Home_Tile,self_tile);
+            set_local_var(LVAR_Night_Tile,13293);
+      end
+
+      variable item;
+      procedure assign_basic_eq begin
+            item:=create_object(PID_KNIFE,0,0);
+            add_obj_to_inven(self_obj,item);
+            item_caps_adjust(self_obj,23);
+      end
+
+      procedure day_night_position begin
+
+            if global_var(GVAR_SHADY_DAY_NIGHT_DISABLED) == 0 then begin
+
+                  if day then move_to(self_obj,local_var(LVAR_Home_Tile),1); // w innych przypadkach moze byc problem z elewacj?
+                  else if game_time_hour==1800 then move_to(self_obj,local_var(LVAR_Night_Tile),1);
+                  else move_to(self_obj,local_var(LVAR_Night_Tile),1); // w innych przypadkach moze byc problem z elewacj?
+                  add_timer_event(self_obj,15,0);
+
+                  /*
+
+                  if (not day) or game_time_hour==1800 then begin
+
+                  reg_anim_begin();
+                  reg_anim_animate(self_obj, ANIM_fall_front_sf, -1);
+                  reg_anim_end();
+                  display_msg("noc");
+
+                  end
+
+                  else begin
+                  display_msg("dzien");
+                  reg_anim_begin();
+                  reg_anim_clear(self_obj);
+                  reg_anim_end();
+                  end
+                  */
+
+            end
+
+      end
+
+procedure map_exit_p_proc begin
+end
+
+procedure combat_p_proc begin
+   if global_var(GVAR_SHADY_REBELLION) == 61 then add_timer_event(rebelia_script, 0, 12); //PARAM_CHECK_FOR_TEAMS_FINAL_FIGHT
+   //display_msg("test: " + rebel_isaac + " " + point_tycho);
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   //display_msg(""+local_var(LVAR_Talk_Postion));
+
+   call force_critters_to_walk_or_run_to_tiles;
+   call force_conversation_GVAR_REBELLION_80;
+
+end
+
+      procedure force_critters_to_walk_or_run_to_tiles begin
+
+            if local_var(LVAR_RUN_REBEL_STAJNIA) == 1 then begin
+
+            animate_move_obj_to_tile(rebel_isaac,10880,ANIMATE_RUN);
+            animate_move_obj_to_tile(rebel_mack,10882,ANIMATE_RUN);
+            animate_move_obj_to_tile(rebel_mackdog,10883,ANIMATE_RUN);
+            animate_move_obj_to_tile(rebel_peasant1,11079,ANIMATE_RUN);
+            animate_move_obj_to_tile(rebel_peasant2,11483,ANIMATE_RUN);
+            animate_move_obj_to_tile(rebel_peasant3,12081,ANIMATE_RUN);
+            animate_move_obj_to_tile(rebel_peasant4,12081,ANIMATE_RUN);
+            animate_move_obj_to_tile(rebel_peasant5,11880,ANIMATE_RUN);
+            animate_move_obj_to_tile(rebel_peasant6,11881,ANIMATE_RUN);
+            animate_move_obj_to_tile(rebel_anna,12079,ANIMATE_RUN);
+            animate_move_obj_to_tile(rebel_annadaughter,tile_num_in_direction(12079,0,1),ANIMATE_RUN);
+            animate_move_obj_to_tile(obj_maxstone,12079,ANIMATE_RUN);
+            end
+
+            if local_var(LVAR_RUN_GUARD_STAJNIA) == 1 then begin
+            animate_move_obj_to_tile(rebel_jerome,11265,ANIMATE_WALK);
+            animate_move_obj_to_tile(guard_camp_garden1,tile_num_in_direction(11265,1,1),ANIMATE_WALK);
+            animate_move_obj_to_tile(guard_camp_garden2,tile_num_in_direction(11265,3,1),ANIMATE_WALK);
+            end
+
+      end
+
+procedure damage_p_proc begin
+
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       set_global_var(GVAR_SHADY_ISAAC_PERSONAL_ENEMY, 1);
+       display_msg("set as anemy");
+       if global_var(GVAR_SHADY_UNDER_REBELLION) == 0 then set_global_var(GVAR_ALARM_SHADYSANDS,1);
+   end
+
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   if global_var(GVAR_SHADY_REBELLION) == 55 then start_dialog_at_node(ConvicingIsaacOfNoFighting);
+     else begin
+      if global_var(GVAR_SHADY_REBELLION) == 10 then begin
+            if local_var(LVAR_Szopa_FullyQuestioned) == 0 then start_dialog_at_node(Rebelion_Gvar40); else start_dialog_at_node(Rebelion_Gvar40_Again);
+      end
+            else begin
+                  if global_var(GVAR_SHADY_GRAVE_SPEECH_STATE) != 1 then begin
+
+
+                                    if global_var(GVAR_QUEST_SHADYCAMP_INTRO) != 5 then call UnworthyBeggining;
+                                    else begin
+
+                                    	if local_var(LVAR_Talk_Postion) == 0 then start_dialog_at_node(Quest_Oboz);
+                                    	else if local_var(LVAR_Talk_Postion) == 1 then start_dialog_at_node(Quest_HereAgain);
+
+                                    end
+
+                  end
+            end
+   end
+end
+
+
+procedure destroy_p_proc begin
+   inc_good_critter
+   set_global_var(GVAR_SHADY_ISAAC_DEAD,1);
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+
+variable counter;
+procedure timed_event_p_proc begin
+
+      if (fixed_param==0) then begin
+
+            //test+=1;
+            //display_msg("test"+test);
+
+            call day_night_position;
+
+      end
+
+      if (fixed_param==szopa) then begin
+
+            call szopa_cutscene;
+
+      end
+
+      if (fixed_param==lina) then begin
+
+            call lina_cutscene;
+
+      end
+
+      if (fixed_param==dynamit) then begin
+
+            call dynamit_cutscene;
+
+      end
+
+      if (fixed_param==peaceful_szopa) then begin
+
+            call peaceful_szopa_cutscene;
+
+      end
+
+      if (fixed_param==complex_attack_garl) then begin
+
+            attack_complex(obj_garl,1,1,15,25,45,0,0);
+
+      end
+
+      if (fixed_param==PARAM_SZOPA_WITHOUT_RADIO) THEN BEGIN
+         //call rebel_noradio_cutscene;
+      end
+
+      if (fixed_param==PARAM_SZOPA_LINA) then begin
+         call lina_cutscene;
+      end
+
+      if (fixed_param==PARAM_SZOPA_DYNAMIT) then begin
+         call dynamit_cutscene;
+      end
+
+      if (fixed_param==PARAM_STANDING_WITH_ISAAC) then begin
+         call cutscene_standing_with_isaac;
+      end
+
+      if (fixed_param==PARAM_STANDING_WITH_TYCHO) then begin
+         call cutscene_standing_with_tycho;
+      end
+
+
+end
+
+variable Sound2;
+      procedure szopa_cutscene begin
+
+            if counter==0 then begin
+            game_ui_disable;
+            set_global_var(GVAR_SHADY_REBELLION, 1);
+            call move_all_to_szopa;
+            call rebellion_call_for_leave_town;
+            fadein(500);
+            floater(900);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),szopa);
+
+            end
+
+            else if counter==1 then begin
+            floater(901);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),szopa);
+            end
+
+            else if counter==2 then begin
+            floater(902);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),szopa);
+            end
+
+            else if counter==3 then begin
+            floater(903);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),szopa);
+            end
+
+            else if counter==4 then begin
+            floater(904);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),szopa);
+            end
+
+            else if counter==5 then begin
+            floater(905);
+            counter++;
+            add_timer_event(self_obj,game_ticks(6),szopa);
+            end
+
+            else if counter==6 then begin
+            floater(906);
+            counter++;
+            add_timer_event(self_obj,game_ticks(6),szopa);
+            end
+
+            else if counter==7 then begin
+            fadeout(500);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),szopa);
+            end
+
+            else if counter==8 then begin
+            fadein(500);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),szopa);
+            end
+
+            else if counter==9 then begin
+            floater(910);
+            //counter:=50;
+            counter++;
+            add_timer_event(self_obj,game_ticks(4),szopa);
+            end
+
+            else if counter==10 then begin
+            floater(911);
+            if dude_has_item(PID_RADIO) and dude_has_item(PID_ROPE) and tycho_rope_given then begin
+               add_timer_event(self_obj,game_ticks(6),PARAM_SZOPA_LINA);
+               counter:=0;
+            end
+            else if dude_has_item(PID_RADIO) and tycho_dynamite_given then begin
+               add_timer_event(self_obj,game_ticks(6),PARAM_SZOPA_DYNAMIT);
+               counter:=0;
+            end
+            else if dude_has_item(PID_RADIO) then begin
+               counter++;
+               add_timer_event(self_obj,game_ticks(4),szopa);
+            end
+            else begin
+               counter:=50;
+               add_timer_event(self_obj,game_ticks(4),szopa);
+            end
+            //else if dude_has_item(PID_RADIO) then add_timer_event(self_obj,game_ticks(6),PARAM_SZOPA_WITH_RADIO);
+            //else add_timer_event(self_obj,game_ticks(6),PARAM_SZOPA_WITHOUT_RADIO);
+            end
+
+            else if counter==11 then begin
+            floaterdude(920)
+            counter++;
+            add_timer_event(self_obj,game_ticks(4),szopa);
+            end
+
+            else if counter==12 then begin
+            if dude_has_shown_radio_to_isaac then begin
+               floater(922);
+            end
+            else begin
+                floater(921);
+            end
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),szopa);
+            end
+
+            else if counter==13 then begin
+            floaterdude(923)
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            else if counter==14 then begin
+            floaterdude(924)
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            else if counter==15 then begin
+            floaterdude(925)
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            else if counter==16 then begin
+            float_msg(dude_obj, mstr(2000) + dude_name + mstr(2001), FLOAT_MSG_BLUE);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            else if counter==17 then begin
+            float_msg(dude_obj, mstr(2002) + dude_name + mstr(2003), FLOAT_MSG_GREEN);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),1);
+            end
+
+            else if counter==18 then begin
+            floater(2010);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            else if counter==19 then begin
+            float_msg(dude_obj, mstr(2011), FLOAT_MSG_GREEN);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            else if counter==20 then begin
+            floater(2012);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            else if counter==21 then begin
+            float_msg(dude_obj, mstr(2013), FLOAT_MSG_GREEN);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            else if counter==22 then begin
+            floater(2014);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            else if counter==23 then begin
+            floater(2015);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),1);
+            end
+
+            else if counter==24 then begin
+            float_msg(dude_obj, mstr(2016), FLOAT_MSG_GREEN);
+            counter:=50;
+            add_timer_event(self_obj,game_ticks(2),1);
+            end
+
+            else if counter==50 then begin
+            float_msg(dude_obj, mstr(2017), FLOAT_MSG_GREEN);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),1);
+
+            move_to(rebel_jerome,17459,1);
+            item_caps_adjust(rebel_jerome,30);
+            move_to(guard_camp_garden1,tile_num_in_direction(17459,1,1),1);
+            move_to(guard_camp_garden2,tile_num_in_direction(17459,2,1),1);
+            set_local_var(LVAR_RUN_GUARD_STAJNIA,1);
+            end
+
+            else if counter==51 then begin
+            floater(1055);
+            counter++;
+            add_timer_event(self_obj,24,1);
+            end
+
+            else if counter==52 then begin
+            floater(1056);
+            counter++;
+            set_local_var(LVAR_RUN_REBEL_STAJNIA,1); // wymusza pozycje w stajni
+            add_timer_event(self_obj,game_ticks(17),1);
+            game_ui_enable;
+
+            end
+
+            else if counter==53 then begin
+            set_local_var(LVAR_RUN_REBEL_STAJNIA,0);
+            set_local_var(LVAR_RUN_GUARD_STAJNIA,0);
+            //11675
+            game_ui_disable;
+            metarule3(METARULE3_TILE_SET_CENTER,11268,0,0);
+            anim(self_obj,ANIMATE_ROTATION,rotation_to_tile(self_tile,11675));
+            anim(rebel_peasant1,ANIMATE_ROTATION,rotation_to_tile(tile_num(rebel_peasant1),11675));
+            anim(rebel_peasant2,ANIMATE_ROTATION,rotation_to_tile(tile_num(rebel_peasant2),11675));
+            anim(rebel_peasant3,ANIMATE_ROTATION,rotation_to_tile(tile_num(rebel_peasant3),11675));
+            anim(rebel_peasant4,ANIMATE_ROTATION,rotation_to_tile(tile_num(rebel_peasant4),11675));
+            anim(rebel_peasant5,ANIMATE_ROTATION,rotation_to_tile(tile_num(rebel_peasant5),11675));
+            anim(rebel_peasant5,ANIMATE_ROTATION,rotation_to_tile(tile_num(rebel_peasant5),11675));
+            anim(obj_maxstone,ANIMATE_ROTATION,rotation_to_tile(tile_num(obj_maxstone),11675));
+            anim(dude_obj,ANIMATE_ROTATION,rotation_to_tile(tile_num(obj_maxstone),11675));
+            anim(rebel_jerome,ANIMATE_ROTATION,rotation_to_tile(tile_num(rebel_jerome),tile_num(guard_camp_garden2)));
+            anim(guard_camp_garden1,ANIMATE_ROTATION,rotation_to_tile(tile_num(guard_camp_garden1),tile_num(rebel_jerome)));
+            anim(guard_camp_garden2,ANIMATE_ROTATION,rotation_to_tile(tile_num(guard_camp_garden2),tile_num(rebel_jerome)));
+            float_msg(guard_camp_garden1,mstr(1100),7);
+            counter++;
+            //TUTAJ ZABLOKUJ OPCJE RUSZANIA SIE
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            else if counter==54 then begin
+            display_msg("counter: "+counter);
+            float_msg(rebel_jerome,mstr(1101),8);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            else if counter==55 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden1,mstr(1102),7);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            else if counter==56 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden1,mstr(1103),1);
+            counter++;
+            reg_anim_clear(rebel_jerome);
+            reg_anim_clear(guard_camp_garden1);
+                  reg_anim_begin();
+                  reg_anim_animate(guard_camp_garden1 , ANIM_fire_single, -1);
+                  Sound2:=sfx_build_char_name(guard_camp_garden1, ANIM_fire_single, snd_weapon_attack);
+                  reg_anim_play_sfx(guard_camp_garden1 , Sound2, 0);
+
+                  reg_anim_animate(rebel_jerome , ANIM_big_hole, -1);
+                  Sound2:=sfx_build_char_name(rebel_jerome, ANIM_big_hole, snd_die);
+                  reg_anim_play_sfx(rebel_jerome , Sound2, 0);
+            reg_anim_end();
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            else if counter==57 then begin
+            // tu jakas fajna animacja chowania broni
+            kill_critter(rebel_jerome,ANIM_big_hole_sf);
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden1,mstr(1104),8);
+            counter++;
+            animate_move_obj_to_tile(guard_camp_garden1,11663,ANIMATE_WALK);
+            anim(guard_camp_garden2,ANIMATE_ROTATION,rotation_to_tile(tile_num(guard_camp_garden2),tile_num(rebel_peasant5)));
+            add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            else if counter==58 then begin
+
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden2,mstr(1105),8);
+            anim(guard_camp_garden1,ANIMATE_ROTATION,rotation_to_tile(tile_num(guard_camp_garden1),tile_num(guard_camp_garden2)));
+            set_global_var(GVAR_SHADY_REBELLION,1); //ustawione po to zeby straznik nie zaatakowal gracza jak juz ma gui zablokowane
+            counter++;
+            add_timer_event(self_obj,game_ticks(1),1);
+            end
+
+            else if counter==59 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden1,mstr(1106),7);
+            animate_move_obj_to_tile(guard_camp_garden2,11478,ANIMATE_WALK);
+
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            else if counter==60 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden1,mstr(1107),8);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),1);
+
+            end
+
+            // tu sie rozdziela na dwie drogi
+
+            else if counter==61 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden2,mstr(1108),10);
+
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),1);
+            end
+
+            else if counter==62 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden2,mstr(1109),7);
+            play_sfx("dice");
+
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),1);
+            end
+
+            else if counter==63 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden1,mstr(1110),10);
+
+            counter++;
+            add_timer_event(self_obj,game_ticks(1),1);
+            end
+
+            else if counter==64 then begin
+            display_msg("counter: "+counter);
+            float_msg(rebel_isaac,mstr(1115),2);
+            float_msg(guard_camp_garden2,mstr(1111),2);
+            call arm_isaac;
+            call arm_all_rebels;
+                  reg_anim_begin();
+                  reg_anim_animate(guard_camp_garden2 , ANIM_big_hole, -1);
+                  Sound2:=sfx_build_char_name(guard_camp_garden2, ANIM_big_hole, snd_die);
+                  reg_anim_play_sfx(guard_camp_garden2 , Sound2, 0);
+            reg_anim_end();
+
+
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),1);
+            end
+
+            else if counter==65 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden1,mstr(1112),2);
+            kill_critter(guard_camp_garden2,ANIM_big_hole_sf);
+
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            else if counter==66 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden1,mstr(1113),2);
+            animate_move_obj_to_tile(guard_camp_garden1,tile_num(rebel_isaac),ANIMATE_RUN);
+
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),1);
+            //call equip_guys;
+            end
+
+            else if counter==67 then begin
+            call set_up_player_team;
+            set_local_var(LVAR_RUN_REBEL_STAJNIA,0);
+            set_global_var(GVAR_SHADY_REBELLION,2);
+            add_timer_event(map_script_obj,0,1);
+            game_ui_enable;
+            attack_setup(guard_camp_garden1,rebel_isaac);
+
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            display_msg("?: " + counter);
+
+      end
+
+procedure lina_cutscene begin
+
+            if counter==0 then begin
+            floaterdude(920)
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==1 then begin
+            if dude_has_shown_radio_to_isaac then floater(922); else floater(921);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==2 then begin
+            floaterdude(930)
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==3 then begin
+            floaterdude(931)
+            counter++;
+            add_timer_event(self_obj,game_ticks(7),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==4 then begin
+            floater(935);
+            counter++;
+            add_timer_event(self_obj,game_ticks(7),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==5 then begin
+            float_msg(rebel_peasant1,mstr(936),FLOAT_MSG_NORMAL);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==6 then begin
+            float_msg(rebel_peasant3,mstr(937),FLOAT_MSG_NORMAL);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==7 then begin
+            floater(938);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==8 then begin
+            floater(939);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==9 then begin
+            floater(940);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==10 then begin
+            floaterdude(941)
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==11 then begin
+            float_msg(dude_obj, mstr(942), FLOAT_MSG_GREEN);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==12 then begin
+            floaterdude(943)
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==13 then begin
+            float_msg(dude_obj, mstr(944), FLOAT_MSG_GREEN);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==14 then begin
+            float_msg(dude_obj, mstr(945), FLOAT_MSG_GREEN);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==15 then begin
+            float_msg(dude_obj, mstr(946), FLOAT_MSG_GREEN);
+            counter++;
+            add_timer_event(self_obj,game_ticks(4),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==16 then begin
+            float_msg(dude_obj, mstr(947), FLOAT_MSG_GREEN);
+            counter++;
+            add_timer_event(self_obj,game_ticks(4),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==17 then begin
+            fadeout(200);
+            call move_all_to_lina;
+            counter++;
+            add_timer_event(self_obj,game_ticks(7),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==18 then begin
+            tile_set_center(tile_num(point_tycho));
+            fadein(200);
+            float_msg(point_tycho, mstr(948), FLOAT_MSG_NORMAL);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==19 then begin
+            fadeout(200);
+            call move_all_to_za_lina;
+            fadein(200);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==20 then begin
+            fadeout(200);
+            call move_all_to_za_lina2;
+            fadein(200);
+            float_msg(point_tycho, mstr(949), FLOAT_MSG_NORMAL);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==21 then begin
+            counter++;
+            floater(950);
+            add_timer_event(self_obj,game_ticks(4),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==22 then begin
+            fadeout(200);
+            call move_all_to_za_lina3;
+            fadein(200);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),PARAM_SZOPA_LINA);
+            end
+
+            else if counter==23 then begin
+            counter++;
+            game_ui_enable;
+            set_global_var(GVAR_SHADY_INFOFORV15, 1);
+            add_timer_event(self_obj,game_ticks(2),PARAM_SZOPA_LINA);
+            end
+
+end
+                  procedure move_all_to_lina begin
+                  move_to(self_obj,12719,1);
+                  move_to(dude_obj, 11918, 1);
+                  move_to(point_tycho, 8711, 1);
+                  move_to(rebel_anna, 12719, 1);
+                  if critter_state(rebel_annadaughter) != CRITTER_IS_DEAD and elevation(rebel_annadaughter) == 2 then move_to(rebel_annadaughter, 11918, 1);
+                  move_to(rebel_mack, 11517, 1);
+                  move_to(rebel_mackdog, 12116, 1);
+                  move_to(rebel_peasant1, 12113, 1);
+                  move_to(rebel_peasant2, 11312, 1);
+                  move_to(rebel_peasant3, 11710, 1);
+                  move_to(rebel_peasant4, 11109, 1);
+                  move_to(rebel_peasant5, 11708, 1);
+                  move_to(rebel_peasant6, 10706, 1);
+                  end
+                  procedure move_all_to_za_lina begin
+                  move_to(rebel_peasant1, 7900, 1);
+                  move_to(rebel_peasant2, 8701, 1);
+                  move_to(rebel_peasant5, 7897, 1);
+                  move_to(rebel_peasant6, 7096, 1);
+                  end
+                  procedure move_all_to_za_lina2 begin
+
+                  move_to(rebel_anna, 8103, 1);
+                  if critter_state(rebel_annadaughter) != CRITTER_IS_DEAD and elevation(rebel_annadaughter) == 2 then move_to(rebel_annadaughter, 8504, 1);
+                  move_to(rebel_peasant3, 8899, 1);
+                  move_to(rebel_peasant4, 8298, 1);
+                  end
+                  procedure move_all_to_za_lina3 begin
+                  move_to(self_obj,7705,1);
+                  move_to(dude_obj, 7302, 1);
+                  move_to(rebel_mack, 8904, 1);
+                  move_to(rebel_mackdog, 7299, 1);
+                  end
+
+procedure dynamit_cutscene begin
+
+            if counter==0 then begin
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),PARAM_SZOPA_DYNAMIT);
+            end
+
+            else if counter==1 then begin
+            display_msg("counter: "+counter);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),PARAM_SZOPA_DYNAMIT);
+            end
+
+            else if counter==2 then begin
+            display_msg("counter: "+counter);
+            counter++;
+            call move_all_to_dynamit;
+            add_timer_event(self_obj,game_ticks(2),PARAM_SZOPA_DYNAMIT);
+            end
+
+            else if counter==3 then begin
+            display_msg("counter: "+counter);
+            counter++;
+            float_msg(self_obj,"lecimy z tematem",2);
+            add_timer_event(self_obj,game_ticks(5),PARAM_SZOPA_DYNAMIT);
+            end
+
+            else if counter==4 then begin
+            display_msg("counter: "+counter);
+            counter++;
+            explosion(10492,1,200);
+            add_timer_event(self_obj,game_ticks(2),PARAM_SZOPA_DYNAMIT);
+            end
+
+            else if counter==5 then begin
+            display_msg("counter: "+counter);
+            counter++;
+            game_ui_enable;
+            animate_move_obj_to_tile(self_obj,6074,ANIMATE_RUN);
+            add_timer_event(self_obj,game_ticks(2),PARAM_SZOPA_DYNAMIT);
+            set_global_var(GVAR_SHADY_INFOFORV15,1);
+            end
+end
+
+
+/* Won't be used */
+procedure peaceful_szopa_cutscene begin
+
+            if counter==34 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden2,mstr(1116),10);
+
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),peaceful_szopa);
+            end
+
+            else if counter==35 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden2,mstr(1117),10);
+            animate_move_obj_to_tile(guard_camp_garden2,tile_num(guard_camp_garden1),ANIMATE_WALK);
+            counter++;
+            add_timer_event(self_obj,game_ticks(5),peaceful_szopa);
+            end
+
+            else if counter==36 then begin
+            display_msg("counter: "+counter);
+            float_msg(guard_camp_garden1,mstr(1118),10);
+            animate_move_obj_to_tile(guard_camp_garden2,14084,ANIMATE_WALK);
+            animate_move_obj_to_tile(guard_camp_garden1,14084,ANIMATE_WALK);
+            counter++;
+            add_timer_event(self_obj,game_ticks(6),peaceful_szopa);
+            end
+
+            else if counter==37 then begin
+            display_msg("usun to");
+            fadeout(500);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),peaceful_szopa);
+            end
+
+            else if counter==38 then begin
+            move_to(guard_camp_garden1,27497,1);
+            move_to(guard_camp_garden2,28895,1);
+            fadein(500);
+            counter++;
+            add_timer_event(self_obj,game_ticks(3),peaceful_szopa);
+            end
+
+            else if counter==39 then begin
+                  counter:=0;
+                  if local_var(LVAR_Way_Choosen) == 20 then add_timer_event(lina_dynamit_script,0,2);
+                  else add_timer_event(lina_dynamit_script,0,1);
+                  float_msg(self_obj,lina_dynamit_script+"ta",2);
+            end
+end
+
+      procedure DecyzjaOSposobieUcieczki begin
+            Reply(mstr(1061));
+            NOption(1062,Rebelia,001);
+            NOption(1064,Lina1,001);
+            NOption(1065,Dynamit1,001);
+            counter:=23;
+      end
+
+            procedure Lina1 begin
+            game_ui_disable;
+            set_local_var(LVAR_Way_Choosen,10);
+            add_timer_event(self_obj,0,szopa);
+            end
+
+            procedure Dynamit1 begin
+            game_ui_disable;
+            set_local_var(LVAR_Way_Choosen,20);
+            add_timer_event(self_obj,0,szopa);
+            end
+
+            procedure Rebelia begin
+            game_ui_disable;
+            set_local_var(LVAR_Way_Choosen,40);
+            //add_timer_event(self_obj,0,dynamit);
+            add_timer_event(self_obj,0,szopa);
+            end
+
+
+                  procedure move_all_to_dynamit begin
+                  move_to(self_obj,11497,1);
+                  move_to(dude_obj,11288,1);
+                  end
+
+                  procedure set_up_player_team begin
+                  critter_add_trait(rebel_isaac,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_jerome,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_anna,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_annadaughter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_mack,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_mackdog,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant1,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant2,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant3,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant4,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant5,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  party_add(obj_maxstone);
+                  critter_add_trait(rebel_peasant6,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  end
+
+                  variable weapon;
+                  procedure arm_isaac begin
+                  weapon:=create_object(PID_14MM_PISTOL,0,0);
+                  add_obj_to_inven(self_obj,weapon);
+                  add_obj_to_inven(self_obj,create_object(PID_14MM_AP,0,0));
+                  add_obj_to_inven(self_obj,create_object(PID_14MM_AP,0,0));
+                  add_obj_to_inven(self_obj,weapon);
+                  wield_obj_critter(self_obj,weapon);
+                  end
+
+                  procedure arm_all_rebels begin
+
+                        weapon:=create_object(PID_SHOTGUN,0,0);
+                        add_obj_to_inven(rebel_peasant1,weapon);
+                        add_obj_to_inven(rebel_peasant1,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant1,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant1,weapon);
+                        wield_obj_critter(rebel_peasant1,weapon);
+
+                        weapon:=create_object(PID_SHOTGUN,0,0);
+                        add_obj_to_inven(rebel_peasant2,weapon);
+                        add_obj_to_inven(rebel_peasant2,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant2,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant2,weapon);
+                        wield_obj_critter(rebel_peasant2,weapon);
+
+                        weapon:=create_object(PID_SHOTGUN,0,0);
+                        add_obj_to_inven(rebel_peasant3,weapon);
+                        add_obj_to_inven(rebel_peasant3,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant3,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant3,weapon);
+                        wield_obj_critter(rebel_peasant3,weapon);
+
+                        weapon:=create_object(PID_SHOTGUN,0,0);
+                        add_obj_to_inven(rebel_peasant4,weapon);
+                        add_obj_to_inven(rebel_peasant4,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant4,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant4,weapon);
+                        wield_obj_critter(rebel_peasant4,weapon);
+
+                        weapon:=create_object(PID_SHOTGUN,0,0);
+                        add_obj_to_inven(rebel_peasant5,weapon);
+                        add_obj_to_inven(rebel_peasant5,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant5,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant5,weapon);
+                        wield_obj_critter(rebel_peasant5,weapon);
+
+                        weapon:=create_object(PID_SHOTGUN,0,0);
+                        add_obj_to_inven(rebel_peasant6,weapon);
+                        add_obj_to_inven(rebel_peasant6,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant6,create_object(PID_SHOTGUN_SHELLS,0,0));
+                        add_obj_to_inven(rebel_peasant6,weapon);
+                        wield_obj_critter(rebel_peasant6,weapon);
+
+                        //weapon:=create_object(PID_MOLOTOV_COCKTAIL,0,0);
+                        //add_obj_to_inven(rebel_annadaughter,weapon);
+                        add_obj_to_inven(rebel_peasant1,create_object(PID_MOLOTOV_COCKTAIL,0,0));
+                        add_obj_to_inven(rebel_peasant1,create_object(PID_MOLOTOV_COCKTAIL,0,0));
+                        add_obj_to_inven(rebel_peasant1,weapon);
+                        wield_obj_critter(rebel_peasant1,weapon);
+
+                        weapon:=create_object(PID_10MM_PISTOL,0,0);
+                        add_obj_to_inven(rebel_mack,weapon);
+                        add_obj_to_inven(rebel_mack,create_object(PID_10MM_JHP,0,0));
+                        add_obj_to_inven(rebel_mack,create_object(PID_10MM_JHP,0,0));
+                        add_obj_to_inven(rebel_mack,weapon);
+                        wield_obj_critter(rebel_mack,weapon);
+
+
+               end
+
+      procedure Rebelion_Gvar40 begin
+         Reply(mstr(2050));
+         NOption(mstr(2051),Rebelion_Gvar40_WhatAreWeGonnaDo,001);
+         NOption(mstr(2052),Rebelion_Gvar40_Question1,001);
+      end
+
+      procedure Rebelion_Gvar40_Question1 begin
+         Reply(mstr(2055));
+         NOption(mstr(2051),Rebelion_Gvar40_WhatAreWeGonnaDo,001);
+         NOption(mstr(2056),Rebelion_Gvar40_Question2,001);
+      end
+
+      procedure Rebelion_Gvar40_Question2 begin
+         Reply(mstr(2057));
+         NOption(mstr(2051),Rebelion_Gvar40_WhatAreWeGonnaDo,001);
+         NOption(mstr(2058),Rebelion_Gvar40_FullyQuestioned,001);
+      end
+
+      procedure Rebelion_Gvar40_FullyQuestioned begin
+         Reply(mstr(2060)+mstr(2065));
+         NOption(mstr(2066),Gvar40,001);
+         NOption(mstr(2067),Rebelion_Gvar40_NoTimeToLose,001);
+      end
+
+      procedure Rebelion_Gvar40_WhatAreWeGonnaDo begin
+         Reply(mstr(2065));
+         NOption(mstr(2066),Gvar40,001);
+         NOption(mstr(2067),Rebelion_Gvar40_NoTimeToLose,001);
+      end
+
+      procedure Rebelion_Gvar40_NoTimeToLose begin
+         floater(2068);
+         set_local_var(LVAR_Szopa_FullyQuestioned, 1);
+      end
+
+      procedure Rebelion_Gvar40_Again begin
+         Reply(mstr(2070));
+         NOption(mstr(2066),Gvar40,001);
+         NOption(mstr(2067),Rebelion_Gvar40_NoTimeToLose,001);
+      end
+
+      procedure Gvar40 begin
+            game_ui_disable;
+            set_global_var(GVAR_SHADY_REBELLION,20);
+      end
+
+      procedure force_conversation_GVAR_REBELLION_80 begin
+
+            if (global_var(GVAR_SHADY_REBELLION) == 80) and tile_distance_objs(dude_obj,self_obj)<6 and local_var(LVAR_Conviced) != 1 then begin
+
+                  start_dialog_at_node(Rebellion80);
+
+            end
+
+      end
+
+            procedure Rebellion80 begin
+
+                  Reply("Wziales juz rzeczy? Bo idziemy do v15");
+                  NOption("Zara wracam",Node999_80,001);
+                  NOption("Idziemy",Rebellion80_GoV15,001);
+
+            end
+
+            procedure Rebellion80_GoV15 begin
+                  set_global_var(GVAR_SHADY_INFOFORV15,2);
+                  load_map(20,0);
+            end
+
+            procedure Node999_80 begin
+                  move_to(dude_obj,15110,0);
+            end
+
+procedure Choose_Side_Final_Fight_Speech begin
+      final_path:=3;
+      add_timer_event(map_script_obj,0,13);
+end
+
+/* W obozie przed narada */
+
+procedure UnworthyBeggining begin
+
+	floater(200);
+
+end
+
+procedure Quest_Oboz begin
+	Reply(mstr(210));
+	NOption(mstr(211),Quest_Oboz1A,001);
+	NOption(mstr(212),Quest_Oboz1B,001);
+end
+
+	procedure Quest_Oboz1B begin
+		Reply(mstr(220));
+		NOption(mstr(221),Quest_Oboz1A,001);
+		NOption(mstr(222),Quest_Oboz1C,001);
+	end
+
+		procedure Quest_Oboz1C begin
+			Reply(mstr(230));
+			NOption(mstr(232),Quest_Oboz1A,001);
+			NOption(mstr(231),Node999,001);
+		end
+
+procedure Quest_Oboz1A begin
+	Reply(mstr(240));
+	//if obj_carrying_pid_obj(dude_obj,PID_RADIO) and dude_was_given_radio_by_tycho then
+	   NOption(mstr(245),Quest_Oboz1A_Radio,001);
+	NOption(mstr(241),Quest_Ucieczka,001);
+	NOption(mstr(242),Node999,001);
+	NOption(mstr(243),Questions,001);
+	set_local_var(LVAR_Talk_Postion,1);
+end
+
+procedure Quest_Oboz1A_Radio begin
+   Reply(mstr(250));
+   set_global_var(GVAR_SHADY_TYCHO_REBELLION, TYCHO_REBELLION_SHOWN_RADIO);
+	NOption(mstr(251),Node999,001);
+end
+
+//Questions
+
+procedure core_Questions begin
+
+	NOption(mstr(501),Question_WhereYouComeFrom,001);
+	NOption(mstr(502),Question_Tandi,001);
+	NOption(mstr(503),Question_Khans,001);
+	if local_var(LVAR_Enable_Questions) == 1 then NOption(mstr(512),Question_Hub,001);
+	if local_var(LVAR_Enable_Questions) == 1 then NOption(mstr(511),Question_WheArePeopleLivedThere,001);
+	NOption(mstr(504),Node999,001);
+
+end
+
+procedure Questions begin
+
+	Reply(mstr(500));
+	call core_Questions;
+
+end
+
+	procedure Question_WhereYouComeFrom begin
+		set_local_var(LVAR_Enable_Questions,1);
+		Reply(mstr(510));
+		call core_Questions;
+	end
+
+	procedure Question_Tandi begin
+		Reply(mstr(540));
+		call core_Questions;
+	end
+
+	procedure Question_Khans begin
+		Reply(mstr(550));
+		call core_Questions;
+	end
+
+	procedure Question_Hub begin
+		Reply(mstr(530));
+		call core_Questions;
+	end
+
+	procedure Question_WheArePeopleLivedThere begin
+		Reply(mstr(520));
+		call core_Questions;
+	end
+
+procedure Quest_HereAgain begin
+	Reply(mstr(300));
+	NOption(mstr(301),Quest_Ucieczka,001);
+	NOption(mstr(244),Node999,001);
+	NOption(mstr(243),Questions,001);
+end
+
+
+
+
+procedure Quest_Ucieczka begin
+	fadeout(500);
+	set_global_var(GVAR_SHADY_DAY_NIGHT_DISABLED,1);
+	game_time_advance_hour(2200);
+	create_object(PID_LIGHTING_BARRELL,11266,elevation(self_obj));
+	add_timer_event(self_obj,50,szopa);
+	add_timer_event(obj_maxstone_shady,0,1);
+end
+
+            procedure move_all_to_szopa begin
+
+                  move_to(rebel_isaac,11265,1);
+                  move_to(dude_obj,11268,1);
+                  move_to(obj_maxstone,11468,1);
+                  party_remove(obj_maxstone);
+                  move_to(rebel_peasant6,11269,1);
+                  move_to(rebel_peasant5,11669,1);
+                  move_to(rebel_peasant4,11867,1);
+                  move_to(rebel_peasant3,11071,1);
+                  move_to(rebel_peasant2,11670,1);
+                  move_to(rebel_peasant1,11471,1);
+                  move_to(rebel_anna,11273,1);
+                  move_to(rebel_annadaughter,11473,1);
+
+            end
+
+procedure ConvicingIsaacOfNoFighting begin
+   Reply(mstr(3400));
+	NOption(mstr(3401),ConvicingIsaacOfNoFighting_Loyality,001);
+	//if dude_skill(SKILL_CONVERSANT) > 80 then
+	   NOption(mstr(3402),ConvicingIsaacOfNoFighting_True,001);
+	NOption(mstr(3405),Node999,001);
+end
+
+procedure ConvicingIsaacOfNoFighting_True begin
+   Reply(mstr(3410));
+	NOption(mstr(3411),ConvicingIsaacOfNoFighting_True2,001);
+end
+
+procedure ConvicingIsaacOfNoFighting_True2 begin
+   Reply(mstr(3412));
+	NOption(mstr(3413),ConvicingIsaacOfNoFighting_True3,001);
+end
+
+procedure ConvicingIsaacOfNoFighting_True3 begin
+   add_timer_event(rebelia_script, 0, 16); //PARAM_ISAAC_CONVICED
+   set_local_var(LVAR_Conviced, 1);
+end
+
+procedure ConvicingIsaacOfNoFighting_Loyality begin
+   Reply(mstr(3408));
+	NOption(mstr(3409),ConvicingIsaacOfNoFighting_Loyality2,001);
+end
+
+procedure ConvicingIsaacOfNoFighting_Loyality2 begin
+   ates(0,PARAM_STANDING_WITH_ISAAC)
+end
+
+   procedure cutscene_standing_with_isaac begin
+      set_global_var(GVAR_SHADY_REBELLION, 61);
+      set_global_var(GVAR_SHADY_RANGERS_PERSONAL_ENEMY, 1);
+      add_timer_event(rebelia_script, 0, 18);
+      attack_setup(rebel_isaac, point_tycho);
+   end
+
+   procedure cutscene_standing_with_tycho begin
+      set_global_var(GVAR_SHADY_REBELLION, 61);
+      set_global_var(GVAR_SHADY_ISAAC_PERSONAL_ENEMY, 1);
+      add_timer_event(rebelia_script, 0, 18);
+      attack_setup(rebel_isaac, point_tycho);
+   end

@@ -1,0 +1,760 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCJASPER
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+	procedure attack_back;
+	procedure czas_trwania_zadania_holodysk;
+	procedure sprawdz_czy_dobre_druzyny;
+		procedure MakeUsKhanFriends;
+		procedure MakeUsChildTeam;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+procedure FirstTime; //if vault suit call to a jak nie to call to //set_local_var(LVAR_Seen_Before,1);
+      procedure FirstTime_VaultSuit;//set_local_var(LVAR_Seen_V13_Suit,1);
+            procedure FirstTime_VaultSuit1;
+            procedure FirstTime_VaultSuit_FromV13;//set_local_var(LVAR_Know_True_Story,1);
+               procedure FirstTime_VaultSuit_FromV13_ForFree;
+               procedure FirstTime_VaultSuit_FromV13_AcceptedBodyChange;
+               procedure FirstTime_VaultSuit_FromV13_AcceptedBodyChange_INVASION;
+               procedure FirstTime_VaultSuit_FromV13_AcceptedBodyChange_INVASION2;
+               procedure FirstTime_VaultSuit_FromV13_AcceptedBodyChange_INVASION3;
+               procedure FirstTime_VaultSuit_FromV13_NoForBodyChange;
+               procedure FirstTime_VaultSuit_FromV13_NoForBodyChange2;
+               procedure FirstTime_VaultSuit_FromV13_Rude;
+               procedure FirstTime_VaultSuit_FromV13_True;
+               procedure FirstTime_VaultSuit_FromV13_WillWantUseDude;
+            procedure FirstTime_VaultSuit_FromV13_2;
+               procedure FirstTime_VaultSuit_FromV13_2_HowWillThatHelp;
+               procedure FirstTime_VaultSuit_FromV13_2_Refuse;
+               procedure FirstTime_VaultSuit_FromV13_2_AcceptQuest;
+            procedure FirstTime_VaultSuit_NotFromV13;
+
+      procedure FirstTime_AnotherSuit;
+      		procedure FirstTime_AnotherSuit1;
+      	      procedure FirstTime_Ivebeenalwaysthere;
+                        procedure FirstTime_AnotherSuit2;
+                        procedure FirstTime_AnotherSuit2_Pre1;
+                           procedure FirstTime_AnotherSuit2_Pre1_Refused;
+                           procedure FirstTime_AnotherSuit2_Pre1_Refused2;
+                        procedure FirstTime_AnotherSuit2_WhatsOnDisk;
+                        procedure FirstTime_AnotherSuit2_Where;
+                        procedure FirstTime_AnotherSuit2_CD;
+                        procedure FirstTime_AnotherSuit2_Refuse;
+                        procedure FirstTime_AnotherSuit2_Agree;
+      procedure accept_first_quest;
+            procedure Accept_First_Quest_FakeStory;
+            procedure Accept_First_Quest_MoneyWay;
+procedure FirstQuest_1001_Start;
+procedure FirstQuest_1101_Start;
+   procedure FirstTime_VaultSuit_FromV13_True_1101;
+procedure Receive_Holotape;
+	procedure First_Quest_Countdown;
+
+procedure FirstQuest_Status;
+	procedure Holodisk_StatusWeekAfter;
+	procedure Holodisk_StatusWeekBefore;
+	procedure Holodisk_Status_Sirius;
+	procedure Holodisk_Status_Fool;
+	procedure Holodisk_Status_MoveOn;
+	procedure Holodisk_Status_MoveOn2;
+	procedure Holodisk_Status_WhatDidHeSay;
+	procedure Holodisk_Status_Completed;
+	procedure Holodisk_Status_Fool2;
+	procedure Holodisk_Reward1;
+	procedure Holodisk_Reward2;
+	procedure Holodisk_Reward3;
+	procedure Holodisk_Reward4;
+	procedure Holodisk_NoReward;
+	procedure Holodisk_NoReward2;
+	procedure Holodisk_NoReward3;
+	procedure Holodisk_NoReward4;
+
+procedure empty;
+
+procedure In_Way_To_V13;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+
+#define LVAR_SEEN_BEFORE                (8)
+#define LVAR_Seen_V13_Suit              (9)
+#define LVAR_Know_True_Story            (10)
+//gvar 851
+#define LVAR_Seen_Before                (11)
+#define LVAR_Money                      (12)
+#define LVAR_Jestem_Tu_Od_Zawsze        (13)
+#define LVAR_Time_Quest_Taken           (14)
+#define LVAR_Rude                       (15)
+
+#define SET_JASPER_KNOW_PLAYER_IS_FROM_V13        set_local_var(LVAR_Know_True_Story, 1);
+#define SET_JASPER_HAS_SEEN_DUDE_IN_BLUE          set_local_var(LVAR_Seen_V13_Suit, 1);
+#define SET_TELL_DUDE_IS_LOCAL                    set_local_var(LVAR_Jestem_Tu_Od_Zawsze, 1);
+#define SET_TELL_DUDE_IS_OUTSIDER                 set_local_var(LVAR_Jestem_Tu_Od_Zawsze, 0);
+
+#define JASPER_DONT_KNOW_PLAYER_IS_FROM_V13       (local_var(LVAR_Know_True_Story)==0)
+#define JASPER_KNOW_PLAYER_IS_FROM_V13            (local_var(LVAR_Know_True_Story)==1)
+#define JASPER_HAVENT_SEEN_DUDE_IN_BLUE           (local_var(LVAR_Seen_V13_Suit)==0)
+#define JASPER_HAS_SEEN_DUDE_IN_BLUE              (local_var(LVAR_Seen_V13_Suit)==1)
+#define FIRST_TIME                                (local_var(LVAR_Seen_Before)==0)
+#define NOT_FIRST_TIME                            (local_var(LVAR_Seen_Before)==1)
+#define DUDE_NOW_IS_IN_BLUE                       dude_wearing_armor==0
+#define DUDE_NOW_IS_NOT_IN_BLUE                   dude_wearing_armor==1
+#define DUDE_TOLD_HES_LOCAL                       local_var(LVAR_Jestem_Tu_Od_Zawsze)==1
+#define DUDE_TOLD_HES_OUTSIDER                    local_var(LVAR_Jestem_Tu_Od_Zawsze)==0
+#define DUDE_WAS_RUDE                             local_var(LVAR_Rude)>=1
+#define DUDE_WAS_ONLY_RUDE                        local_var(LVAR_Rude)==1
+#define DUDE_WAS_TOLD_TRUE                        local_var(LVAR_Rude)==2
+#define DUDE_WILL_BE_USED_BY_JASPER               local_var(LVAR_Rude)==3
+
+#define QUEST_NONE                                (global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK) == 0)
+#define QUEST_ACTIVE_BUT_NOT_DELIVERED            (global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK) == 1)
+#define QUEST_ACTIVE                              (global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK) == 1 or global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK) == 2)
+#define QUEST_ONLY_DELIVERED_HOLODISK             (global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK) == 2)
+
+
+import variable jasper_obj;
+import variable childrn_obj;
+import variable childrn2_obj;
+import variable laura_obj;
+import variable map_script_obj;
+import variable cut_mut;
+import variable other_sir;
+import variable obj_floater;
+
+variable timeforquest;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+	if map_first_run then begin
+		critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+	end
+
+	jasper_obj:=self_obj;
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   //display_msg("has_trait" + has_trait(TRAIT_OBJECT, self_obj, OBJECT_TEAM_NUM));
+   /* Czuwanie */
+   call attack_back;
+
+   /* Odliczacz czasu trwania questa z holodyskiem by sprawdzic czy gracz leci w kulki */
+   call czas_trwania_zadania_holodysk;
+
+   /* Sprawdza czy TEAMS sa poprawnie ustawione i ewentualnie zmienia druzyny gdy potrzeba */
+   call sprawdz_czy_dobre_druzyny;
+
+   //display_msg(":"+local_var(LVAR_Seen_V13_Suit)+local_var(LVAR_Know_True_Story)+global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK)+local_var(LVAR_Seen_Before));
+   /*
+   display_msg("FIRST_TIME " + local_var(LVAR_Seen_Before));
+   display_msg("JASPER_KNOW_PLAYER_IS_FROM_V13 " + local_var(LVAR_Know_True_Story));
+   display_msg("JASPER_HAS_SEEN_DUDE_IN_BLUE " + local_var(LVAR_Seen_V13_Suit));
+   display_msg("DUDE_TOLD_HES_LOCAL " + local_var(LVAR_Jestem_Tu_Od_Zawsze));
+   display_msg("GVAR_QUEST_SHADY_JASPER_HOLODISK " + global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK));
+   display_msg("DUDE_TOLD_HES_LOCAL " + local_var(LVAR_Jestem_Tu_Od_Zawsze));
+   */
+end
+
+	procedure attack_back begin
+
+		if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+	       set_local_var(LVAR_Hostile,1);
+	       attack(dude_obj);
+	   end
+
+	end
+
+	procedure czas_trwania_zadania_holodysk begin
+	timeforquest:=game_time - local_var(LVAR_Time_Quest_Taken);
+   //if local_var(LVAR_Time_Quest_Taken) != 0 then display_msg("Test " + timeformquest);
+   //display_msg("GVAR: "+global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK));
+	end
+
+	procedure sprawdz_czy_dobre_druzyny begin
+
+      if global_var(GVAR_ENEMYOF_CHILRED_KHANS) == 0 then call MakeUsKhanFriends;
+      else if global_var(GVAR_ENEMYOF_CHILRED_KHANS) == 1 then call MakeUsChildTeam;
+
+end
+
+		procedure MakeUsChildTeam begin
+		critter_add_trait(jasper_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SHADY_CHILD);
+		end
+
+		procedure MakeUsKhanFriends begin
+		critter_add_trait(jasper_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+		end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       if global_var(GVAR_ENEMYOF_CHILRED_KHANS) != 1 then set_global_var(GVAR_ALARM_SHADYSANDS,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+      if DUDE_WAS_RUDE then begin
+         if DUDE_WAS_ONLY_RUDE then floater(300);
+         else if DUDE_WAS_TOLD_TRUE then floater(302);
+         else if DUDE_WILL_BE_USED_BY_JASPER then start_dialog_at_node(FirstQuest_1101_Start); //tak nie powinno byc ale juz trudno
+      end
+
+      else if FIRST_TIME then begin
+         if DUDE_NOW_IS_IN_BLUE then begin
+            start_dialog_at_node(FirstTime_VaultSuit);
+         end
+         else if DUDE_NOW_IS_NOT_IN_BLUE then begin
+            start_dialog_at_node(FirstTime_AnotherSuit);
+         end
+      end
+
+
+      else if NOT_FIRST_TIME then begin
+
+         if QUEST_NONE then begin
+            if JASPER_HAVENT_SEEN_DUDE_IN_BLUE and DUDE_NOW_IS_IN_BLUE then  start_dialog_at_node(FirstTime_VaultSuit); //outsider czy local nie musi sie resetowac bo bedzie przyznany pozniej tak czy siak
+
+            else if DUDE_TOLD_HES_OUTSIDER then begin
+               if JASPER_DONT_KNOW_PLAYER_IS_FROM_V13 then start_dialog_at_node(FirstQuest_1001_Start); //help my people
+               else if JASPER_KNOW_PLAYER_IS_FROM_V13 then start_dialog_at_node(FirstQuest_1101_Start); //help your people
+            end
+
+            else if DUDE_TOLD_HES_LOCAL then begin
+               floater(199);
+            end
+
+         end
+
+         else if QUEST_ACTIVE then begin
+            start_dialog_at_node(FirstQuest_Status); //warunki na ujrzenie kombinezonu krypty sa w procedurze
+         end
+
+      end
+
+
+end
+
+
+	procedure FirstTime_VaultSuit begin
+	set_local_var(LVAR_Seen_Before,1);
+	SET_JASPER_HAS_SEEN_DUDE_IN_BLUE
+	start_dialog_at_node(FirstTime_VaultSuit1);
+	end
+
+      	procedure FirstTime_VaultSuit1 begin
+      	      Reply(mstr(200));
+   			NOption(mstr(201),FirstTime_VaultSuit_FromV13,001);
+   			NOption(mstr(202),FirstTime_AnotherSuit2_Pre1,001);
+   			NOption(mstr(203),FirstTime_AnotherSuit2_Pre1,001);
+      	end
+
+      		procedure FirstTime_VaultSuit_FromV13 begin
+            	//Reply("Ooo to sie doskonale sklada. Mozesz pomoc twoim przyjaciolom z v13.");
+      			//NOption("Niby jak?",FirstTime_VaultSuit_FromV13_2,001);
+      			SET_JASPER_KNOW_PLAYER_IS_FROM_V13
+      			Reply(mstr(250));
+   			   NOption(mstr(251),FirstTime_VaultSuit_FromV13_ForFree,001);
+   			   NOption(mstr(252),FirstTime_VaultSuit_FromV13_AcceptedBodyChange_INVASION,001);
+   			   NOption(mstr(253),FirstTime_VaultSuit_FromV13_NoForBodyChange,001);
+      		end
+
+      		   procedure FirstTime_VaultSuit_FromV13_ForFree begin
+                 Reply(260);
+   			     NOption(mstr(252),FirstTime_VaultSuit_FromV13_AcceptedBodyChange_INVASION,001);
+   			     NOption(mstr(253),FirstTime_VaultSuit_FromV13_NoForBodyChange,001);
+      		   end
+
+      		   procedure FirstTime_VaultSuit_FromV13_AcceptedBodyChange begin
+
+      		   end
+
+      		                                    procedure FirstTime_VaultSuit_FromV13_AcceptedBodyChange_INVASION begin
+                                                   Reply(9900);
+                                                   NOption(mstr(9901),FirstTime_VaultSuit_FromV13_AcceptedBodyChange_INVASION2,001);
+      		                                    end
+
+      		                                    procedure FirstTime_VaultSuit_FromV13_AcceptedBodyChange_INVASION2 begin
+      		                                       FadeOut(1000);
+      		                                       game_ui_disable;
+                                                   add_timer_event(map_script_obj, 0, 20); //INWAZJA
+                                                   cut_mut := create_object(16777775, 23511, 0);
+                                                   other_sir := create_object(16777794, 23508, 0);
+                                                   move_to(dude_obj, 24512, 0);
+                                                   anim(dude_obj, ANIM_fall_back_sf, 0);
+                                                   move_to(self_obj, 24508, 0);
+                                                   move_to(childrn_obj, 24314, 0);
+                                                   move_to(childrn2_obj, 24914, 0);
+                                                   move_to(laura_obj, tile_num_in_direction(24914, 4, 2), 0);
+                                                   Face_Critter(dude_obj, laura_obj);
+                                                   Face_Critter(dude_obj, childrn2_obj);
+                                                   Face_Critter(dude_obj, childrn_obj);
+                                                   Face_Critter(other_sir, dude_obj);
+                                                   Face_Critter(other_sir, self_obj);
+                                                   Face_Critter(self_obj, cut_mut);
+                                                   Face_Critter(self_obj, other_sir);
+                                                   tile_set_center(tile_num(other_sir));
+                                                   add_timer_event(self_obj, 1, 1);
+
+      		                                    end
+
+      		                                    procedure FirstTime_VaultSuit_FromV13_AcceptedBodyChange_INVASION3 begin
+                                                   add_timer_event(self_obj, 0, 0);
+      		                                    end
+
+      		                                    procedure empty begin
+
+      		                                    end
+
+      		   procedure FirstTime_VaultSuit_FromV13_NoForBodyChange begin
+                  Reply(mstr(270));
+                  NOption(mstr(271),FirstTime_VaultSuit_FromV13_NoForBodyChange2,001);
+      		   end
+
+               procedure FirstTime_VaultSuit_FromV13_NoForBodyChange2 begin
+                  Reply(mstr(280));
+                  NOption(mstr(281),FirstTime_VaultSuit_FromV13_Rude,001);
+                  NOption(mstr(282),FirstTime_VaultSuit_FromV13_True,001);
+      		   end
+
+      		   procedure FirstTime_VaultSuit_FromV13_True begin
+                  Reply(290);
+                  NOption(mstr(291),FirstTime_VaultSuit_FromV13_2,001);
+                  NOption(mstr(292),FirstTime_VaultSuit_FromV13_WillWantUseDude,001);
+      		   end
+
+      		   procedure FirstTime_VaultSuit_FromV13_Rude begin
+                  Reply(300);
+                  NOption(mstr(301),Node999,001);
+                  set_local_var(LVAR_Rude, 1);
+      		   end
+
+      		   procedure FirstTime_VaultSuit_FromV13_WillWantUseDude begin
+      		      Reply(300);
+                  NOption(mstr(301),Node999,001);
+                  set_local_var(LVAR_Rude, 3); //want to use dudde
+      		   end
+//600-799
+      		procedure FirstTime_VaultSuit_FromV13_2 begin
+            	Reply(600);
+      			NOption(mstr(601),FirstTime_VaultSuit_FromV13_2_HowWillThatHelp,001);
+      			NOption(mstr(602),FirstTime_VaultSuit_FromV13_2_Refuse,001);
+      			NOption(mstr(603),FirstTime_VaultSuit_FromV13_2_AcceptQuest,001);
+      		end
+
+      		procedure FirstTime_VaultSuit_FromV13_2_HowWillThatHelp begin
+               Reply(610);
+      			NOption(mstr(602),FirstTime_VaultSuit_FromV13_2_Refuse,001);
+      			NOption(mstr(603),FirstTime_VaultSuit_FromV13_2_AcceptQuest,001);
+      		end
+
+      		procedure FirstTime_VaultSuit_FromV13_2_Refuse begin
+               Reply(305);
+      			NOption(mstr(306),Node999,001);
+      			set_local_var(LVAR_Rude, 2);
+      		end
+
+      		procedure FirstTime_VaultSuit_FromV13_2_AcceptQuest begin
+               Reply(620);
+      			NOption(mstr(621),Node999,001);
+      			NOption(mstr(622),Node999,001);
+      			set_global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK,1);
+      		   add_obj_to_inven(dude_obj,create_object(PID_MYSTERIOUS_TRANSMISSION,0,0));
+      		   add_obj_to_inven(dude_obj,create_object(PID_PURPLE_ROBE,0,0));
+      		end
+
+
+      		procedure FirstTime_VaultSuit_NotFromV13 begin
+      		      SET_TELL_DUDE_IS_OUTSIDER
+      		      call FirstTime_AnotherSuit2;
+      		end
+
+	procedure FirstTime_AnotherSuit begin
+		start_dialog_at_node(FirstTime_AnotherSuit1);
+		set_local_var(LVAR_Seen_Before,1);
+	end
+		procedure FirstTime_AnotherSuit1 begin
+			Reply(800);
+			NOption(mstr(801),FirstTime_AnotherSuit2_Pre1,001);
+			NOption(mstr(802),FirstTime_Ivebeenalwaysthere,001);
+		end
+
+		procedure FirstTime_Ivebeenalwaysthere begin
+			float_msg(self_obj,mstr(830),FLOAT_MSG_NORMAL);
+			SET_TELL_DUDE_IS_LOCAL
+		end
+
+		procedure FirstTime_AnotherSuit2_Pre1 begin
+			Reply(810);
+			NOption(mstr(811),FirstTime_AnotherSuit2,001);
+			NOption(mstr(812),FirstTime_AnotherSuit2_Pre1_Refused,001);
+		end
+
+		procedure FirstTime_AnotherSuit2_Pre1_Refused begin
+			Reply(820);
+			NOption(mstr(821),FirstTime_AnotherSuit2,001);
+			NOption(mstr(822),FirstTime_AnotherSuit2_Pre1_Refused2,001);
+		end
+
+		   procedure FirstTime_AnotherSuit2_Pre1_Refused2 begin
+          floater(831);
+		   end
+
+      		procedure FirstTime_AnotherSuit2 begin
+      		   SET_TELL_DUDE_IS_OUTSIDER
+      			if dude_is_male then Reply(840); else Reply(841);
+      			NOption(mstr(842),FirstTime_AnotherSuit2_WhatsOnDisk,001);
+      			NOption(mstr(843),FirstTime_AnotherSuit2_Where,001);
+      		end
+
+      		procedure FirstTime_AnotherSuit2_WhatsOnDisk begin
+               Reply(850);
+      			NOption(mstr(843),FirstTime_AnotherSuit2_Where,001);
+      		end
+
+      		procedure FirstTime_AnotherSuit2_Where begin
+               call FirstTime_AnotherSuit2_CD;
+      		end
+
+      		procedure FirstTime_AnotherSuit2_CD begin
+      		   Reply(860);
+      			NOption(mstr(861),FirstTime_AnotherSuit2_Agree,001);
+      			NOption(mstr(862),FirstTime_AnotherSuit2_Refuse,001);
+      		end
+
+      		procedure FirstTime_AnotherSuit2_Refuse begin
+      		end
+
+      		procedure FirstTime_AnotherSuit2_Agree begin
+      		   Reply(870);
+      			NOption(mstr(871),Node999,001);
+      			NOption(mstr(872),Node999,001);
+      		      set_global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK,1);
+      		      add_obj_to_inven(dude_obj,create_object(PID_MYSTERIOUS_TRANSMISSION,0,0));
+      		      add_obj_to_inven(dude_obj,create_object(PID_PURPLE_ROBE,0,0));
+      		      set_local_var(LVAR_Money,500);
+      		      //call accept_first_quest;
+      		end
+
+      procedure accept_first_quest begin
+            if local_var(LVAR_Know_True_Story) == 1 then call Accept_First_Quest_FakeStory;
+            else call Accept_First_Quest_MoneyWay;
+      end
+
+            procedure Accept_First_Quest_FakeStory begin
+                  Reply("Ok ja teraz mam ci opowiedziec bajeczke jak pomagamy");
+                  set_local_var(LVAR_Money,0);
+                  NOption("Ok daj holodysk i zobacze co sie da zrobic z tym.",Receive_Holotape,001);
+                  NOption("Nie chce sie w to mieszac...",Node999,001);
+                  call First_Quest_Countdown;
+            end
+
+            variable item;
+            procedure Accept_First_Quest_MoneyWay begin
+                  Reply("Ok ja teraz ci opowiadam komu i zebys sie nie intersowal co masz dostarczyc");
+                  set_local_var(LVAR_Money,500);
+                  NOption("Ok daj holodysk i zobacze co sie da zrobic z tym.",Receive_Holotape,001);
+                  call First_Quest_Countdown;
+            end
+
+/* Quest #1 Drugie podejscie po nieprzyjeciu questa */
+
+procedure FirstQuest_1001_Start begin
+	Reply(360);
+	NOption(mstr(361),FirstTime_AnotherSuit2,001);
+   NOption(mstr(362),FirstTime_AnotherSuit2_Refuse,001);
+end
+
+procedure FirstQuest_1101_Start begin
+	Reply(335);
+   set_local_var(LVAR_Money,0);
+   NOption(mstr(336),FirstTime_VaultSuit_FromV13_True_1101,001);
+   NOption(mstr(337),Node999,001);
+end
+
+   procedure FirstTime_VaultSuit_FromV13_True_1101 begin
+      call FirstTime_VaultSuit_FromV13_True;
+      Reply(900);
+                  NOption(mstr(291),FirstTime_VaultSuit_FromV13_2,001);
+                  NOption(mstr(292),FirstTime_VaultSuit_FromV13_WillWantUseDude,001);
+   end
+
+procedure Receive_Holotape begin
+	item:=create_object(PID_MYSTERIOUS_TRANSMISSION,0,0);
+	add_obj_to_inven(dude_obj,create_object(PID_MYSTERIOUS_TRANSMISSION,0,0));
+	set_global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK,1);
+end
+
+	variable week;
+	procedure First_Quest_Countdown begin
+	week:=game_ticks(60*60*24*7);
+	display_msg("Ustawiam Holodisk Quest Gvar na "+global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK));
+	set_local_var(LVAR_Time_Quest_Taken,game_time);
+	display_msg("Czas ustawiony to: "+local_var(LVAR_Time_Quest_Taken));
+	display_msg("Nagroda to: "+local_var(LVAR_Money));
+	end
+
+/**********************/
+/* First Quest Status */
+/**********************/
+
+	procedure FirstQuest_Status begin
+	week:=game_ticks(60*60*24*7);
+	if timeforquest <  week then call Holodisk_StatusWeekBefore; else call Holodisk_StatusWeekAfter;
+	end
+
+	procedure Holodisk_StatusWeekBefore begin
+
+		if DUDE_NOW_IS_IN_BLUE and JASPER_HAVENT_SEEN_DUDE_IN_BLUE then begin
+		   Reply(mstr(1249));
+		   SET_JASPER_HAS_SEEN_DUDE_IN_BLUE
+		end
+
+      else Reply(mstr(1200));
+
+		NOption(1202,Holodisk_Status_Sirius,001);
+		NOption(1201,Holodisk_Status_Fool,001);
+		NOption(1203,Holodisk_Status_MoveOn,001);
+	end
+
+	procedure Holodisk_Status_Sirius begin
+	Reply(mstr(1210));
+	NOption(1211,Node999,001);
+	end
+
+	procedure Holodisk_Status_Fool begin
+	if timeforquest < game_ticks(60*60) then Reply(mstr(1230));
+	else Reply(mstr(1231));
+	NOption(1232,Holodisk_Status_MoveOn,001);
+	end
+
+
+	procedure Holodisk_StatusWeekAfter begin
+
+		if DUDE_NOW_IS_IN_BLUE and JASPER_HAVENT_SEEN_DUDE_IN_BLUE then begin
+		   Reply(mstr(1249));
+		   SET_JASPER_HAS_SEEN_DUDE_IN_BLUE
+		end
+      else Reply(mstr(1250));
+
+	NOption(1251,Holodisk_Status_MoveOn2,001);
+	NOption(1202,Holodisk_Status_Sirius,001);
+	if QUEST_ACTIVE_BUT_NOT_DELIVERED then NOption(1204,Holodisk_Status_WhatDidHeSay,001);
+	if QUEST_ONLY_DELIVERED_HOLODISK then NOption(1253,Holodisk_Status_WhatDidHeSay,001);
+	NOption(1203,Holodisk_Status_MoveOn,001);
+	end
+
+	procedure Holodisk_Status_MoveOn begin
+	Reply(mstr(1220));
+	NOption(1221,Node999,001);
+	end
+
+	procedure Holodisk_Status_MoveOn2 begin
+	Reply(mstr(1240));
+	NOption(1221,Node999,001);
+	end
+
+	procedure Holodisk_Status_WhatDidHeSay begin
+	Reply(mstr(1300));
+	if QUEST_ONLY_DELIVERED_HOLODISK then NOption(1302,Holodisk_Status_Completed,001);
+	if QUEST_ACTIVE then NOption(1303,Holodisk_Status_Fool2,001);
+	if QUEST_ACTIVE then NOption(1304,Node998,001);
+	end
+
+	procedure Holodisk_Status_Completed begin
+   set_global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK,3);
+	Reply(mstr(1310));
+	//if local_var(LVAR_Money)>0 THEN NOption(1311,Holodisk_Reward2,001);
+	NOption(1311,Holodisk_NoReward,001);
+	//if local_var(LVAR_Money)==0 then NOption(1312,Holodisk_NoReward,001);
+	end
+
+	procedure Holodisk_Status_Fool2 begin
+	Reply(mstr(1350));
+	NOption(1351,Node999,001);
+	end
+
+	procedure Holodisk_Reward2 begin
+	Reply(mstr(1320));
+	NOption(1321,Holodisk_Reward3,001);
+	if local_var(LVAR_Money) == 1500 then NOption(1322,Holodisk_Reward3,001);
+	end
+
+	procedure Holodisk_Reward3 begin
+	Reply(mstr(1330));
+	NOption(1331,Holodisk_Reward4,001);
+	NOption(1332,Node998,001);
+	end
+
+	procedure Holodisk_Reward4 begin
+	Reply(mstr(1340));
+	//NOption(1341,FEV_Description1,001);
+	NOption(1342,Node998,001);
+	NOption(1343,Node999,001);
+	end
+
+	procedure Holodisk_NoReward begin
+	Reply(mstr(1360));
+	NOption(1361,Holodisk_NoReward2,001);
+	NOption(1362,Holodisk_NoReward3,001);
+	end
+
+	procedure Holodisk_NoReward2 begin
+	Reply(mstr(1370));
+	NOption(1362,Holodisk_NoReward3,001);
+	end
+
+	procedure Holodisk_NoReward3 begin
+	Reply(mstr(1380));
+	NOption(1381,Holodisk_NoReward4,001);
+	NOption(1382,Holodisk_NoReward4,001);
+	end
+
+	procedure Holodisk_NoReward4 begin
+	Reply(mstr(1390));
+	NOption(1391,In_Way_To_V13,001);
+	//set_local_var(LVAR_FEV_quest,1);
+	end
+
+	procedure In_Way_To_V13 begin
+    FadeOut(1000);
+    set_global_var(GVAR_VAULT13MUT_JASPER, JASPER_IS_BETRAYED);
+    set_obj_visibility(self_obj, true);
+    set_obj_visibility(childrn_obj, true);
+    //set_obj_visibility(laura_obj, true);
+    set_obj_visibility(childrn2_obj, true);
+    kill_critter(obj_floater, ANIM_fall_back_blood_sf);
+    FadeIn(1000);
+	end
+
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+variable counter;
+procedure timed_event_p_proc begin
+   if fixed_param == 0 then begin
+      if counter == 0 then begin
+      counter++;
+      float_msg(self_obj, mstr(9970), FLOAT_MSG_LIGHT_RED);
+      add_timer_event(self_obj, game_ticks(3), 0);
+      end
+      else if counter == 1 then begin
+         reg_anim_begin();
+         reg_anim_clear(dude_obj);
+         reg_anim_animate(dude_obj, ANIM_back_to_standing, -1);
+         reg_anim_end();
+         counter++;
+         add_timer_event(self_obj, game_ticks(3), 0);
+      end
+      else if counter == 2 then begin
+         float_msg(other_sir,mstr(9951), FLOAT_MSG_RED);
+         counter++;
+         add_timer_event(self_obj, game_ticks(2), 0);
+      end
+
+      else if counter == 3 then begin
+         float_msg(self_obj,mstr(9952), FLOAT_MSG_LIGHT_RED);
+         counter++;
+         add_timer_event(self_obj, game_ticks(4), 0);
+      end
+
+      else if counter == 4 then begin
+         float_msg(other_sir,mstr(9953), FLOAT_MSG_RED);
+         counter++;
+         add_timer_event(self_obj, game_ticks(5), 0);
+      end
+
+      else if counter == 5 then begin
+         float_msg(other_sir,mstr(9954), FLOAT_MSG_RED);
+         counter++;
+         wield_obj_critter(cut_mut, create_object(PID_MINIGUN, 0, 0));
+         add_timer_event(self_obj, game_ticks(3), 0);
+      end
+
+      else if counter == 6 then begin
+         float_msg(other_sir,mstr(9955), FLOAT_MSG_RED);
+         counter++;
+         add_timer_event(self_obj, game_ticks(1), 0);
+      end
+
+      else if counter == 7 then begin
+         float_msg(self_obj,mstr(9956), FLOAT_MSG_LIGHT_RED);
+         counter++;
+         add_timer_event(self_obj, game_ticks(1), 0);
+      end
+
+      else if counter == 8 then begin
+
+         reg_anim_begin();
+         Face_Critter(self_obj, cut_mut);
+         reg_anim_animate(cut_mut, ANIM_fire_burst, -1);
+         //reg_anim_animate(cave_jasper, ANIM_fire_dance, -1);
+         //reg_anim_animate(cave_jasper, ANIM_burned_to_nothing, -1);
+         reg_anim_animate_reverse(cut_mut, ANIM_fire_burst, -1);
+         reg_anim_end();
+
+         set_global_var(CRITTER1, 0);
+
+         add_timer_event(map_script_obj, game_ticks(0), 21);
+
+         critter_dmg(self_obj, random(100, 200), DMG_normal_dam);
+      end
+   end
+
+   if fixed_param == 1 then begin
+      FadeIn(1000);
+      add_timer_event(self_obj, 1, 0);
+   end
+
+end

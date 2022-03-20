@@ -1,0 +1,163 @@
+#include "..\headers\define.h"
+
+
+procedure start;
+procedure MutantCaravan;
+procedure MutantCaravan_AssignBasics;
+procedure MutantCaravan_CheckStage;
+procedure MutantCaravan_RelativeTime;
+
+procedure start begin
+   if (metarule(22,0)) then return;
+	if (game_loaded) then begin
+      set_global_script_repeat(1);
+      set_global_script_type(2);
+   end else begin
+      if (in_world_map) then begin
+
+            call MutantCaravan;
+
+      end
+   end
+
+end
+
+variable MutantCaravanStartPosX; variable MutantCaravanStartPosY; variable MutantCaravanStartTrueTime;
+
+variable MutantCaravanActualX;
+variable MutantCaravanActualY;
+
+variable MutantCaravanSubtincusX;
+variable MutantCaravanSubtincusY;
+
+variable MutantCaravan1stopPosX; variable MutantCaravan1stopPosY; variable MutantCaravan1stopTime;
+variable MutantCaravan2stopPosX; variable MutantCaravan2stopPosY; variable MutantCaravan2stopTime;
+variable MutantCaravan3stopPosX; variable MutantCaravan3stopPosY; variable MutantCaravan3stopTime;
+variable MutantCaravan4stopPosX; variable MutantCaravan4stopPosY; variable MutantCaravan4stopTime;
+
+variable MutantCaravanRelativeTime;
+variable floatTimeDivision:=0.00001;
+variable AntifloatTimeDivision:=0.00001;
+
+variable Stage; //jak zamienisz wspolrzedne to jest spoko wiec trzeba czas resetowac
+
+procedure MutantCaravan begin
+
+      if MutantCaravanStartPosX == 0 then call MutantCaravan_AssignBasics;
+      call MutantCaravan_CheckStage;
+      call MutantCaravan_RelativeTime;
+
+
+
+      if Stage==1 then begin
+
+            floatTimeDivision:=((MutantCaravanRelativeTime)*1000)/(MutantCaravan1stopTime-MutantCaravanStartTrueTime); //wartosc nie powinna byc wieksza od 1000
+            debug_msg("Nie powinno wynosic ani 0 ani 1 "+floatTimeDivision);
+
+            MutantCaravanSubtincusX:=(((MutantCaravan1stopPosX-MutantCaravanStartPosX))*floatTimeDivision)/1000;
+            MutantCaravanSubtincusY:=(((MutantCaravan1stopPosY-MutantCaravanStartPosY))*floatTimeDivision)/1000;
+
+            MutantCaravanActualX:=MutantCaravanStartPosX+MutantCaravanSubtincusX;
+            MutantCaravanActualY:=MutantCaravanStartPosY+MutantCaravanSubtincusY;
+
+      end
+
+     if Stage==2 then begin
+
+            floatTimeDivision:=((MutantCaravanRelativeTime)*1000)/(MutantCaravan2stopTime-MutantCaravan1stopTime);
+            debug_msg("Nie powinno wynosic ani 0 ani 1 "+floatTimeDivision);
+
+            MutantCaravanSubtincusX:=(((MutantCaravan2stopPosX-MutantCaravan1stopPosX))*floatTimeDivision)/1000;
+            MutantCaravanSubtincusY:=(((MutantCaravan2stopPosY-MutantCaravan1stopPosY))*floatTimeDivision)/1000;
+            //                                  200                                 *20000    /  28000
+
+            MutantCaravanActualX:=MutantCaravan1stopPosX+MutantCaravanSubtincusX;
+            MutantCaravanActualY:=MutantCaravan1stopPosY+MutantCaravanSubtincusY;
+
+      end
+
+      if Stage==3 then begin
+
+            floatTimeDivision:=((MutantCaravanRelativeTime)*1000)/(MutantCaravan3stopTime-MutantCaravan2stopTime);
+            debug_msg("Nie powinno wynosic ani 0 ani 1 "+floatTimeDivision);
+
+            MutantCaravanSubtincusX:=(((MutantCaravan3stopPosX-MutantCaravan2stopPosX))*floatTimeDivision)/1000;
+            MutantCaravanSubtincusY:=(((MutantCaravan3stopPosY-MutantCaravan2stopPosY))*floatTimeDivision)/1000;
+            //                                  200                                 *20000    /  28000
+
+            MutantCaravanActualX:=MutantCaravan2stopPosX+MutantCaravanSubtincusX;
+            MutantCaravanActualY:=MutantCaravan2stopPosY+MutantCaravanSubtincusY;
+
+      end
+
+      if Stage==4 then begin
+
+            floatTimeDivision:=((MutantCaravanRelativeTime)*1000)/(MutantCaravan4stopTime-MutantCaravan3stopTime);
+            debug_msg("Nie powinno wynosic ani 0 ani 1 "+floatTimeDivision);
+
+            MutantCaravanSubtincusX:=(((MutantCaravan4stopPosX-MutantCaravan3stopPosX))*floatTimeDivision)/1000;
+            MutantCaravanSubtincusY:=(((MutantCaravan4stopPosY-MutantCaravan3stopPosY))*floatTimeDivision)/1000;
+            //                                  200                                 *20000    /  28000
+
+            MutantCaravanActualX:=MutantCaravan3stopPosX+MutantCaravanSubtincusX;
+            MutantCaravanActualY:=MutantCaravan3stopPosY+MutantCaravanSubtincusY;
+
+      end
+
+
+      floatTimeDivision:=(game_time_in_seconds)/(MutantCaravan1stopTime);
+      //debug_msg("POSx: "+MutantCaravanActualX+ "POSy: "+MutantCaravanActualY);
+      wm_area_set_pos(20,MutantCaravanActualX,MutantCaravanActualY);
+
+      debug_msg("XPozycja x: "+MutantCaravanActualX+" XPozycja y: "+MutantCaravanActualY);
+      debug_msg("Sub x: "+MutantCaravanSubtincusX+" Sub y: "+MutantCaravanSubtincusY);
+
+end
+
+procedure MutantCaravan_AssignBasics begin
+
+            MutantCaravanStartPosX:=174;
+            MutantCaravanStartPosY:=74;
+
+            MutantCaravanStartTrueTime:=game_time_in_seconds;
+            MutantCaravanRelativeTime:=0;
+
+            MutantCaravan1stopPosX:=530;
+            MutantCaravan1stopPosY:=570;
+            MutantCaravan1stopTime:=MutantCaravanStartTrueTime+60*60*24*9; //14days
+
+            MutantCaravan2stopPosX:=530;
+            MutantCaravan2stopPosY:=570;
+            MutantCaravan2stopTime:=MutantCaravan1stopTime+60*60*24*3;
+
+            MutantCaravan3stopPosX:=705;
+            MutantCaravan3stopPosY:=732;
+            MutantCaravan3stopTime:=MutantCaravan2stopTime+60*60*24*3;
+
+            MutantCaravan4stopPosX:=880;
+            MutantCaravan4stopPosY:=736;
+            MutantCaravan4stopTime:=MutantCaravan3stopTime+60*60*24*3;
+end
+
+procedure MutantCaravan_CheckStage begin
+
+      if game_time_in_seconds>MutantCaravanStartTrueTime and game_time_in_seconds<MutantCaravan1stopTime then Stage:=1;
+      if game_time_in_seconds>MutantCaravan1stopTime and game_time_in_seconds<MutantCaravan2stopTime then Stage:=2;
+      if game_time_in_seconds>MutantCaravan2stopTime and game_time_in_seconds<MutantCaravan3stopTime then Stage:=3;
+      if game_time_in_seconds>MutantCaravan3stopTime and game_time_in_seconds<MutantCaravan4stopTime then Stage:=4;
+
+end
+
+procedure MutantCaravan_RelativeTime begin
+
+      if Stage==1 then MutantCaravanRelativeTime:=game_time_in_seconds-MutantCaravanStartTrueTime; //czas mierzony od startu karawany w sekundach
+      else if Stage==2 then MutantCaravanRelativeTime:=game_time_in_seconds-MutantCaravan1stopTime;
+      else if Stage==3 then MutantCaravanRelativeTime:=game_time_in_seconds-MutantCaravan2stopTime;
+      else if Stage==4 then MutantCaravanRelativeTime:=game_time_in_seconds-MutantCaravan3stopTime;
+
+      debug_msg("Relatywny czas: "+MutantCaravanRelativeTime);
+      debug_msg("Akutalny Stage: "+Stage);
+      debug_msg("Czas zakonczenia stage 1: "+MutantCaravan1stopTime);
+      debug_msg("Czas zakonczenia stage 1 RELATYWNY: "+(MutantCaravan1stopTime-game_time_in_seconds));
+
+end

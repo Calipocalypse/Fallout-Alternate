@@ -1,0 +1,119 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SSBOX
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure use_p_proc;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_tile                  (8)
+#define LVAR_RESTOCK_TIME               (9)
+
+import variable box_bronie;
+import variable box_pancerze;
+import variable box_narzedzia;
+
+import variable person_trader;
+
+procedure start begin
+end
+
+//14891
+//15493
+//15891
+procedure map_enter_p_proc begin
+set_local_var(LVAR_Home_tile,self_tile);
+if local_var(LVAR_Home_tile) == 14891 then box_narzedzia:=self_obj;
+if local_var(LVAR_Home_tile) == 15493 then box_bronie:=self_obj;
+if local_var(LVAR_Home_tile) == 15891 then box_pancerze:=self_obj;
+//display_msg("OPS: "+local_var(LVAR_Home_tile));
+
+if critter_state(person_trader) != CRITTER_IS_DEAD and global_var(GVAR_SHADY_REBELLION) == 0 /*and global_var(GVAR_ALARM_SHADYSANDS) == 0*/ then begin
+
+      if box_pancerze == self_obj then begin
+            if (is_loading_game == false) then begin
+              if (local_var(LVAR_RESTOCK_TIME) < game_time) then begin
+                    item_caps_adjust(self_obj, random(234, 272) - self_caps);
+                    check_restock_item(PID_LEATHER_JACKET, 1, 3, 100)
+                    check_restock_item(PID_LEATHER_ARMOR, 0, 1, 75)
+                    check_restock_item(PID_STIMPAK, 2, 5, 100)
+                    check_restock_item(PID_ANTIDOTE, 0, 2, 50)
+                    check_restock_item(PID_MUTATED_FRUIT, 0, 12, 90)
+                    check_restock_item(PID_IGUANA_ON_A_STICK, 0, 5, 90)
+                    check_restock_item(80, 0, 5, 90)
+                    check_restock_item(PID_FIRST_AID_KIT, 0, 1, 50)
+                    set_local_var(LVAR_RESTOCK_TIME, (random(1, 2) * ONE_GAME_DAY) + game_time);
+              end
+            end
+      end
+
+      if box_narzedzia == self_obj then begin
+            if (is_loading_game == false) then begin
+              if (local_var(LVAR_RESTOCK_TIME) < game_time) then begin
+                    item_caps_adjust(self_obj, random(234, 272) - self_caps);
+                    check_restock_item(PID_KNIFE, 0, 2, 90)
+                    check_restock_item(PID_SLEDGEHAMMER, 0, 1, 33)
+                    check_restock_item(PID_CROWBAR, 0, 1, 100)
+                    check_restock_item(PID_WRENCH, 0, 1, 45)
+                    check_restock_item(PID_DYNAMITE, 0, 1, 100)
+                    check_restock_item(PID_ROPE, 0, 1, 100)
+                    check_restock_item(PID_LOCKPICKS, 0, 1, 80)
+                    check_restock_item(PID_MULTI_TOOL, 0, 1, 80)
+              end
+            end
+      end
+
+      if box_bronie == self_obj then begin
+            if (is_loading_game == false) then begin
+              if (local_var(LVAR_RESTOCK_TIME) < game_time) then begin
+                    item_caps_adjust(self_obj, random(234, 272) - self_caps);
+                    check_restock_item(PID_10MM_PISTOL, 1, 3, 100)
+                    check_restock_item(PID_HUNTING_RIFLE, 0, 1, 33)
+                    check_restock_item(PID_SHOTGUN, 0, 1, 60)
+                    check_restock_item(PID_BRASS_KNUCKLES, 1, 2, 100)
+                    check_restock_item(PID_SPIKED_KNUCKLES, 1, 1, 75)
+                    check_restock_item(PID_MOLOTOV_COCKTAIL, 1, 5, 80)
+
+                    check_restock_item(PID_10MM_JHP, 1, 5, 100)
+                    check_restock_item(PID_10MM_AP, 0, 2, 80)
+                    check_restock_item(PID_SHOTGUN_SHELLS, 0, 2, 50)
+                    check_restock_item(PID_223_FMJ, 0, 2, 40)
+              end
+            end
+      end
+end
+
+end
+
+procedure use_p_proc begin
+      if critter_state(person_trader) != CRITTER_IS_DEAD and global_var(GVAR_SHADY_REBELLION) == 0 then begin
+      script_overrides;
+      add_timer_event(person_trader, 0, 0);
+      end
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end

@@ -1,0 +1,123 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MGZ_LGHT
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+#define LVAR_TimedEvent_Session          (9)
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+	if map_first_run and random(1,3) == 1 then set_obj_visibility(self_obj,true); else set_obj_visibility(self_obj,false);
+
+	if local_var(LVAR_TimedEvent_Session) == 0 then set_local_var(LVAR_TimedEvent_Session,100);
+	inc_local_var(LVAR_TimedEvent_Session);
+	//display_msg("LVAR_TimedEvent_Session: "+local_var(LVAR_TimedEvent_Session));
+	add_timer_event(self_obj,random(game_ticks(2),game_ticks(75)),local_var(LVAR_TimedEvent_Session));
+
+
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+variable counter;
+procedure timed_event_p_proc begin
+float_msg(dude_obj, "" + global_var(GVAR_QUEST_SHADY_MAGAZINE), 2);
+	if (fixed_param==local_var(LVAR_TimedEvent_Session)) then begin
+
+		if counter == 0 then begin
+
+			set_obj_visibility(self_obj,false);
+			counter++;
+			add_timer_event(self_obj,1,local_var(LVAR_TimedEvent_Session));
+			//display_msg("executing");
+			if global_var(GVAR_MAGAZINE_REPAIRED_GENERATOR) == 0 then add_timer_event(self_obj,random(game_ticks(3),game_ticks(75)),local_var(LVAR_TimedEvent_Session)); else set_obj_visibility(self_obj,false);
+
+		end
+
+		else if counter == 1 then begin
+
+			set_obj_visibility(self_obj,true);
+			counter++;
+			add_timer_event(self_obj,15,local_var(LVAR_TimedEvent_Session));
+
+		end
+
+		else if counter == 2 then begin
+
+			set_obj_visibility(self_obj,false);
+			counter++;
+			add_timer_event(self_obj,1,local_var(LVAR_TimedEvent_Session));
+
+		end
+
+		else if counter == 3 then begin
+
+			set_obj_visibility(self_obj,true);
+			counter++;
+			add_timer_event(self_obj,5,local_var(LVAR_TimedEvent_Session));
+
+		end
+
+		else if counter == 4 then begin
+
+			set_obj_visibility(self_obj,false);
+			counter++;
+			add_timer_event(self_obj,1,local_var(LVAR_TimedEvent_Session));
+
+		end
+
+		else if counter == 5 then begin
+
+			set_obj_visibility(self_obj,true);
+			counter++;
+			add_timer_event(self_obj,5,local_var(LVAR_TimedEvent_Session));
+
+		end
+
+		else if counter == 6 then begin
+
+			set_obj_visibility(self_obj,false);
+			counter++;
+			add_timer_event(self_obj,1,local_var(LVAR_TimedEvent_Session));
+
+		end
+
+		else if counter == 7 then begin
+
+			set_obj_visibility(self_obj,true);
+			counter++;
+			add_timer_event(self_obj,5,local_var(LVAR_TimedEvent_Session));
+
+		end
+
+		else if counter == 8 then begin
+
+			set_obj_visibility(self_obj,false);
+			counter++;
+			add_timer_event(self_obj,1,local_var(LVAR_TimedEvent_Session));
+
+		end
+
+		else if counter == 9 then begin
+
+			if random(1,3) == 1 then set_obj_visibility(self_obj,true); else set_obj_visibility(self_obj,false);
+			counter:=0;
+
+		end
+
+	end
+
+end

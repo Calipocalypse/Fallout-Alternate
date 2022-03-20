@@ -1,0 +1,249 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_FEVGUY
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+	procedure timed_session;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+procedure StartNode;
+	procedure StartNode_No;
+procedure StartNode_Yes;
+procedure StartNode_Yes1;
+procedure StartNode_Yes2;
+procedure StartNode_Yes3;
+procedure StartNode_Yes4;
+procedure StartNode_Yes5;
+procedure StartNode_Yes6;
+procedure StartNode_Yes7;
+procedure StartNode_Yes8;
+procedure StartNode_Yes9;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Only_once                  (8)
+#define LVAR_TimedEvent_Session         (9)
+#define LVAR_Counter                    (10)
+
+import variable obj_fevguy;
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+obj_fevguy:=self_obj;
+
+	call timed_session;
+	
+	if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_V13_SUPERMUTANTS);
+
+end
+
+	procedure timed_session begin
+	
+		if local_var(LVAR_TimedEvent_Session) == 0 then set_local_var(LVAR_TimedEvent_Session,100);
+		inc_local_var(LVAR_TimedEvent_Session);
+		
+		//display_msg("LVAR_TimedEvent_Session: "+local_var(LVAR_TimedEvent_Session));
+		
+		add_timer_event(self_obj,game_ticks(random(10,90)),local_var(LVAR_TimedEvent_Session));
+	
+	end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+   
+   //display_msg(""+local_var(LVAR_TimedEvent_Session));
+   
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+	start_dialog_at_node(StartNode);
+   
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure StartNode begin
+
+		Reply(mstr(300));
+		NOption(301,StartNode_Yes,001);
+		NOption(302,StartNode_No,001);
+		
+end
+
+		procedure StartNode_No begin
+		
+			Reply(mstr(305));
+			NOption(306,Node999,001);
+		
+		end
+	
+	procedure StartNode_Yes begin
+	
+		Reply(mstr(310));
+		NOption(311,StartNode_Yes1,001);
+	
+	end
+	
+	procedure StartNode_Yes1 begin
+	
+		Reply(mstr(320));
+		NOption(321,StartNode_Yes2,001);
+	
+	end
+	
+	procedure StartNode_Yes2 begin
+	
+		Reply(mstr(330));
+		NOption(331,StartNode_Yes3,001);
+	
+	end
+
+	procedure StartNode_Yes3 begin
+	
+		Reply(mstr(340)+" "+global_var(GVAR_MAIN_DAYS_TO_TRANSITION)+" "+mstr(341));
+		NOption(342,StartNode_Yes4,001);
+	
+	end
+	
+	procedure StartNode_Yes4 begin
+	
+		Reply(mstr(350));
+		NOption(351,StartNode_Yes5,001);
+	
+	end
+	
+	procedure StartNode_Yes5 begin
+	
+		Reply(mstr(360));
+		NOption(361,StartNode_Yes6,001);
+	
+	end
+	
+	procedure StartNode_Yes6 begin
+	
+		Reply(mstr(370));
+		NOption(371,StartNode_Yes7,001);
+	
+	end
+	
+	procedure StartNode_Yes7 begin
+		
+		fadeout(200);
+		game_time_advance_hour(14);
+		call StartNode_Yes8;
+	
+	end
+	
+	procedure StartNode_Yes8 begin
+	
+		fadein(200);
+		
+		Reply(mstr(380));
+		NOption(381,Node999,001);
+		
+		item_caps_adjust(dude_obj,100);
+		display_mstr(390);
+		
+		if dude_strength <= 7 and dude_endurance <= 7 then begin
+			critter_injure(dude_obj,DAM_CRIP_ARM_RIGHT);
+			display_mstr(391);
+		end
+	
+	end
+
+procedure timed_event_p_proc begin
+
+	if (fixed_param==local_var(LVAR_TimedEvent_Session)) then begin
+	
+		if local_var(LVAR_Counter) == 0 then begin 
+		
+			floater(200);
+			
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(8),local_var(LVAR_TimedEvent_Session));
+	
+		end
+	
+		else if local_var(LVAR_Counter) == 1 then begin 
+		
+			floater(201);
+			
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(8),local_var(LVAR_TimedEvent_Session));
+	
+		end
+	
+		else if local_var(LVAR_Counter) == 2 then begin 
+		
+			floater(202);
+			
+			set_local_var(LVAR_Counter,0);
+			add_timer_event(self_obj,game_ticks(random(30,90)),local_var(LVAR_TimedEvent_Session));
+	
+		end
+	
+	end
+
+end

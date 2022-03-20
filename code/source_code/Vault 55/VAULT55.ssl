@@ -1,0 +1,183 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Map Script for Sierra Army Base, Outside area
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\v13ent.h"
+
+#define NAME                    SCRIPT_VAULT55
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+      procedure cutscene;
+
+export variable aaa;
+export variable bbb;
+export variable ccc;
+export variable ddd;
+
+
+procedure start begin
+end
+
+variable counter;
+procedure map_enter_p_proc begin
+      
+      move_to(dude_obj,18704,2);
+      game_ui_disable;
+      anim(dude_obj,ANIMATE_ROTATION,0);
+      add_timer_event(self_obj,0,0);
+     
+     //if map_first_run then display_mstr(100);
+     
+end
+
+procedure map_update_p_proc begin
+      set_light_level(15);
+end
+
+procedure timed_event_p_proc begin
+      if (fixed_param==0) then begin
+            call cutscene;
+      end
+end
+
+      procedure cutscene begin
+      
+            if counter == 0 then begin
+            float_msg(bbb,mstr(300),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(5),0);
+            end
+            
+            if counter == 1 then begin
+            float_msg(dude_obj,mstr(301),FLOAT_MSG_BLUE);
+            add_timer_event(self_obj,game_ticks(2),0);
+            end
+            
+            if counter == 2 then begin
+            float_msg(dude_obj,mstr(302),FLOAT_MSG_BLUE);
+            add_timer_event(self_obj,game_ticks(5),0);
+            end
+            
+            if counter == 3 then begin
+            float_msg(aaa,mstr(303),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(5),0);
+            end
+            
+            if counter == 4 then begin
+            float_msg(aaa,mstr(304),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(3),0);
+            end
+            
+            if counter == 5 then begin
+            float_msg(dude_obj,mstr(305),FLOAT_MSG_BLUE);
+            add_timer_event(self_obj,game_ticks(4),0);
+            end
+            
+            if counter == 6 then begin
+            float_msg(aaa,mstr(306),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(3),0);
+            end
+            
+            if counter == 7 then begin
+            float_msg(aaa,mstr(307),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(3),0);
+            end
+            
+            if counter == 8 then begin
+            float_msg(aaa,mstr(308),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(4),0);
+            end
+            
+            if counter == 9 then begin
+            float_msg(ccc,mstr(309),2);
+            add_timer_event(self_obj,game_ticks(4),0);
+            end
+            
+            if counter == 10 then begin
+            float_msg(ddd,mstr(310),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(2),0);
+            end
+            
+            if counter == 11 then begin
+            float_msg(ddd,mstr(311),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(5),0);
+            end
+            
+            if counter == 12 then begin
+            float_msg(bbb,mstr(312),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(5),0);
+            end
+            
+            if counter == 13 then begin
+            float_msg(bbb,mstr(313),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(3),0);
+            end
+            
+            if counter == 14 then begin
+            float_msg(aaa,mstr(315),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(4),0);
+            end
+            
+            if counter == 15 then begin
+            float_msg(dude_obj,mstr(316),FLOAT_MSG_BLUE);
+            add_timer_event(self_obj,game_ticks(2),0);
+            end
+            
+            if counter == 16 then begin
+            float_msg(dude_obj,mstr(317),FLOAT_MSG_BLUE);
+            add_timer_event(self_obj,game_ticks(4),0);
+            end
+            
+            if counter == 17 then begin
+            float_msg(dude_obj,mstr(318),FLOAT_MSG_BLUE);
+            add_timer_event(self_obj,game_ticks(4),0);
+            end
+            
+            if counter == 18 then begin
+            float_msg(dude_obj,mstr(319),FLOAT_MSG_BLUE);
+            add_timer_event(self_obj,game_ticks(2),0);
+            end
+            
+            if counter == 19 then begin
+            float_msg(dude_obj,mstr(320),FLOAT_MSG_BLUE);
+            add_timer_event(self_obj,game_ticks(2),0);
+            end
+            
+            if counter == 20 then begin
+            float_msg(aaa,mstr(321),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(4),0);
+            end
+            
+            if counter == 21 then begin
+            float_msg(aaa,mstr(322),FLOAT_MSG_NORMAL);
+            add_timer_event(self_obj,game_ticks(5),0);
+            end
+            
+            if counter == 22 then begin
+            float_msg(dude_obj,mstr(323),FLOAT_MSG_BLUE);
+            add_timer_event(self_obj,game_ticks(2),0);
+            end
+            
+            if counter == 23 then begin
+                  fadeout(200);
+                  add_timer_event(self_obj,game_ticks(2),0);
+            end
+            
+            if counter == 24 then begin
+                  signal_end_game;
+            end
+            
+            counter++;
+      end

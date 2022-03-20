@@ -1,0 +1,139 @@
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+#define NAME                    SCRIPT_SCDOORG
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+
+#include "..\headers\SHADYW.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_GUARD_POST                 (8)
+
+procedure Starcik;
+procedure PozdrowieniaDoWiezienia;
+procedure Bye;
+procedure MoveToCamp;
+
+
+import variable jackal_tocamp_1;
+import variable jackal_tocamp_2;
+//import variable door_guard_obj;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+if map_first_run then begin
+      set_local_var(LVAR_GUARD_POST,self_tile);
+end
+
+if local_var(LVAR_GUARD_POST) == 21456 then jackal_tocamp_1:= self_obj;
+if local_var(LVAR_GUARD_POST) == 20856 then jackal_tocamp_2:= self_obj;
+
+end
+
+procedure map_exit_p_proc begin
+
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+            call Starcik;
+       gSay_End;
+       end_dialogue;
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure Starcik begin
+if local_var(LVAR_Herebefore)==1 then Reply(mstr(199)); else Reply(mstr(200));
+inc_local_var(LVAR_Herebefore);
+NOption(201,PozdrowieniaDoWiezienia,004);
+NOption(202,Bye,004);
+NOption(203,PozdrowieniaDoWiezienia,004);
+NOption(204,Bye,004);
+end
+
+procedure PozdrowieniaDoWiezienia begin
+Reply(mstr(210));
+NOption(211,MoveToCamp,004);
+NOption(212,Node998,004);
+end
+
+procedure Bye begin
+Reply(mstr(220));
+NOption(221,Node999,004);
+end
+
+procedure MoveToCamp begin
+call Node999;
+game_ui_disable;
+move_to(dude_obj,16723,1);
+game_ui_enable;
+end

@@ -1,0 +1,187 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Critters template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure critter_p_proc;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+
+#define NAME SCRIPT_ECDUCCAR
+
+procedure StartNode;
+procedure HereAgain;
+procedure NotYourBusiness;
+procedure MyName;
+procedure Barter2;
+procedure AfterBarter2;
+procedure Locations2;
+procedure Locations;
+procedure Node999;
+
+/* Defines */
+
+#define przedmiot(x) add_obj_to_inven(self_obj, create_object(x, 0, 0));
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+
+end
+
+procedure Node999 begin
+
+end
+
+procedure map_enter_p_proc begin
+
+   critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_TEAM_NUM, TEAM_DUC);
+   critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_AI_PACKET, AI_GENERIC_GUARDS);
+
+   if map_first_run then begin
+      przedmiot(PID_223_FMJ)
+      przedmiot(PID_223_FMJ)
+      przedmiot(PID_10MM_JHP)
+      przedmiot(PID_10MM_JHP)
+      przedmiot(PID_10MM_AP)
+      przedmiot(PID_MUTATED_FRUIT)
+      przedmiot(PID_STIMPAK)
+      przedmiot(PID_STIMPAK)
+      przedmiot(PID_STIMPAK)
+      przedmiot(PID_STIMPAK)
+      przedmiot(PID_FIRST_AID_KIT)
+      przedmiot(PID_IGUANA_ON_A_STICK)
+      przedmiot(PID_IGUANA_ON_A_STICK)
+      przedmiot(PID_IGUANA_ON_A_STICK)
+      item_caps_adjust(self_obj, 29);
+   end
+
+   Face_Critter(dude_obj, self_obj);
+
+end
+
+procedure critter_p_proc begin
+
+
+end
+
+procedure look_at_p_proc begin
+	script_overrides;
+	display_msg(mstr(100));
+end
+
+procedure description_p_proc begin
+	script_overrides;
+	display_msg(mstr(101));
+end
+
+procedure pickup_p_proc begin
+   //script_overrides;
+
+end
+
+procedure talk_p_proc begin
+   if global_var(GVAR_ENCO_DUC) == 0 then start_dialog_at_node(StartNode);
+   else start_dialog_at_node(HereAgain);
+end
+
+   procedure StartNode begin
+      Reply(mstr(114));
+      NOption(mstr(115),NotYourBusiness,001);
+      NOption(mstr(116)+dude_name+".",MyName,001);
+      set_global_var(GVAR_ENCO_DUC, 1);
+   end
+
+      procedure NotYourBusiness begin
+      Reply(mstr(105));
+      NOption(mstr(103),Barter2,001);
+      NOption(mstr(104),Locations,001);
+      end
+
+      procedure MyName begin
+      Reply(mstr(102));
+      NOption(mstr(103),Barter2,001);
+      NOption(mstr(104),Locations,001);
+      end
+
+         procedure Locations begin
+            Reply(mstr(107));
+            mark_area_known(MARK_TYPE_TOWN, 12, MARK_STATE_KNOWN);
+            NOption(mstr(108),Locations2,001);
+            NOption(mstr(109),Node999,001);
+            NOption(mstr(110),Barter2,001);
+         end
+
+            procedure Locations2 begin
+            Reply(mstr(111));
+            NOption(mstr(112),Node999,001);
+            NOption(mstr(113),Barter2,001);
+            end
+
+   procedure HereAgain begin
+      Reply(mstr(118));
+      NOption(mstr(103),Barter2,001);
+      NOption(mstr(104),Locations,001);
+      NOption(mstr(123),Node999,001);
+   end
+
+      procedure Barter2 begin
+         gdialog_barter;
+         call AfterBarter2;
+      end
+
+      procedure AfterBarter2 begin
+      Reply(mstr(125));
+      NOption(mstr(103),Barter2,001);
+      NOption(mstr(104),Locations,001);
+      NOption(mstr(121),Node999,001);
+      end
+
+procedure use_skill_on_p_proc begin
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure destroy_p_proc begin
+   set_global_var(GVAR_ENCO_DUC, 2);
+end

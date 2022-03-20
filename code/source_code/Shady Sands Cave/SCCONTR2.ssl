@@ -1,0 +1,258 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCCONTR2
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+	procedure Session_SetUp;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+	procedure timed_event_p_proc_lina_1;
+		procedure move_all_to_lina;
+		procedure move_all_to_za_lina;
+	procedure timed_event_p_proc_dynamit_1;
+		procedure move_all_to_dynamit;
+
+procedure Node998;
+procedure Node999;
+
+//me
+import variable lina_dynamit_script;
+
+//rebels
+import variable obj_garl;
+import variable rebel_isaac;
+import variable obj_mark;
+import variable obj_matt;
+import variable point_tycho;
+import variable rebel_jerome;
+import variable rebel_anna;
+import variable rebel_mack;
+import variable rebel_peasant1;
+import variable rebel_peasant2;
+import variable rebel_peasant3;
+import variable rebel_peasant4;
+import variable rebel_peasant5;
+import variable rebel_peasant6;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_TimedEvent_Session         (8)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+	call Session_SetUp;
+	
+	lina_dynamit_script:=self_obj;
+
+end
+
+	procedure Session_SetUp begin
+		
+		if local_var(LVAR_TimedEvent_Session) == 0 then begin
+				set_local_var(LVAR_TimedEvent_Session,100);
+		end
+		
+		inc_local_var(LVAR_TimedEvent_Session);
+		add_timer_event(self_obj,0,local_var(LVAR_TimedEvent_Session));
+		
+	end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+   
+end
+
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+
+	if (fixed_param==local_var(LVAR_TimedEvent_Session)) then begin
+
+			//add_timer_event(self_obj,1,local_var(LVAR_TimedEvent_Session));
+
+	end
+	
+	if (fixed_param==1) then begin
+
+            //call szopa_cutscene;
+            // lina cutscene
+				call timed_event_p_proc_lina_1;
+
+	end
+	
+	if (fixed_param==2) then begin
+
+            ////call szopa_cutscene;
+            // dynamit cutscene
+				call timed_event_p_proc_dynamit_1;
+
+	end
+
+end
+
+
+variable counter;
+
+procedure timed_event_p_proc_lina_1 begin
+
+            if counter==0 then begin
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),1);
+            end
+            
+            else if counter==1 then begin
+            display_msg("counter: "+counter);
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),1);
+            end
+            
+            else if counter==2 then begin
+            display_msg("counter: "+counter);
+            counter++;
+            call move_all_to_lina;
+            add_timer_event(self_obj,game_ticks(2),1);
+            end
+            
+            else if counter==3 then begin
+            display_msg("counter: "+counter);
+            counter++;
+            float_msg(self_obj,"lecimy z tematem",2);
+            add_timer_event(self_obj,game_ticks(5),1);
+            end
+            
+            else if counter==4 then begin
+            display_msg("counter: "+counter);
+            counter++;
+            fadeout(500);
+            add_timer_event(self_obj,game_ticks(2),1);
+            end
+            
+            else if counter==5 then begin
+            display_msg("counter: "+counter);
+            counter++;
+            call move_all_to_za_lina;
+            fadein(500);
+            game_ui_enable;
+            animate_move_obj_to_tile(self_obj,6074,ANIMATE_RUN);
+            add_timer_event(self_obj,game_ticks(2),1);
+            set_global_var(GVAR_SHADY_INFOFORV15,1);
+            end
+
+end
+
+	procedure move_all_to_lina begin
+		move_to(self_obj,10912,1);
+		move_to(dude_obj,11315,1);
+	end
+	                  
+	procedure move_all_to_za_lina begin
+		move_to(self_obj,tile_num_in_direction(10912,0,10),1);
+		move_to(dude_obj,tile_num_in_direction(11315,0,10),1);
+	end
+	                  
+	procedure move_all_to_dynamit begin
+		move_to(self_obj,11497,1);
+		move_to(dude_obj,11288,1);
+	end
+	
+procedure timed_event_p_proc_dynamit_1 begin
+
+            if counter==0 then begin
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),2);
+            end
+            
+            else if counter==1 then begin
+            counter++;
+            add_timer_event(self_obj,game_ticks(2),2);
+            end
+            
+            else if counter==2 then begin
+            counter++;
+            call move_all_to_dynamit;
+            add_timer_event(self_obj,game_ticks(2),2);
+            end
+            
+            else if counter==3 then begin
+            counter++;
+            float_msg(self_obj,"lecimy z tematem",2);
+            add_timer_event(self_obj,game_ticks(5),2);
+            end
+            
+            else if counter==4 then begin
+            counter++;
+            explosion(10492,1,200);
+            add_timer_event(self_obj,game_ticks(2),2);
+            end
+            
+            else if counter==5 then begin
+            counter++;
+            game_ui_enable;
+            animate_move_obj_to_tile(self_obj,6074,ANIMATE_RUN);
+            add_timer_event(self_obj,game_ticks(2),2);
+            set_global_var(GVAR_SHADY_INFOFORV15,1);
+            end
+            
+end

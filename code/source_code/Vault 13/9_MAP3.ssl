@@ -1,0 +1,96 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Arroyo Bridge
+        Location: Arroyo
+        Description: This is the Map Script for the Bridge of Arroyo
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created: December 04, 1997
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+#include "..\headers\ArDead.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_9_MAP3
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+
+export variable cave_mut1;
+export variable cave_mut2;
+export variable cave_mut3;
+export variable cave_mut4;
+export variable cave_stong_mut5;
+export variable cave_stong_mut6;
+
+export variable cave_patrol1;
+
+export variable i_vault13_door;
+
+export variable cave_jasper;
+
+export variable sirius_obj;
+
+export variable cave_servant1;
+export variable cave_servant2;
+
+export variable door_siurs1;
+export variable door_siurs2;
+
+export variable obj_transition_dweller;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   i_vault13_door := -1;
+
+   //Lighting;
+   //signal_end_game;
+
+
+	//move_to(dude_obj,21650,0);
+
+	Cavern_Lighting;
+
+end
+
+procedure map_exit_p_proc begin
+
+
+end
+
+procedure map_update_p_proc begin
+   Cavern_Lighting;
+end
+
+variable item;
+variable counter;
+procedure timed_event_p_proc begin
+
+
+end

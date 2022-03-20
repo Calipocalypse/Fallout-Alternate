@@ -1,0 +1,652 @@
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_AMUT_SIR
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+variable coutner, counter2;
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+// dialogues
+procedure Node200;
+
+procedure Node300;
+procedure Node301;
+procedure Node310;
+procedure Node310a;
+procedure Node320;
+procedure Node330;
+procedure Node340;
+procedure Node350;
+procedure Newborn;
+
+procedure jaspers_betrayal;
+
+procedure Pills;
+procedure Pills_Founded;
+procedure WhereToLook;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Only_once1                 (8)
+#define LVAR_Cutscene                   (9)
+#define LVAR_Home_Tile                  (10)
+
+
+#define cut local_var(LVAR_Cutscene)
+#define inc_cut inc_local_var(LVAR_Cutscene);
+#define BETRAYAL_CUTSCENE                    (1)
+#define TRANSITION_CUTSCENE                  (2)
+
+#define EXP_HEART_PILLS                      (750)
+
+#define jasper_hp                      get_critter_stat(cave_jasper, STAT_current_hp)
+
+import variable sirius_obj;
+import variable cave_jasper;
+import variable cave_stong_mut6;
+import variable cave_servant1;
+import variable cave_servant2;
+import variable door_siurs1;
+import variable door_siurs2;
+IMPORT variable obj_transition_dweller;
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+sirius_obj := self_obj;
+critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_CHILDRN);
+critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_CARAVAN_DRIVER);
+
+if jasper_has_been_betrayed then call jaspers_betrayal;
+
+//add_obj_to_inven(dude_obj, create_object(PID_MAGAZINE_MAP, 0, 0));
+
+//add_timer_event(self_obj, 0, TRANSITION_CUTSCENE);
+//move_to(dude_obj, tile_num_in_direction(self_tile, 2, 2), 0);
+//counter2 := -1; //te 3 usunac
+
+if map_first_run then set_local_var(LVAR_Home_Tile, self_tile);
+end
+
+procedure map_exit_p_proc begin
+
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       self_attack_dude;
+   end
+
+   if tile_distance_objs(self_obj, dude_obj) < 8 and jasper_has_been_betrayed then begin
+      set_global_var(GVAR_VAULT13MUT_JASPER, JASPER_IS_DEAD);
+      critter_stop(dude_obj)
+      Face_Critter(self_obj, dude_obj);
+      add_timer_event(self_obj, 0, BETRAYAL_CUTSCENE);
+   end
+
+   if tile_distance_objs(self_obj, dude_obj) < 8 and (not transition_cutscene_played)  then begin
+      set_global_var(GVAR_VAULT13MUT_TRANSITION_CUTSCENE, CUTSCENE_TRANSITION_PLAYED);
+      critter_stop(dude_obj)
+      Face_Critter(self_obj, dude_obj);
+      add_timer_event(self_obj, 0, TRANSITION_CUTSCENE);
+   end
+
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+      if local_var(LVAR_Personal_Enemy == 0) then set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   if global_var(GVAR_QUEST_VAULT13MUT_PILLS) == QUEST_PILLS_ACTIVE then start_dialog_at_node(Pills); else begin
+
+      if global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK)==0 then call Node200;
+      else if global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK)==1 then begin
+      start_gdialog(NAME,self_obj,4,-1,-1);
+       gSay_Start;
+           if dude_is_male then call Node300; else call Node301;
+       gSay_End;
+      end_dialogue;
+      end
+      else if global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK)>=2 then call Node200;
+
+   end
+end
+
+procedure destroy_p_proc begin
+
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure Node200 begin
+if dude_is_male then float_msg(self_obj,mstr(202),10); else float_msg(self_obj,mstr(203),10);
+end
+
+procedure Node300 begin
+Reply(mstr(300));
+NOption(302,Node310,001);
+NOption(304,Node320,001);
+NOption(306,Node340,001);
+end
+
+procedure Node301 begin
+Reply(mstr(301));
+NOption(303,Node310,001);
+NOption(305,Node320,001);
+NOption(306,Node340,001);
+end
+
+procedure Node310 begin
+if dude_is_female then Reply(mstr(310)); else Reply(mstr(311));
+NOption(312,Node310a,001);
+NOption(313,Node310a,001);
+end
+
+procedure Node310a begin
+call Node999;
+if dude_is_female then float_msg(self_obj,mstr(310),2); else float_msg(self_obj,mstr(311),2);
+call Node998;
+end
+
+procedure Node320 begin
+Reply(mstr(320));
+NOption(321,Node330,001);
+NOption(322,Node350,001);
+end
+
+procedure Node330 begin
+call Node999;
+game_ui_disable;
+coutner:=0;
+add_timer_event( self_obj, game_ticks( 0 ), 0 );
+end
+
+procedure Node340 begin
+call Node999;
+float_msg(self_obj,mstr(347),2);
+call Node998;
+end
+
+procedure Node350 begin
+Reply(mstr(350));
+set_global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK,2);
+NOption(351,Newborn,001);
+end
+
+procedure Newborn begin
+call Node999;
+end
+
+procedure jaspers_betrayal begin
+
+   set_obj_visibility(cave_jasper, false);
+
+end
+
+procedure Pills begin
+   Reply(500);
+   NOption(501,Node999,001);
+   if sirius_pills_in_inventory then NOption(502,Pills_Founded,001);
+   NOption(503,WhereToLook,001);
+end
+
+   procedure Pills_Founded begin
+      float_msg(self_obj, mstr(510), FLOAT_MSG_GREEN);
+      set_global_var(GVAR_QUEST_VAULT13MUT_PILLS, QUEST_PILLS_DONE);
+      give_exp_points(EXP_HEART_PILLS);
+      display_msg(mstr(530) + EXP_HEART_PILLS + mstr(531));
+      display_mstr(532);
+      set_global_var(GVAR_MAIN_DAYS_TO_TRANSITION, global_var(GVAR_MAIN_DAYS_TO_TRANSITION) + DAYS_TRANSITION_PILLS);
+   end
+
+   procedure WhereToLook begin
+      float_msg(self_obj, mstr(520), 2);
+   end
+
+#define DUDE_TILE1 24474
+#define ACTION_MUT_TILE1 24463
+procedure timed_event_p_proc begin
+
+   if( fixed_param == 0 ) then begin
+
+      if coutner == 0 then begin
+      coutner := 1;
+      float_msg(self_obj,mstr(330),9);
+      add_timer_event( self_obj, game_ticks( 2 ), 0 );
+      end
+
+      else if coutner == 1 then begin
+      coutner := 2;
+      add_timer_event( self_obj, game_ticks( 4 ), 0 );
+      float_msg(self_obj,mstr(332),5);
+      EnD
+
+      else if coutner == 2 then begin
+      coutner := 3;
+      add_timer_event( self_obj, game_ticks( 2 ), 0 );
+      float_msg(self_obj,mstr(337),9);
+      end
+
+      else if coutner == 3 then begin
+      coutner := 4;
+      fadeout(200);
+      add_timer_event( self_obj, game_ticks( 3 ), 0 );
+      end
+
+      else if coutner == 4  then begin
+      fadein(200);
+      coutner := 5;
+      add_timer_event( self_obj, game_ticks( 3 ), 0 );
+      float_msg(self_obj,mstr(333),5);
+
+      end
+
+      else if coutner == 5 then begin
+      float_msg(self_obj,mstr(334),5);
+      coutner++;
+      add_timer_event( self_obj, game_ticks( 2 ), 0 );
+      end
+
+      else if coutner == 6 then begin
+      coutner++;
+      float_msg(self_obj,mstr(340),9);
+      add_timer_event( self_obj, game_ticks( 4 ), 0 );
+      end
+
+      else if coutner == 7 then begin
+      coutner++;
+      float_msg(self_obj,mstr(341),9);
+      add_timer_event( self_obj, game_ticks( 5 ), 0 );
+      end
+
+      else if coutner == 8 then begin
+      coutner++;
+      float_msg(self_obj,mstr(342),9);
+      add_timer_event( self_obj, game_ticks( 4 ), 0 );
+      end
+
+      else if coutner == 9 then begin
+      coutner++;
+      float_msg(self_obj,mstr(343),9);
+      add_timer_event( self_obj, game_ticks( 4 ), 0 );
+      end
+
+      else if coutner == 10 then begin
+      coutner++;
+      float_msg(self_obj,mstr(344),9);
+      add_timer_event( self_obj, game_ticks( 4 ), 0 );
+      end
+
+      else if coutner == 11 then begin
+      coutner++;
+      float_msg(self_obj,mstr(345),9);
+      add_timer_event( self_obj, game_ticks( 4 ), 0 );
+      end
+
+      else if coutner == 12 then begin
+
+      game_ui_enable;
+      set_global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK, 2); //QUEST_ONLY_DELIVERED_HOLODISK
+      call Newborn;
+
+      end
+
+   end
+
+   else if fixed_param==BETRAYAL_CUTSCENE then begin
+
+      if cut == 0 then begin
+         game_ui_disable;
+         FadeOut(200);
+         tile_set_center(DUDE_TILE1);
+         if obj_is_locked(door_siurs1) then obj_unlock(door_siurs1);
+         if obj_is_locked(door_siurs2) then obj_unlock(door_siurs2);
+         if not obj_is_open(door_siurs1) then obj_open(door_siurs1);
+         if not obj_is_open(door_siurs2) then obj_open(door_siurs2);
+         add_timer_event(self_obj, game_ticks(1), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 1 then begin
+         animate_move_obj_to_tile(dude_obj, DUDE_TILE1, ANIMATE_RUN);
+         Face_Critter(cave_jasper, self_obj);
+         FadeIn(200);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 2 then begin
+         float_msg(cave_jasper, mstr(196), FLOAT_MSG_LIGHT_RED);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 3 then begin
+         float_msg(sirius_obj, mstr(197), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 4 then begin
+         float_msg(sirius_obj, mstr(198), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 5 then begin
+         float_msg(sirius_obj, mstr(199), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 6 then begin
+         float_msg(sirius_obj, mstr(204), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 7 then begin
+         float_msg(cave_jasper, mstr(205), FLOAT_MSG_LIGHT_RED);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 8 then begin
+         float_msg(sirius_obj, mstr(206), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 9 then begin
+         float_msg(cave_jasper, mstr(207), FLOAT_MSG_LIGHT_RED);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 10 then begin
+         float_msg(sirius_obj, mstr(208), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 11 then begin
+         float_msg(sirius_obj, mstr(209), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 12 then begin
+         float_msg(cave_jasper, mstr(210), FLOAT_MSG_LIGHT_RED);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 13 then begin
+         float_msg(sirius_obj, mstr(211), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 14 then begin
+         float_msg(sirius_obj, mstr(212), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 15 then begin
+         float_msg(sirius_obj, mstr(213), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 16 then begin
+         float_msg(cave_jasper, mstr(214), FLOAT_MSG_LIGHT_RED);
+         add_timer_event(self_obj, game_ticks(6), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 17 then begin
+         float_msg(sirius_obj, mstr(215), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(1), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 18 then begin
+         reg_anim_begin();
+         Face_Critter(cave_jasper, cave_stong_mut6);
+         reg_anim_animate(cave_stong_mut6, ANIM_fire_continuous, -1);
+         //reg_anim_animate(cave_jasper, ANIM_fire_dance, -1);
+         //reg_anim_animate(cave_jasper, ANIM_burned_to_nothing, -1);
+         reg_anim_animate_reverse(cave_stong_mut6, ANIM_fire_single, -1);
+         reg_anim_end();
+         float_msg(cave_jasper, mstr(250), 2);
+         critter_dmg(cave_jasper, random(100, 200), DMG_fire);
+         set_local_var(LVAR_Cutscene, 998);
+         add_timer_event(self_obj, 1, BETRAYAL_CUTSCENE);
+
+
+         //kill_critter(cave_jasper, ANIM_bad_landing_sf);
+
+         //kill_critter(cave_jasper, ANIM_burned_to_nothing_sf);
+      end
+
+      else if cut == 999 then begin
+
+         if jasper_hp <=0 then begin
+            game_ui_disable;
+            set_local_var(LVAR_Cutscene, 18);
+            add_timer_event(self_obj, game_ticks(5), BETRAYAL_CUTSCENE);
+         end
+
+         else begin
+            set_local_var(LVAR_Cutscene, 998);
+            add_timer_event(self_obj, 1, BETRAYAL_CUTSCENE);
+         end
+
+      end
+
+      else if cut == 19 then begin
+         game_ui_disable;
+         Face_Critter(cave_servant1, sirius_obj);
+         float_msg(sirius_obj, mstr(216), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(5), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 20 then begin
+         float_msg(sirius_obj, mstr(217), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 21 then begin
+         float_msg(sirius_obj, mstr(218), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(6), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 22 then begin
+         float_msg(sirius_obj, mstr(219), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(4), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 23 then begin
+         float_msg(sirius_obj, mstr(220), 2);
+         add_timer_event(self_obj, game_ticks(1), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 24 then begin
+         animate_move_obj_to_tile(cave_servant1,23678, ANIMATE_RUN);
+         animate_move_obj_to_tile(cave_servant2,23678, ANIMATE_RUN);
+         add_timer_event(self_obj, 15, BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 25 then begin
+         FadeOut(200);
+         set_obj_visibility(cave_servant2, true);
+         set_obj_visibility(cave_servant1, true);
+         add_timer_event(self_obj, 0, BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 26 then begin
+         FadeIn(200);
+         float_msg(sirius_obj, mstr(221), FLOAT_MSG_WHITE);
+         Face_Critter(cave_servant1, dude_obj);
+         Face_Critter(dude_obj, sirius_obj);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 27 then begin
+         float_msg(sirius_obj, mstr(222), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 28 then begin
+         float_msg(sirius_obj, mstr(223), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(4), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 29 then begin
+         float_msg(sirius_obj, mstr(224), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(4), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 30 then begin
+         float_msg(sirius_obj, mstr(225), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(4), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 31 then begin
+         float_msg(sirius_obj, mstr(226), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(4), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 32 then begin
+         float_msg(sirius_obj, mstr(227), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(4), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 33 then begin
+         float_msg(sirius_obj, mstr(228), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(3), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 34 then begin
+         float_msg(sirius_obj, mstr(229), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(5), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 35 then begin
+         float_msg(sirius_obj, mstr(230), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(5), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 36 then begin
+         float_msg(sirius_obj, mstr(231), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(5), BETRAYAL_CUTSCENE);
+      end
+
+      else if cut == 37 then begin
+         float_msg(sirius_obj, mstr(232), FLOAT_MSG_WHITE);
+         add_timer_event(self_obj, game_ticks(5), BETRAYAL_CUTSCENE);
+         set_global_var(GVAR_QUEST_VAULT13MUT_PILLS, QUEST_PILLS_ACTIVE);
+         set_global_var(GVAR_QUEST_SHADY_JASPER_HOLODISK, 3);
+         game_ui_enable;
+         add_obj_to_inven(dude_obj, create_object(PID_MAGAZINE_MAP, 0, 0));
+
+         set_global_var(GVAR_LAURA_STATE, LAURA_STATE_LISTEN);
+         add_timer_event(obj_laura, 0, TIMED_ADD_PARTY);
+      end
+
+      inc_cut
+
+   end
+
+   if( fixed_param == TRANSITION_CUTSCENE ) then begin
+
+      if counter2 == 0 then begin
+      game_ui_disable;
+      float_msg(self_obj,mstr(600),FLOAT_MSG_NORMAL);
+      add_timer_event( self_obj, game_ticks( 2 ), TRANSITION_CUTSCENE );
+      end
+
+      else if counter2 == 1 then begin
+      add_timer_event( self_obj, game_ticks( 2 ), TRANSITION_CUTSCENE );
+      animate_move_obj_to_tile(self_obj, tile_num_in_direction(tile_num(obj_transition_dweller), 5, 1), ANIMATE_WALK);
+      float_msg(self_obj,mstr(601),FLOAT_MSG_NORMAL);
+      end
+
+      else if counter2 == 2 then begin
+      add_timer_event( self_obj, game_ticks( 2 ), TRANSITION_CUTSCENE );
+      float_msg(obj_transition_dweller,mstr(602),FLOAT_MSG_BLUE);
+      Face_Critter(obj_transition_dweller, self_obj);
+         reg_anim_begin();
+         reg_anim_animate(self_obj, ANIM_magic_hands_middle, -1);
+         reg_anim_end();
+
+      end
+
+      else if counter2 == 3 then begin
+      add_timer_event( self_obj, game_ticks( 4 ), TRANSITION_CUTSCENE );
+      metarule3(107,obj_transition_dweller,FID_NAGHUL,0);
+      float_msg(self_obj,mstr(603),FLOAT_MSG_RED);
+      end
+
+      else if counter2 == 4 then begin
+      add_timer_event( self_obj, game_ticks( 4 ), TRANSITION_CUTSCENE );
+      float_msg(self_obj,mstr(604),FLOAT_MSG_RED);
+      end
+
+      else if counter2 == 5 then begin
+      add_timer_event( self_obj, game_ticks( 1 ), TRANSITION_CUTSCENE );
+      float_msg(self_obj,mstr(605),FLOAT_MSG_RED);
+      end
+
+      else if counter2 == 6 then begin
+      add_timer_event( self_obj, game_ticks( 5 ), TRANSITION_CUTSCENE );
+      animate_move_obj_to_tile(cave_stong_mut6, tile_num(obj_transition_dweller), ANIMATE_WALK);
+      end
+
+      else if counter2 == 7 then begin
+      add_timer_event( self_obj, game_ticks( 4 ), TRANSITION_CUTSCENE );
+      fadeout(200);
+      move_to(cave_stong_mut6, ACTION_MUT_TILE1, 0);
+      set_obj_visibility(obj_transition_dweller, true);
+      end
+
+      else if counter2 == 8 then begin
+      add_timer_event( self_obj, game_ticks( 4 ), TRANSITION_CUTSCENE );
+      fadein(200);
+      game_ui_enable;
+      end
+
+
+      counter2++;
+   end
+
+END

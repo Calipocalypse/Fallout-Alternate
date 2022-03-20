@@ -1,0 +1,116 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCOSWALD
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+procedure StartNode;
+procedure StartNode_A;
+procedure StartNode_B;
+procedure StartNode_A2;
+
+import variable guard_camp_oswald;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+      guard_camp_oswald:=self_obj;
+      critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+   
+   if (not game_ui_is_disabled) and (not combat_is_initialized) and global_var(GVAR_SHADY_REBELLION) == 0 and local_var(LVAR_Hostile) != 2 and tile_distance_objs(dude_obj,self_obj) < 3 then call talk_p_proc;
+   
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+	start_dialog_at_node(StartNode);
+end
+
+	procedure StartNode begin
+		Reply(mstr(200));
+		NOption(mstr(201),StartNode_A,001);
+		NOption(mstr(202),StartNode_B,001);
+	end
+	
+	procedure StartNode_B begin
+		Reply(mstr(210));
+		NOption(mstr(211),Node998,001);
+	end
+	
+	procedure StartNode_A begin
+		Reply(mstr(220));
+		NOption(mstr(221),StartNode_A2,001);
+	end
+	
+	procedure StartNode_A2 begin
+		Reply(mstr(230));
+		NOption(mstr(231),Node998,001);
+	end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+   attack_setup(self_obj,dude_obj);
+end
+
+procedure Node999 begin
+end

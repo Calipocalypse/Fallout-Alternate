@@ -1,0 +1,211 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCETHAN
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure FirstTime;
+procedure FirstTime2;
+procedure FirstTime3;
+procedure FirstTime4;
+procedure First_Time4_2_becauseiveforgottenaboutthisone;
+procedure FirstTime5;
+procedure FirstTime6;
+procedure FirstTime7_south;
+procedure FirstTime7_west;
+procedure FirstTime7_north;
+procedure FirstTime7_east;
+procedure Angry;
+procedure Max_Stone;
+procedure Max_Stone2;
+procedure SecondTime;
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Angry                      (8) // angry == 1, not nagry == 0
+#define LVAR_FIRST_TIME                 (9) // 0 - first 2 - second
+
+import variable obj_ethan;
+
+procedure start begin
+
+end
+
+
+procedure map_enter_p_proc begin
+   obj_ethan := self_obj;
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+      if tile_distance_objs(self_obj,dude_obj) > 2 and local_var(LVAR_Angry) == 0 then floater(300); else begin
+            if local_var(LVAR_FIRST_TIME) == 0 and local_var(LVAR_Angry) == 0 then start_dialog_at_node(FirstTime);
+            else if local_var(LVAR_FIRST_TIME) == 2 and local_var(LVAR_Angry) == 0 then start_dialog_at_node(SecondTime);
+      end
+
+      if local_var(LVAR_FIRST_TIME) == 1 and local_var(LVAR_Angry) == 0 then float_msg(self_obj,mstr(random(400,402)),FLOAT_MSG_NORMAL);
+      else if local_var(LVAR_Angry) == 1 then float_msg(self_obj,mstr(random(242,244)),2);
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure FirstTime begin
+      Reply(mstr(200));
+      NOption(mstr(201),FirstTime2,004);
+      NOption(mstr(202),Node999,001);
+end
+
+procedure FirstTime2 begin
+      Reply(mstr(210));
+      NOption(mstr(211),FirstTime3,001);
+end
+
+procedure FirstTime3 begin
+      Reply(mstr(220));
+      NOption(mstr(221),FirstTime4,001);
+end
+
+procedure FirstTime4 begin
+      Reply(mstr(230));
+      NOption(mstr(231),Angry,001);
+      NOption(mstr(232),First_Time4_2_becauseiveforgottenaboutthisone,001);
+end
+
+procedure Angry begin
+      Reply(mstr(240));
+      set_local_var(LVAR_Angry,1);
+      NOption(mstr(241),Node999,001);
+end
+
+procedure First_Time4_2_becauseiveforgottenaboutthisone begin
+      Reply(mstr(250));
+      NOption(mstr(251),Max_Stone,001);
+      NOption(mstr(252),FirstTime5,001);
+end
+
+procedure FirstTime5 begin
+      Reply(mstr(260));
+      NOption(mstr(261),FirstTime6,001);
+      NOption(mstr(262),Node999,001);
+      set_local_var(LVAR_FIRST_TIME,2);
+end
+
+procedure FirstTime6 begin //tutaj to pytanie wlasnie
+      Reply(mstr(270));
+      NOption(mstr(271),FirstTime7_south,001);
+      NOption(mstr(272),FirstTime7_east,001);
+      NOption(mstr(273),FirstTime7_west,001);
+      NOption(mstr(274),FirstTime7_north,001);
+end
+
+procedure FirstTime7_south begin
+      Reply(mstr(275));
+      NOption(mstr(272),FirstTime7_east,001);
+      NOption(mstr(273),FirstTime7_west,001);
+      NOption(mstr(274),FirstTime7_north,001);
+end
+
+procedure FirstTime7_east begin
+      Reply(mstr(276));
+      set_global_var(GVAR_ETHAN,3);
+      NOption(mstr(277),Node999,001);
+      give_exp_points(100);
+      display_mstr(1000);
+      set_local_var(LVAR_FIRST_TIME,999);
+end
+
+procedure FirstTime7_west begin
+      Reply(mstr(276));
+      set_global_var(GVAR_ETHAN,1);
+      NOption(mstr(277),Node999,001);
+      give_exp_points(100);
+      display_mstr(1000);
+      set_local_var(LVAR_FIRST_TIME,999);
+end
+
+procedure FirstTime7_north begin
+      Reply(mstr(276));
+      set_global_var(GVAR_ETHAN,2);
+      NOption(mstr(277),Node999,001);
+      give_exp_points(100);
+      display_mstr(1000);
+      set_local_var(LVAR_FIRST_TIME,999);
+end
+
+procedure SecondTime begin
+      Reply(mstr(263));
+      NOption(mstr(261),FirstTime6,001);
+      NOption(mstr(262),Node999,001);
+end
+
+procedure Max_Stone begin
+      Reply(280);
+      NOption(mstr(281),Max_Stone2,001);
+end
+
+procedure Max_Stone2 begin
+      Reply(290);
+      NOption(mstr(291),FirstTime5,001);
+end

@@ -1,0 +1,74 @@
+#include "headers\define.h"
+
+#define NAME                    SCRIPT_ELEVATOR
+
+
+procedure start;
+procedure start_p_proc;
+procedure spatial_p_proc;
+procedure use_p_proc;
+
+procedure start begin
+end
+
+procedure start_p_proc begin
+
+end
+
+procedure spatial_p_proc begin
+display_msg("indx: "+cur_map_index);
+
+   if (source_obj == dude_obj) then begin
+
+   
+   /* Vault15 */
+   
+      //if cur_map_index==8 then set_global_var(GVAR_VAULT15_ELEVATOR_USED,1); //TRZEBA USTAWIC NA DRABINIE GVAR 0
+      if cur_map_index==7 then display_msg("to jest vault15sent");
+      if cur_map_index==7 then metarule(15, 33);
+      
+      if cur_map_index==8 then display_msg("to jest vault15");
+      if cur_map_index==8 and elevation(dude_obj)==0 and tile_distance(tile_num(dude_obj),13304) < 3 then metarule(15, 34);
+      if cur_map_index==8 and elevation(dude_obj)==1 then metarule(15, 34);
+      if cur_map_index==8 and elevation(dude_obj)==2 then metarule(15, 34);
+      
+      if cur_map_index==8 and tile_distance(tile_num(dude_obj),13304) > 4 and elevation(dude_obj)==0 then metarule(15, 33);
+      //display_msg("dude tiel:"+tile_num(dude_obj));
+   
+      if cur_map_index==4 then display_msg("to jest vaultleu");
+      if cur_map_index==4 then metarule(15, 26);
+      
+      /* Bractwo Stali */
+      
+            //na zewnatrz
+            if cur_map_index == 14 then metarule(15, 29);
+            //w srodku
+            else if cur_map_index == 15 then begin
+                  
+                  metarule(15, 31);
+                  
+            end
+            
+      /* Krypta 12 */
+      
+      if cur_map_index==12 then metarule(15, 32);
+      
+      /* Krypta 13 - do zmiany */
+      
+      if cur_map_index==16 then load_map(41,0); // V13ENT
+      if cur_map_index==40 then load_map(41,0);
+      if cur_map_index==41 then load_map(16,0);
+      
+      
+   end
+end
+
+procedure use_p_proc begin
+
+   
+   /* Shady Sands */
+      if cur_map_index==6 then display_msg("zmiana elewacji na shady");
+      if cur_map_index==6 and elevation(dude_obj) == 0 then move_to(dude_obj,15337,1);
+      else if cur_map_index==6 and elevation(dude_obj) == 1 then move_to(dude_obj,21058,0);
+
+end

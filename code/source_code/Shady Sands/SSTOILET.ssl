@@ -1,0 +1,111 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure damage_p_proc;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+procedure drop_p_proc;
+procedure is_dropping_p_proc;
+procedure pickup_p_proc;
+
+/* Defines */
+
+#define NAME SCRIPT_SSTOILET
+
+#define LVAR_Roped           (0)
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+
+end
+
+procedure description_p_proc begin
+   script_overrides;
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure use_p_proc begin
+   script_overrides;
+   if obj_is_open(self_obj) then begin
+      if local_var(LVAR_Roped) == true then move_to(dude_obj, 13117, 2);
+      else display_msg("Moglbys tu zejsc w celu zbadania diety tutejszej spolecznosci, lecz skonczyloby sie to conajmniej zlamaniem otwartym");
+   end
+   else obj_open(self_obj);
+end
+
+procedure use_obj_on_p_proc begin
+   if local_var(LVAR_Roped) == 0 THEN script_overrides;
+   if (obj_pid(obj_being_used_with) == PID_ROPE) then begin
+      if obj_is_open(self_obj) then begin
+         if local_var(LVAR_Roped) == FALSE then begin
+            set_local_var(LVAR_Roped, true);
+            rm_obj_from_inven(dude_obj, obj_carrying_pid_obj(dude_obj, PID_ROPE));
+            display_msg("Solidnie mocujesz line");
+         end
+         else move_to(self_obj, 13117, 2);
+      end
+      else display_msg("Powinienes to najpierw otworzyc");
+   end
+end
+
+procedure use_skill_on_p_proc begin
+
+end
+
+procedure drop_p_proc begin
+
+end
+
+procedure is_dropping_p_proc begin
+
+end
+
+procedure pickup_p_proc begin
+
+end

@@ -1,0 +1,205 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SSRADIO
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure pickup_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure use_p_proc;
+procedure Node999;
+
+procedure RepairTime;
+procedure somethingDone;
+procedure Good1;
+procedure Good2;
+procedure Kaboom;
+procedure KnockKnockKnockBoom;
+procedure Zap;
+
+procedure tycho_radio;
+procedure RollSuccess;
+procedure RollvsSkillRepair;
+procedure LeaveIt;
+
+procedure destroy_radio;
+
+#define LVAR_State               (4) // 0 - not repaired 1 - repaired 2- kaboom
+#define LVAR_Hit                 (5) // 0 - not hit, 1 - hit once 2 - hit twice 3 - hit good 4 - kaboom
+#define LVAR_Plug                (6) // 0 - no 1 -yes
+#define felix_can_see_dude       obj_can_see_obj(person_felix,dude_obj)
+
+import variable person_felix;
+import variable obj_green_explosion;
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+if (map_first_run) then begin set_local_var(LVAR_State,0); set_local_var(LVAR_Hit,0); set_local_var(LVAR_Plug,0); end
+if local_var(LVAR_State) == 2 then begin set_obj_visibility(self_obj,true); end
+//display_msg("Script radio works");
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure use_p_proc begin
+
+	if (global_var(GVAR_SHADY_TYCHO_CHILD) == 5 or global_var(GVAR_SHADY_TYCHO_CHILD) == 4) and tile_distance_objs(person_felix,self_obj) > 2 then start_dialog_at_node(tycho_radio);
+	else if (global_var(GVAR_SHADY_TYCHO_CHILD) == 5 or global_var(GVAR_SHADY_TYCHO_CHILD) == 4)  then call tycho_radio;
+	else if global_var(GVAR_QUEST_SHADYSANDS_RADIO) == 0 then float_msg(person_felix,mstr(250),2);
+	else if global_var(GVAR_QUEST_SHADYSANDS_RADIO) == 1 then start_dialog_at_node(RepairTime);
+	else if global_var(GVAR_QUEST_SHADYSANDS_RADIO) == 2 then display_mstr(251);
+
+end
+
+
+procedure damage_p_proc begin
+end
+
+procedure pickup_p_proc begin
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+call use_p_proc;
+end
+
+procedure use_obj_on_p_proc begin
+if( obj_pid(obj_being_used_with) == PID_FREQUENCY_FILTER ) then add_timer_event(self_obj,game_ticks(8),15);
+display_msg("uzyto objektu"+obj_pid(obj_being_used_with));
+end
+
+procedure RepairTime begin
+Reply(mstr(210));
+NOption(212,Good1,001);
+NOption(213,Kaboom,004);
+NOption(214,somethingDone,004);
+NOption(215,KnockKnockKnockBoom,004);
+NOption(216,Kaboom,004);
+NOption(217,Zap,004);
+NOption(218,Good2,004);
+NOption(219,Node999,004);
+end
+
+procedure somethingDone begin
+Reply(mstr(225));
+NOption(212,Good1,001);
+NOption(213,Kaboom,004);
+NOption(214,somethingDone,004);
+NOption(215,KnockKnockKnockBoom,004);
+NOption(216,Kaboom,004);
+NOption(217,Zap,004);
+NOption(218,Good2,004);
+NOption(219,Node999,004);
+end
+
+procedure somethingDone2 begin
+Reply(mstr(226));
+NOption(212,Good1,001);
+NOption(213,Kaboom,004);
+NOption(214,somethingDone,004);
+NOption(215,KnockKnockKnockBoom,004);
+NOption(216,Kaboom,004);
+NOption(217,Zap,004);
+NOption(218,Good2,004);
+NOption(219,Node999,004);
+end
+
+procedure worked begin
+Reply(mstr(230));
+NOption(231,Node999,001);
+end
+
+procedure Node999 begin
+end
+
+procedure Kaboom begin
+call Node999;
+explosion(tile_num(dude_obj),0,15);
+set_obj_visibility(self_obj,true);
+set_local_var(LVAR_State,2);
+float_msg(person_felix,mstr(191),2);
+add_timer_event(person_felix,10,2);
+end
+
+procedure Good1 begin
+set_local_var(LVAR_Plug,1);
+call somethingDone;
+end
+
+procedure Good2 begin
+if local_var(LVAR_Plug) == 1 AND local_var(LVAR_Hit) == 3 then begin
+set_local_var(LVAR_State,1);
+set_global_var(GVAR_QUEST_SHADYSANDS_RADIO,2);
+call worked;
+give_xp(300);
+
+end else call somethingDone;
+end
+
+procedure Zap begin
+critter_dmg(dude_obj,1998,DMG_electrical);
+
+end
+procedure KnockKnockKnockBoom begin
+inc_local_var(LVAR_Hit);
+if local_var(LVAR_Hit) == 1 then call somethingDone;
+if local_var(LVAR_Hit) == 2 then call somethingDone;
+if local_var(LVAR_Hit) == 3 then call somethingDone2;
+if local_var(LVAR_Hit) == 4 then call Kaboom;
+end
+
+procedure destroy_radio begin
+
+	//play_sfx
+	game_ui_disable;
+	add_timer_event(person_felix,5,5);
+   set_obj_visibility(obj_green_explosion,false);
+		reg_anim_begin();
+      reg_anim_animate_and_hide(obj_green_explosion, ANIM_stand,-1);
+      reg_anim_end();
+end
+
+procedure tycho_radio begin
+   Reply(mstr(300));
+   if obj_is_carrying_obj_pid(dude_obj,PID_FREQUENCY_FILTER) then NOption(301, RollSuccess, 001);
+   NOption(302, destroy_radio, 001);
+   NOption(303, Node999, 001);
+end
+
+procedure RollSuccess begin
+   if not felix_can_see_dude then begin
+      display_mstr(305);
+      display_mstr(306);
+      give_exp_points(100);
+      set_global_var(GVAR_SHADY_TYCHO_CHILD, TYCHO_RADIO_DONE_FILTER);
+      add_timer_event(person_felix, 0, 64);
+   end
+   else call LeaveIt;
+end
+
+procedure LeaveIt begin
+   float_msg(person_felix,mstr(310) , 2);
+end

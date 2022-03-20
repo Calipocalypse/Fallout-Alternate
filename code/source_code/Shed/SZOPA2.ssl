@@ -1,0 +1,242 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Maps template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#include "..\headers\updatmap.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+   procedure shed_first_encounter;
+   procedure shed_desert_rangers_tent;
+
+
+/* Defines */
+#define NAME                  SCRIPT_SZOPA2
+
+#define Counter global_var(CRITTER1)
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+export variable obj_map_script;
+//Main 3
+export variable obj_franz;
+export variable obj_anna;
+export variable obj_vavro;
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+
+end
+
+procedure map_enter_p_proc begin
+
+   obj_map_script := self_obj;
+
+   if map_first_run then add_timer_event(self_obj,0,SHED_CREATE_DR_TENT);
+
+   //Lighting;
+   if not(is_loading_game) then begin
+       if map_first_run then begin
+          display_msg(mstr(100));
+          set_global_var(GVAR_SHED_VISITED, SHED_VISITED);
+       end
+   end
+
+end
+
+procedure map_update_p_proc begin
+   //Lighting;
+end
+
+procedure map_exit_p_proc begin
+
+end
+
+procedure timed_event_p_proc begin
+   if fixed_param==SHED_FIRST_ENCOUNTER then begin
+      call shed_first_encounter;
+   end
+
+   if fixed_param==SHED_CREATE_DR_TENT then begin
+      call shed_desert_rangers_tent;
+   end
+
+end
+
+   procedure shed_first_encounter begin
+      if Counter == 0 then begin
+         ates(1,SHED_FIRST_ENCOUNTER)
+         inc_global_var(CRITTER1);
+         shed_disable_anna_home_tile
+         shed_disable_vavro_home_tile
+         shed_disable_franz_home_tile
+         animate_move_obj_to_tile(obj_vavro, 22125, ANIMATE_RUN);
+         animate_move_obj_to_tile(obj_franz, 21723, ANIMATE_RUN);
+         animate_move_obj_to_tile(obj_anna, 21526, ANIMATE_RUN);
+         game_ui_disable;
+         tile_set_center(dude_tile);
+      end
+      else if Counter == 1 then begin
+         if tile_num(obj_vavro) == 22125 and tile_num(obj_franz) == 21723 and tile_num(obj_anna) == 21526 then begin
+         ates(1,SHED_FIRST_ENCOUNTER)
+         inc_global_var(CRITTER1);
+         end
+         else begin
+            if tile_num(obj_vavro) == 22125 then Face_Critter(dude_obj, obj_vavro);
+            if tile_num(obj_franz) == 21723 then Face_Critter(dude_obj, obj_franz);
+            if tile_num(obj_anna) == 21526 then Face_Critter(dude_obj, obj_anna);
+            dec_global_var(CRITTER1);
+            ates(1,SHED_FIRST_ENCOUNTER)
+         end
+      end
+      else if Counter == 2 then begin
+            anim(self_obj, 0, obj_get_rot(self_obj));
+            if tile_num(obj_vavro) == 22125 then Face_Critter(dude_obj, obj_vavro);
+            if tile_num(obj_franz) == 21723 then Face_Critter(dude_obj, obj_franz);
+            if tile_num(obj_anna) == 21526 then Face_Critter(dude_obj, obj_anna);
+            float_msg(obj_vavro,mstr(200),FLOAT_MSG_WHITE);
+            ates(game_ticks(2),SHED_FIRST_ENCOUNTER)
+            inc_global_var(CRITTER1);
+      end
+      else if Counter == 3 then begin
+            float_msg(obj_vavro,mstr(201),FLOAT_MSG_WHITE);
+            ates(game_ticks(4),SHED_FIRST_ENCOUNTER)
+            inc_global_var(CRITTER1);
+      end
+      else if Counter == 4 then begin
+            float_msg(obj_vavro,mstr(202),FLOAT_MSG_WHITE);
+            ates(game_ticks(4),SHED_FIRST_ENCOUNTER)
+            inc_global_var(CRITTER1);
+      end
+      else if Counter == 5 then begin
+            float_msg(obj_vavro,mstr(203),FLOAT_MSG_WHITE);
+            ates(game_ticks(1),SHED_FIRST_ENCOUNTER)
+            inc_global_var(CRITTER1);
+            //shed_enable_vavro_home_tile
+      end
+      else if Counter == 6 then begin
+         //19724
+         if tile_num(obj_vavro) == 19724 and dude_tile==tile_num_in_direction(19724,2,2) then begin
+            ates(1,SHED_FIRST_ENCOUNTER)
+            Face_Critter(dude_obj, obj_vavro);
+            inc_global_var(CRITTER1);
+         end
+         else begin
+         tile_set_center(dude_tile);
+         ates(1,SHED_FIRST_ENCOUNTER)
+         animate_move_obj_to_tile(obj_vavro, 19724, ANIMATE_WALK);
+         animate_move_obj_to_tile(dude_obj, tile_num_in_direction(19724,2,2), ANIMATE_WALK);
+         end
+      end
+
+      else if Counter == 7 then begin
+            float_msg(obj_vavro,mstr(204),FLOAT_MSG_WHITE);
+            ates(game_ticks(1),SHED_FIRST_ENCOUNTER)
+            inc_global_var(CRITTER1);
+            shed_enable_anna_home_tile
+            shed_enable_franz_home_tile
+      end
+
+      else if Counter == 8 then begin
+         if tile_num(obj_vavro) == 17324 and dude_tile==tile_num_in_direction(17324,2,2) then begin
+            ates(game_ticks(1),SHED_FIRST_ENCOUNTER)
+            Face_Critter(dude_obj, obj_vavro);
+            inc_global_var(CRITTER1);
+         end
+         else begin
+            ates(1,SHED_FIRST_ENCOUNTER)
+            tile_set_center(dude_tile);
+            animate_move_obj_to_tile(obj_vavro, 17324, ANIMATE_WALK);
+            animate_move_obj_to_tile(dude_obj, tile_num_in_direction(17324,2,2), ANIMATE_WALK);
+         end
+      end
+
+      else if Counter == 9 then begin
+            float_msg(obj_vavro,mstr(205),FLOAT_MSG_WHITE);
+            ates(game_ticks(3),SHED_FIRST_ENCOUNTER)
+            inc_global_var(CRITTER1);
+      end
+
+      else if Counter == 10 then begin
+            float_msg(obj_vavro,mstr(206),FLOAT_MSG_WHITE);
+            ates(game_ticks(3),SHED_FIRST_ENCOUNTER)
+            inc_global_var(CRITTER1);
+      end
+
+      else if Counter == 11 then begin
+            float_msg(obj_vavro,mstr(207),FLOAT_MSG_WHITE);
+            ates(game_ticks(3),SHED_FIRST_ENCOUNTER)
+            inc_global_var(CRITTER1);
+      end
+
+      else if Counter == 12 then begin
+            float_msg(obj_vavro,mstr(208),FLOAT_MSG_WHITE);
+            ates(game_ticks(2),SHED_FIRST_ENCOUNTER)
+            inc_global_var(CRITTER1);
+      end
+
+      else if Counter == 13 then begin
+            float_msg(obj_vavro,mstr(209),FLOAT_MSG_WHITE);
+            ates(game_ticks(2),SHED_FIRST_ENCOUNTER)
+            inc_global_var(CRITTER1);
+      end
+
+      else if Counter == 14 then begin
+            float_msg(obj_vavro,mstr(210),FLOAT_MSG_WHITE);
+            shed_enable_vavro_home_tile
+            game_ui_enable;
+      end
+
+   end
+
+variable tent_tile;
+variable pid;
+   procedure shed_desert_rangers_tent begin
+      tent_tile := 17759;
+      move_to(dude_obj, tent_tile, 0);
+      pid := 50332584;
+      create_object(pid, tent_tile, 0);
+      create_object((pid+1), tile_num_in_direction(tent_tile,2,1), 0);
+      create_object((pid+2), tile_num_in_direction(tent_tile,2,2), 0);
+      create_object((pid+3), tile_num_in_direction(tent_tile,2,4), 0);
+      create_object((pid+4), tile_num_in_direction(tent_tile,2,5), 0);
+      create_object((pid+5), tile_num_in_direction(tent_tile,2,6), 0);
+      create_object((pid+6), tile_num_in_direction(tent_tile,2,7), 0);
+      tent_tile := tile_num_in_direction(tent_tile,2,7);
+      create_object((pid+7), tile_num_in_direction(tent_tile,0,1), 0);
+      //create_object((pid+8), tile_num_in_direction(tent_tile,1,2), 0);
+     // create_object((pid+9), tile_num_in_direction(tent_tile,1,2), 0);
+      //create_object((pid+10), tile_num_in_direction(tent_tile,1,3), 0);
+   end
+

@@ -1,0 +1,138 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Generic Lesser Rat
+        Location: Arroyo
+        Description: Generic lesser rat when you need a small, not very strong rat.
+
+        Log:
+
+           Created: December 02, 1997
+
+           Updated:
+*/
+
+/* Include Files */
+
+#include "..\headers\define.h"
+//#include "..\headers\<TownName.h>"
+
+#define NAME                    SCRIPT_SCANNRA2
+
+#include "..\headers\command.h"
+//#include "..\headers\ModReact.h"
+
+#define LVAR_Home_Tile (0)
+#define LVAR_Hostile   (1)
+#define LVAR_Personal_Enemy (2)
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure timed_event_p_proc;
+procedure combat_p_proc;
+
+procedure assign;
+
+import variable obj_cave_rat_ally1;
+import variable obj_cave_rat_ally2;
+import variable obj_cave_rat_ally3;
+
+import variable obj_cave_ratmole;
+import variable obj_cave_rat_enemy1;
+import variable obj_cave_rat_enemy3;
+import variable obj_cave_rat_enemy2;
+import variable rebel_annadaughter;
+
+/* Local variables which do not need to be saved between map changes. */
+
+procedure start begin
+end
+
+procedure timed_event_p_proc begin
+   if ((not(combat_is_initialized)) and ((critter_state(self_obj) bwand DAM_KNOCKED_OUT) == FALSE)) then begin
+      reg_anim_clear(self_obj);
+      reg_anim_begin();
+         animate_move_to_tile(tile_num_in_direction(local_var(LVAR_Home_Tile),random(0,5),random(1,3)));
+      reg_anim_end();
+   end
+   add_timer_event(self_obj,game_ticks(random(3,5)),0);
+end
+
+procedure critter_p_proc begin
+   if ((obj_can_see_obj(self_obj,dude_obj))) or ((obj_can_see_obj(self_obj,rebel_annadaughter))) then begin
+       set_local_var(LVAR_Hostile,1);
+       set_global_var(GVAR_SHADY_CAVE_HOSTILE_RATS,1);
+       critter_add_trait(rebel_annadaughter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+       set_global_var(GVAR_QUEST_SHADYCAMP_ANNASON,4);
+       float_msg(rebel_annadaughter,mstr(300),2);
+       attack(dude_obj);
+   end
+
+         if tile_distance_objs(rebel_annadaughter,obj_cave_ratmole) < 20 then begin
+         
+            critter_add_trait(obj_cave_rat_ally1,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SHADY_CAMP_CAVE_ENEMY);
+            critter_add_trait(obj_cave_rat_ally2,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SHADY_CAMP_CAVE_ENEMY);
+            critter_add_trait(obj_cave_rat_ally3,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SHADY_CAMP_CAVE_ENEMY);
+         
+         end
+   
+   //float_msg(self_obj,"D: "+local_var(LVAR_Home_Tile),random(1,9));
+end
+
+procedure combat_p_proc begin
+   if global_var(GVAR_SHADY_CAVE_HOSTILE_RATS) == 1 then self_attack_dude;
+end
+
+procedure destroy_p_proc begin
+end
+
+procedure damage_p_proc begin
+      if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       end
+end
+
+procedure look_at_p_proc begin
+//   script_overrides;
+//   display_msg(mstr(100));
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_obj_on_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+   if (action_being_used == SKILL_STEAL) then
+      script_overrides;
+end
+
+procedure map_enter_p_proc begin
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_RAT);
+   critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_GENERIC_RAT);
+   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+   if map_first_run then set_local_var(LVAR_Home_Tile,self_tile);
+      call assign;
+      
+   
+end
+   
+   procedure assign begin
+   
+      if local_var(LVAR_Home_Tile) == 19086 then obj_cave_ratmole:= self_obj;
+      else if local_var(LVAR_Home_Tile) == 18690 then obj_cave_rat_enemy1:= self_obj;
+      else if local_var(LVAR_Home_Tile) == 19891 then obj_cave_rat_enemy2:= self_obj;
+      else if local_var(LVAR_Home_Tile) == 19485 then obj_cave_rat_enemy3:= self_obj;
+      if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SHADY_CAMP_CAVE_ENEMY);
+   
+   end

@@ -1,0 +1,50 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Map Script for Sierra Army Base, Outside area
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\v13ent.h"
+
+#define NAME                    SCRIPT_BRODEAD
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+
+// 15 000 PD ZA WYELEMINOWANIE WSZYSTKICH MUTK?W
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+     
+     if map_first_run then display_mstr(100);
+      
+     add_timer_event(self_obj,0,0);
+      
+     if global_var(GVAR_BRODEAD_MUTANTS_KILLED) < 11 then set_map_music(cur_map_index,"08VATS"); else set_map_music(cur_map_index,"18modoc");
+end
+
+procedure map_update_p_proc begin
+      Lighting;
+end
+
+procedure timed_event_p_proc begin
+      add_timer_event(self_obj,5,0);
+      if global_var(GVAR_BRODEAD_MUTANTS_KILLED) == 10 then begin
+            give_exp_points(15000);
+            display_mstr(101);
+            set_global_var(GVAR_BRODEAD_MUTANTS_KILLED,11);
+      end
+end

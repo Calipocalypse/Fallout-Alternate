@@ -1,0 +1,341 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Critters template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure critter_p_proc;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node999;
+procedure NodeOther;
+procedure NodeOther2;
+
+procedure SpeechWay;
+procedure SpeechWay2;
+procedure SpeechWayWin;
+
+/* Defines */
+
+#define NAME SCRIPT_ECSH_VL1
+#define PARAM_PURPLE 2
+#define PARAM_OTHER  1
+#define PARAM_BLUE   0
+
+#define LVAR_Counter (0)
+#define LVAR_Slave   (1)
+#define LVAR_TOMapPproc (2)
+#define LVAR_Facing_Disabled (3)
+#define set_facing_disabled set_local_var(LVAR_Facing_Disabled, 1);
+#define set_facing_enabled set_local_var(LVAR_Facing_Disabled, 0);
+#define counter      (local_var(LVAR_Counter))
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+
+end
+variable slavee;
+procedure map_enter_p_proc begin
+
+   critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_TEAM_NUM, TEAM_SUPER_MUTANT);
+   critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_AI_PACKET, AI_BERSERKER);
+
+   move_to(dude_obj, tile_num_in_direction(self_tile, 3, 30), dude_elevation);
+   if map_first_run then begin
+      game_ui_disable;
+      slavee := create_object_sid(16777764, tile_num_in_direction(tile_num(self_obj), 5, 3), dude_elevation, 1470);
+      set_local_var(LVAR_Slave,slavee);
+      Face_Critter(dude_obj,local_var(LVAR_Slave));
+      critter_add_trait(local_var(LVAR_Slave), TRAIT_OBJECT, OBJECT_TEAM_NUM, TEAM_PLAYER);
+      critter_add_trait(local_var(LVAR_Slave), TRAIT_OBJECT, OBJECT_AI_PACKET, AI_BERSERKER);
+      tile_set_center(self_tile);
+      wield_obj(create_object(PID_CATTLE_PROD, 0, 0));
+      animate_move_obj_to_tile(dude_obj, tile_num_in_direction(self_tile, 3, 8),ANIMATE_RUN);
+      if dude_is_purple then add_timer_event(self_obj, game_ticks(random(3, 5)), PARAM_PURPLE);
+      else if dude_wearing_armor then add_timer_event(self_obj, game_ticks(random(3, 5)), PARAM_OTHER);
+      else if not dude_wearing_armor then add_timer_event(self_obj, game_ticks(random(3, 5)), PARAM_PURPLE);
+      set_global_var(GVAR_SHED_TRAVIS, SHED_TRAVIS_CANT_BE_RESCUED); //means something different
+      set_global_var(CRITTER1, self_obj);
+   end
+
+   if not map_first_run then begin
+      if local_var(LVAR_TOMapPproc) == 1 then flush_add_timer_event(self_obj, 1, PARAM_PURPLE);
+      if local_var(LVAR_TOMapPproc) == 2 then flush_add_timer_event(self_obj, 1, PARAM_OTHER);
+      if local_var(LVAR_TOMapPproc) == 3 then flush_add_timer_event(self_obj, 1, PARAM_BLUE);
+   end
+end
+
+procedure critter_p_proc begin
+   if not combat_is_initialized and local_var(LVAR_Facing_Disabled) == 0 then Face_Critter(dude_obj, self_obj);
+end
+
+procedure look_at_p_proc begin
+	script_overrides;
+	display_msg(mstr(100));
+end
+
+procedure description_p_proc begin
+	script_overrides;
+	display_msg(mstr(101));
+end
+
+procedure pickup_p_proc begin
+   //script_overrides;
+
+end
+
+procedure talk_p_proc begin
+
+end
+
+procedure use_skill_on_p_proc begin
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure destroy_p_proc begin
+   set_global_var(CRITTER1, 1);
+end
+
+   procedure Node999 begin
+   end
+
+   procedure Node998 begin
+      float_msg(self_obj, mstr(223), 2);
+      attack_setup(self_obj, dude_obj);
+   end
+
+   procedure goaway begin
+      add_timer_event(self_obj, 0, 4);
+   end
+
+   procedure NodeOther begin
+      Reply(212);
+      NOption(213, goaway, 001);
+      NOption(214, NodeOther2, 001);
+   end
+
+   procedure NodeOther2 begin
+      rm_fixed_timer_event(self_obj, PARAM_OTHER);
+      set_local_var(LVAR_Counter, 0);
+      add_timer_event(self_obj, 0, 5);
+   end
+
+procedure NodePurple begin
+      Reply((mstr(220)+" "+mstr(219)));
+      if (has_skill(dude_obj,SKILL_CONVERSANT) > 89) then NOption(221, SpeechWay, 001);
+      NOption(222, Node998, 001);
+end
+
+   procedure SpeechWay begin
+      Reply(224);
+      NOption(225, SpeechWay2, 001);
+   end
+
+   procedure SpeechWay2 begin
+      Reply(226);
+      NOption(227, SpeechWayWin, 001);
+   end
+
+   procedure SpeechWayWin begin
+   set_facing_disabled
+   give_xp(100);
+   ates(0, 6)
+   set_local_var(LVAR_Counter, 0);
+   end
+
+
+procedure timed_event_p_proc begin
+
+   if (fixed_param==PARAM_BLUE) then begin
+      if counter == 0 then begin
+         float_msg(self_obj, mstr(200), FLOAT_MSG_LIGHT_RED);
+         ates(game_ticks(3),PARAM_BLUE)
+         inc_local_var(LVAR_Counter);
+         set_local_var(LVAR_TOMapPproc, 3);
+      end
+      else if counter == 1 then begin
+         float_msg(self_obj, mstr(201), FLOAT_MSG_LIGHT_RED);
+         ates(game_ticks(5),PARAM_BLUE)
+         inc_local_var(LVAR_Counter);
+      end
+
+      else if counter == 2 then begin
+         game_ui_enable;
+         float_msg(self_obj, mstr(202), FLOAT_MSG_LIGHT_RED);
+         ates(game_ticks(1),PARAM_BLUE)
+         inc_local_var(LVAR_Counter);
+      end
+
+      else if counter == 3 then begin
+         ates(1,PARAM_BLUE)
+         inc_local_var(LVAR_Counter);
+      end
+
+      else if counter == 4 then begin
+         if tile_distance_objs(dude_obj,self_obj) > 5 then begin
+            dec_local_var(LVAR_Counter);
+            ates(1,PARAM_BLUE)
+         end
+         else begin
+            attack_setup(self_obj, dude_obj);
+            set_facing_disabled
+         end
+      end
+   end
+
+   if (fixed_param==PARAM_OTHER) then begin
+      if counter == 0 then begin
+         float_msg(self_obj, mstr(210), FLOAT_MSG_LIGHT_RED);
+         ates(game_ticks(3),PARAM_OTHER)
+         set_local_var(LVAR_TOMapPproc, 2);
+         inc_local_var(LVAR_Counter);
+      end
+      else if counter == 1 then begin
+         float_msg(self_obj, mstr(211), FLOAT_MSG_LIGHT_RED);
+         ates(game_ticks(5),PARAM_OTHER)
+         game_ui_enable;
+         inc_local_var(LVAR_Counter);
+      end
+
+      else if counter == 2 then begin
+         ates(1,PARAM_OTHER)
+         inc_local_var(LVAR_Counter);
+      end
+
+      else if counter == 3 then begin
+         if tile_distance_objs(dude_obj,self_obj) > 5 then begin
+            dec_local_var(LVAR_Counter);
+            ates(1,PARAM_OTHER)
+         end
+         else begin
+            start_dialog_at_node(NodeOther);
+            set_facing_disabled
+         end
+      end
+   end
+
+      if (fixed_param==PARAM_PURPLE) then begin
+
+         if counter == 0 then begin
+            ates(1,PARAM_PURPLE)
+            set_local_var(LVAR_TOMapPproc, 1);
+            inc_local_var(LVAR_Counter);
+            float_msg(self_obj, mstr(220),FLOAT_MSG_LIGHT_RED);
+         end
+
+         else if counter == 1 then begin
+            ates(1,PARAM_PURPLE)
+            if game_ui_is_disabled then game_ui_enable;
+            inc_local_var(LVAR_Counter);
+         end
+
+         else if counter == 2 then begin
+         if tile_distance_objs(dude_obj,self_obj) > 5 then begin
+            dec_local_var(LVAR_Counter);
+            ates(1,PARAM_PURPLE)
+         end
+         else begin
+            start_dialog_at_node(NodePurple);
+            set_facing_disabled
+         end
+
+
+
+      end
+
+      if fixed_param==4 then begin //other
+         fadeout(500);
+         move_to(dude_obj, tile_num_in_direction(dude_tile,4,15), dude_elevation);
+         set_local_var(LVAR_Counter, 2);
+         ates(1,PARAM_OTHER)
+         set_facing_enabled
+         fadein(500);
+      end
+
+      if fixed_param==5 then begin //other
+
+         if counter == 0 then begin
+            game_ui_disable;
+            ates(game_ticks(3), 5)
+            float_msg(self_obj, mstr(215),FLOAT_MSG_NORMAL);
+            set_facing_disabled
+            inc_local_var(LVAR_Counter);
+         end
+
+         else if counter == 1 then begin
+            ates(game_ticks(4), 5)
+            float_msg(self_obj, mstr(216),FLOAT_MSG_NORMAL);
+            animate_move_obj_to_tile(self_obj, tile_num_in_direction(self_tile, 1, 25), ANIMATE_WALK);
+            inc_local_var(LVAR_Counter);
+         end
+
+         else if counter == 2 then begin
+            ates(game_ticks(4), 5)
+            float_msg(self_obj, mstr(217),FLOAT_MSG_NORMAL);
+            animate_move_obj_to_tile(self_obj, tile_num_in_direction(self_tile, 1, 25), ANIMATE_WALK);
+            inc_local_var(LVAR_Counter);
+         end
+
+         else if counter == 3 then begin
+            fadeout(500);
+            set_self_invisible
+            set_global_var(CRITTER1, 1);
+            fadein(500);
+            game_ui_enable;
+         end
+
+      end
+
+
+      end
+
+       if fixed_param == 6 then begin
+         fadeout(500);
+            set_self_invisible
+            set_global_var(CRITTER1, 1);
+            fadein(500);
+            game_ui_enable;
+      end
+end

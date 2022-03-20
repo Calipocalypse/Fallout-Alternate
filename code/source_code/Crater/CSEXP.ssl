@@ -1,0 +1,43 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_CSEXP
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure spatial_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+//add_obj_to_inven(dude_obj,create_object(PID_RAD_X,0,0));
+//add_obj_to_inven(dude_obj,create_object(PID_RAD_X,0,0));
+
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure spatial_p_proc begin
+
+      if global_var(GVAR_SEEN_CRATER) == 0 then begin
+      
+            give_exp_points(5000);
+            display_mstr(100);
+            display_mstr(101);
+            set_global_var(GVAR_SEEN_CRATER,2);
+      
+      end
+
+end

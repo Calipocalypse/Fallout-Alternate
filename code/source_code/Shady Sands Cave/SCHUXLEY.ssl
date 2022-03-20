@@ -1,0 +1,319 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCHUXLEY
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+procedure combat_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+procedure FirstContact;
+procedure TnijKurwa;
+procedure CmonKillMya;
+procedure ImHereToHelp1;
+procedure ImHereToHelp1ALT;
+procedure Karma;
+procedure Thanksformakingiteasy;
+procedure Story1;
+procedure Story2;
+procedure Story3;
+procedure Story4;
+procedure Story5;
+procedure Story6;
+procedure Ear1;
+procedure AintyouJackal;
+procedure AintyouJackal2;
+procedure AintyouJackal3;
+procedure Speech1;
+procedure cutting_an_ear;
+procedure huxley_dies;
+procedure huxley_survives;
+procedure huxley_survives2;
+procedure receive_ear;
+procedure noKnife;
+procedure huxley_survives3;
+procedure huxley_dice;
+
+procedure Speech_from_again;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Has_got_no_EAR             (8)
+
+
+procedure start begin
+end
+
+variable item;
+procedure map_enter_p_proc begin
+//item:=create_object(PID_FIRST_AID_KIT,0,0);
+//add_obj_to_inven(dude_obj,item);
+
+      reg_anim_begin();
+      reg_anim_animate(self_obj, ANIM_fall_front_sf, -1);
+      reg_anim_end();
+
+end
+
+procedure combat_p_proc begin
+      reg_anim_begin();
+      reg_anim_animate(self_obj, ANIM_fall_front_sf, -1);
+      reg_anim_end();
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   if local_var(LVAR_Herebefore) == 0 and tile_distance_objs(self_obj,dude_obj) < 6 then begin
+      set_local_var(LVAR_Herebefore,1);
+      start_dialog_at_node(FirstContact);
+   end
+
+   if local_var(LVAR_Herebefore) == 1000 then critter_dmg(self_obj,40,DMG_normal_dam);
+   //kill_critter(self_obj,ANIM_fall_front_blood_sf);
+
+   //display_msg("aktualnie: "+local_var(LVAR_Herebefore));
+end
+
+procedure damage_p_proc begin
+
+      item:=create_object(600,0,0); // ear
+      add_obj_to_inven(self_obj,item);
+      kill_critter(self_obj,ANIM_fall_front_blood_sf);
+      set_global_var(GVAR_STATE_HUXLEY,1);
+
+end
+
+procedure pickup_p_proc begin
+
+
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+   GetReaction;
+   if global_var(GVAR_STATE_HUXLEY) == 2 then floater(415);
+   else if local_var(LVAR_Herebefore) == 0 then start_dialog_at_node(FirstContact);
+   else if local_var(LVAR_Herebefore) == 1 then start_dialog_at_node(Speech_from_again);
+   else if local_var(LVAR_Herebefore) == 998 then call TnijKurwa;
+   else if local_var(LVAR_Herebefore) == 999 then call CmonKillMya;
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure FirstContact begin
+Reply(200);
+NOption(201,ImHereToHelp1ALT,001);
+NOption(202,Karma,001);
+NOption(203,Thanksformakingiteasy,001);
+NOption(204,Story1,001);
+end
+
+procedure Karma begin
+float_msg(self_obj,mstr(210),FLOAT_MSG_LIGHT_RED);
+set_local_var(LVAR_Herebefore,999);
+end
+
+procedure Thanksformakingiteasy begin
+set_local_var(LVAR_Herebefore,999);
+end
+
+procedure CmonKillMya begin
+float_msg(self_obj,mstr(998),7);
+end
+
+procedure TnijKurwa begin
+float_msg(self_obj,mstr(997),7);
+end
+
+//
+
+procedure Story1 begin
+Reply(300);
+NOption(301,Story2,001);
+end
+
+procedure Story2 begin
+Reply(302);
+NOption(303,Story3,001);
+end
+
+procedure Story3 begin
+Reply(304);
+NOption(305,Story4,001);
+end
+
+procedure Story4 begin
+Reply(306);
+NOption(307,Story5,001);
+end
+
+procedure Story5 begin
+Reply(308);
+NOption(309,Story6,001);
+end
+
+procedure Story6 begin
+Reply(310);
+NOption(311,ImHereToHelp1,001);
+NOption(312,Ear1,001);
+NOption(313,Thanksformakingiteasy,001);
+end
+
+//
+
+procedure ImHereToHelp1 begin
+Reply(321);
+NOption(322,AintyouJackal,001);
+NOption(323,Thanksformakingiteasy,001);
+end
+
+procedure ImHereToHelp1ALT begin
+Reply(320);
+NOption(322,AintyouJackal,001);
+NOption(323,Thanksformakingiteasy,001);
+end
+
+procedure AintyouJackal begin
+Reply(324);
+NOption(325,AintyouJackal2,001);
+end
+
+procedure AintyouJackal2 begin
+Reply(330);
+NOption(331,AintyouJackal3,001);
+end
+
+procedure AintyouJackal3 begin
+Reply(332);
+NOption(333,Ear1,001);
+end
+
+procedure Ear1 begin
+Reply(334);
+NOption(335,Thanksformakingiteasy,001);
+NOption(336,Speech1,001); //retoryka
+NOption(337,TnijKurwa,001);
+end
+
+procedure Speech1 begin
+Reply(350);
+if not obj_is_carrying_obj_pid(dude_obj,PID_KNIFE) or obj_is_carrying_obj_pid(dude_obj,PID_COMBAT_KNIFE) then NOption(351,noKnife,001); else NOption(352,cutting_an_ear,001);
+NOption(353,Node999,001);
+set_local_var(LVAR_Herebefore,1);
+end
+
+procedure noKnife begin
+if global_var(GVAR_QUEST_SHADY_HUXLEY_NOKNIFE) == 0 THEN set_global_var(GVAR_QUEST_SHADY_HUXLEY_NOKNIFE,1);
+end
+
+procedure Speech_from_again begin
+Reply(360);
+if obj_is_carrying_obj_pid(dude_obj,PID_KNIFE) then NOption(352,cutting_an_ear,001);
+NOption(353,Node999,001);
+end
+
+procedure cutting_an_ear begin
+Reply(370);
+move_to(dude_obj,tile_num_in_direction(self_tile,1,1),0);
+if obj_is_carrying_obj_pid(dude_obj,PID_FIRST_AID_KIT) then NOption(371,huxley_survives,001);
+if has_skill(dude_obj,SKILL_FIRST_AID) > 60 or has_skill(dude_obj,SKILL_DOCTOR) > 60 then NOption(372,huxley_survives,001);
+NOption(373,huxley_dice,001);
+if has_skill(dude_obj,SKILL_OUTDOORSMAN) > 49 then NOption(372,huxley_survives,001);
+end
+
+variable rnadome;
+procedure huxley_dice begin
+   rnadome := random(1, 10);
+   if dude_luck >= rnadome then call huxley_survives; else call huxley_dies;
+end
+
+procedure huxley_dies begin
+Reply(380);
+NOption(381,Node999,001);
+call receive_ear;
+set_local_var(LVAR_Herebefore,1000);
+set_global_var(GVAR_STATE_HUXLEY,1);
+end
+
+procedure huxley_survives begin
+Reply(390);
+NOption(391,huxley_survives2,001);
+call receive_ear;
+end
+
+procedure huxley_survives2 begin
+Reply(400);
+NOption(401,huxley_survives3,001);
+end
+
+procedure huxley_survives3 begin
+Reply(410);
+NOption(411,Node999,001);
+set_global_var(GVAR_STATE_HUXLEY,2);
+end
+
+
+procedure receive_ear begin
+item:=create_object(600,0,0); // ear
+add_obj_to_inven(dude_obj,item);
+set_local_var(LVAR_Has_got_no_EAR,1);
+end
+
+procedure timed_event_p_proc begin
+display_msg("umar");
+      //he dies
+      if (fixed_param==0) then begin
+            kill_critter(self_obj,ANIM_fall_front_blood);
+            display_msg("umar2");
+      end
+
+end

@@ -1,0 +1,129 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MAGZFLOA
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+	procedure lower_hp_bots_if_they_have_healed;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+	procedure lower_hp_bots;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+	if map_first_run then begin
+		set_local_var(LVAR_Home_Tile,self_tile);
+		//critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_MAGAZINE); //32892 24469
+		critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,random(1,999)); //32892 24469
+		call lower_hp_bots;
+		set_local_var(LVAR_Home_Tile,self_tile);
+	   add_timer_event(self_obj,game_ticks(random(1,5)),0);
+   end
+end
+
+	procedure lower_hp_bots begin
+
+		if tile_num(self_obj) == 32892 then critter_heal(self_obj,-80);
+
+	end
+
+procedure map_exit_p_proc begin
+end
+
+variable only_once;
+procedure critter_p_proc begin
+
+if (obj_can_see_obj(self_obj,dude_obj)) and only_once==0 and tile_distance_objs(self_obj,dude_obj) < 10 then begin float_msg(self_obj,mstr(random(200,202)),FLOAT_MSG_LIGHT_RED); only_once++; end
+
+
+   if (obj_can_see_obj(self_obj,dude_obj)) and tile_distance_objs(self_obj,dude_obj) < 10 then begin
+       attack(dude_obj);
+   end
+
+
+call lower_hp_bots_if_they_have_healed;
+
+end
+
+	procedure lower_hp_bots_if_they_have_healed begin
+
+		//float_msg(self_obj,"HP :"+get_critter_stat(self_obj,STAT_current_hp),2);
+			if get_critter_stat(self_obj,STAT_current_hp) > 30 then begin
+					//critter_heal(self_obj,(get_critter_stat(self_obj,STAT_current_hp)-30)*(-1));
+			end
+		//set_critter_stat(self_obj,STAT_current_hp,30);
+
+
+	end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       attack(dude_obj);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+end
+
+procedure destroy_p_proc begin
+
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+   if ((not(combat_is_initialized)) and ((critter_state(self_obj) bwand DAM_KNOCKED_OUT) == FALSE)) then begin
+      reg_anim_clear(self_obj);
+      reg_anim_begin();
+          animate_move_to_tile(tile_num_in_direction(local_var(LVAR_Home_Tile),random(0,5),random(2,7)));
+      reg_anim_end();
+   end
+   add_timer_event(self_obj,game_ticks(random(5,11)),0);
+end

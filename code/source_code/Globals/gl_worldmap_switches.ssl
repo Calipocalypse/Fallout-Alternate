@@ -1,0 +1,71 @@
+#include "..\headers\define.h"
+procedure start;
+procedure calculate_distance;
+
+procedure start begin
+   if (metarule(22,0)) then return;
+	if (game_loaded) then begin
+      set_global_script_repeat(60);
+      set_global_script_type(2);
+   end else begin
+
+   /* Time to game end due to Great Transformation */
+      //display_msg("global dziala");
+
+      if (in_world_map) then begin
+
+    /* Changing Vault 13 from start location to basic one */
+
+            if global_var(GVAR_MAP_TYPE_VAULT13) == 0 and game_time>3600070 then
+
+                  begin
+	                  display_msg("zamieniam v13str na v13mtu");
+	                  mark_area_known(MARK_TYPE_TOWN,22,MARK_STATE_INVISIBLE);
+	                  mark_area_known(MARK_TYPE_TOWN,14,MARK_STATE_KNOWN);
+	                  set_global_var(GVAR_MAP_TYPE_VAULT13,1);
+                  end
+    /* Changing Vault 13 from basic location to ENCLAVE one */
+            if global_var(GVAR_ENCLAVE_IN_VAULT13) != 0 then
+	            begin
+	                  if game_time < global_var(GVAR_ENCLAVE_IN_VAULT13)+game_ticks(3600*24*14) then
+
+		                  begin
+
+			                  mark_area_known(MARK_TYPE_TOWN,0,MARK_STATE_INVISIBLE);
+			                  mark_area_known(MARK_TYPE_TOWN,2,MARK_STATE_INVISIBLE);
+			                  mark_area_known(MARK_TYPE_TOWN,3,MARK_STATE_KNOWN);
+			                  display_msg("Enclave arrived");
+			                  set_global_var(GVAR_ENCLAVE_IN_VAULT13,0);
+
+		                  end
+	            end
+
+      //albert encounter
+            IF GLOBAL_VAR(GVAR_ALBERT_ENCOUNTER) == 0 and game_time>game_ticks(3600*24*44) then begin
+
+                  display_msg("albert time");
+                  //force_encounter(157);
+                  set_global_var(GVAR_ALBERT_ENCOUNTER,1);
+
+            end
+
+      //laura forced encounter
+         if global_var(GVAR_LAURA_STATE) == LAURA_STATE_LISTEN then begin
+            if calculate_distance() > 70 then begin
+               set_global_var(GVAR_LAURA_STATE, LAURA_STATE_TRIGGERED);
+               force_encounter_with_flags(74,0x8);
+            end
+         end
+
+      end
+   end
+end
+
+procedure calculate_distance() begin
+   variable xa, xb, ya, yb, dis;
+   xa := 834; ya := 83; ya := ya * (-1);
+   xb := get_world_map_x_pos;
+   yb := get_world_map_y_pos * (-1);
+   dis := sqrt((xb-xa)^2+(yb-ya)^2);
+   return dis;
+end

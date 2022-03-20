@@ -1,0 +1,42 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Toilet
+        Location: Modoc Inn outhouse toilet
+        Description:
+
+        Log:
+
+           Created: June 4, 1998
+
+           Updated:
+*/
+
+/* Include Files */
+#include "..\headers\define.h"
+#define NAME                    SCRIPT_9_GRNXPL
+#include "..\headers\command.h"
+#include "..\headers\Modoc.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure start_p_proc;
+
+#define LVAR_Examined 0
+
+import variable obj_green_explosion;
+
+procedure start begin
+   
+   obj_green_explosion:= self_obj;
+   
+   set_obj_visibility(self_obj,true);
+
+end
+
+procedure start_p_proc begin
+
+
+end

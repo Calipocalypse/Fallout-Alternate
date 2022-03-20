@@ -1,0 +1,558 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_LIEU
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Counter                    (8)
+
+import variable obj_seth;
+import variable obj_lieutenant;
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+	if map_first_run then add_timer_event(self_obj,0,0);
+	if map_first_run then game_ui_disable;
+	obj_lieutenant:=self_obj;
+	set_obj_visibility(self_obj,true);
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+
+	if (fixed_param==0) then begin
+
+		if local_var(LVAR_Counter) == 0 then begin
+
+			animate_move_obj_to_tile(obj_seth,16311,ANIMATE_WALK);
+			add_timer_event(self_obj,game_ticks(2),0);
+			inc_local_var(LVAR_Counter);
+
+		end
+
+		else if local_var(LVAR_Counter) == 1 then begin //bedzie przed jaskinia
+
+			if tile_num(obj_seth)==16311 then begin
+
+				inc_local_var(LVAR_Counter);
+				//set_local_var(LVAR_Counter, 40);
+				//game_ui_enable;
+
+				add_timer_event(self_obj,0,0);
+
+			end
+			else begin
+
+				animate_move_obj_to_tile(obj_seth,16311,ANIMATE_WALK);
+				add_timer_event(self_obj,1,0);
+
+			end
+
+		end
+
+		else if local_var(LVAR_Counter) == 2 then begin //bedzie przed klatkami
+
+			if tile_num(obj_seth)==18311 then begin
+
+				inc_local_var(LVAR_Counter);
+				add_timer_event(self_obj,0,0);
+
+
+			end
+			else begin
+
+				animate_move_obj_to_tile(obj_seth,18311,ANIMATE_WALK);
+				add_timer_event(self_obj,1,0);
+
+			end
+		end
+
+		else if local_var(LVAR_Counter) == 3 then begin //bedzie przed klatka gracza
+
+			if tile_num(obj_seth)==18515 then begin
+
+				inc_local_var(LVAR_Counter);
+				add_timer_event(self_obj,0,0);
+
+			end
+			else begin
+
+				animate_move_obj_to_tile(obj_seth,18515,ANIMATE_WALK);
+				add_timer_event(self_obj,1,0);
+
+			end
+		end
+
+		else if local_var(LVAR_Counter) == 4 then begin
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,0,0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 5 then begin
+
+			float_msg(obj_seth,mstr(200),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(4),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 6 then begin
+
+			float_msg(obj_seth,mstr(201),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 7 then begin
+
+			float_msg(obj_seth,mstr(202),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 8 then begin
+
+			float_msg(obj_seth,mstr(203),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(5),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 9 then begin
+
+			float_msg(dude_obj,mstr(204),FLOAT_MSG_BLUE);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(2),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 10 then begin
+
+			float_msg(dude_obj,mstr(205),FLOAT_MSG_BLUE);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(4),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 11 then begin
+
+			float_msg(obj_seth,mstr(206),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(4),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 12 then begin
+
+			float_msg(dude_obj,mstr(207),FLOAT_MSG_BLUE);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(4),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 13 then begin
+
+			float_msg(obj_seth,mstr(208),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(2),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 14 then begin
+
+			float_msg(obj_seth,mstr(209),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(4),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 15 then begin
+
+			float_msg(obj_seth,mstr(210),FLOAT_MSG_GREEN);
+			reg_anim_clear(obj_seth);
+			reg_anim_begin();
+			reg_anim_animate(obj_seth, ANIM_magic_hands_middle, -1);
+			reg_anim_end();
+
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(4),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 16 then begin
+
+			float_msg(obj_seth,mstr(211),FLOAT_MSG_GREEN);
+			reg_anim_clear(dude_obj);
+			reg_anim_begin();
+			reg_anim_animate(dude_obj, ANIM_magic_hands_middle, -1);
+			reg_anim_end();
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 17 then begin
+
+			float_msg(obj_seth,mstr(212),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 18 then begin
+
+			float_msg(obj_seth,mstr(213),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(5),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 19 then begin
+
+			float_msg(obj_seth,mstr(214),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 20 then begin
+
+			float_msg(dude_obj,mstr(215),FLOAT_MSG_BLUE);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 21 then begin
+
+			float_msg(obj_seth,mstr(216),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 22 then begin
+
+			float_msg(dude_obj,mstr(217),FLOAT_MSG_BLUE);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 23 then begin
+
+			float_msg(obj_seth,mstr(218),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 24 then begin
+
+			float_msg(dude_obj,mstr(219),FLOAT_MSG_BLUE);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 25 then begin
+
+			float_msg(obj_seth,mstr(220),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 26 then begin
+
+			float_msg(dude_obj,mstr(221),FLOAT_MSG_BLUE);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 27 then begin
+
+			float_msg(obj_seth,mstr(222),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 28 then begin
+
+			float_msg(obj_seth,mstr(223),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 29 then begin
+
+			float_msg(obj_seth,mstr(224),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 30 then begin
+
+			float_msg(dude_obj,mstr(225),FLOAT_MSG_BLUE);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 31 then begin
+
+			float_msg(dude_obj,mstr(226),FLOAT_MSG_BLUE);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 32 then begin
+
+			float_msg(obj_seth,mstr(227),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(3),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 33 then begin
+
+			float_msg(obj_seth,mstr(228),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(5),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 34 then begin
+
+			float_msg(obj_seth,mstr(229),FLOAT_MSG_GREEN);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(5),0);
+
+		end
+
+		else if local_var(LVAR_Counter) == 35 then begin //bedzie przed klatkami
+
+			if tile_num(obj_seth)==18311 then begin
+
+				inc_local_var(LVAR_Counter);
+				add_timer_event(self_obj,0,0);
+
+			end
+			else begin
+
+				animate_move_obj_to_tile(obj_seth,18311,ANIMATE_WALK);
+				add_timer_event(self_obj,1,0);
+
+			end
+		end
+
+		else if local_var(LVAR_Counter) == 36 then begin //bedzie przed klatkami
+
+			if tile_num(obj_seth)==20305 then begin
+
+				inc_local_var(LVAR_Counter);
+				add_timer_event(self_obj,0,0);
+
+			end
+			else begin
+
+				animate_move_obj_to_tile(obj_seth,20305,ANIMATE_WALK);
+				add_timer_event(self_obj,1,0);
+
+			end
+		end
+
+		else if local_var(LVAR_Counter) == 37 then begin //bedzie przed klatkami
+
+			if anim_busy(self_obj) then begin
+
+				add_timer_event(self_obj,0,0);
+
+			end
+			else begin
+
+				reg_anim_clear(obj_seth);
+				reg_anim_begin();
+				reg_anim_animate(obj_seth, ANIM_magic_hands_middle, -1);
+				reg_anim_end();
+
+				inc_local_var(LVAR_Counter);
+				game_ui_enable;
+				add_timer_event(self_obj,5,0);
+
+			end
+
+		end
+
+		else if local_var(LVAR_Counter) == 38 then begin //bedzie przed klatkami
+
+			set_obj_visibility(self_obj,false);
+			animate_move_obj_to_tile(self_obj,14906,ANIMATE_WALK);
+
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,0,0);
+
+			set_global_var(GVAR_V13_START_DOOR,1);
+
+		end
+
+		else if local_var(LVAR_Counter) == 39 then begin
+
+			if tile_num(self_obj)==14906 then begin
+
+				inc_local_var(LVAR_Counter);
+				add_timer_event(self_obj,0,0);
+
+			end
+			else begin
+
+				animate_move_obj_to_tile(self_obj,14906,ANIMATE_WALK);
+				add_timer_event(self_obj,1,0);
+
+			end
+
+		end
+
+		else if local_var(LVAR_Counter) == 40 then begin
+
+			reg_anim_clear(obj_seth);
+			reg_anim_clear(self_obj);
+			reg_anim_begin();
+			rotate_obj(self_obj, RIGHTDOWN)
+			reg_anim_animate(self_obj, ANIM_fire_burst, -1);
+			reg_anim_end();
+			play_sfx("WAM1XXX1");
+			inc_local_var(LVAR_Counter);
+			add_timer_event(self_obj,game_ticks(1)/2,0);
+
+
+		end
+
+      else if local_var(LVAR_Counter) == 41 then begin
+			critter_dmg(obj_seth, random(190,220), DMG_laser);
+      end
+
+
+
+	end
+
+end

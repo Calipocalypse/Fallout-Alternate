@@ -1,0 +1,269 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCBARMAN
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure alarm;
+
+
+procedure startNode;
+procedure coreMain;
+procedure piwo;
+procedure work;
+procedure vodka;
+procedure water;
+procedure nukacola;
+procedure ItsNotGoodNode;
+procedure work2_fuckoff;
+procedure work2;
+procedure work2_2;
+procedure work2_status;
+procedure work2_givequest;
+procedure work2_done;
+procedure Node998;
+procedure Node999;
+
+procedure Gvar3;
+procedure Gvar4;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+
+import variable person_barman;
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+critter_mod_skill(dude_obj,SKILL_UNARMED_COMBAT,100);
+      if map_first_run then begin
+            set_local_var(LVAR_Home_Tile,self_tile);
+            critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+      end
+
+      //move_to(dude_obj,self_tile,self_elevation);
+      person_barman:=self_obj;
+
+      //display_msg("barman ome tile: "+local_var(LVAR_Home_Tile));
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   call alarm;
+
+   //display_msg("GVAR_QUEST_SHADYSANDS_BARFIGHT" + global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT));
+
+end
+
+procedure alarm begin
+
+   if global_var(GVAR_ALARM_SHADYSANDS) == 1 then begin
+      if not combat_is_initialized and obj_can_see_obj(self_obj,dude_obj) then attack(dude_obj);
+      else if combat_is_initialized then attack(dude_obj);
+   end
+
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+      if global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) == 3 then start_dialog_at_node(Gvar3);
+      else if global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) == 4 then start_dialog_at_node(Gvar4);
+      else start_dialog_at_node(startNode);
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure startNode begin
+      Reply(mstr(200));
+      call coreMain;
+end
+
+procedure startNodeagain begin
+      Reply(mstr(201));
+      call coreMain;
+end
+
+procedure coreMain begin
+      NOption(mstr(202),piwo,001);
+      NOption(mstr(203),vodka,001);
+      NOption(mstr(204),nukacola,001);
+      NOption(mstr(205),water,001);
+      if global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) == 0 then NOption(mstr(206),work,001);
+      if global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) == 6 then NOption(mstr(207),work2_fuckoff,001);
+      if global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) == 5 and global_var(GVAR_QUEST_SHADYSANDS_BIMBER) == 0 then NOption(mstr(207),work2,001);
+      if global_var(GVAR_QUEST_SHADYSANDS_BIMBER) >= 1 and global_var(GVAR_QUEST_SHADYSANDS_BIMBER) <= 3 then NOption(mstr(208),work2_status,001);
+
+      if dude_caps == 0 then NOption(mstr(209),Node999,001); else NOption(mstr(210),Node999,001);
+end
+
+procedure no_money begin
+      Reply(mstr(215));
+      NOption(mstr(216),Node999,001);
+      NOption(mstr(217),Node998,001);
+      NOption(mstr(218),Node998,001);
+end
+
+procedure piwo begin
+      if dude_caps<5 then call no_money; else begin
+            add_obj_to_inven(dude_obj,create_object(PID_BEER,0,0));
+            item_caps_adjust(dude_obj,-5);
+            item_caps_adjust(self_obj,5);
+            call startNodeagain;
+      end
+end
+
+procedure vodka begin
+      if dude_caps<15 then call no_money; else begin
+            add_obj_to_inven(dude_obj,create_object(PID_BOOZE,0,0));
+            item_caps_adjust(dude_obj,-15);
+            item_caps_adjust(self_obj,15);
+            call startNodeagain;
+      end
+end
+
+procedure nukacola begin
+      if dude_caps<15 then call no_money; else begin
+            add_obj_to_inven(dude_obj,create_object(PID_NUKA_COLA,0,0));
+            item_caps_adjust(dude_obj,-15);
+            item_caps_adjust(self_obj,15);
+            call startNodeagain;
+      end
+end
+
+procedure water begin
+
+      Reply(mstr(220));
+      NOption(mstr(221),startNodeagain,001);
+
+end
+
+procedure work begin
+      Reply(mstr(230));
+      set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,1);
+      NOption(mstr(231),Node999,001);
+end
+
+
+variable jacket;
+variable money;
+procedure Gvar3 begin
+      money:=critter_skill_level(dude_obj,SKILL_BARTER);
+      if critter_skill_level(dude_obj,SKILL_BARTER)<= 15 then money:=15;
+      if global_var(GVAR_KURTKA_DO_ZGARNIECIA) == 1 then jacket:=mstr(240); else jacket:="";
+      Reply(mstr(241)+money+mstr(242)+jacket);
+      give_exp_points(125);
+      item_caps_adjust(dude_obj,money);
+      if global_var(GVAR_KURTKA_DO_ZGARNIECIA) == 1 then add_obj_to_inven(dude_obj,create_object(PID_LEATHER_JACKET,0,0));
+      set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,5);
+      NOption(mstr(243),Node999,001);
+end
+
+procedure Gvar4 begin
+
+      Reply(mstr(250));
+      give_exp_points(100);
+      NOption(mstr(251),Node999,001);
+      NOption(mstr(252),work2_fuckoff,001);
+      set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,6);
+
+end
+
+/* QUEST 2 */
+
+procedure work2_fuckoff begin
+      Reply(mstr(255));
+      NOption(mstr(251),Node999,001);
+end
+
+procedure work2 begin
+      Reply(mstr(260));
+      NOption(mstr(261),work2_2,001);
+end
+
+procedure work2_2 begin
+      Reply(mstr(270));
+      NOption(mstr(271),work2_givequest,001);
+      NOption(mstr(272),Node999,001);
+end
+
+procedure work2_givequest begin
+
+      set_global_var(GVAR_QUEST_SHADYSANDS_BIMBER,1);
+
+end
+
+procedure work2_status begin
+      Reply(mstr(280));
+      if global_var(GVAR_QUEST_SHADYSANDS_BIMBER) == 3 then NOption(mstr(281),work2_done,001);
+      NOption(mstr(282),Node999,001);
+end
+
+procedure work2_done begin
+      money:=critter_skill_level(dude_obj,SKILL_BARTER)+50;
+      Reply(mstr(283));
+      display_msg(mstr(284)+money+mstr(285));
+      item_caps_adjust(dude_obj,money);
+      give_exp_points(150);
+      NOption(mstr(243),Node999,001);
+      set_global_var(GVAR_QUEST_SHADYSANDS_BIMBER,4);
+end
+

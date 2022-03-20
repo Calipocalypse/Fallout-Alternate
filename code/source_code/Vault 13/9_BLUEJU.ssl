@@ -1,0 +1,146 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_BLUEJU
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_In_Church                  (9)
+
+#define CHURCH1                         (18134)
+#define CHURCH2                         (18138)
+#define CHURCH3                         (18537)
+#define CHURCH4                         (18535)
+#define CHURCH5                         (18533)
+#define CHURCH6                         (18938)
+#define CHURCH7                         (18934)
+#define PLACED_BLUE_GUYS_IN_CHURCH      (global_var(GVAR_VAULT13MUT_BLUEJU))
+#define SET_IN_CHURCH                   set_local_var(LVAR_In_Church, 1);
+#define IN_CHURCH                       (local_var(LVAR_In_Church))
+
+#define CHUR                            (0)
+#define CONV                            (1)
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+	if local_var(LVAR_Home_Tile) == 0 then set_local_var(LVAR_Home_Tile,self_tile);
+
+   /* Reset values in church */
+   set_local_var(LVAR_In_Church, 0);
+   move_to(self_obj, local_var(LVAR_Home_Tile), 0);
+   animate_rotation(random(0, 5));
+
+   flush_add_timer_event(self_obj,game_ticks(random(3,25)),CHUR);
+   flush_add_timer_event(self_obj, game_ticks(random(2, 90)), CONV);
+
+   if day then begin
+
+
+   	switch (PLACED_BLUE_GUYS_IN_CHURCH) begin
+         case 0 : move_to(self_obj, CHURCH1, 0); animate_rotation(5); SET_IN_CHURCH
+         case 1 : move_to(self_obj, CHURCH2, 0); animate_rotation(5); SET_IN_CHURCH
+         case 2 : move_to(self_obj, CHURCH3, 0); animate_rotation(5); SET_IN_CHURCH
+         case 3 : move_to(self_obj, CHURCH4, 0); animate_rotation(5); SET_IN_CHURCH
+         case 4 : move_to(self_obj, CHURCH5, 0); animate_rotation(5); SET_IN_CHURCH
+         case 5 : move_to(self_obj, CHURCH6, 0); animate_rotation(5); SET_IN_CHURCH
+         case 6 : move_to(self_obj, CHURCH7, 0); animate_rotation(5); SET_IN_CHURCH
+         case 18: set_global_var(GVAR_VAULT13MUT_BLUEJU, -1);
+      end
+
+       inc_global_var(GVAR_VAULT13MUT_BLUEJU);
+
+      debug_msg("PLACED_BLUE_GUYS_IN_CHURCH: " + PLACED_BLUE_GUYS_IN_CHURCH);
+   end
+
+end
+
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_global_var(GVAR_VAULT13MUT_ALARM, DUDE_IS_ENEMY);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+   if IN_CHURCH then floater_rand(200, 204);
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+
+	if (fixed_param==CHUR) then begin
+      if IN_CHURCH then begin
+		   animate_move_obj_to_tile(self_obj,tile_num_in_direction(local_var(LVAR_Home_Tile),random(0,5),random(1,4)),ANIMATE_WALK);
+		   add_timer_event(self_obj,game_ticks(random(3,23)),0);
+      end
+	end
+
+	if (fixed_param==CONV) then begin
+    if not IN_CHURCH then begin
+      float_msg(self_obj, mstr(random(300, 310)), FLOAT_MSG_NORMAL);
+      add_timer_event(self_obj, game_ticks(random(8, 200)), CONV);
+    end
+	end
+
+end

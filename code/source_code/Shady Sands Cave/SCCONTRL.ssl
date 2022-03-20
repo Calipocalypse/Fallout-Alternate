@@ -1,0 +1,152 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCCONTRL
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+	procedure garl_testuje_zabawki_procedura;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+//rebels
+import variable obj_garl;
+import variable rebel_isaac;
+import variable obj_mark;
+import variable obj_matt;
+import variable point_tycho;
+import variable rebel_jerome;
+import variable rebel_anna;
+import variable rebel_mack;
+import variable rebel_peasant1;
+import variable rebel_peasant2;
+import variable rebel_peasant3;
+import variable rebel_peasant4;
+import variable rebel_peasant5;
+import variable rebel_peasant6;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_TimedEvent_Session         (8)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+	if local_var(LVAR_TimedEvent_Session) == 0 then begin
+			set_local_var(LVAR_TimedEvent_Session,100);
+	end
+
+	inc_local_var(LVAR_TimedEvent_Session);
+	add_timer_event(self_obj,0,local_var(LVAR_TimedEvent_Session));
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+end
+
+procedure garl_testuje_zabawki_procedura begin
+			//display_msg("zdialam dsobieee");
+	if global_var(GVAR_SHADY_MASSACRE_EVENT_LISTENER) == 1 then begin
+		//display_msg("zdialam dsobieee");
+			if critter_state(rebel_isaac) == CRITTER_IS_DEAD
+				and critter_state(rebel_jerome) == CRITTER_IS_DEAD
+				and critter_state(rebel_anna) == CRITTER_IS_DEAD
+				and critter_state(rebel_mack) == CRITTER_IS_DEAD
+				and critter_state(rebel_peasant1) == CRITTER_IS_DEAD
+				and critter_state(rebel_peasant2) == CRITTER_IS_DEAD
+				and critter_state(rebel_peasant3) == CRITTER_IS_DEAD
+				and critter_state(rebel_peasant4) == CRITTER_IS_DEAD
+				and critter_state(rebel_peasant5) == CRITTER_IS_DEAD
+				and critter_state(rebel_peasant6) == CRITTER_IS_DEAD
+			then begin
+				terminate_combat;
+				set_global_var(GVAR_SHADY_MASSACRE_EVENT_LISTENER,2);
+				add_timer_event(obj_garl,0,4);
+				game_ui_disable;
+			end
+	end
+
+	add_timer_event(self_obj,1,local_var(LVAR_TimedEvent_Session));
+
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+
+//display_msg("gkibal: "+global_var(GVAR_SHADY_REBELLION));
+
+	if (fixed_param==local_var(LVAR_TimedEvent_Session)) then begin
+
+		call garl_testuje_zabawki_procedura;
+
+	end
+
+end

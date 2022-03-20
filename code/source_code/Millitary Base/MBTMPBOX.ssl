@@ -1,0 +1,56 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MBTMPBOX
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure use_p_proc;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_tile                  (8)
+#define LVAR_RESTOCK_TIME               (9)
+
+import variable temp_box;
+
+procedure start begin
+end
+
+//14891
+//15493
+//15891
+procedure map_enter_p_proc begin
+
+temp_box:=self_obj;
+
+end
+
+
+
+procedure use_p_proc begin
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end

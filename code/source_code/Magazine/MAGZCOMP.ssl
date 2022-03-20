@@ -1,0 +1,237 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MAGZCOMP
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure use_p_proc;
+	procedure Logging_In;
+	procedure Logging_In_Core;
+		procedure Logging_In_Blocked;
+		procedure Logging_In_LuckTest;
+		procedure Logging_In_Fail;
+	procedure Logging_In_Failed;
+		procedure Logging_In_Blocked;
+		procedure Logging_In_Dead1;
+			procedure Death1;
+		procedure Logging_In_Dead2;
+			procedure Death2;
+		procedure Logging_In_Success;
+			procedure Logged_In_Core;
+		procedure Logging_In_Back;
+	procedure Loggin_In_Again;
+
+	procedure PreVariables;
+	procedure Variables;
+		procedure Erorrs;
+	procedure AfterVariables;
+	procedure TurnOn;
+	procedure TurnOff;
+	procedure LogOFF;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Fail_Counter               (8)
+#define LVAR_Logged_Once                (9)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+//if game_loaded then display_msg("true"); else display_msg("false");
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure use_p_proc begin
+if local_var(LVAR_Logged_Once) == 1 then start_dialog_at_node(Loggin_In_Again); else begin
+	if local_var(LVAR_Fail_Counter) == 3 then start_dialog_at_node(Logging_In_Blocked); else start_dialog_at_node(Logging_In);
+end
+end
+
+	procedure Logging_In begin
+		Reply(mstr(200));
+		call Logging_In_Core;
+	end
+
+	procedure Logging_In_Core begin
+		NOption(201,Logging_In_LuckTest,001);
+		NOption(202,Logging_In_Success,001);
+		NOption(203,Logging_In_Fail,001);
+		NOption(204,Logging_In_Fail,001);
+		NOption(205,Logging_In_Fail,001);
+		NOption(206,Logging_In_Dead1,001);
+		NOption(207,Logging_In_Dead2,001);
+		NOption(208,Node999,001);
+	end
+
+		procedure Logging_In_LuckTest begin
+		if dude_luck < 9 then call Logging_In_Fail; else call Logging_In_Success;
+		end
+
+		procedure Logging_In_Fail begin
+		inc_local_var(LVAR_Fail_Counter);
+		if local_var(LVAR_Fail_Counter) == 3 then call Logging_In_Blocked; else call Logging_In_Failed;
+		end
+
+	procedure Logging_In_Failed begin
+		Reply(mstr(230)+(3-local_var(LVAR_Fail_Counter))+mstr(231));
+	   call Logging_In_Core;
+	end
+
+		procedure Logging_In_Blocked begin
+		Reply(mstr(240));
+		NOption(208,Node999,001);
+		end
+
+		procedure Logging_In_Dead1 begin
+		Reply(mstr(210));
+		NOption(211,Death1,001);
+		end
+
+		procedure Logging_In_Dead2 begin
+		Reply(mstr(220));
+		NOption(221,Death2,001);
+		end
+
+			procedure Death1 begin
+			critter_dmg(dude_obj,10000,DMG_fire);
+			end
+
+			procedure Death2 begin
+			critter_dmg(dude_obj,10000,DMG_fire);
+			end
+
+	variable time;
+procedure Logging_In_Success begin
+		time:="hej"+game_time_hour;
+		display_msg(""+time);
+		display_msg(""+time);
+		Reply(mstr(250)+time);
+		set_local_var(LVAR_Logged_Once,1);
+		call Logged_In_Core;
+end
+
+	procedure Logged_In_Core begin
+		NOption(260,PreVariables,001);
+		NOption(261,TurnOn,001);
+		NOption(262,TurnOff,001);
+		NOption(263,LogOFF,001);
+	end
+
+procedure Logging_In_Back begin
+		Reply(mstr(280));
+		set_local_var(LVAR_Logged_Once,1);
+		call Logged_In_Core;
+end
+
+	variable repeating;
+	procedure PreVariables begin
+	repeating:=1;
+	call Variables;
+	end
+
+	procedure Variables begin
+		if repeating==1 then begin
+			//add_timer_event(self_obj,5,1);
+			if global_var(GVAR_MAGAZINE_REPAIRED_GENERATOR) == 0 then Reply(mstr(270)+random(95,102)+"."+random(0,999)+mstr(271)+random(59,60)+"."+random(0,9)+mstr(272)+random(60,65)+"."+random(0,99)+mstr(273));
+			else Reply(mstr(270)+random(109,100)+"."+random(111,999)+mstr(271)+random(60,60)+"."+random(0,1)+mstr(272)+random(58,60)+"."+random(11,99)+mstr(273));
+			NOption(264,Variables,001);
+			NOption(275,Erorrs,001);
+			NOption(274,AfterVariables,001);
+		end
+	end
+
+		procedure Erorrs begin
+			repeating:=0;
+			if global_var(GVAR_MAGAZINE_REPAIRED_GENERATOR) == 0 then Reply(mstr(290)); else Reply(mstr(291));
+			NOption(274,PreVariables,001);
+		end
+
+	procedure AfterVariables begin
+	repeating:=0;
+	call Logging_In_Back;
+	end
+
+	procedure TurnOn begin
+
+	end
+
+	procedure TurnOff begin
+
+	end
+
+	procedure LogOFF begin
+		Reply(mstr(265));
+		NOption(266,Node999,001);
+	end
+
+	procedure Loggin_In_Again begin
+		Reply(mstr(200));
+		NOption(267,Logging_In_Success,001);
+	end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+
+end

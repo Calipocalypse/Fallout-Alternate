@@ -1,0 +1,360 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Arroyo Bridge
+        Location: Arroyo
+        Description: This is the Map Script for the Bridge of Arroyo
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created: December 04, 1997
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+#include "..\headers\ArDead.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_9_MAP
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure map_update_p_proc;
+procedure basic_stuff;
+
+export variable obj_seth;
+export variable obj_lieutenant;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   Lighting;
+   //signal_end_game;
+   
+	if map_first_run then call basic_stuff;
+	
+	//move_to(dude_obj,21650,0);
+   
+end
+
+procedure map_exit_p_proc begin
+
+	override_map_start_hex(19859,0,3); //nie dziala
+
+end
+
+procedure map_update_p_proc begin
+   Lighting;
+end
+
+variable item;
+procedure basic_stuff begin
+//manierke dostanie kazdy
+      item:=create_object(PID_WATER_FLASK,0,0);
+      add_obj_to_inven(dude_obj,item);
+      
+      if is_skill_tagged(SKILL_UNARMED_COMBAT) then begin
+            
+            if dude_luck < 10 then begin
+            item:=create_object(PID_BRASS_KNUCKLES,0,0);
+            add_obj_to_inven(dude_obj,item);
+            end
+            
+            else begin
+            item:=create_object(PID_SPIKED_KNUCKLES,0,0);
+            add_obj_to_inven(dude_obj,item);
+            end
+      end
+      
+      if is_skill_tagged(SKILL_MELEE) then begin
+            item:=create_object(PID_CROWBAR,0,0);
+            add_obj_to_inven(dude_obj,item);
+      end
+      
+      if is_skill_tagged(SKILL_THROWING) then begin
+            
+            if dude_luck < 3 then begin
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+            else if dude_luck < 5 then begin
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+            else if dude_luck < 8 then begin
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+            else if dude_luck >= 8 then begin
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_FLARE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+      end
+      
+      if is_skill_tagged(SKILL_FIRST_AID) then begin
+            item:=create_object(PID_FIRST_AID_KIT,0,0);
+            add_obj_to_inven(dude_obj,item);
+            
+            if dude_luck < 3 then begin
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+            else if dude_luck < 8 then begin
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+            else if dude_luck >= 8 then begin
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+      end
+      
+      if is_skill_tagged(SKILL_DOCTOR) then begin
+                  item:=create_object(PID_FIRST_AID_BOOK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  
+                  if random(1,2) == 1 then begin
+                        if dude_luck < 3 then begin
+                              item:=create_object(PID_MENTATS,0,0);
+                              add_obj_to_inven(dude_obj,item);
+                        end
+                        
+                        else if dude_luck < 8 then begin
+                              item:=create_object(PID_MENTATS,0,0);
+                              add_obj_to_inven(dude_obj,item);
+                              item:=create_object(PID_MENTATS,0,0);
+                              add_obj_to_inven(dude_obj,item);
+                        end
+                        
+                        else if dude_luck >= 8 then begin
+                              item:=create_object(PID_MENTATS,0,0);
+                              add_obj_to_inven(dude_obj,item);
+                              item:=create_object(PID_MENTATS,0,0);
+                              add_obj_to_inven(dude_obj,item);
+                              item:=create_object(PID_MENTATS,0,0);
+                              add_obj_to_inven(dude_obj,item);
+                        end
+                  end
+            
+            else begin
+            
+                  if dude_luck < 3 then begin
+                        item:=create_object(PID_BUFFOUT,0,0);
+                        add_obj_to_inven(dude_obj,item);
+                  end
+                  
+                  else if dude_luck < 8 then begin
+                        item:=create_object(PID_BUFFOUT,0,0);
+                        add_obj_to_inven(dude_obj,item);
+                        item:=create_object(PID_BUFFOUT,0,0);
+                        add_obj_to_inven(dude_obj,item);
+                  end
+                  
+                  else if dude_luck >= 8 then begin
+                        item:=create_object(PID_BUFFOUT,0,0);
+                        add_obj_to_inven(dude_obj,item);
+                        item:=create_object(PID_BUFFOUT,0,0);
+                        add_obj_to_inven(dude_obj,item);
+                        item:=create_object(PID_BUFFOUT,0,0);
+                        add_obj_to_inven(dude_obj,item);
+                  end
+            
+            end
+            
+            if dude_luck < 3 then begin
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+            else if dude_luck < 8 then begin
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+            else if dude_luck >= 8 then begin
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+      end
+      
+      if is_skill_tagged(SKILL_SNEAK) then begin
+            item:=create_object(PID_STEALTH_BOY,0,0);
+            add_obj_to_inven(dude_obj,item);
+            
+            if dude_luck >= 8 then begin
+                  item:=create_object(PID_STEALTH_BOY,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+      end
+      
+      if is_skill_tagged(SKILL_TRAPS) then begin
+            item:=create_object(PID_PLASTIC_EXPLOSIVES,0,0);
+            add_obj_to_inven(dude_obj,item);
+            
+            if dude_luck > 7 then begin
+                  item:=create_object(PID_PLASTIC_EXPLOSIVES,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+      end
+      
+      if is_skill_tagged(SKILL_SCIENCE) then begin
+            
+            if dude_luck <= 4 then begin
+                  item:=create_object(PID_BIG_BOOK_OF_SCIENCE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+            else if dude_luck <=7 then begin
+                  item:=create_object(PID_BIG_BOOK_OF_SCIENCE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_DEANS_ELECTRONICS,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+            else if dude_luck <=9 then begin
+                  item:=create_object(PID_BIG_BOOK_OF_SCIENCE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_DEANS_ELECTRONICS,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  
+                  if random(1,2) == 1 then begin
+                  item:=create_object(PID_DEANS_ELECTRONICS,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  end
+                  
+                  else begin
+                  item:=create_object(PID_BIG_BOOK_OF_SCIENCE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  end
+            end
+            
+            else if dude_luck == 10 then begin
+                  item:=create_object(PID_BIG_BOOK_OF_SCIENCE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_DEANS_ELECTRONICS,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  
+                  if random(1,2) == 1 then begin
+                  item:=create_object(PID_DEANS_ELECTRONICS,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_DEANS_ELECTRONICS,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  end
+                  
+                  else begin
+                  item:=create_object(PID_BIG_BOOK_OF_SCIENCE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  item:=create_object(PID_BIG_BOOK_OF_SCIENCE,0,0);
+                  add_obj_to_inven(dude_obj,item);
+                  end
+            end
+            
+      end
+      
+      if is_skill_tagged(SKILL_REPAIR) then begin
+            item:=create_object(PID_ZIP_GUN,0,0);
+            add_obj_to_inven(dude_obj,item);
+            item:=create_object(PID_MULTI_TOOL,0,0);
+            add_obj_to_inven(dude_obj,item);
+            
+            if dude_luck >= 8 then begin
+                  item:=create_object(PID_10MM_JHP,0,0);
+                  add_obj_to_inven(dude_obj,item);
+            end
+            
+      end
+      
+      if is_skill_tagged(SKILL_LOCKPICK) then begin
+            item:=create_object(PID_LOCKPICKS,0,0);
+            add_obj_to_inven(dude_obj,item);
+      end
+      
+      if is_skill_tagged(SKILL_STEAL) then begin
+            item:=create_object(PID_GOLD_LOCKET,0,0);
+            add_obj_to_inven(dude_obj,item);
+            set_global_var(GVAR_PLAYER_REPUTATION,global_var(GVAR_PLAYER_REPUTATION)-120);
+      end
+      
+      if is_skill_tagged(SKILL_CONVERSANT) then begin
+            item:=create_object(PID_MIRROR_SHADES,0,0);
+            add_obj_to_inven(dude_obj,item);
+      end
+      
+      if is_skill_tagged(SKILL_GAMBLING) then begin
+            item:=create_object(PID_DICE,0,0);
+            add_obj_to_inven(dude_obj,item);
+            item:=create_object(PID_DECK_OF_TRAGIC_CARDS,0,0);
+            add_obj_to_inven(dude_obj,item);
+            item:=create_object(PID_LOADED_DICE,0,0);
+            add_obj_to_inven(dude_obj,item);
+            item:=create_object(PID_DECK_OF_CARDS,0,0);
+            add_obj_to_inven(dude_obj,item);
+      end
+      
+      if is_skill_tagged(SKILL_BARTER) then begin
+            item_caps_adjust(dude_obj,random(65,100)*dude_luck);
+      end
+      
+            
+      if is_skill_tagged(SKILL_OUTDOORSMAN) then begin
+            item:=create_object(PID_RED_RYDER_BB_GUN,0,0);
+            add_obj_to_inven(dude_obj,item);
+            item:=create_object(PID_BBS,0,0);
+            add_obj_to_inven(dude_obj,item);
+            item:=create_object(PID_BBS,0,0);
+            add_obj_to_inven(dude_obj,item);
+      end
+
+end 

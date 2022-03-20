@@ -1,0 +1,72 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_MEDBOX
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure use_p_proc;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_tile                  (8)
+#define LVAR_RESTOCK_TIME               (9)
+
+
+//jesli to czytasz to znaczy ze potrzebujesz skryptu z vcharry bo tu usunalem temp box
+
+import variable box_medbox;
+import variable obj_umberto;
+
+procedure start begin
+end
+
+//14891
+//15493
+//15891
+procedure map_enter_p_proc begin
+
+//display_msg("OPS: "+local_var(LVAR_Home_tile));
+
+   box_medbox := self_obj;
+
+            if (is_loading_game == false) then begin
+              if (local_var(LVAR_RESTOCK_TIME) < game_time) then begin
+                    item_caps_adjust(self_obj, random(52, 111) - self_caps);
+                    check_restock_item(PID_STIMPAK, 1, 2, 100)
+                    check_restock_item(PID_FIRST_AID_KIT, 1, 1, 100)
+                    check_restock_item(PID_RADAWAY, 1, 1, 40)
+                    check_restock_item(PID_ANTIDOTE, 1, 2, 44)
+                    check_restock_item(PID_RAD_X, 1, 1, 25)
+                    set_local_var(LVAR_RESTOCK_TIME, (random(1, 2) * ONE_GAME_DAY) + game_time);
+              end
+            end
+
+end
+
+procedure use_p_proc begin
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end

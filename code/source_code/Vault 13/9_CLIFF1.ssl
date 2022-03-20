@@ -1,0 +1,193 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_CLIFF1
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+import variable obj_cliff1;
+import variable obj_cliff2;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Counter                    (8)
+#define LVAR_Played                     (9)
+
+
+procedure start begin
+
+end
+
+procedure map_enter_p_proc begin
+//28126
+obj_cliff1:=self_obj;
+
+critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_SUPER_MUTANT);
+critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_V13_SUPERMUTANTS);
+
+if not map_first_run and local_var(LVAR_Counter) != 11 then begin
+   rm_fixed_timer_event(self_obj,0);
+   add_timer_event(self_obj,game_ticks(3),0);
+   display_msg("LVAR: "+local_var(LVAR_Counter));
+end
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+   
+   if tile_distance_objs(self_obj,dude_obj) < 10 and local_var(LVAR_Played) == 0 then begin set_local_var(LVAR_Played,1); add_timer_event(self_obj,0,0); end
+   
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+
+	if (fixed_param==0) then begin
+	
+		if local_var(LVAR_Counter) == 0 then begin
+		float_msg(obj_cliff2,mstr(200),FLOAT_MSG_BLUE);
+		add_timer_event(self_obj,game_ticks(2),0);
+		end
+		
+		else if local_var(LVAR_Counter) == 1 then begin
+		float_msg(obj_cliff2,mstr(201),FLOAT_MSG_BLUE);
+		add_timer_event(self_obj,game_ticks(3),0);
+		end
+		
+		else if local_var(LVAR_Counter) == 2 then begin
+		float_msg(obj_cliff1,mstr(202),FLOAT_MSG_GREEN);
+		add_timer_event(self_obj,game_ticks(3),0);
+		end
+		
+		else if local_var(LVAR_Counter) == 3 then begin
+		float_msg(obj_cliff1,mstr(203),FLOAT_MSG_GREEN);
+		add_timer_event(self_obj,game_ticks(3),0);
+		end
+		
+		else if local_var(LVAR_Counter) == 4 then begin
+		float_msg(obj_cliff2,mstr(204),FLOAT_MSG_BLUE);
+		add_timer_event(self_obj,game_ticks(4),0);
+		end
+		
+		else if local_var(LVAR_Counter) == 5 then begin
+		float_msg(obj_cliff1,mstr(205),FLOAT_MSG_GREEN);
+		add_timer_event(self_obj,game_ticks(3),0);
+		end
+		
+		else if local_var(LVAR_Counter) == 6 then begin
+		float_msg(obj_cliff1,mstr(206),FLOAT_MSG_GREEN);
+		add_timer_event(self_obj,game_ticks(1),0);
+		end
+		
+		else if local_var(LVAR_Counter) == 7 then begin
+		reg_anim_clear(obj_cliff1);
+		reg_anim_begin();
+		reg_anim_animate(obj_cliff1, ANIM_throw_punch, -1);
+		reg_anim_end();
+		add_timer_event(self_obj,game_ticks(1),0);
+		end
+		
+		else if local_var(LVAR_Counter) == 8 then begin
+		move_to(obj_cliff2,28327,0);
+		kill_critter(obj_cliff2,ANIM_fall_front_blood);
+		add_timer_event(self_obj,game_ticks(2),0);
+		end
+		
+		else if local_var(LVAR_Counter) == 9 then begin
+		animate_move_obj_to_tile(obj_cliff1,14502,ANIMATE_WALK);
+		add_timer_event(self_obj,game_ticks(6),1);
+		add_timer_event(self_obj,game_ticks(1),0);
+		end
+		
+		else if local_var(LVAR_Counter) == 10 then begin
+		
+		if tile_num(self_obj) == 14502 then set_obj_visibility(self_obj,true);
+		
+			else begin
+				animate_move_obj_to_tile(obj_cliff1,14502,ANIMATE_WALK);
+				dec_local_var(LVAR_Counter);
+				add_timer_event(self_obj,game_ticks(1),0);
+			end
+		
+		end
+		
+		
+		
+		inc_local_var(LVAR_Counter);
+	
+	end
+	
+	if (fixed_param==1) then begin
+	float_msg(self_obj,mstr(207),FLOAT_MSG_GREEN);
+	end
+
+end

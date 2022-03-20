@@ -1,0 +1,172 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Name: Arroyo Bridge
+        Location: Arroyo
+        Description: This is the Map Script for the Bridge of Arroyo
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created: December 04, 1997
+
+           Updated:
+*/
+
+/* Include Files */
+
+/* Note, the Following Lines need to be in this order so that
+   the script will be compilable. The define Name is referenced
+   in a module from define.h and used in command.h. Please do
+   not change the ordering.
+        -rwh2   11/13/97
+*/
+#include "..\headers\define.h"
+#include "..\headers\ArDead.h"
+#include "..\headers\updatmap.h"
+
+#define NAME                    SCRIPT_9_MAP2
+
+#include "..\headers\command.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+
+export variable obj_cut_lieu;
+export variable obj_cut_gat;
+
+export variable v13_mut1;
+export variable v13_mut2;
+export variable v13_mut3;
+export variable v13_mut4;
+
+export variable box_medbox;
+export variable obj_umberto;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+   //Lighting;
+   //signal_end_game;
+
+
+	//move_to(dude_obj,21650,0);
+
+	Cavern_Lighting;
+
+	if global_var(GVAR_V13_CUTSCENE_LIEU_GATE) == 1 then begin
+
+		add_timer_event(self_obj,0,0);
+		set_global_var(GVAR_V13_CUTSCENE_LIEU_GATE,2);
+
+	end
+
+end
+
+procedure map_exit_p_proc begin
+
+
+end
+
+procedure map_update_p_proc begin
+   Cavern_Lighting;
+end
+
+variable item;
+variable counter;
+procedure timed_event_p_proc begin
+
+	if (fixed_param==0) then begin
+
+		if counter==0 then begin
+		fadein(200);
+		game_ui_disable;
+		move_to(dude_obj,23263,2);
+		Face_Critter(dude_obj,obj_cut_lieu);
+		Face_Critter(obj_cut_lieu,dude_obj);
+		add_timer_event(self_obj,game_ticks(2),0);
+		end
+
+		else if counter == 1 then begin
+		float_msg(obj_cut_gat,mstr(1),FLOAT_MSG_NORMAL);
+		add_timer_event(self_obj,game_ticks(3),0);
+		end
+
+		else if counter == 2 then begin
+		float_msg(obj_cut_gat,mstr(2),FLOAT_MSG_NORMAL);
+		add_timer_event(self_obj,game_ticks(3),0);
+		end
+
+		else if counter == 3 then begin
+		float_msg(obj_cut_lieu,mstr(3),FLOAT_MSG_GREEN);
+		add_timer_event(self_obj,game_ticks(3),0);
+		end
+
+		else if counter == 4 then begin
+		float_msg(dude_obj,mstr(4),FLOAT_MSG_BLUE);
+		add_timer_event(self_obj,game_ticks(2),0);
+		end
+
+		else if counter == 5 then begin
+		float_msg(dude_obj,mstr(5),FLOAT_MSG_BLUE);
+		add_timer_event(self_obj,game_ticks(3),0);
+		end
+
+		else if counter == 6 then begin
+		float_msg(obj_cut_lieu,mstr(9),FLOAT_MSG_GREEN);
+		add_timer_event(self_obj,game_ticks(1),0);
+		end
+
+		else if counter == 7 then begin
+		animate_move_obj_to_tile(obj_cut_lieu,tile_num_in_direction(tile_num(dude_obj),5,1),ANIMATE_WALK);
+		add_timer_event(self_obj,game_ticks(3),0);
+		end
+
+		else if counter == 8 then begin
+		float_msg(obj_cut_lieu,mstr(10),FLOAT_MSG_GREEN);
+		add_timer_event(self_obj,game_ticks(5),0);
+		end
+
+		else if counter == 9 then begin
+		reg_anim_clear(obj_cut_lieu);
+		reg_anim_begin();
+		reg_anim_animate(obj_cut_lieu, ANIM_throw_punch, -1);
+		reg_anim_end();
+		add_timer_event(self_obj,game_ticks(1),0);
+		end
+
+		else if counter == 10 then begin
+		remove_armor(dude_obj)
+		create_object(PID_PURPLE_ROBE,23066,2);
+		add_timer_event(self_obj,game_ticks(4),0);
+		end
+
+		else if counter == 11 then begin
+		float_msg(obj_cut_lieu,mstr(11),FLOAT_MSG_GREEN);
+		add_timer_event(self_obj,game_ticks(4),0);
+		end
+
+		else if counter == 12 then begin
+		float_msg(obj_cut_lieu,mstr(12),FLOAT_MSG_GREEN);
+		add_timer_event(self_obj,game_ticks(6),0);
+		end
+
+		else if counter == 13 then begin
+		game_ui_enable;
+		signal_end_game;
+		end
+
+		counter++;
+
+	end
+
+end

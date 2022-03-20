@@ -1,0 +1,46 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+
+#include "..\headers\define.h"
+#define NAME                    SCRIPT_9_LUGAGE
+#include "..\headers\command.h"
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+
+import variable luggage1_1;
+import variable luggage1_2;
+import variable luggage1_3;
+import variable luggage1_4;
+import variable luggage_2;
+import variable luggage_3;
+
+#define LVAR_Home_Tile (4)
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+	set_local_var(LVAR_Home_Tile,self_tile);
+	
+	if local_var(LVAR_Home_Tile) == 21115 then luggage1_1:=self_obj;
+	if local_var(LVAR_Home_Tile) == 20715 then luggage1_2:=self_obj;
+	if local_var(LVAR_Home_Tile) == 21321 then luggage1_3:=self_obj;
+	if local_var(LVAR_Home_Tile) == 20921 then luggage1_4:=self_obj;
+	
+	if local_var(LVAR_Home_Tile) == 19327 then luggage_2:=self_obj;
+	
+	if local_var(LVAR_Home_Tile) == 18127 then luggage_3:=self_obj;
+	
+
+end
+
+procedure map_update_p_proc begin
+
+	//float_msg(self_obj,""+local_var(LVAR_Home_Tile),2);
+
+end

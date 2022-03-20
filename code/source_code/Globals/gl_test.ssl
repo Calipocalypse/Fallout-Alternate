@@ -1,0 +1,45 @@
+/*
+
+   Adds Fallout 1 water chip note to the pipboy screen.
+   Also other shit related to the counter
+
+*/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\sfall.h"
+#include "..\headers\sfall.rotators.h"
+
+/* Standard Script Procedures */
+procedure start;
+
+procedure pipboy_note;
+procedure pipboy_note_refresh;
+
+procedure check_transitiontimer;
+      procedure setting_all_gvars_to_minus_1;
+procedure check_invasions;
+
+procedure KeyPressHandler;
+procedure show_note;
+procedure show_days;
+procedure delete_all;
+
+variable lastDay;
+
+variable Scr_Width;
+variable Scr_Height;
+
+#define timer_active       ((global_var(GVAR_MAIN_DAYS_TO_TRANSITION) > 0))
+
+procedure start begin
+   if (game_loaded) then begin
+      set_global_script_repeat(1);
+      set_global_script_type(3);
+   end
+
+   //x++;
+  // debug_msg(": " + x);
+
+end

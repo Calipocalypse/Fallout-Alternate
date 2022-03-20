@@ -1,0 +1,184 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_VALVE
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure pickup_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure use_p_proc;
+procedure timed_event_p_proc;
+
+procedure Start_Node;
+procedure Node999;
+procedure FastEffect;
+procedure LongEffect;
+
+procedure check_how_much_caught;
+
+import variable obj_fevguy;
+import variable obj_green_explosion;
+
+
+#define LVAR_State               (4) // 0 - initate 1 - moved a litle
+#define LVAR_Caught_Twice        (5) // 2 - go kill dude
+
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure use_p_proc begin
+
+	if local_var(LVAR_State) != 1 and dude_is_sneaking then start_dialog_at_node(Start_Node);
+
+	if not dude_is_sneaking then begin
+
+		float_msg(obj_fevguy,mstr(300),2);
+		inc_local_var(LVAR_Caught_Twice);
+		call check_how_much_caught;
+
+	end
+
+end
+
+	procedure check_how_much_caught begin
+
+		if local_var(LVAR_Caught_Twice) >= 2 then begin
+			float_msg(obj_fevguy,mstr(301),2);
+			attack_setup(obj_fevguy,dude_obj);
+		end
+
+	end
+
+procedure damage_p_proc begin
+end
+
+procedure pickup_p_proc begin
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+call use_p_proc;
+end
+
+	procedure Start_Node begin
+
+		Reply(mstr(200));
+		NOption(201,FastEffect,001);
+		NOption(202,LongEffect,001);
+		NOption(203,Node999,001);
+
+	end
+
+	procedure Node999 begin
+	end
+
+	procedure FastEffect begin
+
+		add_timer_event(self_obj,0,0);
+
+	end
+
+	procedure LongEffect begin
+
+		display_msg(""+global_var(GVAR_MAIN_DAYS_TO_TRANSITION));
+		set_global_var(GVAR_MAIN_DAYS_TO_TRANSITION,global_var(GVAR_MAIN_DAYS_TO_TRANSITION)+50);
+		display_msg(""+global_var(GVAR_MAIN_DAYS_TO_TRANSITION));
+
+		set_local_var(LVAR_State,1);
+
+	end
+
+variable counter;
+procedure timed_event_p_proc begin
+
+
+	if (fixed_param==0) then begin
+
+		if counter == 0 then begin
+
+		game_ui_disable;
+
+		set_obj_visibility(obj_green_explosion,false);
+		reg_anim_begin();
+      reg_anim_animate_and_hide(obj_green_explosion, ANIM_stand,-1);
+      reg_anim_end();
+
+		art_change_fid_num(dude_obj, FID_NAGHUL);
+		art_change_fid_num(obj_fevguy, FID_MAMTNT);
+
+
+		create_object(PID_RAD_GOO_1,dude_tile,dude_elevation);
+		create_object(PID_RAD_GOO_2,tile_num_in_direction(dude_tile,2,1),dude_elevation);
+		//create_object(obj_fevguy,dude_tile,dude_elevation);
+		create_object(PID_RAD_GOO_2,tile_num_in_direction(tile_num(obj_fevguy),4,1),dude_elevation);
+		create_object(PID_RAD_GOO_3,tile_num_in_direction(tile_num(obj_fevguy),4,2),dude_elevation);
+
+		critter_dmg(dude_obj,0,DMG_normal_dam);
+		critter_dmg(obj_fevguy,0,DMG_normal_dam);
+
+		//lets add here misc green explosion
+
+		game_ui_disable;
+
+		add_timer_event(self_obj,game_ticks(4),0);
+
+		end
+
+		else if counter == 1 then begin
+
+		animate_move_obj_to_tile(dude_obj,tile_num_in_direction(dude_tile,3,10),ANIMATE_WALK);
+
+		add_timer_event(self_obj,game_ticks(4),0);
+
+		end
+
+		else if counter == 2 then begin
+
+		reg_anim_begin();
+      reg_anim_animate(dude_obj, ANIM_stand,-1);
+      reg_anim_animate(dude_obj, ANIM_fall_back_blood,-1);
+      reg_anim_end();
+
+      add_timer_event(self_obj,game_ticks(4),0);
+
+		end
+
+		else if counter == 3 then begin
+
+			signal_end_game;
+
+		end
+
+		counter++;
+
+	end
+
+
+end

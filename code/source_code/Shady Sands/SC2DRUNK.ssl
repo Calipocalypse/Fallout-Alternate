@@ -1,0 +1,693 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SC2DRUNK
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+procedure combat_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+procedure Gvar1;
+      procedure Gvar1_Quest;
+procedure Gvar1_Sila;
+procedure Gvar1_Sila2;
+procedure Gvar1_Sila3;
+procedure Gvar1_Retoryka1;
+procedure Gvar1_Retoryka2;
+procedure Gvar1_Retoryka3;
+procedure Gvar1_Retoryka4;
+procedure Gvar1_Retoryka5;
+procedure Gvar1_Inteligencja;
+procedure Gvar1_Zwinnosc;
+
+
+procedure sila_cutscene;
+procedure retoryka_cutscene;
+procedure inteligencja_cutscene;
+procedure zwinnosc_cutscene;
+procedure punch_cutscene;
+procedure bad_cutscene;
+
+procedure punch_way;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Cutscene_Counter           (8)
+#define LVAR_Home_Tile                  (9)
+#define LVAR_HIT_TIMES                  (10)
+
+import variable person_1drunk;
+import variable person_2drunk;
+import variable person_bar1khan;
+import variable person_bar2khan;
+
+import variable person_barman;
+
+procedure assign_home_tile;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then begin
+            set_local_var(LVAR_Home_Tile,self_tile);
+      end
+
+      call assign_home_tile;
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure assign_home_tile begin
+
+   if local_var(LVAR_Home_Tile) == 17331 or self_tile== 17331 then person_1drunk:=self_obj; else if local_var(LVAR_Home_Tile) == 17531 or self_tile== 17531 then person_2drunk:=self_obj;
+   critter_add_trait(person_1drunk,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_1PIJAK);
+   critter_add_trait(person_2drunk,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_1PIJAK);
+
+end
+
+procedure critter_p_proc begin
+
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   //display_msg("nasze2 :"+person_1drunk+" "+person_2drunk+".");
+   //display_msg("nasze :"+person_1drunk+" "+person_2drunk+".");
+
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+
+   if (source_obj == dude_obj) then inc_local_var(LVAR_HIT_TIMES);
+
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+if global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) == 0 then float_msg(self_obj,mstr(200),2);
+if global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) == 1 then start_dialog_at_node(Gvar1);
+if global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) >= 3 then float_msg(person_1drunk,mstr(201),FLOAT_MSG_GREEN);
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+
+   if (source_obj == dude_obj) then begin
+      set_global_var(GVAR_ALARM_SHADYSANDS,1);
+      float_msg(dude_obj,mstr(202),FLOAT_MSG_BLUE);
+   end
+
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure Gvar1 begin
+Reply(mstr(200));
+NOption(mstr(210),Gvar1_Quest,001);
+NOption(mstr(211),Node999,001);
+end
+
+      procedure Gvar1_Quest begin
+            Reply(mstr(220));
+            if dude_strength > 6 then NOption(mstr(221),Gvar1_Sila,001);
+            if has_skill(dude_obj,SKILL_UNARMED_COMBAT) > 70 then NOption(mstr(223),Gvar1_Sila,001);
+            //NOption(mstr(222),Gvar1_Retoryka1,001);
+            if dude_iq > 7 then NOption(mstr(330),Gvar1_Inteligencja,001);
+            if dude_agility > 7 then NOption(mstr(350),Gvar1_Zwinnosc,001);
+            NOption(mstr(211),Node999,001);
+      end
+
+procedure Gvar1_Sila begin
+      add_timer_event(self_obj,0,0);
+end
+
+procedure Gvar1_Retoryka1 begin
+Reply(mstr(230));
+NOption(mstr(231),Gvar1_Retoryka2,001);
+end
+
+procedure Gvar1_Retoryka2 begin
+Reply(mstr(232));
+NOption(mstr(233),Gvar1_Retoryka3,001);
+end
+
+procedure Gvar1_Retoryka3 begin
+Reply(mstr(234));
+NOption(mstr(235),Gvar1_Retoryka4,001);
+end
+
+procedure Gvar1_Retoryka4 begin
+Reply(mstr(236));
+NOption(mstr(237),Gvar1_Retoryka5,001);
+end
+
+procedure Gvar1_Retoryka5 begin
+add_timer_event(self_obj,0,1);
+end
+
+procedure Gvar1_Inteligencja begin
+add_timer_event(self_obj,0,2);
+end
+
+procedure Gvar1_Zwinnosc begin
+add_timer_event(self_obj,0,3);
+end
+
+procedure timed_event_p_proc begin
+
+
+/* Sila */
+      if (fixed_param==0) then begin
+
+            call sila_cutscene;
+
+      end
+
+/* Retoryka */
+      if (fixed_param==1) then begin
+
+            call retoryka_cutscene;
+
+      end
+
+/* Inteligencja */
+      if (fixed_param==2) then begin
+
+            call inteligencja_cutscene;
+
+      end
+
+/* Zwinnosc */
+      if (fixed_param==3) then begin
+
+            call zwinnosc_cutscene;
+
+      end
+
+/* Napierdalanka */
+      if (fixed_param==4) then begin
+
+            call punch_cutscene;
+
+      end
+/* Zle zrobione */
+
+      if (fixed_param==5) then begin
+
+            call bad_cutscene;
+
+      end
+
+end
+
+procedure sila_cutscene begin
+
+      inc_local_var(LVAR_Cutscene_Counter);
+
+            if local_var(LVAR_Cutscene_Counter) == 1 then begin
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,2);
+                  game_ui_disable;
+                  move_to(dude_obj,17332,0);
+                  Face_Critter(dude_obj,person_1drunk);
+                  Face_Critter(dude_obj,person_2drunk);
+                  Face_Critter(person_1drunk,dude_obj);
+                  //anim(dude_obj,ANIM_kick_leg,0);
+                  anim(person_2drunk,ANIM_fall_back,0);
+                  anim(person_1drunk,ANIM_fall_back,0);
+                  add_timer_event(self_obj,20,0);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 2 then begin
+
+                  float_msg(person_bar2khan,mstr(300),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,15,0);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 3 then begin
+
+                  animate_move_obj_to_tile(person_bar1khan,17732,ANIMATE_WALK);
+                  Face_Critter(person_bar1khan,dude_obj);
+                  add_timer_event(self_obj,50,0);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 4 then begin
+
+                  float_msg(dude_obj,mstr(301),FLOAT_MSG_BLUE);
+                  add_timer_event(self_obj,30,0);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 5 then begin
+
+                  fadeout(1000);
+                  add_timer_event(self_obj,30,0);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 6 then begin
+
+                  set_obj_visibility(person_1drunk,true);
+                  set_obj_visibility(person_2drunk,true);
+                  fadein(1000);
+                  game_ui_enable;
+                  add_timer_event(self_obj,30,0);
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,3);
+
+            end
+
+end
+
+procedure retoryka_cutscene begin
+
+      inc_local_var(LVAR_Cutscene_Counter);
+
+            if local_var(LVAR_Cutscene_Counter) == 1 then begin
+                  game_ui_disable;
+                  move_to(dude_obj,17332,0);
+                  Face_Critter(dude_obj,person_1drunk);
+                  Face_Critter(dude_obj,person_2drunk);
+                  Face_Critter(person_1drunk,dude_obj);
+                  add_timer_event(self_obj,20,1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 2 then begin
+
+                  fadeout(1000);
+                  add_timer_event(self_obj,30,1);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 3 then begin
+
+                  set_obj_visibility(person_1drunk,true);
+                  set_obj_visibility(person_2drunk,true);
+                  fadeIN(1000);
+                  game_ui_enable;
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,3);
+
+            end
+
+end
+
+procedure inteligencja_cutscene begin
+
+      inc_local_var(LVAR_Cutscene_Counter);
+
+            if local_var(LVAR_Cutscene_Counter) == 1 then begin
+                  game_ui_disable;
+                  move_to(dude_obj,17332,0);
+                  Face_Critter(dude_obj,person_1drunk);
+                  Face_Critter(dude_obj,person_2drunk);
+                  Face_Critter(person_1drunk,dude_obj);
+                  add_timer_event(self_obj,10,2);
+                  set_global_var(GVAR_KURTKA_DO_ZGARNIECIA,1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 2 then begin
+
+                  float_msg(person_1drunk,mstr(331),2);
+                  add_timer_event(self_obj,30,2);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 3 then begin
+
+                  float_msg(person_2drunk,mstr(332),2);
+                  add_timer_event(self_obj,50,2);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 4 then begin
+
+                  fadeout(1000);
+                  add_timer_event(self_obj,30,2);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 5 then begin
+
+                  move_to(dude_obj,22508,0);
+                  move_to(person_1drunk,20311,0);
+                  move_to(person_2drunk,22105,0);
+                  critter_add_trait(person_1drunk,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_1PIJAK);
+                  critter_add_trait(person_2drunk,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_2PIJAK);
+                  fadeIN(1000);
+                  add_timer_event(self_obj,30,2);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 6 then begin
+
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,2); // teraz straznicy nie beda wracali do swoich pozycji tylko ogladali mecza
+                  game_ui_enable;
+                  if random(1,2) == 1 then attack_setup(person_1drunk,person_2drunk); else attack_setup(person_2drunk,person_1drunk);
+                  add_timer_event(self_obj,30,2);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 7 then begin
+
+                  add_timer_event(self_obj,30,2);
+                  if critter_state(person_1drunk)==CRITTER_IS_NORMAL AND critter_state(person_2drunk)==CRITTER_IS_NORMAL then set_local_var(LVAR_Cutscene_Counter,6);
+                  if critter_is_fleeing(person_2drunk) then float_msg(person_2drunk,mstr(333),2);
+                  if critter_is_fleeing(person_1drunk) then float_msg(person_1drunk,mstr(333),2);
+                  //display_msg("dd :"+critter_state(person_2drunk));
+                  //display_msg("dd2 :"+critter_state(person_1drunk));
+                  //display_msg("dd3 :"+critter_state(person_bar1khan));
+                  //display_msg("dd3 :"+critter_state(dude_obj));
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 8 then begin
+
+                  terminate_combat;
+                  fadeout(3000);
+                  game_ui_disable;
+                  if critter_state(person_1drunk)==CRITTER_IS_DEAD then set_obj_visibility(person_1drunk,true);
+                  if critter_state(person_2drunk)==CRITTER_IS_DEAD then set_obj_visibility(person_2drunk,true);
+                  if critter_state(person_1drunk)==CRITTER_IS_NORMAL then move_to(person_1drunk,local_var(LVAR_Home_Tile),0);
+                  if critter_state(person_2drunk)==CRITTER_IS_NORMAL then move_to(person_2drunk,local_var(LVAR_Home_Tile),0);
+                  add_timer_event(self_obj,30,2);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 9 then begin
+
+                  game_ui_enable;
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,3);
+                  fadein(3000);
+                  Face_Critter(dude_obj,person_1drunk);
+                  Face_Critter(dude_obj,person_2drunk);
+
+            end
+
+end
+
+procedure zwinnosc_cutscene begin
+
+inc_local_var(LVAR_Cutscene_Counter);
+
+            if local_var(LVAR_Cutscene_Counter) == 1 then begin
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,2);
+                  game_ui_disable;
+                  move_to(dude_obj,17332,0);
+                  Face_Critter(dude_obj,person_1drunk);
+                  Face_Critter(dude_obj,person_2drunk);
+                  Face_Critter(person_1drunk,dude_obj);
+                  anim(dude_obj,ANIM_throw_punch,0);
+                  anim(person_2drunk,ANIM_hit_from_front,0);
+                  anim(person_1drunk,ANIM_hit_from_front,0);
+                  add_timer_event(self_obj,13,3);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 2 then begin
+
+                  animate_move_obj_to_tile(dude_obj,20132,ANIMATE_RUN);
+                  //float_msg(person_bar2khan,"Znowu sie leja, idzze tam zrobic porzadek.",FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,5,3);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 3 then begin
+
+                  animate_move_obj_to_tile(person_2drunk,19933,ANIMATE_RUN);
+                  animate_move_obj_to_tile(person_1drunk,19931,ANIMATE_RUN);
+                  //float_msg(person_bar2khan,"Znowu sie leja, idzze tam zrobic porzadek.",FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,33,3);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 4 then begin
+
+                  animate_move_obj_to_tile(person_2drunk,19933,ANIMATE_RUN);
+                  animate_move_obj_to_tile(person_1drunk,19931,ANIMATE_RUN);
+                  float_msg(person_1drunk,mstr(351),FLOAT_MSG_PURPLE);
+                  add_timer_event(self_obj,5,3);
+                  Face_Critter(person_2drunk,dude_obj);
+                  Face_Critter(dude_obj,person_1drunk);
+                  Face_Critter(dude_obj,person_2drunk);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 5 then begin
+
+                  animate_move_obj_to_tile(person_bar1khan,tile_num_in_direction(19933,5,1),ANIMATE_WALK);
+                  add_timer_event(self_obj,33,3);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 6 then begin
+
+                  float_msg(person_2drunk,mstr(352),FLOAT_MSG_LIGHT_RED);
+                  add_timer_event(self_obj,15,3);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 7 then begin
+
+                  anim(person_bar1khan,ANIM_swing_anim,0);
+                  anim(person_bar2khan,ANIM_fire_single,0);
+                  anim(person_1drunk,ANIM_fall_back,0);
+                  anim(person_2drunk,ANIM_fall_front,0);
+                  float_msg(person_1drunk,mstr(353),FLOAT_MSG_LIGHT_RED);
+                  float_msg(person_2drunk,mstr(354),FLOAT_MSG_LIGHT_RED);
+                  add_timer_event(self_obj,35,3);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 8 then begin
+
+                  float_msg(person_bar1khan,mstr(360),FLOAT_MSG_LIGHT_RED);
+                  add_timer_event(self_obj,45,3);
+
+            end
+
+             if local_var(LVAR_Cutscene_Counter) == 9 then begin
+
+                  float_msg(person_1drunk,mstr(355),FLOAT_MSG_LIGHT_RED);
+                  //anim(person_1drunk,ANIM_back_to_standing,0);
+                  add_timer_event(self_obj,25,3);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 10 then begin
+
+                  anim(person_bar2khan,ANIM_fire_single,0);
+                  anim(person_1drunk,ANIM_fall_back_blood,0);
+                  float_msg(person_1drunk,mstr(356),2);
+                  add_timer_event(self_obj,25,3);
+                  set_global_var(GVAR_KURTKA_DO_ZGARNIECIA,1);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 11 then begin
+
+                  float_msg(person_bar2khan,mstr(357),FLOAT_MSG_LIGHT_RED);
+                  add_timer_event(self_obj,25,3);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 12 then begin
+
+                  float_msg(person_2drunk,mstr(358),FLOAT_MSG_LIGHT_RED);
+                  add_timer_event(self_obj,35,3);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 13 then begin
+
+                  float_msg(person_bar2khan,mstr(359),FLOAT_MSG_LIGHT_RED);
+                  add_timer_event(self_obj,25,3);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 14 then begin
+
+                  fadeout(666);
+                  add_timer_event(self_obj,25,3);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 15 then begin
+
+                  set_obj_visibility(person_1drunk,true);
+                  set_obj_visibility(person_2drunk,true);
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,3);
+                  fadein(666);
+                  game_ui_enable;
+
+            end
+
+
+
+end
+
+procedure combat_p_proc begin
+
+      //display_msg("hit times: "+local_var(LVAR_HIT_TIMES));
+      if local_var(LVAR_HIT_TIMES) >= 3 then call punch_way;
+
+end
+
+procedure punch_way begin
+
+      terminate_combat;
+      move_to(dude_obj,dude_tile,0);
+      game_ui_disable;
+      add_timer_event(self_obj,20,4);
+      set_local_var(LVAR_HIT_TIMES,0);
+
+end
+
+procedure punch_cutscene begin
+
+      inc_local_var(LVAR_Cutscene_Counter);
+
+            if local_var(LVAR_Cutscene_Counter) == 1 then begin
+                  game_ui_disable;
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,3);
+                  float_msg(self_obj,mstr(380),FLOAT_MSG_LIGHT_RED);
+                  add_timer_event(self_obj,game_ticks(5),4);
+                  Face_Critter(person_2drunk,dude_obj);
+                  Face_Critter(dude_obj,person_1drunk);
+                  Face_Critter(dude_obj,person_2drunk);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 2 then begin
+
+                  float_msg(dude_obj,mstr(381),FLOAT_MSG_BLUE);
+                  add_timer_event(self_obj,51,4);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 3 then begin
+
+                  float_msg(self_obj,mstr(382),FLOAT_MSG_LIGHT_RED);
+                  add_timer_event(self_obj,31,4);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 4 then begin
+
+                  add_timer_event(self_obj,31,4);
+                  fadeout(666);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 5 then begin
+
+                  set_obj_visibility(person_1drunk,true);
+                  set_obj_visibility(person_2drunk,true);
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,3);
+                  fadein(666);
+                  game_ui_enable;
+
+            end
+
+end
+
+procedure bad_cutscene begin
+
+      inc_local_var(LVAR_Cutscene_Counter);
+      display_msg(""+local_var(LVAR_Cutscene_Counter));
+
+            if local_var(LVAR_Cutscene_Counter) == 1 then begin
+                  game_ui_disable;
+                  fadeout(666);
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,2);
+                  move_to(person_bar1khan,17332,0);
+
+                  anim(person_bar1khan,ANIMATE_ROTATION,0);
+                  Face_Critter(person_bar1khan,person_1drunk);
+                  Face_Critter(person_bar1khan,person_2drunk);
+                  Face_Critter(person_2drunk,dude_obj);
+
+                  move_to(person_bar2khan,tile_num_in_direction(17332,2,3),0);
+                  add_timer_event(self_obj,game_ticks(5),5);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 2 then begin
+
+                  float_msg(person_bar1khan,"Wypierdalac z baru, raz raz, albo pogadacie z mlotkiem",FLOAT_MSG_LIGHT_RED);
+                  fadein(666);
+                  add_timer_event(self_obj,35,5);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 3 then begin
+
+                  float_msg(person_2drunk,"Haha! Sproboj nas zmusic!",FLOAT_MSG_LIGHT_RED);
+                  add_timer_event(self_obj,31,5);
+
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 4 then begin
+
+                  anim(person_bar1khan,ANIM_swing_anim,0);
+                  anim(person_bar2khan,ANIM_fire_single,0);
+                  anim(person_1drunk,ANIM_fall_back_blood,0);
+                  anim(person_2drunk,ANIM_fall_front_blood,0);
+                  float_msg(person_barman,"Nieeee! Kurwa! Tylko nie moj dywan!",2);
+                  add_timer_event(self_obj,31,5);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 5 then begin
+
+                  game_ui_enable;
+                  script_overrides;
+                  set_global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT,4);
+                  add_obj_to_inven(person_2drunk,create_object(PID_LEATHER_JACKET,0,0));
+                  add_obj_to_inven(person_1drunk,create_object(PID_LEATHER_JACKET,0,0));
+                  kill_critter(person_2drunk,ANIM_fall_front_blood_sf);
+                  kill_critter(person_1drunk,ANIM_fall_back_blood_sf);
+                  script_overrides;
+
+            end
+
+end

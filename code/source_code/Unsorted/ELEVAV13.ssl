@@ -1,0 +1,45 @@
+#include "headers\define.h"
+
+#define NAME                    SCRIPT_ELEVAV13
+
+#define LVAR_Herebefore                 (4)
+
+#include "headers\command.h"
+#include "headers\ModReact.h"
+
+procedure start;
+procedure start_p_proc;
+procedure map_exit_p_proc;
+procedure spatial_p_proc;
+procedure use_p_proc;
+procedure timed_event_p_proc;
+
+procedure start begin
+end
+
+procedure start_p_proc begin
+
+end
+
+procedure map_exit_p_proc begin
+set_local_var(LVAR_Herebefore,0);
+end
+
+procedure spatial_p_proc begin
+set_local_var(LVAR_Herebefore,1);
+add_timer_event(self_obj,50,0);
+display_msg(mstr(100));
+end
+
+procedure use_p_proc begin
+
+
+end
+
+procedure timed_event_p_proc begin
+
+	if (fixed_param==0) then set_local_var(LVAR_Herebefore,0);
+
+end
+
+//15308      16                         

@@ -1,0 +1,36 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Item:
+        Location : New Reno
+        Description:
+
+        Log:
+
+           Created: May 13, 1998
+
+           Updated:
+*/
+
+
+/* Include Files */
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SSFREQFL
+
+#include "..\headers\command.h"
+#include "..\headers\NewReno.h"
+/* Defines and Macros */
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+
+procedure start begin
+end
+
+procedure use_p_proc begin
+   display_msg("dzialam ssfreqfl");
+end

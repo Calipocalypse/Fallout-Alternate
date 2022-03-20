@@ -1,0 +1,670 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_TYCHO
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure combat_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+procedure Dialogue_Start;
+procedure Dialogue_Rude;
+procedure Dialogue_Start2;
+procedure Dialogue_Start_RudeFail;
+procedure Dialogue_Start3;
+procedure Dialogue_Start4;
+procedure Dialogue_Start5;
+procedure Dialogue_Start6;
+procedure Dialogue_Start7;
+procedure Dialogue_Start8;
+procedure Dialogue_Start9;
+procedure Dialogue_Start10;
+procedure Dialogue_Start11;
+procedure Dialogue_Start12;
+procedure Dialogue_Start12_What;
+procedure Dialogue_Start13_KILL;
+procedure Dialogue_Start13;
+procedure Dialogue_Start_Hurt_Himself;
+procedure Dialogue_Start_Hurt_Himself_Fight;
+
+procedure Dialogue_Hospital_Status;
+	procedure Dialogue_Hospital_Status_Node999;
+procedure Dialogue_Hospital_Rough;
+procedure Dialogue_Hospital_Peaceful;
+procedure Dialogue_Hospital_Status_Felix_Checker;
+procedure Dialogue_Hospital_Status_Felix_Checker_But_Done_Before;
+
+procedure Dialogue_Radio_Quest1;
+procedure Dialogue_Radio_Quest2;
+procedure Dialogue_Radio_Quest2_Khans;
+procedure Dialogue_Radio_Quest3;
+procedure Dialogue_Radio_Quest3_Unity;
+procedure Dialogue_Radio_Quest4;
+procedure Dialogue_Radio_Quest5;
+procedure Dialogue_Radio_Quest5_Science;
+procedure Dialogue_Radio_Quest6;
+
+procedure Dialogue_Crash_Radio_Status; procedure Dialogue_Camp_Quest; procedure Dialogue_Pre_Camp_Quest; procedure Dialogue_PreB_camp_Quest; procedure Dialogue_PreB_camp_Quest2; procedure Dialogue_PreB_camp_Quest3; procedure Dialogue_PreB_camp_Quest4;
+procedure Dialogue_Camp_Quest2; procedure Dialogue_Camp_Quest3; procedure Dialogue_Camp_Quest4; procedure Dialogue_Camp_Quest5; procedure Dialogue_Camp_Quest6;
+procedure Dialogue_Camp_Quest7; procedure Dialogue_Camp_Quest8; procedure Dialogue_Camp_Quest9; procedure Dialogue_Camp_Quest10; procedure Dialogue_Camp_Quest11; procedure Dialogue_Camp_Quest12;
+procedure Dialogue_Camp_Status; procedure Dialogue_Camp_Quest_Rope; procedure Dialogue_Camp_Quest_Dynamite; procedure Dialogue_Camp_Quest_ItemGo;
+
+procedure Dialogue_Rebelion_55; procedure Dialogue_Rebelion_55_TryConvice; procedure Dialogue_Rebelion_55_Loyalty; procedure Dialogue_Rebelion_55_IsaacSide; procedure Dialogue_Rebelion_55_IsaacSide2; procedure Dialogue_Rebelion_55_Loyalty2;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Talk                       (8)
+#define LVAR_Home_Tile                  (9)
+
+//0 - first time
+//1 - hospital quest
+//2 - crash radio quest
+//3 - during rebellion quest
+//99 - rude
+
+//Gvar80 REBELLION
+      procedure force_conversation_GVAR_REBELLION_80;
+            procedure Rebellion80;
+            procedure Rebellion80_GoV15;
+            procedure Node999_80;
+
+import variable point_tycho;
+import variable obj_matt;
+import variable obj_mark;
+import variable rebelia_script;
+import variable rebel_isaac;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+if map_first_run then set_local_var(LVAR_Home_Tile, self_tile);
+point_tycho:=self_obj;
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure combat_p_proc begin
+   display_msg("pproc" + global_var(GVAR_SHADY_REBELLION));
+   if global_var(GVAR_SHADY_REBELLION) == 61 then add_timer_event(rebelia_script, 0, 12); //PARAM_CHECK_FOR_TEAMS_FINAL_FIGHT
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   call force_conversation_GVAR_REBELLION_80;
+
+   if self_tile == local_var(LVAR_Home_Tile) and obj_get_rot(self_obj) != 4 then animate_rotation(4);
+
+
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+   	 critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS); //trzeba sprawdzic czy khanowie zaatakuja razem z twoim atakiem na tycho
+       set_local_var(LVAR_Personal_Enemy,1);
+       set_global_var(GVAR_SHADY_RANGERS_PERSONAL_ENEMY, 1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+   //set_local_var(LVAR_Talk, 2);
+
+	if global_var(GVAR_SHADY_REBELLION) == 55 then start_dialog_at_node(Dialogue_Rebelion_55);
+	else if global_var(GVAR_SHADY_REBELLION) > 0 then begin end
+	else if local_var(LVAR_Talk) == 3 then start_dialog_at_node(Dialogue_Camp_Status);
+	else if global_var(GVAR_SHADY_TYCHO_CHILD) == 8 then start_dialog_at_node(Dialogue_PreB_camp_Quest);
+	else if local_var(LVAR_Talk) == 2 then start_dialog_at_node(Dialogue_Crash_Radio_Status);
+	else if local_var(LVAR_Talk) == 1 then start_dialog_at_node(Dialogue_Hospital_Status);
+	else if local_var(LVAR_Talk) == 0 then start_dialog_at_node(Dialogue_Start);
+	else if local_var(LVAR_Talk) == 99 then call Dialogue_Rude;
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+      procedure force_conversation_GVAR_REBELLION_80 begin
+
+            if global_var(GVAR_SHADY_REBELLION) == 80 and tile_distance_objs(dude_obj,self_obj)<6 then begin
+
+                  start_dialog_at_node(Rebellion80);
+
+            end
+
+      end
+
+            procedure Rebellion80 begin
+
+                  Reply("Wziales juz rzeczy? Bo idziemy do v15");
+                  NOption("Zara wracam",Node999_80,001);
+                  NOption("Idziemy",Rebellion80_GoV15,001);
+
+            end
+
+            procedure Rebellion80_GoV15 begin
+                  set_global_var(GVAR_SHADY_INFOFORV15,2);
+                  load_map(20,0);
+            end
+
+            procedure Node999_80 begin
+                  move_to(dude_obj,15110,0);
+            end
+
+procedure Dialogue_Start begin
+
+	Reply(mstr(200));
+	NOption(mstr(201),Dialogue_Start2,001);
+	NOption(mstr(202),Dialogue_Start_RudeFail,001);
+
+end
+
+	procedure Dialogue_Start_RudeFail begin
+
+		float_msg(self_obj,mstr(210),2);
+		set_local_var(LVAR_Talk,99);
+
+	end
+
+	procedure Dialogue_Rude begin
+
+		float_msg(self_obj,mstr(211),FLOAT_MSG_NORMAL);
+
+	end
+
+	procedure Dialogue_Start2 begin
+
+		Reply(mstr(220));
+		NOption(mstr(221),Dialogue_Start3,001);
+
+	end
+
+	procedure Dialogue_Start3 begin
+
+		Reply(mstr(230));
+		NOption(mstr(231),Dialogue_Start4,001);
+
+	end
+
+	procedure Dialogue_Start4 begin
+
+		Reply(mstr(240));
+		NOption(mstr(241),Dialogue_Start5,001);
+
+	end
+
+	procedure Dialogue_Start5 begin
+
+		Reply(mstr(250));
+		NOption(mstr(251),Dialogue_Start6,001);
+
+	end
+
+	procedure Dialogue_Start6 begin
+
+		Reply(mstr(260));
+		NOption(mstr(261),Dialogue_Start7,001);
+
+	end
+
+
+	procedure Dialogue_Start7 begin
+
+		Reply(mstr(270));
+		NOption(mstr(271),Dialogue_Start8,001);
+
+	end
+
+	procedure Dialogue_Start8 begin
+
+		Reply(mstr(280));
+		NOption(mstr(281),Dialogue_Start9,001);
+
+	end
+
+	procedure Dialogue_Start9 begin
+
+		Reply(mstr(290));
+		NOption(mstr(291),Dialogue_Start10,001);
+
+	end
+
+		procedure Dialogue_Start10 begin
+
+		Reply(mstr(300));
+		NOption(mstr(301),Dialogue_Start_RudeFail,001);
+		NOption(mstr(302),Dialogue_Start11,001);
+
+	end
+
+	procedure Dialogue_Start11 begin
+
+		Reply(mstr(320));
+		if (global_var(GVAR_QUEST_SHADY_KILL_CHILD) >= 5 or global_var(GVAR_VAULT13MUT_JASPER) > 0) and global_var(GVAR_QUEST_SHADYSANDS_RADIO) >=2 then NOption(mstr(331),Dialogue_Radio_Quest1,001);
+		else if global_var(GVAR_QUEST_SHADY_KILL_CHILD) >= 5 or global_var(GVAR_VAULT13MUT_JASPER) > 0 then NOption(mstr(331),Dialogue_Camp_Quest,001);
+		else NOption(mstr(331),Dialogue_Start12,001);
+		NOption(mstr(322),Dialogue_Start12_What,001);
+
+	end
+
+	procedure Dialogue_Start12_What begin
+
+		Reply(mstr(330));
+		if global_var(GVAR_QUEST_SHADY_KILL_CHILD) >= 5 and global_var(GVAR_QUEST_SHADYSANDS_RADIO) >=2 then NOption(mstr(331),Dialogue_Radio_Quest1,001);
+		else if global_var(GVAR_QUEST_SHADY_KILL_CHILD) >= 5 then NOption(mstr(331),Dialogue_Camp_Quest,001);
+		else NOption(mstr(331),Dialogue_Start12,001);
+
+	end
+
+	procedure Dialogue_Start12 begin
+
+		Reply(mstr(340));
+		NOption(mstr(341),Dialogue_Start13_KILL,001);
+		NOption(mstr(342),Dialogue_Start_Hurt_Himself,001);
+		NOption(mstr(343),Dialogue_Start13,001);
+
+	end
+
+		procedure Dialogue_Start_Hurt_Himself begin
+
+			Reply(mstr(350));
+			NOption(mstr(351),Dialogue_Start_Hurt_Himself_Fight,001);
+
+		end
+
+			procedure Dialogue_Start_Hurt_Himself_Fight begin
+				critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+				attack_setup(self_obj,dude_obj);
+			end
+
+		procedure Dialogue_Start13_KILL begin
+
+			Reply(mstr(360));
+			NOption(mstr(361),Dialogue_Start13,001);
+
+		end
+
+	procedure Dialogue_Start13 begin
+
+		Reply(mstr(370));
+		set_global_var(GVAR_SHADY_TYCHO_CHILD,1); // Dzieki temu odblokowuje sie opcja dialogowa z Markiem o Dzieci Katedry w pierwszym ekranie dialogu
+		set_local_var(LVAR_Talk,1); // Dzieki temu rozmowa z Tycho rozpoczyna sie od pytania o szpital
+		NOption(mstr(371),Node999,001);
+
+	end
+
+	/* Strefa dla pytania o stan questa z Dziecmi Katedry */
+
+procedure Dialogue_Hospital_Status begin
+
+	Reply(mstr(400));
+	if global_var(GVAR_QUEST_SHADY_KILL_CHILD) >= 5 THEN NOption(mstr(401),Dialogue_Hospital_Rough,001); //TODO
+	if global_var(GVAR_VAULT13MUT_JASPER) > 0 THEN NOption(mstr(402),Dialogue_Hospital_Peaceful,001); //TODO
+	NOption(mstr(403),Dialogue_Hospital_Status_Node999,001);
+
+end
+
+	procedure Dialogue_Hospital_Status_Node999 begin
+
+		floater(410);
+
+	end
+
+	procedure Dialogue_Hospital_Peaceful begin
+
+		Reply(mstr(421));
+		NOption(mstr(422),Dialogue_Hospital_Status_Felix_Checker,001);
+
+	end
+
+	procedure Dialogue_Hospital_Rough begin
+
+		Reply(mstr(420));
+		NOption(mstr(422),Dialogue_Hospital_Status_Felix_Checker,001);
+
+	end
+
+	procedure Dialogue_Hospital_Status_Felix_Checker begin
+
+		if global_var(GVAR_QUEST_SHADYSANDS_RADIO) >=2 then call Dialogue_Radio_Quest1;
+		else call Dialogue_Camp_Quest;
+
+	end
+
+	procedure Dialogue_Hospital_Status_Felix_Checker_But_Done_Before begin
+
+		if global_var(GVAR_QUEST_SHADYSANDS_RADIO) >=2 then call Dialogue_Radio_Quest2;
+		else call Dialogue_Camp_Quest;
+
+	end
+
+	/* Strefa dla questa z uszkodzeniem radia */
+
+	procedure Dialogue_Radio_Quest1 begin
+
+      set_global_var(GVAR_SHADY_TYCHO_CHILD, TYCHO_RADIO_ACTIVE);
+		Reply(mstr(500));
+		NOption(mstr(501),Dialogue_Hospital_Status_Felix_Checker_But_Done_Before,001);
+
+	end
+
+	procedure Dialogue_Radio_Quest2 begin
+
+		Reply(mstr(510));
+		NOption(mstr(511),Dialogue_Radio_Quest2_Khans,001);
+		NOption(mstr(512),Dialogue_Radio_Quest3,001);
+
+	end
+
+	procedure Dialogue_Radio_Quest2_Khans begin
+
+		Reply(mstr(520));
+		NOption(mstr(521),Dialogue_Radio_Quest3_Unity,001);
+		NOption(mstr(512),Dialogue_Radio_Quest3,001);
+
+	end
+
+	procedure Dialogue_Radio_Quest3_Unity begin
+
+		Reply(mstr(530));
+		NOption(mstr(512),Dialogue_Radio_Quest3,001);
+
+	end
+
+	procedure Dialogue_Radio_Quest3 begin
+
+		Reply(mstr(540));
+		NOption(mstr(541),Dialogue_Radio_Quest4,001);
+
+	end
+
+	procedure Dialogue_Radio_Quest4 begin
+
+		Reply(mstr(550));
+		NOption(mstr(551),Dialogue_Radio_Quest5,001);
+
+	end
+
+	procedure Dialogue_Radio_Quest5 begin
+
+		Reply(mstr(560));
+		NOption(mstr(561),Dialogue_Radio_Quest5_Science,001); //dodac if dude has skill sicence >= 60
+		NOption(mstr(562),Dialogue_Radio_Quest6,001);
+		//set_global_var(GVAR_SHADY_TYCHO_CHILD,TYCHO_RADIO_OTHER_WAY_DISABLED); //gracz nie wie o sprzecie radiowym
+
+	end
+
+	procedure Dialogue_Radio_Quest5_Science begin
+
+		Reply(mstr(570));
+		//set_global_var(GVAR_SHADY_TYCHO_CHILD,TYCHO_RADIO_OTHER_WAY_ENABLED); //gracz MA wieDZE o sprzecie radiowym
+		NOption(mstr(571),Dialogue_Radio_Quest6,001);
+
+	end
+
+
+	procedure Dialogue_Radio_Quest6 begin
+
+		Reply(mstr(580));
+		NOption(mstr(581),Node999,001);
+		//add_Quest
+		set_local_var(LVAR_Talk,2);
+
+	end
+
+	/* Status dla questu z uszkodzeniem radia */
+
+	procedure Dialogue_Crash_Radio_Status begin
+      //set_global_var(GVAR_SHADY_TYCHO_CHILD, TYCHO_RADIO_DONE_FILTER);
+		Reply(mstr(600));
+		//if global_var(GVAR_SHADY_TYCHO_CHILD) == 7 then
+		if global_var(GVAR_SHADY_TYCHO_CHILD) == TYCHO_RADIO_DONE_FILTER THEN NOption(mstr(601),Dialogue_Pre_Camp_Quest,001);
+		NOption(mstr(602),Node999,001);
+
+	end
+
+	/* Strefa dla questa z lacznoscia */
+	//
+
+	procedure Dialogue_Pre_Camp_Quest begin
+
+      give_exp_points(500);
+      display_mstr(612);
+		Reply(mstr(610));
+		NOption(mstr(611),Dialogue_Camp_Quest,001);
+		set_local_var(LVAR_Talk, 3);
+
+	end
+
+	procedure Dialogue_PreB_camp_Quest begin
+
+		Reply(mstr(620));
+		NOption(mstr(621),Dialogue_PreB_camp_Quest2,001);
+
+	end
+
+	procedure Dialogue_PreB_camp_Quest2 begin
+
+		Reply(mstr(630));
+		NOption(mstr(631),Dialogue_PreB_camp_Quest3,001);
+		NOption(mstr(632),Dialogue_PreB_camp_Quest4,001);
+		NOption(mstr(633),Dialogue_Camp_Quest,001);
+
+	end
+
+	procedure Dialogue_PreB_camp_Quest3 begin
+
+		Reply(mstr(640));
+		NOption(mstr(632),Dialogue_PreB_camp_Quest4,001);
+		NOption(mstr(633),Dialogue_Camp_Quest,001);
+
+	end
+
+	procedure Dialogue_PreB_camp_Quest4 begin
+
+		Reply(mstr(650));
+		NOption(mstr(631),Dialogue_PreB_camp_Quest3,001);
+		NOption(mstr(633),Dialogue_Camp_Quest,001);
+
+	end
+
+	//
+
+	procedure Dialogue_Camp_Quest begin
+
+		Reply(mstr(700));
+		NOption(mstr(701),Dialogue_Camp_Quest2,001);
+		NOption(mstr(702),Dialogue_Start_Hurt_Himself,001);
+
+	end
+
+	procedure Dialogue_Camp_Quest2 begin
+
+		Reply(mstr(710));
+		NOption(mstr(711),Dialogue_Camp_Quest3,001);
+
+	end
+
+	procedure Dialogue_Camp_Quest3 begin
+
+		Reply(mstr(720));
+		NOption(mstr(721),Dialogue_Camp_Quest4,001);
+
+	end
+
+	procedure Dialogue_Camp_Quest4 begin
+
+		Reply(mstr(730));
+		NOption(mstr(731),Dialogue_Camp_Quest5,001);
+
+	end
+
+	procedure Dialogue_Camp_Quest5 begin
+
+		Reply(mstr(740));
+		NOption(mstr(741),Dialogue_Camp_Quest6,001);
+
+	end
+
+	procedure Dialogue_Camp_Quest6 begin
+
+		Reply(mstr(750));
+		NOption(mstr(751),Dialogue_Camp_Quest7,001);
+
+	end
+
+	procedure Dialogue_Camp_Quest7 begin
+
+		Reply(mstr(760));
+		NOption(mstr(761),Dialogue_Camp_Quest8,001);
+		NOption(mstr(762),Dialogue_Camp_Quest9,001);
+
+	end
+
+	procedure Dialogue_Camp_Quest8 begin
+
+		Reply(mstr(770));
+		NOption(mstr(771),Dialogue_Camp_Quest9,001);
+
+	end
+
+	procedure Dialogue_Camp_Quest9 begin
+
+		Reply(mstr(780));
+		NOption(mstr(781),Dialogue_Camp_Quest10,001);
+		NOption(mstr(782),Dialogue_Camp_Quest12,001);
+
+	end
+
+	procedure Dialogue_Camp_Quest10 begin
+
+		Reply(mstr(790));
+		NOption(mstr(791),Dialogue_Camp_Quest11,001);
+		NOption(mstr(792),Dialogue_Start_Hurt_Himself,001);
+
+	end
+
+	procedure Dialogue_Camp_Quest11 begin
+
+		Reply(mstr(800));
+		NOption(mstr(801),Dialogue_Camp_Quest12,001);
+
+	end
+
+	variable item;
+	procedure Dialogue_Camp_Quest12 begin
+
+		Reply(mstr(810));
+		NOption(mstr(811),Node999,001);
+		item:=create_object(PID_RADIO,0,0);
+		add_obj_to_inven(dude_obj,item);
+		set_local_var(LVAR_Talk,3);
+
+	end
+
+	//
+
+	procedure Dialogue_Camp_Status begin
+		Reply(mstr(850));
+		if obj_is_carrying_obj_pid(dude_obj,PID_DYNAMITE) and not tycho_rope_given and not tycho_dynamite_given then NOption(mstr(852),Dialogue_Camp_Quest_Dynamite,001);
+		if obj_is_carrying_obj_pid(dude_obj,PID_ROPE) and not tycho_rope_given and not tycho_dynamite_given then NOption(mstr(853),Dialogue_Camp_Quest_Rope,001);
+		NOption(mstr(854),Node999,001);
+	end
+
+	   procedure Dialogue_Camp_Quest_Rope begin
+      Reply(mstr(860));
+		NOption(mstr(871),Dialogue_Camp_Quest_ItemGo,001);
+		create_object(PID_ROPE, 10701, 1);
+		rm_obj_from_inven(dude_obj, obj_carrying_pid_obj(dude_obj, PID_ROPE));
+		set_global_var(GVAR_SHADY_TYCHO_ROPE_GIVEN, TYCHO_ROPE_GIVEN);
+	   end
+
+	   procedure Dialogue_Camp_Quest_Dynamite begin
+      Reply(mstr(870));
+		NOption(mstr(871),Dialogue_Camp_Quest_ItemGo,001);
+		set_global_var(GVAR_SHADY_TYCHO_DYNAMITE_GIVEN, TYCHO_DYNAMITE_GIVEN);
+		rm_obj_from_inven(dude_obj, obj_carrying_pid_obj(dude_obj, PID_DYNAMITE));
+	   end
+
+	   procedure Dialogue_Camp_Quest_ItemGo begin
+      Reply(mstr(880));
+		NOption(mstr(881),Node999,001);
+	   end
+#define mstri(x) message_str(SCRIPT_SCISAAC,x)
+	   procedure Dialogue_Rebelion_55 begin
+         Reply(mstri(3420));
+         NOption(mstri(3421),Dialogue_Rebelion_55_TryConvice,001);
+         NOption(mstri(3422),Dialogue_Rebelion_55_Loyalty,001);
+         NOption(mstri(3432),Node999,001);
+	   end
+
+	   procedure Dialogue_Rebelion_55_TryConvice begin
+         Reply(mstri(3430));
+         NOption(mstri(3431),Dialogue_Rebelion_55_Loyalty,001);
+         NOption(mstri(3433),Dialogue_Rebelion_55_IsaacSide,001);
+	   end
+
+	   procedure Dialogue_Rebelion_55_Loyalty begin
+         Reply(mstri(3440));
+         NOption(mstri(3441),Dialogue_Rebelion_55_Loyalty2,001);
+	   end
+
+	   procedure Dialogue_Rebelion_55_Loyalty2 begin
+	      add_timer_event(rebel_isaac, 0, 16);
+	   end
+
+	   procedure Dialogue_Rebelion_55_IsaacSide begin
+         Reply(mstri(3450));
+         NOption(mstri(3451),Dialogue_Rebelion_55_IsaacSide2,001);
+	   end
+
+	   procedure Dialogue_Rebelion_55_IsaacSide2 begin
+	      add_timer_event(rebel_isaac, 0, 15);
+	   end

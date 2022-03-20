@@ -1,0 +1,144 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_R12PAT
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_was                        (8)
+
+procedure vaultsuit_start;
+procedure vaultsuit_start2;
+procedure vaultsuit_start3;
+procedure vaultsuit_start4;
+procedure vaultsuit_end;
+
+procedure normal_start;
+
+procedure meetagain_start;
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+  
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+   CheckKarma;
+   GetReaction;
+   
+   if local_var(LVAR_was) == 0 then begin
+   //if global_var(GVAR_PAT_UCIEKLA) == 1 then 
+   //start_dialog_at_node(meetagain_start);
+   //else dude_wearing_vault_suit 
+   start_dialog_at_node(vaultsuit_start);
+   //else start_dialog_at_node(normal_start);
+   end
+   
+   if local_var(LVAR_was) == 1 then call vaultsuit_end;
+   
+    if local_var(LVAR_was) == 0 then set_local_var(LVAR_was,1);
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure vaultsuit_start begin
+Reply(mstr(200));
+NOption(201,vaultsuit_start2,004);
+NOption(202,vaultsuit_end,004);
+end
+
+procedure vaultsuit_end begin
+float_msg(self_obj,mstr(205),FLOAT_MSG_GREEN);
+end
+
+procedure vaultsuit_start2 begin
+Reply(210);
+NOption(mstr(211)+dude_name+mstr(212),vaultsuit_start3,004);
+end
+
+procedure vaultsuit_start3 begin
+Reply(220);
+NOption(221,vaultsuit_start4,004);
+end
+
+procedure vaultsuit_start4 begin
+Reply(230);
+NOption(231,vaultsuit_end,004);
+end
+
+procedure normal_start begin
+display_msg("pierwszy raz bez gumy");
+end
+
+procedure meetagain_start begin //what a conceidence, nobody expected vaultish salvation!
+display_msg("znowu sie widzimy");
+end

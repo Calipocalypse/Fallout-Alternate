@@ -1,0 +1,307 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_EDWARD
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+procedure core_Talk;
+procedure FirstTalk;
+procedure AgainTalk;
+procedure GiveStimpak;
+procedure Barter;
+procedure Barter_Menu;
+procedure Barter2;
+procedure AnotherDoc;
+procedure AnotherDoc2;
+procedure Stop_this;
+procedure Heal_Me;
+procedure UnInjure_Me;
+procedure Irradiate_Me;
+procedure Mariposa;
+
+procedure QuestPills;
+   procedure QuestPills_Repeated;
+procedure QuestPills_NoMoney;
+procedure QuestPIlls_Problems;
+procedure QuestPills_Problems2;
+procedure QuestPills_Problems2EEE;
+procedure QuestPills_Problems2EEE_998;
+procedure QuestPills_WaysToHelp;
+procedure QuestPills_WaysToHelp2;
+procedure QuestPills_WaysToHelp3;
+procedure QuestPills_WaysToHelp4;
+
+procedure QuestFinished;
+procedure QuestPills_AgainAfterQuests;
+procedure Quest_Pills;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_You_Sell_Meds              (8)
+#define LVAR_Eeeee                      (9)
+#define LVAR_Mariposa                   (10)
+#define LVAR_Asked_Once_pills           (11)
+
+#define move_inven_to_box              move_obj_inven_to_obj(self_obj, box_medbox);
+#define move_inven_from_box            move_obj_inven_to_obj(box_medbox, self_obj);
+
+#define mstgr_edward(X)    if global_var(GVAR_QUEST_VAULT13MUT_EDWARD) >= 2 then Reply(X + 1000); else Reply(X);
+#define jasper_just_had_sex   global_var(GVAR_VAULT13MUT_EDWARD_HAD_SEX) == 1
+
+import variable obj_umberto;
+import variable box_medbox;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then begin
+            critter_team(TEAM_V13_SUPERMUTANTS)
+            critter_ai(AI_COWARD)
+      end
+
+      obj_umberto:=self_obj;
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+      move_inven_from_box
+      if local_var(LVAR_Herebefore) == 0 and global_var(GVAR_VAULT13MUT_EDWARD_HAD_SEX) != 1 then start_dialog_at_node(FirstTalk);
+      else if jasper_just_had_sex then start_dialog_at_node(QuestFinished);
+      else start_dialog_at_node(AgainTalk);
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+move_inven_to_box
+end
+
+variable only_once;
+procedure core_Talk begin
+if global_var(GVAR_QUEST_VAULT13MUT_PILLS) == QUEST_PILLS_ACTIVE and global_var(GVAR_QUEST_VAULT13MUT_EDWARD) == QUEST_EDWARD_CAN_TALK then NOption(605, QuestPills_AgainAfterQuests, 001);
+if global_var(GVAR_QUEST_VAULT13MUT_PILLS) == QUEST_PILLS_ACTIVE and global_var(GVAR_QUEST_VAULT13MUT_EDWARD)==QUEST_EDWARD_NONE then NOption(400,QuestPills,001); else if global_var(GVAR_QUEST_VAULT13MUT_PILLS) == QUEST_PILLS_ACTIVE  and global_var(GVAR_QUEST_VAULT13MUT_EDWARD)==QUEST_EDWARD_ACTIVE then NOption(400,QuestPills_Repeated,001);
+if local_var(LVAR_Herebefore) == 0 and only_once==0 then NOption(201,GiveStimpak,001);
+NOption(202,Barter,001);
+if local_var(LVAR_You_Sell_Meds) == 1 then NOption(221,Barter2,001);
+NOption(204,AnotherDoc,001);
+if local_var(LVAR_Eeeee) >= 3 and global_var(GVAR_QUEST_VAULT13MUT_EDWARD) <2 then NOption(205,Stop_this,001);
+if dude_cur_hits != dude_max_hits then NOption(206,Heal_Me,001);
+if dude_is_crippled or Is_Blind(dude_obj) then NOption(207,UnInjure_Me,001);
+if dude_is_irradiated then NOption(208,Irradiate_Me,001);
+if local_var(LVAR_Mariposa) == 1 then NOption(209,Mariposa,001);
+NOption(300,Node999,001);
+inc_local_var(LVAR_Eeeee);
+end
+
+procedure FirstTalk begin
+Reply(200);
+call core_Talk;
+inc_local_var(LVAR_Herebefore);
+end
+
+procedure AgainTalk begin
+mstgr_edward(199)
+inc_local_var(LVAR_Herebefore);
+call core_Talk;
+end
+
+procedure GiveStimpak begin
+add_new_obj_to_dude(PID_STIMPAK)
+only_once++;
+mstgr_edward(210)
+call core_Talk;
+end
+
+procedure Barter begin
+mstgr_edward(220)
+NOption(221,Barter_Menu,001);
+NOption(222,Barter2,001);
+if local_var(LVAR_You_Sell_Meds) == 0 then inc_local_var(LVAR_You_Sell_Meds);
+end
+
+procedure Barter_Menu begin
+mstgr_edward(230)
+inc_local_var(LVAR_You_Sell_Meds);
+call core_Talk;
+end
+
+procedure Barter2 begin
+ gdialog_mod_barter(0);
+   NMessage(g_mstr(203));
+   call AgainTalk;
+end
+
+procedure AnotherDoc begin
+mstgr_edward(240)
+NOption(241,AnotherDoc2,001);
+end
+
+procedure AnotherDoc2 begin
+mstgr_edward(242)
+call core_Talk;
+end
+
+procedure Stop_this begin
+Reply(250);
+call core_Talk;
+end
+
+procedure Heal_Me begin
+mstgr_edward(260)
+NOption(271,Node998,001);
+end
+
+procedure Uninjure_Me begin
+mstgr_edward(270)
+NOption(271,Node998,001);
+end
+
+procedure Irradiate_Me begin
+mstgr_edward(280)
+call core_Talk;
+inc_local_var(LVAR_Mariposa);
+end
+
+procedure Mariposa begin
+inc_local_var(LVAR_Mariposa);
+mstgr_edward(290)
+call core_Talk;
+end
+
+//////////////////
+
+procedure QuestPills begin
+inc_local_var(LVAR_Asked_Once_pills);
+
+Reply(410);
+NOption(420,QuestPills_NoMoney,001);
+NOption(421,QuestPIlls_Problems,001);
+end
+
+   procedure QuestPills_Repeated begin
+   Reply(411);
+   call core_Talk;
+   end
+
+   procedure QuestPills_NoMoney begin
+   Reply(431);
+   NOption(435,QuestPills_Problems2,001);
+   end
+
+   procedure QuestPIlls_Problems begin
+   Reply(430);
+   NOption(435,QuestPills_Problems2,001);
+   end
+
+procedure QuestPills_Problems2 begin
+   Reply(440);
+   NOption(441,QuestPills_Problems2EEE,001);
+end
+
+procedure QuestPills_Problems2EEE begin
+   Reply(450);
+   NOption(451,QuestPills_Problems2EEE_998,001);
+   NOption(453,QuestPills_WaysToHelp2,001);
+end
+
+   procedure QuestPills_Problems2EEE_998 begin
+   float_msg(self_obj, mstr(452), 2);
+   call Node998;
+   end
+
+procedure QuestPills_WaysToHelp2 begin
+    Reply(454);
+   NOption(455,QuestPills_WaysToHelp3,001);
+   NOption(456,QuestPills_WaysToHelp4,001);
+end
+
+procedure QuestPills_WaysToHelp3 begin
+    Reply(457);
+   NOption(456,QuestPills_WaysToHelp4,001);
+end
+
+procedure QuestPills_WaysToHelp4 begin
+set_global_var(GVAR_QUEST_VAULT13MUT_EDWARD, QUEST_EDWARD_ACTIVE);
+   Reply(458);
+   NOption(459,Node999,001);
+end
+
+procedure QuestFinished begin
+   set_global_var(GVAR_VAULT13MUT_EDWARD_HAD_SEX, 2);
+   set_global_var(GVAR_QUEST_VAULT13MUT_EDWARD, 2);
+   give_exp_points(300);
+   display_mstr(620);
+   Reply(600);
+   if local_var(LVAR_Asked_Once_pills) and global_var(GVAR_QUEST_VAULT13MUT_PILLS) == QUEST_PILLS_ACTIVE then NOption(601,Quest_Pills,001);
+   NOption(602,Node999,001);
+end
+
+procedure Quest_Pills begin
+   Reply(610);
+   NOption(611,Node999,001);
+end
+
+procedure QuestPills_AgainAfterQuests begin
+   Reply(610);
+   call core_Talk;
+end

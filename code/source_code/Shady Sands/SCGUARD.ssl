@@ -1,0 +1,769 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCGUARD
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+
+procedure start;
+procedure critter_p_proc;
+      procedure spanie_dla_straznikow_obozu;
+      procedure atak_dla_straznikow_obozu;
+      procedure sprawdzaj_czy_teraz_upgrade_broni;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+	procedure talk_p_proc_radio1khan;
+	procedure talk_p_proc_guard_door_to_camp;
+	procedure talk_p_proc_barfight;
+	procedure talk_p_proc_guard_camp_doors1;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure alarm;
+procedure timed_event_p_proc;
+	procedure upgrade_weapons;
+	procedure global_var_stop;
+
+procedure move_back_khans_to_buliding_procedure;
+
+procedure Node998;
+procedure Node999;
+
+PROCEDURE basic_equipment;
+procedure pilnuj_pozycji;
+PROCEDURE big_house_door_guard;
+
+procedure barfgiht_quest_talk;
+procedure barfgiht_quest_talk2;
+procedure barfgiht_quest_talk3;
+
+procedure bimber_quest_talk;
+procedure bimber_quest_talk2;
+procedure bimber_quest_retoryka;
+procedure bimber_quest_money;
+procedure Pre_Node998;
+procedure bimber_quest_success;
+procedure palka_cutscene;
+procedure bimber_quest_100caps;
+procedure bimber_quest_75caps;
+procedure bimber_quest_50caps;
+procedure bimber_quest_25caps;
+procedure bimber_quest_10caps;
+
+procedure Starcik;
+procedure PozdrowieniaDoWiezienia;
+procedure Bye;
+procedure MoveToCamp;
+
+procedure rotation;
+procedure pilnuj_drzwi_oswalda;
+procedure Oswald_Move_Dude_Out;
+procedure OswaldEnter;
+procedure OswaldExit;
+procedure Oswald1;
+procedure Oswald2;
+procedure Oswald3;
+procedure core_Oswald;
+
+PROCEDURE tocamp_cutscene;
+
+import variable guard_camp_oswald; // He's not SCGUARD but SCOSWALD
+
+import variable person_bar1khan;
+import variable person_bar2khan;
+import variable person_radio1khan;
+import variable person_radio2khan;
+
+import variable person_1drunk;
+import variable person_2drunk;
+
+import variable person_1bimber;
+import variable person_2bimber;
+
+/* INSIDE GARL */
+import variable jackal_door;
+import variable person_khan1_inside;
+import variable person_khan2_inside;
+import variable person_khan3_inside;
+import variable person_khan4_inside;
+
+/* INSIDE CAMP */
+import variable guard_camp_garden1;
+import variable guard_camp_garden2;
+import variable guard_camp_doors1;
+import variable guard_camp_doors2;
+import variable guard_camp_doggo;
+//import variable guard_camp_oswald;
+
+/* GATE TO CAMP */
+import variable guard_door_to_camp;
+import variable guard_door_to_camp2;
+import variable box_dudeitems;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_Gun_Upgraded               (9)
+#define LVAR_NPC_Patience               (10)
+#define LVAR_Home_Rotation              (11)
+
+#define HOME_ROTATION                   (local_var(LVAR_Home_Rotation))
+#define HOME_TILE                       (local_var(LVAR_Home_Tile))
+#define PARAM_ROTATION                  (3)
+#define PARAM_CUTSCENE_TOCAMP           (20)
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+flush_add_timer_event(self_obj, game_ticks(2), PARAM_ROTATION);
+
+      if map_first_run then begin
+
+            set_local_var(LVAR_Home_Tile,self_tile);
+            set_local_var(LVAR_Home_Rotation,obj_get_rot(self_obj));
+            critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+            call basic_equipment;
+
+      end
+
+      if local_var(LVAR_Home_Tile)== 18934 then person_bar1khan:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 18930 then person_bar2khan:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 17285 then person_radio1khan:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 17281 then person_radio2khan:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 24099 then jackal_door:= self_obj;
+
+      /* Wewnatrz budynku Garla */
+      else if local_var(LVAR_Home_Tile)== 22883 then person_khan1_inside:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 22687 then person_khan2_inside:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 22892 then person_khan3_inside:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 22493 then person_khan4_inside:= self_obj;
+
+      /* W obozie */
+
+      else if local_var(LVAR_Home_Tile)== 23123 then guard_camp_garden1:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 22701 then guard_camp_garden2:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 28105 then guard_camp_doors1:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 28905 then guard_camp_doors2:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 25912 then guard_camp_doggo:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 28095 then guard_camp_oswald:= self_obj;
+
+
+      /* Brama do obozu */
+      else if local_var(LVAR_Home_Tile)== 20656 then guard_door_to_camp:= self_obj;
+      else if local_var(LVAR_Home_Tile)== 21656 then guard_door_to_camp2:= self_obj;
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   if not combat_is_initialized then begin
+      call pilnuj_pozycji;
+      call pilnuj_drzwi_oswalda;
+
+      call spanie_dla_straznikow_obozu;
+      call atak_dla_straznikow_obozu;
+
+      call alarm;
+
+      //float_msg(self_obj,""+local_var(LVAR_Home_Tile),random(1,12));
+      //float_msg(guard_door_to_camp2,""+local_var(LVAR_Home_Tile),random(1,12));
+
+      call big_house_door_guard;
+
+      call sprawdzaj_czy_teraz_upgrade_broni;
+   end
+end
+
+      procedure spanie_dla_straznikow_obozu begin
+         /*
+            if not day and self_tile==local_var(LVAR_Home_Tile) and global_var(GVAR_SHADY_REBELLION) <1 then begin
+
+                  if self_obj==guard_camp_garden1 then move_to(guard_camp_garden1,27497,1);
+                  if self_obj==guard_camp_garden2 then move_to(guard_camp_garden2,28895,1);
+
+            end
+         */
+      end
+
+      procedure atak_dla_straznikow_obozu begin
+
+             if get_light_level<=26214 and self_elevation==1 and (obj_can_see_obj(self_obj,dude_obj)) then begin
+                  if global_var(GVAR_SHADY_REBELLION) <1 and global_var(GVAR_SHADY_UNDER_REBELLION) <1 then begin
+                  		 //display_msg("gvar: "+global_var(GVAR_SHADY_REBELLION));
+                         float_msg(self_obj,mstr(700),2);
+                         set_local_var(LVAR_Hostile,1);
+                         attack(dude_obj);
+                  end
+             end
+
+
+      end
+
+      procedure sprawdzaj_czy_teraz_upgrade_broni begin
+      	add_timer_event(self_obj,0,5);
+      end
+
+procedure alarm begin
+
+   if global_var(GVAR_ALARM_SHADYSANDS) == 1 then begin
+   	//display_msg("wykonuje");
+      attack(dude_obj);
+   end
+
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+      Face_Critter(dude_obj, self_obj);
+
+      if (self_obj==person_radio1khan or self_obj==person_radio2khan) and global_var(GVAR_QUEST_SHADYSANDS_BIMBER) == 1 then  call talk_p_proc_radio1khan;
+      else if self_obj==guard_door_to_camp2 or self_obj==guard_door_to_camp then call talk_p_proc_guard_door_to_camp;
+      else if (self_obj==person_bar1khan or self_obj==person_bar2khan) and global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) == 1 then call talk_p_proc_barfight;
+      else if self_obj==guard_camp_doors1 then call talk_p_proc_guard_camp_doors1;
+      else begin
+         floater(random(200,207));
+         call rotation;
+      end
+
+end
+
+	procedure talk_p_proc_radio1khan begin
+
+		start_dialog_at_node(bimber_quest_talk);
+
+	end
+
+	procedure talk_p_proc_guard_door_to_camp begin
+
+		start_dialog_at_node(Starcik);
+
+	end
+
+	procedure talk_p_proc_barfight begin
+
+		start_dialog_at_node(barfgiht_quest_talk);
+
+	end
+
+	procedure talk_p_proc_guard_camp_doors1 begin
+
+	end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+
+   float_msg(self_obj,""+obj_art_fid(self_obj),2);
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+      flush_add_timer_event(self_obj, game_ticks(2), PARAM_ROTATION);
+end
+
+#define khan_in_garl_building self_obj==person_khan1_inside or self_obj==person_khan2_inside  or self_obj==person_khan3_inside  or self_obj==person_khan4_inside
+
+      procedure pilnuj_pozycji begin
+
+            if self_tile!=local_var(LVAR_Home_Tile)
+            and global_var(GVAR_SHADY_REBELLION)<1
+            and global_var(GVAR_QUEST_SHADYSANDS_BIMBER) !=2
+            and global_var(GVAR_QUEST_SHADY_KILL_CHILD) != 3 //warunek dla walki z dziecmi katedry
+            and global_var(GVAR_QUEST_SHADY_KILL_CHILD) != 4 //warunek dla walki z dziecmi katedry
+            and global_var(GVAR_QUEST_SHADYSANDS_BARFIGHT) != 2 //warunek dla bitki w barze
+            and self_obj!=guard_camp_garden1 and self_obj!=guard_camp_garden2  //nie dotyczy w nocy tych dwoch w obozie
+            then begin
+            	//if khan_in_garl_building and global_var(GVAR_SHADY_ENDOFSHOW) == 1 then animate_move_to_tile(local_var(LVAR_Home_Tile));
+            	//else
+            	animate_move_to_tile(local_var(LVAR_Home_Tile));
+            end
+
+            if not day and (self_obj == guard_camp_garden1 or self_obj == guard_camp_garden2)
+            and global_var(GVAR_SHADY_REBELLION)<1
+            then begin
+               animate_move_to_tile(local_var(LVAR_Home_Tile));
+            end
+
+      end
+
+procedure combat_p_proc begin
+      call alarm;
+end
+variable item;
+procedure basic_equipment begin
+
+   if Is_Armed(self_obj) != 1 then begin
+      //display_msg("nie jest uzbrojony");
+      item:=create_object(PID_10MM_PISTOL,0,0);
+      add_obj_to_inven(self_obj,item);
+      wield_obj(item);
+      item:=create_object(PID_10MM_JHP,0,0);
+      add_obj_to_inven(self_obj,item);
+   end
+
+end
+
+procedure big_house_door_guard begin
+
+      if global_var(GVAR_QUEST_SHADY_KILL_CHILD) != 5 then begin //warunek ze ukonczona zostala misja z dziecmi katedry
+            if global_var(GVAR_QUEST_SHADY_KILL_CHILD) != 2 and global_var(GVAR_QUEST_SHADY_KILL_CHILD) != 3 then begin //warunek ze mark rozmawia z straznikiem bramy
+               if local_var(LVAR_Home_Tile) == 24099 and obj_can_see_obj(self_obj, dude_obj) then begin
+                  if tile_distance_objs(self_obj, dude_obj) < 18 then set_local_var(LVAR_Home_Tile,23698);
+               end
+               if local_var(LVAR_Home_Tile) == 23698 and tile_distance_objs(self_obj, dude_obj) >= 18 then set_local_var(LVAR_Home_Tile,24099);
+            end
+      end
+      else if local_var(LVAR_Home_Tile) == 23698 then set_local_var(LVAR_Home_Tile,24099);
+end
+
+
+procedure barfgiht_quest_talk begin
+
+      Reply(mstr(500));
+      NOption(mstr(501),barfgiht_quest_talk2,001);
+
+end
+
+procedure barfgiht_quest_talk2 begin
+
+      Reply(mstr(502));
+      NOption(mstr(503),barfgiht_quest_talk3,001);
+
+end
+
+procedure barfgiht_quest_talk3 begin
+
+      Reply(mstr(504));
+      NOption(mstr(505),Node999,001);
+      add_timer_event(person_1drunk,0,5);
+
+end
+
+/* QUEST BIMBER */
+
+procedure bimber_quest_talk begin
+
+      Reply(mstr(random(200,207)));
+      NOption(mstr(600),bimber_quest_talk2,001);
+      NOption(mstr(601),Node999,001);
+
+end
+
+procedure bimber_quest_talk2 begin
+
+      Reply(mstr(610));
+      if has_skill(dude_obj,SKILL_CONVERSANT) > 59 then NOption(mstr(611),bimber_quest_retoryka,001);
+      NOption(mstr(612),bimber_quest_money,001);
+      NOption(mstr(613),Node999,001);
+
+end
+
+//retoryka
+
+procedure bimber_quest_retoryka begin
+
+      Reply(mstr(620));
+      NOption(mstr(621),Pre_Node998,001);
+      NOption(mstr(622),bimber_quest_success,001);
+
+end
+
+procedure Pre_Node998 begin
+      float_msg(self_obj,mstr(623),2);
+      call Node998;
+      set_global_var(GVAR_ALARM_SHADYSANDS,1);
+end
+
+procedure bimber_quest_success begin
+
+      Reply(mstr(624));
+      NOption(mstr(625),palka_cutscene,001);
+
+end
+
+//kasa
+
+procedure bimber_quest_money begin
+
+      Reply(mstr(630));
+      if dude_caps >= 100 then NOption(mstr(631),bimber_quest_100caps,001);
+      if dude_caps >= 75 then NOption(mstr(632),bimber_quest_75caps,001);
+      if dude_caps >= 50 then NOption(mstr(633),bimber_quest_50caps,001);
+      if dude_caps >= 25 then NOption(mstr(634),bimber_quest_25caps,001);
+      NOption(mstr(635),Node999,001);
+
+end
+
+procedure bimber_quest_100caps begin
+      item_caps_adjust(dude_obj,-100);
+      call bimber_quest_success;
+end
+
+procedure bimber_quest_refuse_caps begin
+
+      Reply(mstr(636));
+      NOption(mstr(637),Node999,001);
+
+end
+
+procedure bimber_quest_75caps begin
+
+      if dude_luck >= 3 or critter_skill_level(dude_obj,SKILL_CONVERSANT) >= 40 then begin
+      item_caps_adjust(dude_obj,-75);
+      call bimber_quest_success;
+      end
+
+      else call bimber_quest_refuse_caps;
+end
+
+procedure bimber_quest_50caps begin
+
+      if dude_luck >= 4 or critter_skill_level(dude_obj,SKILL_CONVERSANT) >= 50 then begin
+      item_caps_adjust(dude_obj,-50);
+      call bimber_quest_success;
+      end
+
+      else call bimber_quest_refuse_caps;
+end
+
+procedure bimber_quest_25caps begin
+
+      if dude_luck >= 7 or critter_skill_level(dude_obj,SKILL_CONVERSANT) >= 60 then begin
+      item_caps_adjust(dude_obj,-25);
+      call bimber_quest_success;
+      end
+
+      else call bimber_quest_refuse_caps;
+end
+
+procedure bimber_quest_10caps begin
+
+      if dude_luck >= 9 or critter_skill_level(dude_obj,SKILL_CONVERSANT) >= 80 then begin
+      item_caps_adjust(dude_obj,-10);
+      call bimber_quest_success;
+      end
+
+      else call bimber_quest_refuse_caps;
+end
+
+//ctuscene
+procedure palka_cutscene begin
+
+      //display_msg("palka cutscene");
+      add_timer_event(person_1bimber,0,2);
+
+end
+
+#define move_back_khans_to_buliding move_to(person_khan1_inside,local_var(LVAR_Home_Tile),0); move_to(person_khan2_inside,local_var(LVAR_Home_Tile),0); move_to(person_khan3_inside,local_var(LVAR_Home_Tile),0); move_to(person_khan4_inside,local_var(LVAR_Home_Tile),0);
+
+procedure move_back_khans_to_buliding_procedure begin
+	if self_obj==person_khan1_inside then move_to(self_obj,local_var(LVAR_Home_Tile),0);
+	else if self_obj==person_khan2_inside then move_to(self_obj,local_var(LVAR_Home_Tile),0);
+	else if self_obj==person_khan3_inside then move_to(self_obj,local_var(LVAR_Home_Tile),0);
+	else if self_obj==person_khan4_inside then move_to(self_obj,local_var(LVAR_Home_Tile),0);
+end
+
+variable gun;
+variable randomic;
+procedure timed_event_p_proc begin
+
+   if (fixed_param == PARAM_ROTATION) then call rotation;
+	if (fixed_param==5) then call upgrade_weapons;
+	if (fixed_param==6) then call global_var_stop;
+	if (fixed_param==10) then call move_back_khans_to_buliding_procedure;
+	if (fixed_param==11) then call Oswald_Move_Dude_Out;
+	if (fixed_param==12) then call OswaldEnter;
+	if (fixed_param == PARAM_CUTSCENE_TOCAMP) then call tocamp_cutscene;
+
+end
+
+   procedure rotation begin
+      if tile_distance_objs(dude_obj, self_obj) > 2 then begin
+         if self_tile == HOME_TILE  and obj_get_rot(self_obj) != HOME_ROTATION and anim_busy(self_obj) == 0 then anim(self_obj, ANIMATE_ROTATION, HOME_ROTATION);
+      end
+      else begin
+         if self_tile == HOME_TILE and anim_busy(self_obj) == 0 then Face_Critter(dude_obj, self_obj);
+      end
+      add_timer_event(self_obj, game_ticks(2), PARAM_ROTATION);
+   end
+
+	procedure upgrade_weapons begin
+		if global_var(GVAR_SHADY_STOP_GIVING_WEAPONS) == 1 and local_var(LVAR_Gun_Upgraded) == 0 then begin
+			randomic:=random(1,6);
+
+			if randomic == 1 then begin
+				gun:=create_object(PID_FLAMER,0,0);
+				add_obj_to_inven(self_obj,gun);
+				wield_obj_critter(self_obj,gun);
+			end
+
+			else if randomic == 2 then begin
+				gun:=create_object(PID_M60,0,0);
+				add_obj_to_inven(self_obj,gun);
+				wield_obj_critter(self_obj,gun);
+				gun:=create_object(PID_7_62MM_AMMO,0,0);
+				add_obj_to_inven(self_obj,gun);
+			end
+
+			else if randomic == 3 then begin
+				gun:=create_object(PID_MINIGUN,0,0);
+				add_obj_to_inven(self_obj,gun);
+				wield_obj_critter(self_obj,gun);
+				gun:=create_object(PID_5MM_JHP,0,0);
+				wield_obj_critter(self_obj,gun);
+			end
+
+			else if randomic == 4 then begin
+				gun:=create_object(PID_RIPPER,0,0);
+				add_obj_to_inven(self_obj,gun);
+				wield_obj_critter(self_obj,gun);
+			end
+
+			else if randomic == 5 then begin
+				gun:=create_object(PID_RIPPER,0,0);
+				add_obj_to_inven(self_obj,gun);
+				wield_obj_critter(self_obj,gun);
+			end
+
+			else if randomic == 6 then begin
+				gun:=create_object(PID_SNIPER_RIFLE,0,0);
+				add_obj_to_inven(self_obj,gun);
+				wield_obj_critter(self_obj,gun);
+			end
+
+			set_local_var(LVAR_Gun_Upgraded,1);
+			add_timer_event(self_obj,game_ticks(1),6);
+		end
+	end
+
+	procedure global_var_stop begin
+		set_global_var(GVAR_SHADY_STOP_GIVING_WEAPONS,2);
+	end
+
+/* Door Guard Camp Dialogue Line */
+
+procedure Starcik begin
+if local_var(LVAR_Herebefore)==1 then Reply(mstr(299)); else Reply(mstr(300));
+inc_local_var(LVAR_Herebefore);
+NOption(301,PozdrowieniaDoWiezienia,001);
+NOption(302,Bye,001);
+NOption(303,PozdrowieniaDoWiezienia,001);
+NOption(304,Bye,001);
+end
+
+procedure PozdrowieniaDoWiezienia begin
+Reply(mstr(310));
+NOption(311,MoveToCamp,001);
+NOption(312,Node998,001);
+end
+
+procedure Bye begin
+Reply(mstr(320));
+NOption(321,Node999,001);
+end
+
+procedure MoveToCamp begin
+call tocamp_cutscene;
+end
+
+#define move_khan_students_to_home_tile if self_obj==person_khan1_inside or self_obj==person_khan2_inside or self_obj==person_khan3_inside or self_obj==person_khan4_inside then move_to(self_obj,local_var(LVAR_Home_Tile),0)
+
+/* Melee Teacher */
+
+
+///
+variable counter2;
+variable counter3;
+
+procedure pilnuj_drzwi_oswalda begin
+
+	if self_obj==guard_camp_doors1 and global_var(GVAR_QUEST_SHADY_MAGAZINE) == 0 then begin
+
+		if tile_distance_objs(self_obj,dude_obj) < 5 and local_var(LVAR_NPC_Patience) != 4 and (not game_ui_is_disabled) then begin
+			start_dialog_at_node(Oswald1);
+		end
+		else if tile_distance_objs(self_obj,dude_obj) < 5 and local_var(LVAR_NPC_Patience) == 4  and counter2==0 and (not game_ui_is_disabled) then begin
+
+			float_msg(self_obj,mstr(396),2);
+			call Node998;
+
+		end
+
+	end
+
+end
+
+	procedure Oswald1 begin
+	counter2:=0;
+	if local_var(LVAR_NPC_Patience) == 3 then Reply(mstr(397));
+	if local_var(LVAR_NPC_Patience) == 2 then Reply(mstr(398));
+	if local_var(LVAR_NPC_Patience) == 1 then Reply(mstr(399));
+	if local_var(LVAR_NPC_Patience) == 0 then Reply(mstr(400));
+	call core_Oswald;
+	inc_local_var(LVAR_NPC_Patience);
+	end
+
+	procedure Oswald2 begin
+	Reply(mstr(420));
+	call core_Oswald;
+	end
+
+	procedure Oswald3 begin
+	Reply(mstr(430));
+	NOption(431,OswaldEnter,001);
+	NOption(432,OswaldExit,001);
+	end
+
+	procedure core_Oswald begin
+	NOption(401,Oswald3,001);
+	NOption(402,Oswald2,001);
+	NOption(403,OswaldExit,001);
+	end
+
+	procedure OswaldExit begin
+	add_timer_event(self_obj,0,11);
+	game_ui_disable;
+	end
+
+	procedure OswaldEnter begin
+
+		if counter2==0 then begin
+		fadeout(200);
+		add_timer_event(self_obj,10,12);
+		game_ui_disable;
+				counter2++;
+		end
+
+		else if counter2==1 then begin
+		move_to(dude_obj,27897,1);
+		add_timer_event(self_obj,5,12);
+				counter2++;
+		end
+
+		else if counter2==2 then begin
+		fadein(200);
+		game_ui_enable;
+				counter2:=0;
+		end
+
+
+	end
+
+	procedure Oswald_Move_Dude_Out begin
+
+		if counter2==0 then begin
+		fadeout(200);
+		add_timer_event(self_obj,10,11);
+				counter2++;
+		end
+
+		else if counter2==1 then begin
+		move_to(dude_obj,27911,1);
+		add_timer_event(self_obj,5,11);
+				counter2++;
+		end
+
+		else if counter2==2 then begin
+		fadein(200);
+		game_ui_enable;
+		floater(410);
+		counter2:=0;
+		end
+
+
+	end
+
+	procedure tocamp_cutscene begin
+    if counter3 == 0 then begin
+      game_ui_disable;
+      FadeOut(100);
+      /* Przeniesie itemow gracza do box_dudeitems */
+      variable lina, dynamit;
+      dynamit := obj_carrying_pid_obj(dude_obj, PID_DYNAMITE);
+      lina := obj_carrying_pid_obj(dude_obj, PID_ROPE);
+      if lina != 0 then begin rm_obj_from_inven(dude_obj, lina); lina := 1; end
+      if dynamit != 0 then begin rm_obj_from_inven(dude_obj, dynamit); dynamit := 1; end
+      move_obj_inven_to_obj(dude_obj, box_dudeitems);
+      if lina == 1 then add_obj_to_inven(dude_obj, create_object(PID_ROPE, 0, 0));
+      if dynamit == 1 then add_obj_to_inven(dude_obj, create_object(PID_DYNAMITE, 0, 0));
+
+      if obj_in_party(obj_laura) == true then party_remove(obj_laura);
+
+      add_timer_event(self_obj, game_ticks(1), PARAM_CUTSCENE_TOCAMP);
+    end
+
+    else if counter3 == 1 then begin
+      play_sfx("CLANK");
+      add_timer_event(self_obj, game_ticks(3), PARAM_CUTSCENE_TOCAMP);
+    end
+
+    else if counter3 == 2 then begin
+      play_sfx("CLANK1");
+      add_timer_event(self_obj, game_ticks(1), PARAM_CUTSCENE_TOCAMP);
+    end
+
+    else if counter3 == 3 then begin
+         reg_anim_clear(dude_obj);
+         reg_anim_begin();
+         reg_anim_animate(dude_obj,ANIM_fall_front_sf,-1);
+         reg_anim_end();
+      play_sfx("HMXXXXBB");
+      add_timer_event(self_obj, game_ticks(2), PARAM_CUTSCENE_TOCAMP);
+    end
+
+    else if counter3 == 4 then begin
+      move_to(dude_obj, tile_num_in_direction(17527,1,1), 1);
+      anim(dude_obj, ANIMATE_ROTATION, 1);
+game_time_advance_hour(801);
+      FadeIn(200);
+      game_ui_enable;
+      add_timer_event(self_obj, game_ticks(2), PARAM_CUTSCENE_TOCAMP);
+    end
+
+
+    counter3++;
+
+	end

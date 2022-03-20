@@ -1,0 +1,223 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCMATT
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure combat_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+//Gvar80 REBELLION
+      procedure force_conversation_GVAR_REBELLION_80;
+            procedure Rebellion80;
+            procedure Rebellion80_GoV15;
+            procedure Node999_80;
+
+procedure MattIgnoring;
+procedure ThirdTime;
+procedure SecondTime;
+procedure FirstTime;
+      procedure FirstAttack_Missed;
+      procedure FirstAttack_MarkPissedOff;
+      procedure FirstAttack_Hit;
+      procedure LieDown;
+      procedure LieDown2;
+      procedure SecondTime_Hit;
+      procedure MarkAngryAsFuck;
+
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Dontwanttotalk             (8)
+
+#define PARAM_COMPLEX_GARL_ATTACK       (0)
+
+import variable obj_matt;
+import variable point_tycho;
+import variable obj_mark;
+import variable obj_garl;
+import variable rebelia_script;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+obj_matt:=self_obj;
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   call force_conversation_GVAR_REBELLION_80;
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       set_global_var(GVAR_SHADY_RANGERS_PERSONAL_ENEMY, 1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   if local_var(LVAR_Dontwanttotalk) == 1 then call MattIgnoring; else begin
+      if local_var(LVAR_Herebefore) == 3 then start_dialog_at_node(ThirdTime); else
+         if local_var(LVAR_Herebefore) == 2 then start_dialog_at_node(SecondTime); else
+            if global_var(GVAR_SHADY_REBELLION) == 0 then start_dialog_at_node(FirstTime);
+   end
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure combat_p_proc begin
+   if global_var(GVAR_SHADY_REBELLION) == 61 then add_timer_event(rebelia_script, 0, 12); //PARAM_CHECK_FOR_TEAMS_FINAL_FIGHT
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+   if (fixed_param==PARAM_COMPLEX_GARL_ATTACK) then begin
+            attack_complex(obj_garl, 0, 1, 0, 110, 254, 0, 0);
+   end
+end
+
+      procedure force_conversation_GVAR_REBELLION_80 begin
+
+            if global_var(GVAR_SHADY_REBELLION) == 80 and tile_distance_objs(dude_obj,self_obj)<6 and critter_state(point_tycho) == CRITTER_IS_DEAD and critter_state(obj_mark) == CRITTER_IS_DEAD then begin
+
+                  start_dialog_at_node(Rebellion80);
+
+            end
+
+      end
+
+            procedure Rebellion80 begin
+
+                  Reply("Wziales juz rzeczy? Bo idziemy do v15");
+                  NOption("Zara wracam",Node999_80,004);
+                  NOption("Idziemy",Rebellion80_GoV15,004);
+
+            end
+
+            procedure Rebellion80_GoV15 begin
+                  set_global_var(GVAR_SHADY_INFOFORV15,2);
+                  load_map(20,0);
+            end
+
+            procedure Node999_80 begin
+                  move_to(dude_obj,15110,0);
+            end
+
+procedure FirstTime begin
+            Reply(mstr(200));
+            if dude_agility >6 then NOption(201,FirstAttack_Missed,001); else NOption(201,FirstAttack_Hit,001);
+            NOption(202,Node999,001);
+end
+
+      procedure FirstAttack_Missed begin
+            Reply(mstr(210));
+            give_xp(50);
+            NOption(230,FirstAttack_MarkPissedOff,001);
+      end
+
+            procedure FirstAttack_MarkPissedOff begin
+            float_msg(obj_mark,mstr(231),2);
+            set_local_var(LVAR_Dontwanttotalk,1);
+            end
+
+                  procedure MattIgnoring begin
+                  float_msg(self_obj,mstr(232),FLOAT_MSG_NORMAL);
+                  end
+
+      procedure FirstAttack_Hit begin
+            Reply(mstr(211));
+            critter_injure(dude_obj,random(0,5));
+            NOption(233,LieDown,001);
+      end
+
+            procedure LieDown begin
+            anim(dude_obj,ANIM_fall_back,0);
+            set_local_var(LVAR_Herebefore,2);
+            end
+
+procedure SecondTime begin
+      Reply(mstr(250));
+      NOption(251,SecondTime_Hit,001);
+      NOption(252,Node999,001);
+end
+
+      procedure SecondTime_Hit begin
+      Reply(mstr(260));
+      critter_injure(dude_obj,random(0,7));
+      NOption(261,LieDown2,001);
+      end
+
+            procedure LieDown2 begin
+            anim(dude_obj,ANIM_fall_back,0);
+            set_local_var(LVAR_Herebefore,3);
+            //float_msg(obj_mark,mstr(231),2);
+            end
+
+procedure ThirdTime begin
+      Reply(mstr(269));
+      NOption(270,MarkAngryAsFuck,001);
+end
+
+procedure MarkAngryAsFuck begin
+      float_msg(obj_mark,mstr(271),2);
+      set_local_var(LVAR_Dontwanttotalk,1);
+end

@@ -1,0 +1,38 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Map Script for Sierra Army Base, Outside area
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\v13ent.h"
+
+#define NAME                    SCRIPT_WATRSHD
+#include "..\headers\command.h"
+#include "..\headers\VAULT15.h"
+
+
+//export variable fighter_obj;
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+
+procedure start begin
+
+end
+
+variable item;
+procedure map_enter_p_proc begin
+add_obj_to_inven(dude_obj,create_object(597,0,0));
+if dude_elevation == 0 then Lighting;
+else Cavern_Lighting;
+end
+
+procedure map_update_p_proc begin
+if dude_elevation == 0 then Lighting;
+else Cavern_Lighting;
+end

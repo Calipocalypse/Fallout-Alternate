@@ -1,0 +1,284 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MBCARMAN
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+import variable box;
+import variable trader;
+import variable temp_box;
+
+procedure start;
+procedure map_enter_p_proc;
+      procedure assign_home_tile;
+procedure critter_p_proc;
+      procedure sprawdz_czy_gracz_nosi_szaty;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+      procedure NeverHereBefore;
+      	procedure core_Main;
+      	procedure Trade;
+      		procedure Trade2;
+      		procedure TradeFailed;
+      		procedure TradeDone;
+      			procedure TradeDone2;
+            procedure FewQuestions;
+            		procedure WhatAreYouDoingHere;
+            			procedure WhatAreYouDoingHere2;
+                  procedure WhatIsThatPlace;
+	                  procedure WhatIsThatPlace2;
+	                  procedure WhatIsThatPlace3;
+	                  procedure WhatIsThatPlace4;
+	                  procedure WhatIsThatPlace5;
+	               procedure WhoRunsThisPlace;
+	               	procedure WhoRunsThisPlace1;
+	               	procedure WhoRunsThisPlace2;
+	               	procedure WhoRunsThisPlace2B;
+	               	procedure WhoRunsThisPlace2C;
+	               	procedure WhoRunsThisPlace3;
+	              procedure CanIWithCaravan;
+	              
+      procedure AgainHere;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_Asked_WhatIsThatPlace      (9)
+#define LVAR_Asked_Who_Runs_This_Place  (10)
+#define LVAR_Asked_Twice                (11)
+
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+		trader:=self_obj;
+      if local_var(LVAR_Home_Tile) == 0 then call assign_home_tile;
+      if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_MB_MUTANTS);
+      if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_CARAVAN_GUARD);
+      call assign_home_tile;
+      
+end
+
+      procedure assign_home_tile begin
+      
+            set_local_var(LVAR_Home_Tile,self_tile);
+      
+      end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+   
+   call sprawdz_czy_gracz_nosi_szaty;
+
+end
+
+      procedure sprawdz_czy_gracz_nosi_szaty begin
+            if (obj_pid(critter_inven_obj(dude_obj,INVEN_TYPE_WORN)) != PID_PURPLE_ROBE) and obj_can_see_obj(self_obj,dude_obj) then self_attack_dude;
+      end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+      if local_var(LVAR_Herebefore) == 0 then start_dialog_at_node(NeverHereBefore);
+      else start_dialog_at_node(AgainHere);
+
+end
+
+      procedure NeverHereBefore begin
+            Reply(mstr(300));
+            call core_Main;
+      end
+      
+      procedure core_Main begin
+      NOption(301,FewQuestions,004);
+      NOption(302,Trade,004);
+      NOption(304,Node998,004);
+      NOption(303,Node999,004);
+      set_local_var(LVAR_Herebefore,1);
+      end
+      
+      		procedure Trade begin
+      		Reply(mstr(320));
+            if obj_is_carrying_obj_pid(dude_obj,PID_BLACK_COC_BADGE) or obj_is_carrying_obj_pid(dude_obj,PID_RED_COC_BADGE) then NOption(321,Trade2,004);
+            else NOption(322,TradeFailed,004);
+      		end
+      		
+      			procedure Trade2 begin
+      				move_obj_inven_to_obj(trader,temp_box);
+      				move_obj_inven_to_obj(box,trader);
+      				gdialog_barter;
+      				call TradeDone;
+      			end
+      		
+		      procedure TradeFailed begin
+		            Reply(mstr(420));
+		            call core_Main;
+		      end
+		      
+		      procedure TradeDone begin
+		      		Reply(mstr(430));
+		            NOption(431,TradeDone2,004);
+		      end
+		      
+		      	procedure TradeDone2 begin
+		      		move_obj_inven_to_obj(trader,box);
+		      		move_obj_inven_to_obj(temp_box,trader);
+			      	Reply(mstr(430));
+			         call core_Main;
+		      	end
+      
+            procedure FewQuestions begin
+            Reply(mstr(310));
+            NOption(311,WhatAreYouDoingHere,004);//done
+            NOption(312,WhatIsThatPlace,004); //done
+            if local_var(LVAR_Asked_Who_Runs_This_Place) == 0 then NOption(313,WhoRunsThisPlace,004); //done
+            if local_var(LVAR_Asked_Twice) == 1 then NOption(315,CanIWithCaravan,004);
+            NOption(314,Node999,004);
+            end
+            
+		            procedure WhatAreYouDoingHere begin
+		            Reply(mstr(390));
+                  NOption(391,WhatAreYouDoingHere2,004);
+		            end
+		            
+		            	procedure WhatAreYouDoingHere2 begin
+		            	Reply(mstr(400));
+                  	NOption(341,FewQuestions,004);
+	                  NOption(314,Node999,004);
+	                  inc_local_var(LVAR_Asked_Twice);
+		            	end
+		            
+		            
+                  procedure WhatIsThatPlace begin
+                  Reply(mstr(330));
+                  NOption(331,WhatIsThatPlace2,004);
+                  end
+                  
+	                  procedure WhatIsThatPlace2 begin
+	                  Reply(mstr(332));
+	                  NOption(333,WhatIsThatPlace3,004);
+	                  NOption(334,Node999,004);
+	                  end
+	                  
+	                  procedure WhatIsThatPlace3 begin
+	                  Reply(mstr(335));
+	                  NOption(336,WhatIsThatPlace4,004);
+	                  NOption(314,Node999,004);
+	                  end
+	                  
+	                  procedure WhatIsThatPlace4 begin
+	                  Reply(mstr(337));
+	                  NOption(338,WhatIsThatPlace5,004);
+	                  NOption(314,Node999,004);
+	                  end
+	                  
+	                  procedure WhatIsThatPlace5 begin
+	                  Reply(mstr(340));
+	                  NOption(341,FewQuestions,004);
+	                  NOption(314,Node999,004);
+	                  end
+	               
+	               procedure WhoRunsThisPlace begin
+	               Reply(mstr(350));
+	               set_local_var(LVAR_Asked_Who_Runs_This_Place,1);
+	               NOption(351,WhoRunsThisPlace1,004);
+	               end
+	               
+		               procedure WhoRunsThisPlace1 begin
+		               Reply(mstr(360));
+		               NOption(361,WhoRunsThisPlace2,004);
+		               if has_skill(dude_obj,SKILL_SCIENCE) > 50 then NOption(370,WhoRunsThisPlace2B,004);
+		               if has_skill(dude_obj,SKILL_CONVERSANT) > 70 then NOption(371,WhoRunsThisPlace2C,004);
+		               end
+		               
+		               	procedure WhoRunsThisPlace2B begin
+		               	Reply(mstr(380));
+		               	NOption(381,FewQuestions,004);
+		               	display_mstr(372);
+		               	give_exp_points(120);
+		               	end
+		               	
+		               	procedure WhoRunsThisPlace2C begin
+		               	Reply(mstr(380));
+		               	NOption(381,FewQuestions,004);
+		               	display_mstr(373);
+		               	give_exp_points(100);
+		               	end
+		               
+		               procedure WhoRunsThisPlace2 begin
+		               Reply(mstr(362));
+		               NOption(363,WhoRunsThisPlace3,004);
+		               end
+		               
+		               procedure WhoRunsThisPlace3 begin
+		               float_msg(self_obj,mstr(364),2);
+		               call Node998;
+		               end
+		               
+		           procedure CanIWithCaravan begin
+		           		Reply(mstr(440));
+		               NOption(341,FewQuestions,004);
+	                  NOption(314,Node999,004);
+		           end
+	               
+      
+      procedure AgainHere begin
+            Reply(mstr(410));
+            call core_Main;
+      end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+   float_msg(self_obj,mstr(364),2);
+end
+
+procedure Node999 begin
+end
+

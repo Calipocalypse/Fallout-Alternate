@@ -1,0 +1,410 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCJEROME
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+      procedure Quest1;
+            procedure Quest_Well_End;
+            procedure Quest_Crap_End;
+            procedure Quest_Xander_End;
+            procedure Quest_Rats_End;
+                  procedure Quest_Finished;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+      procedure assign_home_tile;
+      procedure assign_basic_eq;
+      procedure day_night_position;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+/* Sfera dialogowa */
+procedure FirstTime;
+      procedure FirstTime2;
+            procedure Pfff;
+      procedure ChangingMind;
+procedure WhatToDo;
+      procedure AboutZagroda;
+      procedure AboutWychodek;
+            procedure AboutAnnaSon;
+procedure IntroQuest_Status;
+      procedure IntroQuest_Core;
+      procedure RatsDone;
+      procedure WellDone;
+      procedure CrapDone;
+      procedure ChwastDone;
+      procedure PipBoyRemind;
+procedure IntroQuest_Finished;
+      procedure IntroQuest_Finished2;
+
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_Night_Tile                 (9)
+#define LVAR_QUEST_SHADYCAMP_INTRO      (10)
+
+import variable rebel_jerome;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then call assign_home_tile;
+      if map_first_run then call assign_basic_eq;
+
+      if not is_loading_game then add_timer_event(self_obj,0,0); /* Jest to zapobieganie nakladania sie timed_event_p_proc na timed_event_p_proc, chyba xD */
+      //day_night_position /\
+
+      critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+
+      rebel_jerome:=self_obj;
+
+end
+
+      procedure assign_home_tile begin
+            set_local_var(LVAR_Home_Tile,self_tile);
+            set_local_var(LVAR_Night_Tile,14293);
+      end
+
+      variable item;
+      procedure assign_basic_eq begin
+            item:=create_object(PID_FROZEN_DINNER,0,0);
+            add_obj_to_inven(self_obj,item);
+            item:=create_object(PID_MUTATED_FRUIT,0,0);
+            add_obj_to_inven(self_obj,item);
+      end
+
+      procedure day_night_position begin
+
+            if global_var(GVAR_SHADY_DAY_NIGHT_DISABLED) == 0 then begin
+
+                  if day then move_to(self_obj,local_var(LVAR_Home_Tile),1); // w innych przypadkach moze byc problem z elewacj?
+                  else if game_time_hour==1800 then move_to(self_obj,local_var(LVAR_Night_Tile),1);
+                  else move_to(self_obj,local_var(LVAR_Night_Tile),1); // w innych przypadkach moze byc problem z elewacj?
+                  add_timer_event(self_obj,15,0);
+
+                  /*
+
+                  if (not day) or game_time_hour==1800 then begin
+
+                  reg_anim_begin();
+                  reg_anim_animate(self_obj, ANIM_fall_front_sf, -1);
+                  reg_anim_end();
+                  display_msg("noc");
+
+                  end
+
+                  else begin
+                  display_msg("dzien");
+                  reg_anim_begin();
+                  reg_anim_clear(self_obj);
+                  reg_anim_end();
+                  end
+                  */
+
+            end
+
+      end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   if local_var(LVAR_Herebefore) == 0 and tile_distance_objs(dude_obj,self_obj) < 4 and not game_ui_is_disabled then begin
+      set_local_var(LVAR_Herebefore,1);
+      start_dialog_at_node(FirstTime);
+   end
+
+end
+
+procedure damage_p_proc begin
+
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       if global_var(GVAR_SHADY_UNDER_REBELLION) == 0 then set_global_var(GVAR_ALARM_SHADYSANDS,1);
+   end
+
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+      if not day then float_msg(self_obj,"Hrrrrr",FLOAT_MSG_NORMAL);
+      else begin
+            if global_var(GVAR_QUEST_SHADYCAMP_INTRO) == 6 then float_msg(self_obj,mstr(450),FLOAT_MSG_NORMAL);
+            else begin
+                  if local_var(LVAR_Herebefore) == 1 and global_var(GVAR_QUEST_SHADYCAMP_INTRO) == 0 then start_dialog_at_node(ChangingMind);
+                  else if local_var(LVAR_QUEST_SHADYCAMP_INTRO) < 5 then start_dialog_at_node(IntroQuest_Status);
+            end
+      end
+
+
+end
+
+      procedure Quest1 begin
+      Reply("Co?");
+      //set_global_var(GVAR_SHADYSANDS_PLAYER_KNOW_ABOUT_LOST_CARAVAN,1);
+      if global_var(GVAR_QUEST_SHADY_WEEL) == 0 and global_var(GVAR_QUEST_SHADYCAMP_INTRO) != 4 then NOption("Naprawilem studnie",Quest_Well_End,001);
+      if global_var(GVAR_QUEST_SHADY_CRAP) == 0 and global_var(GVAR_QUEST_SHADYCAMP_INTRO) != 4 then NOption("Posprztalem kupsko",Quest_Crap_End,001);
+      //if global_var(GVAR_QUEST_SHADY_XANDER) == 0 and global_var(GVAR_QUEST_SHADYCAMP_INTRO) != 4 then NOption("Chwasty zostaly wyrwane",Quest_Xander_End,001);
+      if global_var(GVAR_QUEST_SHADY_RATS) == 0 and global_var(GVAR_QUEST_SHADYCAMP_INTRO) != 4 then NOption("Szczury gryza ziemie.",Quest_Rats_End,001);
+      if global_var(GVAR_QUEST_SHADYCAMP_INTRO) == 4 and global_var(GVAR_QUEST_SHADY_WEEL) == 0 then NOption("Naprawilem studnie",Quest_Finished,001);
+      if global_var(GVAR_QUEST_SHADYCAMP_INTRO) == 4 and global_var(GVAR_QUEST_SHADY_CRAP) == 0 then NOption("Posprztalem kupsko",Quest_Finished,001);
+      //if global_var(GVAR_QUEST_SHADYCAMP_INTRO) == 4 and global_var(GVAR_QUEST_SHADY_XANDER) == 0 then NOption("Chwasty zostaly wyrwane",Quest_Finished,001);
+      if global_var(GVAR_QUEST_SHADYCAMP_INTRO) == 4 and global_var(GVAR_QUEST_SHADY_RATS) == 0 then NOption("Szczury gryza ziemie.",Quest_Finished,001);
+      NOption("A nic",Node999,001);
+
+      end
+
+            procedure Quest_Well_End begin
+
+            set_global_var(GVAR_QUEST_SHADY_WEEL,1);
+            if global_var(GVAR_QUEST_SHADYCAMP_INTRO) == 0 then set_global_var(GVAR_QUEST_SHADYCAMP_INTRO,1);
+            //podwojnie ponizej bo usunalem jeden z questow
+            inc_global_var(GVAR_QUEST_SHADYCAMP_INTRO);
+            inc_global_var(GVAR_QUEST_SHADYCAMP_INTRO);
+            Reply("Swietnie! Cos jeszce?");
+            NOption("Tak!",Quest1,001);
+            NOption("A nic",Node999,001);
+            give_exp_points(75);
+            display_msg("Zdobywasz 75 PD.");
+
+            end
+
+            procedure Quest_Crap_End begin
+
+            set_global_var(GVAR_QUEST_SHADY_CRAP,1);
+            if global_var(GVAR_QUEST_SHADYCAMP_INTRO) == 0 then set_global_var(GVAR_QUEST_SHADYCAMP_INTRO,1);
+            inc_global_var(GVAR_QUEST_SHADYCAMP_INTRO);
+            Reply("Swietnie! Cos jeszce?");
+            NOption("Tak!",Quest1,001);
+            NOption("A nic",Node999,001);
+            give_exp_points(50);
+            display_msg("Zdobywasz 50 PD.");
+
+            end
+
+            procedure Quest_Xander_End begin
+
+            set_global_var(GVAR_QUEST_SHADY_XANDER,1);
+            if global_var(GVAR_QUEST_SHADYCAMP_INTRO) == 0 then set_global_var(GVAR_QUEST_SHADYCAMP_INTRO,1);
+            inc_global_var(GVAR_QUEST_SHADYCAMP_INTRO);
+            Reply("Swietnie! Cos jeszce?");
+            NOption("Tak!",Quest1,001);
+            NOption("A nic",Node999,001);
+            give_exp_points(50);
+            display_msg("Zdobywasz 50 PD.");
+
+            end
+
+            procedure Quest_Rats_End begin
+
+            set_global_var(GVAR_QUEST_SHADY_RATS,1);
+            if global_var(GVAR_QUEST_SHADYCAMP_INTRO) == 0 then set_global_var(GVAR_QUEST_SHADYCAMP_INTRO,1);
+            inc_global_var(GVAR_QUEST_SHADYCAMP_INTRO);
+            Reply("Swietnie! Cos jeszce?");
+            NOption("Tak!",Quest1,001);
+            NOption("A nic",Node999,001);
+            give_exp_points(100);
+            display_msg("Zdobywasz 100 PD.");
+
+            end
+
+                  procedure Quest_Finished begin
+
+                  give_exp_points(200);
+                  display_msg("Zdobywasz 200 PD za wykonanie podstawowych zadan");
+                  Reply("Swietnie!");
+                  NOption("Ide w pizdu",Node999,001);
+
+                  end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+   set_global_var(GVAR_SHADY_JEROME_DEAD,1);
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+
+variable test;
+procedure timed_event_p_proc begin
+
+      if (fixed_param==0) then begin
+
+            //test+=1;
+            //display_msg("test"+test);
+
+            call day_night_position;
+
+      end
+
+      if (fixed_param==1) then begin
+            float_msg(dude_obj,"...",FLOAT_MSG_BLUE);
+      end
+
+
+end
+
+procedure FirstTime begin
+      Reply(mstr(301));
+      NOption(302,FirstTime2,001);
+      NOption(303,WhatToDo,001);
+      set_local_var(LVAR_Herebefore,1);
+end
+
+      procedure FirstTime2 begin
+      Reply(mstr(304));
+      NOption(305,WhatToDo,001);
+      NOption(306,Pfff,001);
+      end
+            procedure Pfff begin
+            float_msg(rebel_jerome,mstr(307),2);
+            end
+
+      procedure ChangingMind begin
+      Reply(mstr(330));
+      NOption(331,WhatToDo,001);
+      NOption(332,Pfff,001);
+      end
+
+procedure WhatToDo begin
+      set_global_var(GVAR_QUEST_SHADYCAMP_INTRO,1);
+      set_global_var(GVAR_QUEST_SHADY_WEEL,1);
+      set_global_var(GVAR_QUEST_SHADY_XANDER,1);
+      set_global_var(GVAR_QUEST_SHADY_RATS,1);
+      set_global_var(GVAR_QUEST_SHADY_CRAP,1);
+      Reply(mstr(308));
+      NOption(309,Node999,001);
+      NOption(310,AboutZagroda,001);
+      NOption(311,AboutWychodek,001);
+end
+
+      procedure AboutWychodek begin
+            Reply(mstr(312));
+            NOption(313,AboutAnnaSon,001);
+            NOption(314,Node999,001);
+      end
+            procedure AboutAnnaSon begin
+                  Reply(mstr(315));
+                  NOption(316,Node999,001);
+                  set_global_var(GVAR_QUEST_SHADYCAMP_ANNASON,1);
+            end
+
+      procedure AboutZagroda begin
+            Reply(mstr(340));
+            NOption(341,Node999,001);
+      end
+
+      /* Status */
+
+procedure IntroQuest_Status begin
+      Reply(mstr(317));
+      call IntroQuest_Core;
+end
+
+      procedure IntroQuest_Core begin
+            if global_var(GVAR_QUEST_SHADY_RATS) == 4 then NOption(318,RatsDone,001);
+            NOption(319,ChwastDone,001); //warunek potrzebny
+            if global_var(GVAR_QUEST_SHADY_CRAP) == 5 then NOption(320,CrapDone,001);
+            if global_var(GVAR_QUEST_SHADY_WEEL) == 2 then NOption(321,WellDone,001);
+            NOption(310,AboutZagroda,001);
+            NOption(311,AboutWychodek,001);
+            NOption(360,PipBoyRemind,001);
+            NOption(350,Node999,001);
+      end
+
+            procedure PipBoyRemind begin
+            Reply(mstr(361));
+            NOption(362,Node999,001);
+            end
+
+            procedure WellDone begin
+            Reply(mstr(323));
+            set_global_var(GVAR_QUEST_SHADY_WEEL,3);
+            inc_global_var(GVAR_QUEST_SHADYCAMP_INTRO);
+            display_msg(mstr(401));
+            give_exp_points(50);
+            if global_var(GVAR_QUEST_SHADYCAMP_INTRO) !=5 then call IntroQuest_Core; else call IntroQuest_Finished;
+            end
+
+            procedure RatsDone begin
+            Reply(mstr(322));
+            set_global_var(GVAR_QUEST_SHADY_RATS,5);
+            inc_global_var(GVAR_QUEST_SHADYCAMP_INTRO);
+            display_msg(mstr(400));
+            give_exp_points(100);
+            if global_var(GVAR_QUEST_SHADYCAMP_INTRO) !=5 then call IntroQuest_Core; else call IntroQuest_Finished;
+            end
+
+            procedure CrapDone begin
+            Reply(mstr(324));
+            set_global_var(GVAR_QUEST_SHADY_CRAP,6);
+            inc_global_var(GVAR_QUEST_SHADYCAMP_INTRO);
+            display_msg(mstr(402));
+            give_exp_points(100);
+            if global_var(GVAR_QUEST_SHADYCAMP_INTRO) !=5 then call IntroQuest_Core; else call IntroQuest_Finished;
+            end
+
+            procedure ChwastDone begin
+            Reply(mstr(325));
+            set_global_var(GVAR_QUEST_SHADY_XANDER,5);
+            inc_global_var(GVAR_QUEST_SHADYCAMP_INTRO);
+            display_msg(mstr(403));
+            give_exp_points(100);
+            if global_var(GVAR_QUEST_SHADYCAMP_INTRO) !=5 then call IntroQuest_Core; else call IntroQuest_Finished;
+            end
+
+procedure IntroQuest_Finished begin
+      Reply(mstr(326));
+      NOption(327,IntroQuest_Finished2,001);
+end
+
+      procedure IntroQuest_Finished2 begin
+            float_msg(self_obj,mstr(328),FLOAT_MSG_WHITE);
+            set_global_var(GVAR_QUEST_SHADYCAMP_INTRO,6);
+            add_timer_event(self_obj,40,1);
+      end

@@ -1,0 +1,75 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/******************************************************************************************
+        Item: Metal Door
+        Locked: Yes
+        Trapped: No
+        Description: This is a door without a handle. Needs to have
+                     a stick of dynamite to blow it open.
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created: December 19, 1997
+
+           Updated:
+******************************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SSBOXDUD
+
+#include "..\headers\command.h"
+
+#define PARAM_BRING_BACK_ROPEANDDYNAMITE (5)
+
+import variable box_dudeitems;
+
+procedure start;
+procedure map_enter_p_proc;
+procedure damage_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure timed_event_p_proc;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+box_dudeitems := self_obj;
+add_timer_event(self_obj, 1, 0);
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+end
+
+procedure description_p_proc begin
+   script_overrides;
+end
+
+procedure timed_event_p_proc begin
+//if obj_is_carrying_obj_pid(self_obj, PID_DYNAMITE) then display_msg("mam dynamit"); else display_msg("nie mam dynamitu");
+add_timer_event(self_obj, 1, 0);
+
+if (fixed_param==PARAM_BRING_BACK_ROPEANDDYNAMITE) then begin
+   variable lina, dynamit;
+   dynamit := obj_carrying_pid_obj(self_obj, PID_DYNAMITE);
+   lina := obj_carrying_pid_obj(self_obj, PID_ROPE);
+   display_msg("lina " + lina);
+   display_msg("dynamit " + dynamit);
+   add_obj_to_inven(dude_obj, lina);
+
+   add_obj_to_inven(dude_obj, dynamit);
+end
+
+end

@@ -1,0 +1,256 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: NPC template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_8_FRANZ
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure critter_p_proc;
+   procedure rotation;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+   procedure map_first_run_proc;
+      procedure basic_eq;
+procedure timed_event_p_proc;
+
+/* Script Specific Procedure Calls */
+procedure Node998;                                      // This Node is Always Combat
+procedure Node999;                                      // This Node is Always Ending
+
+// The next lines are added in by the Designer Tool.
+procedure Node000;
+   procedure Node000_Amnesion;
+   procedure Node000_TrueStory;
+      procedure NodeTheirStory_Max;
+      procedure NodeTheirStory_NoMax;
+      procedure core_Questions1;
+      procedure NodeTheirStory_AB;
+      procedure NodeTheirStory_Max;
+      procedure NodeTheirStory_Max2;
+      procedure Node_YouStayThere;
+      procedure Node_V13Fight;
+      procedure Node_ShedMap;
+procedure NodeAgain1;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Caught_Thief               (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_Home_Rotation              (9)
+#define LVAR_Disable_Home_Tile          (10)
+#define LVAR_First_Time                 (12)
+#define LVAR_Questions                  (11)
+   #define bit_how_get_out              (bit_1)
+   #define bit_you_stay_there           (bit_2)
+   #define bit_v13_fight                (bit_3)
+   #define bit_shed_map                 (bit_4)
+
+#define HOME_TILE local_var(LVAR_Home_Tile)
+#define HOME_ROTATION local_var(LVAR_Home_Rotation)
+#define set_home_tile_disable set_local_var(LVAR_Disable_Home_Tile, 1);
+#define set_home_tile_enable  set_local_var(LVAR_Disable_Home_Tile, 0);
+#define home_tile_disabled local_var(LVAR_Disable_Home_Tile ) == 1
+#define home_tile_enabled  local_var(LVAR_Disable_Home_Tile) == 0
+import variable obj_franz;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+   obj_franz := self_obj;
+   if map_first_run then call map_first_run_proc;
+end
+
+   procedure map_first_run_proc begin
+      critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_TEAM_NUM,TEAM_V13);
+      critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_AI_PACKET,3);
+      set_local_var(LVAR_Home_Tile, self_tile);
+      set_local_var(LVAR_Home_Rotation, obj_get_rot(self_obj));
+      call basic_eq;
+   end
+
+      procedure basic_eq begin
+         add_obj_to_inven(self_obj, create_object(PID_HUNTING_RIFLE, 0, 0));
+         add_obj_to_inven(self_obj, create_object(PID_223_FMJ, 0, 0));
+         add_obj_to_inven(self_obj, create_object(PID_STIMPAK, 0, 0));
+         add_obj_to_inven(self_obj, create_object(PID_WATER_FLASK, 0, 0));
+      end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) > 1) and (obj_can_see_obj(self_obj, dude_obj))) then begin
+      set_local_var(LVAR_Hostile,1);
+      self_attack_dude; //Macro made by Tom to keep the critter fleeing.
+   end
+   if home_tile_enabled and tile_num(self_obj)!=HOME_TILE and anim_busy(self_obj)==0 then begin
+      animate_move_to_tile(HOME_TILE);
+   end
+   call rotation;
+end
+
+   procedure rotation begin
+      if not obj_can_see_obj(self_obj,dude_obj) then begin
+         if self_tile == HOME_TILE  and obj_get_rot(self_obj) != HOME_ROTATION and anim_busy(self_obj) == 0 then anim(self_obj, ANIMATE_ROTATION, HOME_ROTATION);
+      end
+      else begin
+         if self_tile == HOME_TILE and anim_busy(self_obj) == 0 then Face_Critter(dude_obj, self_obj);
+      end
+   end
+
+procedure damage_p_proc begin
+   if (obj_in_party(source_obj)) then begin
+       set_local_var(LVAR_Personal_Enemy, 1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile, 2);
+   end
+end
+
+procedure talk_p_proc begin
+   if local_var(LVAR_First_Time) == 0 then start_dialog_at_node(Node000);
+   else if local_var(LVAR_First_Time) == 1 then start_dialog_at_node(NodeAgain1);
+end
+
+procedure destroy_p_proc begin
+   //inc_good_critter
+   //inc_evil_critter
+   inc_neutral_critter
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+   if (local_var(LVAR_Herebefore) == 0) then
+      display_mstr(100);
+   else
+   display_mstr(101);
+end
+
+procedure description_p_proc begin
+   script_overrides;
+   display_mstr(102);
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile, 2);
+end
+
+
+procedure Node999 begin
+end
+
+procedure Node000 begin
+   if MaxStone_In_Party then Reply(199); else Reply(200);
+   set_local_var(LVAR_First_Time, 1);
+   NOption(201, Node000_Amnesion, 001);
+   NOption(202, Node000_TrueStory, 001);
+end
+
+   procedure Node000_Amnesion begin
+      if MaxStone_In_Party then Reply(mstr(211)+mstr(213)); else Reply(211);
+      NOption(201, Node000_Amnesion, 001);
+      NOption(202, Node000_TrueStory, 001);
+      call core_Questions1;
+   end
+
+   procedure Node000_TrueStory begin
+      if MaxStone_In_Party then Reply(mstr(210) + mstr(213)); else Reply(210);
+      call core_Questions1;
+   end
+
+   procedure core_Questions1 begin
+      if global_var(GVAR_SHED_DEATHCLAWS) == SHED_DEATHCLAWS_SPOTTED then NOption(215, Cave1, 001);
+      if lvar_bit(LVAR_Questions, bit_how_get_out) == 0 then NOption(216,NodeTheirStory_AB,000);
+      if lvar_bit(LVAR_Questions, bit_you_stay_there) == 0 then NOption(217, Node_YouStayThere, 001);
+      if lvar_bit(LVAR_Questions, bit_v13_fight) == 0 then NOption(219, Node_V13Fight, 001);
+      if lvar_bit(LVAR_Questions, bit_shed_map) == 0 then NOption(214, Node_ShedMap, 001);
+      NOption(218, Node999, 001);
+   end
+
+      procedure NodeTheirStory_AB begin
+         set_lvar_bit_on(LVAR_Questions, bit_how_get_out);
+         Reply(220);
+         if MaxStone_In_Party then NOption("[...]", NodeTheirStory_Max, 001); else call core_Questions1;
+      end
+
+         procedure NodeTheirStory_Max begin
+            Reply(221);
+            NOption(222, NodeTheirStory_Max2, 001);
+         end
+
+            procedure NodeTheirStory_Max2 begin
+               Reply(223);
+               call core_Questions1;
+            end
+
+      procedure Node_YouStayThere begin
+         Reply(230);
+         set_lvar_bit_on(LVAR_Questions, bit_you_stay_there);
+         call core_Questions1;
+      end
+
+      procedure Node_V13Fight begin
+         Reply(240);
+         set_lvar_bit_on(LVAR_Questions, bit_v13_fight);
+         call core_Questions1;
+      end
+
+      procedure Node_ShedMap begin
+         Reply(250);
+         set_lvar_bit_on(LVAR_Questions, bit_shed_map);
+         call core_Questions1;
+      end
+
+   procedure NodeAgain1 begin
+      Reply(260);
+      call core_Questions1;
+   end
+
+   procedure Cave1 begin
+      set_global_var(GVAR_SHED_DEATHCLAWS, SHED_DEATHCLAWS_TOLD_TO_FRANZ);
+      Reply(300);
+      NOption(301, Cave2, 001);
+   end
+
+      procedure Cave2 begin
+      Reply(310);
+      NOption(311, Cave2, 001);
+      NOption(312, Cave2, 001);
+      if obj_is_carrying_obj_pid(dude_obj,PID_DYNAMITE) then NOption(313, Cave_Dynamite, 001);
+      end
+
+procedure timed_event_p_proc begin
+
+   if fixed_param==SHED_DISABLE_HOME_TILE then begin
+      set_home_tile_disable
+   end
+
+   if fixed_param==SHED_ENABLE_HOME_TILE then begin
+      set_home_tile_enable
+   end
+
+end

@@ -1,0 +1,60 @@
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_DOOR3
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure use_p_proc;
+procedure timed_event_p_proc;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_tile                  (8)
+#define LVAR_TimedEvent_Session         (9)
+
+import variable cave_mut4;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+	obj_lock(self_obj);
+	script_overrides;
+end
+
+procedure use_p_proc begin
+		 // <-- to dziala
+		 if obj_can_see_obj(cave_mut4,dude_obj) then begin
+		    set_global_var(GVAR_VAULT13MUT_ALARM, DUDE_IS_ENEMY);
+		    attack_setup(self_obj, dude_obj);
+		 end
+		 else begin
+      	 script_overrides;
+      	 obj_open(self_obj);
+   	 end
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure destroy_p_proc begin
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure timed_event_p_proc begin
+
+end

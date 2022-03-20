@@ -1,0 +1,1392 @@
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\v13ent.h"
+
+#define NAME                    SCRIPT_SHADY
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Session                    (5)
+
+#define INVASION                        (20)
+#define AFTER_DEAD_JASPER_INVASION      (21)
+/* SKLEP */
+export variable box_bronie; //bronie palne i praktyczne biale i amunicja
+export variable box_pancerze; //
+export variable box_narzedzia;
+export variable person_trader;
+
+/* NEUTRALNE OSOBY Z BARU KTORE ZNIKNA */
+export variable person_1drunk;
+export variable person_2drunk;
+
+/* NEUTRALNE OSOBY */
+export variable person_felix;
+export variable person_1bimber;
+export variable person_2bimber;
+
+/* Dzieci Katedry */
+export variable jasper_obj;
+export variable childrn_obj;
+export variable childrn2_obj;
+export variable laura_obj;
+
+/* Chanowie */
+export variable obj_garl;
+export variable obj_mark;
+export variable obj_matt;
+export variable point_tycho; // nie khan
+export variable person_1khan;
+export variable person_2khan;
+export variable person_3khan;
+export variable person_bar1khan;
+export variable person_bar2khan;
+export variable person_radio1khan;
+export variable person_radio2khan;
+export variable person_barman;
+
+/* W Srodku u Chanow w domu Garla */
+export variable jackal_door;
+export variable person_khan1_inside;
+export variable person_khan2_inside;
+export variable person_khan3_inside;
+export variable person_khan4_inside;
+
+/* Mutanci */
+export variable mutantnormal_1;
+export variable mutantnormal_2;
+export variable mutantnormal_3;
+export variable mutantnormal_4;
+export variable mutantnormal_5;
+export variable mutantstronger_1;
+export variable mutantstronger_2;
+export variable mutantstronger_3;
+export variable mutantstronger_4;
+export variable mutantstronger_5;
+export variable mutantstronger_6;
+export variable mutantstronger_7;
+export variable mutantstronger_8;
+export variable mutantboss;
+export variable mutantweaker_1;
+export variable mutantweaker_2;
+
+/* W srodku obozu - rebelianci */ //14.03.2019
+export variable rebel_isaac;
+export variable rebel_jerome;
+export variable rebel_anna;
+export variable rebel_annadaughter;
+export variable rebel_mack;
+export variable rebel_mackdog;
+export variable rebel_peasant1;
+export variable rebel_peasant2;
+export variable rebel_peasant3;
+export variable rebel_peasant4;
+export variable rebel_peasant5;
+export variable rebel_peasant6;
+//23.03.2019
+export variable guard_camp_garden1;
+export variable guard_camp_garden2;
+export variable guard_camp_doors1;
+export variable guard_camp_doors2;
+export variable guard_camp_doggo;
+//06.04.2019
+export variable guard_camp_oswald;
+export variable wooof_1;
+export variable wooof_2;
+export variable wooof_3;
+export variable wooof_4;
+export variable wooof_5;
+//23.11.2019
+export variable obj_gwen;
+//27.11.2019
+export variable obj_maxstone_shady;
+/* GATE TO CAMP */
+export variable guard_door_to_camp;
+export variable guard_door_to_camp2;
+
+/* Map script */
+export variable map_script_obj;
+export variable lina_dynamit_script;
+export variable rebelia_script;
+
+/* Dana */
+export variable final_path;
+
+/* 22.05.2020 */
+export variable obj_ghost;
+
+/* 13.06.2020 */
+export variable tamara;
+export variable fighter;
+
+/* 20.07.2020 */
+export variable obj_surface_rat1;
+export variable obj_surface_rat2;
+export variable obj_surface_rat3;
+
+/* 20.07.2020 */
+
+export variable obj_cave_rat_ally1;
+export variable obj_cave_rat_ally2;
+export variable obj_cave_rat_ally3;
+
+export variable obj_cave_ratmole;
+export variable obj_cave_rat_enemy1;
+export variable obj_cave_rat_enemy3;
+export variable obj_cave_rat_enemy2;
+
+/* 28.08.2020 */
+export variable obj_floater;
+
+/*16.10.2020 */
+export variable cut_mut;
+export variable other_sir;
+
+/*24.10.2020 */
+export variable obj_green_explosion;
+
+/*04.01.2022 */
+export variable obj_ethan;
+export variable obj_pat;
+
+/*10.01.2022 */
+export variable box_dudeitems;
+/*12.02.2022 */
+export variable obj_explosion_animation;
+
+
+/** PROCEDURY **/
+procedure map_enter_p_proc;
+      procedure map_first_run_proc;
+      procedure start_variables;
+procedure map_update_p_proc;
+procedure timed_event_p_proc_dousuniecia;
+procedure map_exit_p_proc;
+
+procedure global_pointers;
+procedure punkty_poczatkowe;
+procedure override_map_start_hex;
+procedure restock_shop;
+procedure update_khans_weapons;
+procedure timed_event_p_proc;
+procedure out_of_combat_p_proc;
+      procedure out_of_combat_p_proc_but_last_fight;
+      procedure cutscene_pilnowanie_szopy;
+procedure set_up_player_team;
+procedure unset_up_player_team;
+procedure set_up_oswald_fight;
+procedure cutscene_infrontof_oswald;
+procedure Gvar50;
+procedure cutscene_PreGarl;
+      procedure move_to_infrontofGarl;
+procedure cutscene_FightAgainstGarl;
+      procedure set_up_desert_rangers;
+      procedure unset_up_desert_rangers;
+      procedure set_up_others;
+      procedure heal_team;
+procedure cutscene_AfterGarl;
+      procedure guard_shady_run_out;
+      procedure guard_shady_dissaper;
+procedure cutscene_Isaac_Won_Before;
+procedure cutscene_Tycho_Won_Before;
+procedure cutscene_Isaac_and_rangers_Alive_Before;
+      procedure cutscene_RangersDeadIsaacWin;
+      procedure cutscene_IsaacDeadRangersWin;
+      procedure cutscene_IsaacAliveRangersAlive;
+            procedure setup_Isaac_vs_Rangers;
+            procedure setup_IsaacSide;
+            procedure setup_RangersSide;
+                  procedure final_fight_last_moves;
+                  procedure final_fight_set_up_all_enemies;
+                  procedure final_fight_set_up_team_tycho_benefit;
+                  procedure final_fight_set_up_team_isaac_benefit;
+                  procedure cutscene_final_fight_standing_with_tycho;
+                        procedure move_to_final_fight_tycho_benefit;
+                  procedure cutscene_final_fight_standing_with_isaac;
+procedure cutscene_final_after_final_fight;
+procedure cutscene_final_after_final_fight_isaac_splitup;
+procedure cutscene_final_fight_speech;
+
+procedure garl_testuje_zabawki_procedura;
+
+procedure after_dead_jasper_invasion;
+
+
+procedure map_enter_p_proc begin
+      map_script_obj:=self_obj;
+      if global_var(GVAR_VISITED_SHADYSANDS) == 0 then call map_first_run_proc;
+      call start_variables;
+      set_global_var(GVAR_VISITED_SHADYSANDS,1);
+      call restock_shop; // NIE DZIALA NA RAZIE BO SIE ODWOLUJE DO PUSTEJ PROCEDURY
+      //call update_khans_weapons; // usunac gdy testow koniec
+      if game_loaded then add_timer_event(self_obj,0,1);
+
+      if local_var(LVAR_Session) == 0 then set_local_var(LVAR_Session,100); else inc_local_var(LVAR_Session);
+
+
+
+end
+
+      procedure map_first_run_proc begin
+            call punkty_poczatkowe;
+            call override_map_start_hex;
+      end
+
+      variable pilnowanie_szopy;
+      variable przed_oswaldem;
+      variable PreGarl;
+      variable FightAgainstGarl;
+      variable AfterGarl;
+      variable Isaac_Won_Before;
+      variable Tycho_Won_Before;
+      variable Isaac_and_rangers_Alive_Before;
+      variable RangersDeadIsaacWin;
+      variable IsaacDeadRangersWin;
+      variable IsaacAliveRangersAlive;
+      variable final_fight_standing_with_tycho_var;
+      variable final_fight_standing_with_isaac_var;
+      variable final_after_final_fight;
+      variable final_after_final_fight_isaac_splitup;
+      variable final_fight_speech;
+      variable garl_testuje_zabawki;
+      procedure start_variables begin
+      pilnowanie_szopy:=2;
+      przed_oswaldem:=3;
+      PreGarl:=4;
+      FightAgainstGarl:=5;
+      AfterGarl:=6;
+      Isaac_Won_Before:=7;
+      Tycho_Won_Before:=8;
+      Isaac_and_rangers_Alive_Before:=9;
+      RangersDeadIsaacWin:=10;
+      IsaacDeadRangersWin:=11;
+      IsaacAliveRangersAlive:=12;
+      //13 reserved
+      final_fight_standing_with_tycho_var:=14;
+      final_fight_standing_with_isaac_var:=15;
+      final_after_final_fight:=16;
+      final_after_final_fight_isaac_splitup:=17;
+      final_fight_speech:=18;
+      garl_testuje_zabawki:=19;
+      end
+
+procedure punkty_poczatkowe begin
+      if dude_is_stupid and (map_first_run) then begin give_exp_points(350); display_mstr(102); end
+      else if dude_is_male  and (map_first_run) then begin give_exp_points(200); display_mstr(100); end
+      else if dude_is_female and (map_first_run) then begin give_exp_points(200); display_mstr(101); end
+end
+
+
+
+procedure override_map_start_hex begin
+      override_map_start_hex(12108,0,2);
+end
+
+procedure restock_shop begin
+
+end
+
+procedure map_update_p_proc begin
+
+if dude_elevation != 2 then Lighting;
+else Cavern_Lighting;
+
+end
+
+procedure global_pointers begin
+
+end
+
+procedure update_khans_weapons begin
+add_timer_event(self_obj,30,0);
+end
+
+variable weapon;
+
+procedure timed_event_p_proc_dousuniecia begin
+
+/*** Schowajcie bron do EQ ***/
+
+inven_unwield(person_khan1_inside);
+inven_unwield(person_khan2_inside);
+inven_unwield(person_khan3_inside);
+inven_unwield(person_khan4_inside);
+inven_unwield(obj_garl);
+inven_unwield(obj_mark);
+
+/*** Wrzuccie bronie do sklepu ***/
+move_obj_inven_to_obj(person_khan1_inside,box_bronie);
+move_obj_inven_to_obj(person_khan2_inside,box_bronie);
+move_obj_inven_to_obj(person_khan3_inside,box_bronie);
+move_obj_inven_to_obj(person_khan4_inside,box_bronie);
+move_obj_inven_to_obj(obj_garl,box_bronie);
+move_obj_inven_to_obj(obj_mark,box_bronie);
+
+/*** Dajcie nowe bronie ***/
+/* Budynek glowny */
+weapon:=create_object(PID_ASSAULT_RIFLE,0,0);
+add_obj_to_inven(person_khan1_inside,weapon);
+add_obj_to_inven(person_khan1_inside,create_object(PID_5MM_JHP,0,0));
+add_obj_to_inven(person_khan1_inside,create_object(PID_5MM_JHP,0,0));
+add_obj_to_inven(person_khan1_inside,weapon);
+wield_obj_critter(person_khan1_inside,weapon);
+
+weapon:=create_object(PID_ASSAULT_RIFLE,0,0);
+add_obj_to_inven(person_khan2_inside,weapon);
+add_obj_to_inven(person_khan2_inside,create_object(PID_5MM_JHP,0,0));
+add_obj_to_inven(person_khan2_inside,create_object(PID_5MM_JHP,0,0));
+add_obj_to_inven(person_khan2_inside,weapon);
+wield_obj_critter(person_khan2_inside,weapon);
+
+weapon:=create_object(PID_ASSAULT_RIFLE,0,0);
+add_obj_to_inven(person_khan3_inside,weapon);
+add_obj_to_inven(person_khan3_inside,create_object(PID_5MM_JHP,0,0));
+add_obj_to_inven(person_khan3_inside,create_object(PID_5MM_JHP,0,0));
+add_obj_to_inven(person_khan3_inside,weapon);
+wield_obj_critter(person_khan3_inside,weapon);
+
+weapon:=create_object(PID_ASSAULT_RIFLE,0,0);
+add_obj_to_inven(person_khan4_inside,weapon);
+add_obj_to_inven(person_khan4_inside,create_object(PID_5MM_JHP,0,0));
+add_obj_to_inven(person_khan4_inside,create_object(PID_5MM_JHP,0,0));
+add_obj_to_inven(person_khan4_inside,weapon);
+wield_obj_critter(person_khan4_inside,weapon);
+
+/* Garl */
+weapon:=create_object(PID_GARL_EXECUTER,0,0);
+add_obj_to_inven(obj_garl,weapon);
+add_obj_to_inven(obj_garl,create_object(PID_14MM_AP,0,0));
+add_obj_to_inven(obj_garl,create_object(PID_14MM_AP,0,0));
+add_obj_to_inven(obj_garl,weapon);
+wield_obj_critter(obj_garl,weapon);
+
+/* Mark */
+weapon:=create_object(PID_SNIPER_RIFLE,0,0);
+add_obj_to_inven(obj_mark,weapon);
+add_obj_to_inven(obj_mark,create_object(PID_223_FMJ,0,0));
+add_obj_to_inven(obj_mark,weapon);
+wield_obj_critter(obj_mark,weapon);
+end
+
+
+/*
+export variable person_1khan;
+export variable person_2khan;
+export variable person_3khan;
+export variable person_bar1khan;
+export variable person_bar2khan;
+export variable person_radio1khan;
+export variable person_radio2khan;
+*/
+
+procedure map_exit_p_proc begin
+
+
+end
+
+
+procedure timed_event_p_proc begin
+
+      if (fixed_param == 1) then begin
+
+            call out_of_combat_p_proc;
+            add_timer_event(self_obj,3,1);
+            //display_msg("pilnowaniqweqweqweqweqweqwe_szoqwepy");
+      end
+
+      if (fixed_param==pilnowanie_szopy) then begin
+
+            call cutscene_pilnowanie_szopy;
+            display_msg("pilnowanie_szopy");
+
+      end
+
+      if (fixed_param==przed_oswaldem) then begin
+
+            call cutscene_infrontof_oswald;
+            display_msg("cutscene_infrontof_oswald");
+
+      end
+
+      if (fixed_param==PreGarl) then begin
+
+            call cutscene_PreGarl;
+
+      end
+
+      if (fixed_param==FightAgainstGarl) then begin
+
+            call cutscene_FightAgainstGarl;
+
+      end
+
+      if (fixed_param==AfterGarl) then begin
+
+            call cutscene_AfterGarl;
+
+      end
+
+      /* Before */
+
+      if (fixed_param==Isaac_Won_Before) then begin
+
+            call cutscene_Isaac_Won_Before;
+
+      end
+
+      if (fixed_param==Tycho_Won_Before) then begin
+
+            call cutscene_Tycho_Won_Before;
+
+      end
+
+      if (fixed_param==Isaac_and_rangers_Alive_Before) then begin
+
+            call cutscene_Isaac_and_rangers_Alive_Before;
+
+      end
+
+      if (fixed_param==RangersDeadIsaacWin) then begin
+
+            call cutscene_RangersDeadIsaacWin;
+
+      end
+
+      if (fixed_param==IsaacDeadRangersWin) then begin
+
+            call cutscene_IsaacDeadRangersWin;
+
+      end
+
+      if (fixed_param==IsaacAliveRangersAlive) then begin
+
+            call cutscene_IsaacAliveRangersAlive;
+
+      end
+
+      if (fixed_param==13) then begin
+
+            call final_fight_last_moves;
+
+      end
+
+      if (fixed_param==final_fight_standing_with_tycho_var) then begin
+
+            call cutscene_final_fight_standing_with_tycho;
+
+      end
+
+      if (fixed_param==final_fight_standing_with_isaac_var) then begin
+
+            call cutscene_final_fight_standing_with_isaac;
+
+      end
+
+      if (fixed_param==final_after_final_fight) then begin
+
+            call cutscene_final_after_final_fight;
+
+      end
+
+      if (fixed_param==final_after_final_fight_isaac_splitup) then begin
+
+            call cutscene_final_after_final_fight_isaac_splitup;
+
+      end
+
+      if (fixed_param==final_fight_speech) then begin
+
+            call cutscene_final_fight_speech;
+
+      end
+
+      if (fixed_param==garl_testuje_zabawki) then begin
+
+      		//call garl_testuje_zabawki_event_listener;
+
+      end
+
+      if fixed_param == INVASION then begin
+         display_msg("SHADY: Inwazja nastepuje w tym momencie");
+      end
+
+      if fixed_param == AFTER_DEAD_JASPER_INVASION THEN begin
+         call after_dead_jasper_invasion;
+      end
+
+end
+
+variable counter;
+variable counter2;
+
+/* Out of combat_p_Proc */
+procedure out_of_combat_p_proc begin
+
+
+end
+
+      procedure out_of_combat_p_proc_but_last_fight begin
+
+      if critter_state(rebel_isaac) == CRITTER_IS_DEAD and global_var(GVAR_SHADY_REBELLION_LAST_FIGHT) == 10 then begin
+            set_global_var(GVAR_SHADY_REBELLION_LAST_FIGHT,100);
+            terminate_combat;
+            counter:=0;
+            add_timer_event(self_obj,0,final_after_final_fight);
+      end
+
+      if critter_state(point_tycho) == CRITTER_IS_DEAD and critter_state(obj_matt) == CRITTER_IS_DEAD and critter_state(obj_mark) == CRITTER_IS_DEAD and global_var(GVAR_SHADY_REBELLION_LAST_FIGHT) == 20 then begin
+            set_global_var(GVAR_SHADY_REBELLION_LAST_FIGHT,199);
+            terminate_combat;
+            counter:=100;
+            add_timer_event(self_obj,0,final_after_final_fight);
+      end
+
+      if global_var(GVAR_SHADY_REBELLION_LAST_FIGHT) == 30 then begin
+            set_global_var(GVAR_SHADY_REBELLION_LAST_FIGHT,300); //to wyjebaci i pozniej dac bo oznacza gosci w bramie
+            terminate_combat;
+            counter:=0;
+            add_timer_event(self_obj,0,final_after_final_fight);
+      end
+
+            if global_var(GVAR_SHADY_REBELLION_LAST_FIGHT) == 199 then begin
+                  set_global_var(GVAR_SHADY_REBELLION_LAST_FIGHT,200);
+                  counter:=0;
+                  call cutscene_final_after_final_fight_isaac_splitup;
+            end
+
+      end
+
+      procedure cutscene_pilnowanie_szopy begin
+
+            if counter==0 then begin
+            set_global_var(GVAR_SHADY_REBELLION,31);
+            game_ui_disable;
+            fadeout(200);
+            add_timer_event(self_obj,game_ticks(3),pilnowanie_szopy);
+            end
+
+            else if counter==1 then begin
+            add_timer_event(self_obj,game_ticks(3),pilnowanie_szopy);
+            move_to(rebel_peasant1,12672,1);
+            move_to(rebel_peasant2,12668,1);
+            move_to(rebel_peasant3,12664,1);
+            call unset_up_player_team;
+            end
+
+            else if counter==2 then begin
+            game_time_advance_hour(510);
+            fadein(200);
+            add_timer_event(self_obj,game_ticks(3),pilnowanie_szopy);
+            end
+
+            else if counter==3 then begin
+            add_timer_event(self_obj,game_ticks(3),pilnowanie_szopy);
+            end
+
+            else if counter==4 then begin
+            add_timer_event(self_obj,game_ticks(3),pilnowanie_szopy);
+            end
+
+            else if counter==5 then begin
+            add_timer_event(self_obj,game_ticks(3),pilnowanie_szopy);
+            end
+
+            else if counter==6 then begin
+            add_timer_event(self_obj,game_ticks(3),pilnowanie_szopy);
+            end
+
+            else if counter==7 then begin
+            add_timer_event(self_obj,game_ticks(3),pilnowanie_szopy);
+            game_ui_enable;
+            set_global_var(GVAR_SHADY_REBELLION,40);
+            end
+
+            counter++;
+      end
+
+      procedure set_up_player_team begin
+                  critter_add_trait(rebel_isaac,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_jerome,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_anna,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_annadaughter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_mack,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_mackdog,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant1,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant2,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant3,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant4,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant5,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  critter_add_trait(rebel_peasant6,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+     end
+
+     procedure unset_up_player_team begin
+                  critter_add_trait(rebel_isaac,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_jerome,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_anna,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_annadaughter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_mack,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_mackdog,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_peasant1,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_peasant2,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_peasant3,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_peasant4,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_peasant5,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(rebel_peasant6,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(point_tycho,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(obj_matt,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                  critter_add_trait(obj_mark,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+     end
+
+     procedure move_to_infrontofOswald begin
+                  if critter_state(rebel_isaac) != CRITTER_IS_DEAD then move_to(rebel_isaac,28310,1);
+                  move_to(dude_obj,28111,1);
+                  //move_to(maxstone,28911,1);
+                  move_to(rebel_peasant6,27711,1);
+                  move_to(rebel_peasant5,29311,1);
+                  move_to(rebel_peasant4,27309,1);
+                  move_to(rebel_peasant3,29509,1);
+                  move_to(rebel_peasant2,29707,1);
+                  move_to(rebel_peasant1,26906,1);
+                  move_to(rebel_anna,28516,1);
+                  move_to(rebel_annadaughter,28716,1);
+                  move_to(rebel_mack,28516,1);
+                  if global_var(GVAR_QUEST_SHADYCAMP_MACKDOG) == 4 then move_to(rebel_mackdog,28716,1);
+
+                  move_to(guard_camp_oswald,28507,1);
+                  move_to(guard_camp_doggo,28302,1);
+                  move_to(wooof_1,27698,1);
+                  move_to(wooof_2,tile_num_in_direction(27698,0,1),1);
+                  move_to(wooof_3,tile_num_in_direction(27698,0,2),1);
+                  move_to(wooof_4,tile_num_in_direction(27698,0,3),1);
+                  move_to(wooof_5,tile_num_in_direction(27698,0,4),1);
+                  if global_var(GVAR_QUEST_SHADYCAMP_MACKDOG) != 4 and critter_state(rebel_mackdog) != CRITTER_IS_DEAD then move_to(rebel_mackdog,tile_num_in_direction(27698,0,5),1);
+     end
+
+     procedure set_up_oswald_fight begin
+            display_msg("wywoalnie set_up_oswald_fight");
+            counter:=0;
+            add_timer_event(self_obj,0,przed_oswaldem);
+
+     end
+
+      procedure cutscene_infrontof_oswald begin
+
+            if counter==0 then begin
+            set_global_var(GVAR_SHADY_REBELLION,50);
+            game_ui_disable;
+            //fadeout(200);
+            game_time_advance_hour(530);
+            add_timer_event(self_obj,game_ticks(3),przed_oswaldem);
+            end
+
+            else if counter==1 then begin
+            call move_to_infrontofOswald;
+            call set_up_player_team;
+            add_timer_event(self_obj,game_ticks(3),przed_oswaldem);
+            end
+
+            else if counter==2 then begin
+            fadein(200);
+            add_timer_event(self_obj,game_ticks(3),przed_oswaldem);
+            end
+
+            else if counter==3 then begin
+            add_timer_event(self_obj,game_ticks(3),przed_oswaldem);
+            end
+
+            else if counter==4 then begin
+            add_timer_event(self_obj,game_ticks(3),przed_oswaldem);
+            end
+
+            else if counter==5 then begin
+            add_timer_event(self_obj,game_ticks(3),przed_oswaldem);
+            if global_var(GVAR_QUEST_SHADYCAMP_MACKDOG) != 4 and critter_state(rebel_mackdog) != CRITTER_IS_DEAD then animate_move_obj_to_tile(rebel_mackdog,tile_num(rebel_mack),ANIMATE_RUN);
+            end
+
+            else if counter==6 then begin
+            add_timer_event(self_obj,game_ticks(3),przed_oswaldem);
+            end
+
+            else if counter==7 then begin
+
+            add_timer_event(self_obj,game_ticks(3),przed_oswaldem);
+            critter_heal(guard_camp_oswald,-15);
+            critter_heal(guard_camp_doors1,-15);
+            critter_heal(guard_camp_doors2,-15);
+            critter_heal(guard_camp_doggo,-15);
+            critter_heal(wooof_1,-25);
+            critter_heal(wooof_2,-25);
+            critter_heal(wooof_3,-25);
+            critter_heal(wooof_4,-25);
+            critter_heal(wooof_5,-25);
+            call heal_team;
+            if critter_state(rebel_isaac) != CRITTER_IS_DEAD then attack_setup(guard_camp_oswald,rebel_isaac); else attack_setup(guard_camp_oswald,dude_obj);
+
+            game_ui_enable;
+            end
+
+            counter++;
+      end
+
+      procedure Gvar50 begin
+            if critter_state(guard_camp_doggo) == CRITTER_IS_DEAD and critter_state(guard_camp_doors1) == CRITTER_IS_DEAD and critter_state(guard_camp_doors2) == CRITTER_IS_DEAD and critter_state(guard_camp_oswald) == CRITTER_IS_DEAD and critter_state(wooof_1) == CRITTER_IS_DEAD and critter_state(wooof_2) == CRITTER_IS_DEAD and critter_state(wooof_3) == CRITTER_IS_DEAD and critter_state(wooof_4) == CRITTER_IS_DEAD and critter_state(wooof_5) == CRITTER_IS_DEAD then begin
+                  set_global_var(GVAR_SHADY_REBELLION,51); //cutscena po tym
+                  terminate_combat;
+                  call unset_up_player_team;
+            end
+
+
+      end
+
+      procedure cutscene_PreGarl begin
+
+            if counter==0 then begin
+            game_ui_disable;
+            add_timer_event(self_obj,game_ticks(3),PreGarl);
+            if critter_state(rebel_isaac) != CRITTER_IS_DEAD then float_msg(rebel_isaac,"Biegiem do bramy obozu, nim sie jeszcze nie zoorganizowali!",2);
+            else if critter_state(rebel_peasant1) != CRITTER_IS_DEAD then float_msg(rebel_peasant1,"Biegiem do bramy obozu, nim sie jeszcze nie zoorganizowali!",2);
+            else if critter_state(rebel_peasant2) != CRITTER_IS_DEAD then float_msg(rebel_peasant2,"Biegiem do bramy obozu, nim sie jeszcze nie zoorganizowali!",2);
+            else if critter_state(rebel_peasant3) != CRITTER_IS_DEAD then float_msg(rebel_peasant3,"Biegiem do bramy obozu, nim sie jeszcze nie zoorganizowali!",2);
+            else if critter_state(rebel_peasant4) != CRITTER_IS_DEAD then float_msg(rebel_peasant4,"Biegiem do bramy obozu, nim sie jeszcze nie zoorganizowali!",2);
+            else if critter_state(rebel_peasant5) != CRITTER_IS_DEAD then float_msg(rebel_peasant5,"Biegiem do bramy obozu, nim sie jeszcze nie zoorganizowali!",2);
+            end
+
+            else if counter==1 then begin
+            //fadeout(500);
+            add_timer_event(self_obj,game_ticks(3),PreGarl);
+            end
+
+            else if counter==2 then begin
+            call move_to_infrontofGarl;
+            add_timer_event(self_obj,game_ticks(1),PreGarl);
+            end
+
+            else if counter==3 then begin
+            fadein(200);
+            add_timer_event(self_obj,game_ticks(3),PreGarl);
+            end
+
+            else if counter==4 then begin
+            call heal_team;
+            float_msg(rebel_peasant5,"Pewnie beda trwaly teraz negocjacje, wykorzystajmy ten czas, zeby pozbierac to co sie przyda.",FLOAT_MSG_BLUE);
+            game_ui_enable;
+            end
+
+            counter++;
+      end
+
+            procedure move_to_infrontofGarl begin
+
+                  if critter_state(rebel_isaac) != CRITTER_IS_DEAD then move_to(rebel_isaac,18867,0);
+                  if critter_state(rebel_peasant6) != CRITTER_IS_DEAD then move_to(rebel_peasant6,20471,0);
+                  if critter_state(rebel_peasant5) != CRITTER_IS_DEAD then move_to(rebel_peasant5,18646,0);
+                  if critter_state(rebel_peasant4) != CRITTER_IS_DEAD then move_to(rebel_peasant4,18064,0);
+                  if critter_state(rebel_peasant3) != CRITTER_IS_DEAD then move_to(rebel_peasant3,17462,0);
+                  if critter_state(rebel_peasant2) != CRITTER_IS_DEAD then move_to(rebel_peasant2,16862,0);
+                  if critter_state(rebel_peasant1) != CRITTER_IS_DEAD then move_to(rebel_peasant1,16664,0);
+                  if critter_state(rebel_anna) != CRITTER_IS_DEAD then move_to(rebel_anna,17659,0);
+                  if critter_state(rebel_annadaughter) != CRITTER_IS_DEAD then move_to(rebel_annadaughter,18059,0);
+                  if critter_state(rebel_mack) != CRITTER_IS_DEAD then move_to(rebel_mack,19063,0);
+                  if critter_state(rebel_mackdog) != CRITTER_IS_DEAD then move_to(rebel_mackdog,19463,0);
+                  //move_to_point(the_tile, move_type, x)
+                  if critter_state(obj_garl) != CRITTER_IS_DEAD then move_to(obj_garl,18474,0);
+
+                  if critter_state(obj_mark) != CRITTER_IS_DEAD then move_to(obj_mark,14274,0);
+                  if critter_state(obj_matt) != CRITTER_IS_DEAD then move_to(obj_matt,14474,0);
+                  if critter_state(point_tycho) != CRITTER_IS_DEAD then move_to(point_tycho,14674,0);
+
+                  if critter_state(person_1khan) != CRITTER_IS_DEAD then move_to(person_1khan,19885,0);
+                  if critter_state(person_2khan) != CRITTER_IS_DEAD then move_to(person_2khan,19285,0);
+                  if critter_state(person_3khan) != CRITTER_IS_DEAD then move_to(person_3khan,18484,0);
+                  if critter_state(person_bar1khan) != CRITTER_IS_DEAD then move_to(person_bar1khan,18082,0);
+                  if critter_state(person_bar2khan) != CRITTER_IS_DEAD then move_to(person_bar2khan,17883,0);
+                  if critter_state(person_radio1khan) != CRITTER_IS_DEAD then move_to(person_radio1khan,18285,0);
+                  if critter_state(person_radio2khan) != CRITTER_IS_DEAD then move_to(person_radio2khan,18086,0);
+                  if critter_state(person_barman) != CRITTER_IS_DEAD then move_to(person_barman,18887,0);
+                  if critter_state(jackal_door) != CRITTER_IS_DEAD then move_to(jackal_door,19287,0);
+                  if critter_state(person_khan1_inside) != CRITTER_IS_DEAD then move_to(person_khan1_inside,18876,0);
+                  if critter_state(person_khan2_inside) != CRITTER_IS_DEAD then move_to(person_khan2_inside,19278,0);
+                  if critter_state(person_khan3_inside) != CRITTER_IS_DEAD then move_to(person_khan3_inside,18075,0);
+                  if critter_state(person_khan4_inside) != CRITTER_IS_DEAD then move_to(person_khan4_inside,17676,0);
+
+
+            end
+      procedure cutscene_FightAgainstGarl begin
+
+            if counter==0 then begin
+            move_to(dude_obj,19467,0);
+            game_ui_disable;
+            add_timer_event(self_obj,game_ticks(3),FightAgainstGarl);
+            call set_up_player_team;
+            call set_up_desert_rangers;
+            animate_move_obj_to_tile(obj_mark,16867,ANIMATE_WALK);
+            animate_move_obj_to_tile(obj_matt,16669,ANIMATE_WALK);
+            animate_move_obj_to_tile(point_tycho,16671,ANIMATE_WALK);
+
+            end
+
+            else if counter==1 then begin
+            add_timer_event(self_obj,game_ticks(3),FightAgainstGarl);
+            end
+
+            else if counter==2 then begin
+            add_timer_event(self_obj,game_ticks(1),FightAgainstGarl);
+            end
+
+            else if counter==3 then begin
+            add_timer_event(self_obj,game_ticks(3),FightAgainstGarl);
+            end
+
+            else if counter==4 then begin
+            float_msg(rebel_isaac,"I hate youuuu",FLOAT_MSG_RED);
+            add_timer_event(rebel_isaac,0,5);
+            attack_setup(rebel_isaac,obj_garl);
+            if critter_state(rebel_isaac) == CRITTER_IS_DEAD then attack_setup(point_tycho,obj_garl);
+            game_ui_enable;
+            end
+
+            counter++;
+      end
+
+                  procedure set_up_desert_rangers begin
+
+                        critter_add_trait(obj_mark,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                        critter_add_trait(obj_matt,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                        critter_add_trait(point_tycho,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  end
+
+                  procedure unset_up_desert_rangers begin
+
+                        critter_rm_trait(obj_mark,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                        critter_rm_trait(obj_matt,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                        critter_rm_trait(point_tycho,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                  end
+
+                  procedure heal_team begin
+                  critter_heal(rebel_isaac,100);
+                  critter_heal(dude_obj,100);
+                  critter_heal(rebel_peasant6,100);
+                  critter_heal(rebel_peasant5,100);
+                  critter_heal(rebel_peasant4,100);
+                  critter_heal(rebel_peasant3,100);
+                  critter_heal(rebel_peasant2,100);
+                  critter_heal(rebel_peasant1,100);
+                  critter_heal(rebel_anna,100);
+                  critter_heal(rebel_annadaughter,100);
+                  critter_heal(rebel_mack,100);
+                  critter_heal(rebel_mackdog,100);
+                  end
+
+procedure cutscene_AfterGarl begin
+
+            if counter==0 then begin
+            add_timer_event(self_obj,game_ticks(3),AfterGarl);
+            move_to(dude_obj,dude_tile,0);
+            game_ui_enable;
+            game_ui_disable;
+            if critter_state(person_khan3_inside) != CRITTER_IS_DEAD then float_msg(person_khan3_inside,"Czekajcie! Garl nie zyje! To nie ma sensu!",2);
+            end
+
+            else if counter==1 then begin
+            if critter_state(person_khan1_inside) != CRITTER_IS_DEAD then float_msg(person_khan1_inside,"CHRZANIC TO! JA SIE ZMYWAM",2);//17904
+            add_timer_event(self_obj,game_ticks(1),AfterGarl);
+            end
+
+            else if counter==2 then begin
+            animate_move_obj_to_tile(person_khan1_inside,17904,ANIMATE_RUN);
+            add_timer_event(self_obj,game_ticks(1),AfterGarl);
+            end
+
+            else if counter==3 then begin
+            if critter_state(person_khan2_inside) != CRITTER_IS_DEAD then float_msg(person_khan2_inside,"KURWA SAM SIE NIE BEDE BIL!",2);//17904
+            add_timer_event(self_obj,game_ticks(6),AfterGarl);
+            call guard_shady_run_out;
+            set_global_var(GVAR_SHADY_REBELLION,62);
+            end
+
+            else if counter==4 then begin
+            //fadeout(200);
+            call guard_shady_dissaper;
+            add_timer_event(self_obj,game_ticks(3),AfterGarl);
+            //if critter_state(rebel_isaac) != CRITTER_IS_DEAD then kill_critter(rebel_isaac,ANIM_burned_to_nothing_sf);
+            //if critter_state(obj_mark) != CRITTER_IS_DEAD then kill_critter(obj_mark,ANIM_burned_to_nothing_sf);
+            //if critter_state(obj_matt) != CRITTER_IS_DEAD then kill_critter(obj_matt,ANIM_burned_to_nothing_sf);
+            //if critter_state(point_tycho) != CRITTER_IS_DEAD then kill_critter(point_tycho,ANIM_burned_to_nothing_sf);
+            end
+
+            else if counter==5 then begin
+
+                  if critter_state(rebel_isaac) != CRITTER_IS_DEAD and (critter_state(obj_mark) == CRITTER_IS_DEAD and critter_state(point_tycho) == CRITTER_IS_DEAD and critter_state(obj_matt) == CRITTER_IS_DEAD) then begin counter:=0; add_timer_event(self_obj,0,Isaac_Won_Before); end //isaac way
+                  else if critter_state(rebel_isaac) == CRITTER_IS_DEAD and (critter_state(point_tycho) != CRITTER_IS_DEAD or critter_state(obj_matt) != CRITTER_IS_DEAD or critter_state(obj_mark) != CRITTER_IS_DEAD) then begin counter:=0; add_timer_event(self_obj,0,Tycho_Won_Before); end //tycho way
+                  else if critter_state(rebel_isaac) != CRITTER_IS_DEAD and (critter_state(point_tycho) != CRITTER_IS_DEAD or critter_state(obj_matt) != CRITTER_IS_DEAD or critter_state(obj_mark) != CRITTER_IS_DEAD) then begin counter:=0; add_timer_event(self_obj,0,Isaac_and_rangers_Alive_Before); end //bedzie walka way
+                  else add_timer_event(self_obj,game_ticks(3),AfterGarl); // i tutaj przechodzi do counter 6 czyli jeden gosc wzdycha ze wszyscy umarli i prosze sie rozejsc
+                  fadein(200);
+            end
+
+            else if counter==6 then begin
+            //move to all to group
+
+            add_timer_event(self_obj,game_ticks(3),AfterGarl);
+            end
+
+            else if counter==7 then begin
+            float_msg(rebel_isaac,"Isaac i Tycho nie zyja wszystko stracone. Pojdzmy w swoje strony.",5);
+            add_timer_event(self_obj,game_ticks(3),AfterGarl);
+            end
+
+            else if counter==8 then begin
+            //fadeout(200);
+            //call dissaper all alive
+            add_timer_event(self_obj,game_ticks(3),AfterGarl);
+            end
+
+            else if counter==9 then begin
+            fadein(300);
+            game_ui_enable;
+            end
+
+            counter++;
+            display_msg("Licze do 5 lub 9: "+counter);
+end
+
+      procedure guard_shady_run_out begin
+
+                  if critter_state(person_1khan) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_1khan,17904,ANIMATE_RUN);
+                  if critter_state(person_2khan) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_2khan,17904,ANIMATE_RUN);
+                  if critter_state(person_3khan) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_3khan,17904,ANIMATE_RUN);
+                  if critter_state(person_bar1khan) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_bar1khan,17904,ANIMATE_RUN);
+                  if critter_state(person_bar2khan) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_bar2khan,17904,ANIMATE_RUN);
+                  if critter_state(person_radio1khan) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_radio1khan,17904,ANIMATE_RUN);
+                  if critter_state(person_radio2khan) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_radio2khan,17904,ANIMATE_RUN);
+                  if critter_state(person_barman) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_barman,17904,ANIMATE_RUN);
+                  if critter_state(jackal_door) != CRITTER_IS_DEAD then animate_move_obj_to_tile(jackal_door,17904,ANIMATE_RUN);
+                  if critter_state(person_khan1_inside) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_khan1_inside,17904,ANIMATE_RUN);
+                  if critter_state(person_khan2_inside) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_khan2_inside,17904,ANIMATE_RUN);
+                  if critter_state(person_khan3_inside) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_khan3_inside,17904,ANIMATE_RUN);
+                  if critter_state(person_khan4_inside) != CRITTER_IS_DEAD then animate_move_obj_to_tile(person_khan4_inside,17904,ANIMATE_RUN);
+      end
+
+      procedure guard_shady_dissaper begin
+
+                  if critter_state(person_1khan) != CRITTER_IS_DEAD then set_obj_visibility(person_1khan,true);
+                  if critter_state(person_2khan) != CRITTER_IS_DEAD then set_obj_visibility(person_2khan,true);
+                  if critter_state(person_3khan) != CRITTER_IS_DEAD then set_obj_visibility(person_3khan,true);
+                  if critter_state(person_bar1khan) != CRITTER_IS_DEAD then set_obj_visibility(person_bar1khan,true);
+                  if critter_state(person_bar2khan) != CRITTER_IS_DEAD then set_obj_visibility(person_bar2khan,true);
+                  if critter_state(person_radio1khan) != CRITTER_IS_DEAD then set_obj_visibility(person_radio1khan,true);
+                  if critter_state(person_radio2khan) != CRITTER_IS_DEAD then set_obj_visibility(person_radio2khan,true);
+                  if critter_state(person_barman) != CRITTER_IS_DEAD then set_obj_visibility(person_barman,true);
+                  if critter_state(jackal_door) != CRITTER_IS_DEAD then set_obj_visibility(jackal_door,true);
+                  if critter_state(person_khan1_inside) != CRITTER_IS_DEAD then set_obj_visibility(person_khan1_inside,true);
+                  if critter_state(person_khan2_inside) != CRITTER_IS_DEAD then set_obj_visibility(person_khan2_inside,true);
+                  if critter_state(person_khan3_inside) != CRITTER_IS_DEAD then set_obj_visibility(person_khan3_inside,true);
+                  if critter_state(person_khan4_inside) != CRITTER_IS_DEAD then set_obj_visibility(person_khan4_inside,true);
+      end
+
+procedure cutscene_Isaac_Won_Before begin
+display_msg("Isaac Wygral");
+counter:=0;
+add_timer_event(self_obj,0,RangersDeadIsaacWin);
+end
+
+procedure cutscene_Tycho_Won_Before begin
+display_msg("Tycho Wygral");
+counter:=0;
+add_timer_event(self_obj,0,IsaacDeadRangersWin);
+end
+
+procedure cutscene_Isaac_and_rangers_Alive_Before begin
+display_msg("Oboje i bedzie sie bil Wygral");
+counter:=0;
+add_timer_event(self_obj,0,IsaacAliveRangersAlive);
+end
+
+      procedure cutscene_RangersDeadIsaacWin begin
+
+      counter:=0;
+      call cutscene_final_after_final_fight_isaac_splitup;
+
+      end
+
+      procedure cutscene_IsaacDeadRangersWin begin
+
+            if counter == 0 then begin
+            add_timer_event(self_obj,game_ticks(1),IsaacDeadRangersWin);
+            end
+
+            else if counter == 1 then begin
+                  if critter_state(point_tycho) != CRITTER_IS_DEAD then float_msg(rebel_isaac,"Zabierz swoje rzeczy i idziemy",2);
+                  else if critter_state(obj_mark) != CRITTER_IS_DEAD then float_msg(rebel_isaac,"Zabierz swoje rzeczy i idziemy",2);
+                  else if critter_state(obj_matt) != CRITTER_IS_DEAD then float_msg(rebel_isaac,"Matt czekac na krypciarz, potem isc do krypty 15",2);
+            add_timer_event(self_obj,game_ticks(2),IsaacDeadRangersWin);
+            end
+
+            else if counter == 2 then begin
+            //fadeout(200);
+            add_timer_event(self_obj,game_ticks(1),IsaacDeadRangersWin);
+            end
+
+            else if counter == 3 then begin
+            if critter_state(point_tycho) != CRITTER_IS_DEAD then move_to(point_tycho,13510,0);
+            if critter_state(point_tycho) != CRITTER_IS_DEAD then anim(point_tycho,ANIMATE_ROTATION,2);
+            if critter_state(obj_mark) != CRITTER_IS_DEAD then move_to(obj_mark,13711,0);
+            if critter_state(obj_mark) != CRITTER_IS_DEAD then anim(obj_mark,ANIMATE_ROTATION,2);
+            if critter_state(obj_matt) != CRITTER_IS_DEAD then move_to(obj_matt,13508,0);
+            if critter_state(obj_matt) != CRITTER_IS_DEAD then anim(obj_matt,ANIMATE_ROTATION,2);
+            fadein(300);
+            add_timer_event(self_obj,game_ticks(2),IsaacDeadRangersWin);
+            end
+
+            else if counter == 4 then begin
+            game_ui_enable;
+            set_global_var(GVAR_SHADY_REBELLION,80);
+            end
+
+            counter++;
+
+      end
+
+      procedure cutscene_IsaacAliveRangersAlive begin
+
+      add_timer_event(rebel_isaac,0,6);
+
+      /*
+            if counter == 0 then begin
+            add_timer_event(self_obj,game_ticks(1),IsaacAliveRangersAlive);
+            fadeout(200);
+            call unset_up_player_team;
+            end
+
+            else if counter == 1 then begin
+            call setup_Isaac_vs_Rangers;
+            fadein(100);
+            add_timer_event(self_obj,game_ticks(7),IsaacAliveRangersAlive);
+            end
+
+            else if counter == 2 then begin
+            add_timer_event(self_obj,game_ticks(5),IsaacAliveRangersAlive);
+            float_msg(rebel_isaac,"Teraz zdecydujemy czy bedzie rzez czy nie",2);
+            end
+
+            else if counter == 3 then begin
+            add_timer_event(self_obj,game_ticks(5),IsaacAliveRangersAlive);
+            dialogue_system_enter;
+            Reply("Co wybierasz");
+            NOption("walka po stronie isaaca",GetItBackTo_pancerze,001);
+            NOption("walka po stronie tycho",GetItBackTo_pancerze,001);
+            NOption("Pierdolnij sie w leb balwanie, malo ci rozlewu krwi?",FinalFightRebel_Retoryka,001);
+            end
+
+            counter++;
+      */
+      end
+
+            procedure setup_Isaac_vs_Rangers begin
+                  animate_move_obj_to_tile(rebel_isaac,18671,ANIMATE_WALK);
+                  animate_move_obj_to_tile(dude_obj,20074,ANIMATE_WALK);
+                  animate_move_obj_to_tile(point_tycho,18677,ANIMATE_WALK);
+                  animate_move_obj_to_tile(obj_mark,18277,ANIMATE_WALK);
+                  animate_move_obj_to_tile(obj_matt,19077,ANIMATE_WALK);
+                  /*
+                  animate_move_obj_to_tile(rebel_anna,17072,ANIMATE_WALK);
+                  animate_move_obj_to_tile(rebel_annadaughter,17072,ANIMATE_WALK);
+                  animate_move_obj_to_tile(rebel_mack,17072,ANIMATE_WALK);
+                  animate_move_obj_to_tile(rebel_mackdog,17072,ANIMATE_WALK);
+                  animate_move_obj_to_tile(rebel_peasant1,17072,ANIMATE_WALK);
+                  animate_move_obj_to_tile(rebel_peasant2,17072,ANIMATE_WALK);
+                  animate_move_obj_to_tile(rebel_peasant3,17072,ANIMATE_WALK);
+                  animate_move_obj_to_tile(rebel_peasant4,17072,ANIMATE_WALK);
+                  animate_move_obj_to_tile(rebel_peasant5,17072,ANIMATE_WALK);
+                  animate_move_obj_to_tile(rebel_peasant6,17072,ANIMATE_WALK);
+                  */
+            end
+
+            //TEAM_KHANS na potrzebe chwili mozna pozniej zamienic na TEAM_TYCHO
+            procedure setup_IsaacSide begin
+            animate_move_obj_to_tile(dude_obj,19071,ANIMATE_WALK);
+
+            end
+
+            procedure setup_RangersSide begin
+            animate_move_obj_to_tile(dude_obj,19071,ANIMATE_WALK);
+            //beton za isaac
+
+            //za
+            //pastuchy przeciw i tycho team
+                  critter_add_trait(rebel_peasant4,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  critter_add_trait(rebel_peasant5,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  critter_add_trait(rebel_peasant6,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  critter_add_trait(point_tycho,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  critter_add_trait(obj_mark,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                  critter_add_trait(obj_matt,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+
+            end
+
+                  procedure final_fight_last_moves begin
+
+                        if final_path==1 then begin
+                              add_timer_event(self_obj,0,final_fight_standing_with_tycho_var);
+                              counter:=0;
+                        end
+
+                        else if final_path==2 then begin
+                              add_timer_event(self_obj,0,final_fight_standing_with_isaac_var);
+                              counter:=0;
+                        end
+
+                        else if final_path==3 then begin
+                              add_timer_event(self_obj,0,final_fight_speech);
+                              counter:=0;
+                        end
+
+                  end
+
+                        procedure cutscene_final_fight_standing_with_tycho begin
+
+                              if counter==0 then begin
+                                    game_ui_disable;
+                                    call final_fight_set_up_all_enemies;
+                                    call final_fight_set_up_team_tycho_benefit;
+                                    call move_to_final_fight_tycho_benefit;
+                                    add_timer_event(self_obj,game_ticks(2),final_fight_standing_with_tycho_var);
+                              end
+
+                              else if counter==1 then begin
+                                    add_timer_event(self_obj,game_ticks(2),final_fight_standing_with_tycho_var);
+                                    float_msg(rebel_isaac,"A wiec to tak...",2);
+                              end
+
+                              else if counter==2 then begin
+                                    add_timer_event(self_obj,4,final_fight_standing_with_tycho_var);
+                                    float_msg(rebel_isaac,"Gincie skurwysyny!",2);
+                              end
+
+                              else if counter==3 then begin
+                                    if critter_state(point_tycho) != CRITTER_IS_DEAD then attack_setup(rebel_isaac,point_tycho);
+                                    else if critter_state(point_tycho) != CRITTER_IS_DEAD then attack_setup(rebel_isaac,obj_mark);
+                                    else attack_setup(rebel_isaac,obj_matt);
+                                    set_global_var(GVAR_SHADY_REBELLION_LAST_FIGHT,10); //ustawienie ze trwa walka z isaaciem
+                              end
+
+                              counter++;
+                        end
+
+                              procedure move_to_final_fight_tycho_benefit begin
+                                    //ludzie tycho
+                                    if critter_state(point_tycho) != CRITTER_IS_DEAD then move_to(point_tycho,18677,0);
+                                    if critter_state(obj_mark) != CRITTER_IS_DEAD then move_to(obj_mark,18277,0);
+                                    if critter_state(obj_matt) != CRITTER_IS_DEAD then move_to(obj_matt,19077,0);
+                                    move_to(dude_obj,19477,0);
+                                    if critter_state(rebel_peasant3) != CRITTER_IS_DEAD then move_to(rebel_peasant3,18067,0);
+                                    if critter_state(rebel_peasant4) != CRITTER_IS_DEAD then move_to(rebel_peasant4,18481,0);
+                                    if critter_state(rebel_peasant5) != CRITTER_IS_DEAD then move_to(rebel_peasant5,19841,0);
+                                    if critter_state(rebel_peasant6) != CRITTER_IS_DEAD then move_to(rebel_peasant6,19679,0);
+                                    //ludzie isaaca
+                                    move_to(rebel_isaac,18671,0);
+                                    if critter_state(rebel_peasant1) != CRITTER_IS_DEAD then move_to(rebel_peasant1,18270,0);
+                                    if critter_state(rebel_peasant2) != CRITTER_IS_DEAD then move_to(rebel_peasant2,19270,0);
+                              end
+
+                        procedure cutscene_final_fight_standing_with_isaac begin
+                              display_msg("dotarlo tutaj");
+                              counter2++;
+
+                              if counter2 == 1 then begin
+                                    game_ui_disable;
+                                    call final_fight_set_up_all_enemies;
+                                    call final_fight_set_up_team_isaac_benefit;
+                                    add_timer_event(self_obj,game_ticks(2),13);
+                              end
+
+                              if counter2 == 2 then begin
+                                    float_msg(rebel_isaac,"Wiec gin smietniku zajebany!",2);
+                                    kill_critter(point_tycho,ANIM_sliced_in_half_sf);
+                                    kill_critter(obj_mark,ANIM_sliced_in_half_sf);
+                                    critter_heal(obj_matt,-22);
+                                    critter_heal(rebel_isaac,20);
+                                    if critter_state(point_tycho) != CRITTER_IS_DEAD then attack_setup(rebel_isaac,point_tycho);
+                                    else if critter_state(obj_mark) != CRITTER_IS_DEAD then attack_setup(rebel_isaac,point_tycho);
+                                    else attack_setup(rebel_isaac,obj_matt);
+                                    set_global_var(GVAR_SHADY_REBELLION_LAST_FIGHT,20);
+                              end
+                        end
+
+                              procedure final_fight_set_up_all_enemies begin
+                                    /* Not interested in fight */
+                                    move_to(rebel_anna,15882,0);
+                                    move_to(rebel_annadaughter,15882,0);
+                                    move_to(rebel_mack,15882,0);
+                                    move_to(rebel_mackdog,15882,0);
+                                    critter_add_trait(rebel_anna,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                                    critter_add_trait(rebel_annadaughter,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                                    critter_add_trait(rebel_mack,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                                    critter_add_trait(rebel_mackdog,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+                                    /* Team Khans */
+                                    critter_add_trait(rebel_isaac,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                                    critter_add_trait(rebel_peasant1,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                                    critter_add_trait(rebel_peasant2,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                                    critter_add_trait(rebel_peasant3,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                                    critter_add_trait(rebel_peasant4,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                                    critter_add_trait(rebel_peasant5,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                                    critter_add_trait(rebel_peasant6,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                                    critter_add_trait(point_tycho,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                                    critter_add_trait(obj_mark,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+                                    critter_add_trait(obj_matt,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+
+                              end
+
+                              procedure final_fight_set_up_team_isaac_benefit begin
+                                    critter_add_trait(rebel_isaac,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                                    critter_add_trait(rebel_peasant1,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                                    critter_add_trait(rebel_peasant2,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                                    critter_add_trait(rebel_peasant3,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                              end
+
+                              procedure final_fight_set_up_team_tycho_benefit begin
+                                    critter_add_trait(rebel_peasant3,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                                    critter_add_trait(rebel_peasant4,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                                    critter_add_trait(rebel_peasant5,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                                    critter_add_trait(rebel_peasant6,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                                    critter_add_trait(point_tycho,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                                    critter_add_trait(obj_mark,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                                    critter_add_trait(obj_matt,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_PLAYER);
+                              end
+
+procedure cutscene_final_after_final_fight begin //1-99 Tycho 100-199 Isaac 300 - Retoryka
+
+      counter++;
+
+      if counter == 1 then begin
+
+            game_ui_disable;
+            counter:=0;
+            //add_timer_event(self_obj,game_ticks(2),final_after_final_fight);
+            call cutscene_IsaacDeadRangersWin;
+
+      end
+
+      /* Isaac */
+
+      if counter == 100 then begin
+
+            game_ui_disable;
+            counter:=0;
+            //add_timer_event(self_obj,game_ticks(2),final_after_final_fight);
+            call cutscene_RangersDeadIsaacWin;
+
+      end
+
+end
+
+procedure cutscene_final_after_final_fight_isaac_splitup begin
+
+      if counter == 0 then begin
+            game_ui_disable;
+            float_msg(rebel_isaac,"Wygralismy, masakre czas zaczac",2);
+            add_timer_event(self_obj,game_ticks(5),final_after_final_fight_isaac_splitup);
+      end
+
+      else if counter == 1 then begin
+            fadeout(200);
+            add_timer_event(self_obj,game_ticks(5),final_after_final_fight_isaac_splitup);
+      end
+
+      else if counter == 2 then begin
+            fadein(200);
+            add_timer_event(self_obj,game_ticks(2),final_after_final_fight_isaac_splitup);
+      end
+
+      else if counter == 3 then begin
+            float_msg(rebel_isaac,"Dziekuje kochani, ze byliscie razem ze mna, to bylo wspaniale zadoscuczynic za wyrzadzane rany",2);
+            add_timer_event(self_obj,game_ticks(4),final_after_final_fight_isaac_splitup);
+      end
+
+      else if counter == 4 then begin
+            float_msg(rebel_isaac,"Rozejdzmy sie teraz we wszystkie strony swiata... w koncu jestesmy nareszcie wolni!",2);
+            add_timer_event(self_obj,game_ticks(5),final_after_final_fight_isaac_splitup);
+      end
+
+      else if counter == 5 then begin
+            fadeout(200);
+            add_timer_event(self_obj,game_ticks(5),final_after_final_fight_isaac_splitup);
+      end
+
+      else if counter == 6 then begin
+            set_obj_visibility(rebel_isaac,true);
+            fadein(200);
+            game_ui_enable;
+      end
+
+      counter++;
+
+end
+
+procedure cutscene_final_fight_speech begin
+
+                              if counter==0 then begin
+                                    float_msg(rebel_isaac,"Dobra macie racje, to nie ma sensu",2);
+                                    add_timer_event(self_obj,game_ticks(2),final_fight_speech);
+                              end
+
+                              else if counter==1 then begin
+                                    add_timer_event(self_obj,game_ticks(2),final_fight_speech);
+                                    fadeout(222);
+                              end
+
+                              else if counter==2 then begin
+                                    if critter_state(point_tycho) != CRITTER_IS_DEAD then move_to(point_tycho,13510,0);
+                                    if critter_state(point_tycho) != CRITTER_IS_DEAD then anim(point_tycho,ANIMATE_ROTATION,2);
+                                    if critter_state(obj_mark) != CRITTER_IS_DEAD then move_to(obj_mark,13711,0);
+                                    if critter_state(obj_mark) != CRITTER_IS_DEAD then anim(obj_mark,ANIMATE_ROTATION,2);
+                                    if critter_state(obj_matt) != CRITTER_IS_DEAD then move_to(obj_matt,13508,0);
+                                    if critter_state(obj_matt) != CRITTER_IS_DEAD then anim(obj_matt,ANIMATE_ROTATION,2);
+                                    move_to(rebel_isaac,tile_num_in_direction(13510,5,3),0);
+                                    set_global_var(GVAR_SHADY_REBELLION,80); //ustawienie ze maja mowic jak sa w bramie
+                                    fadein(222);
+                                    add_timer_event(self_obj,3,final_fight_speech);
+                              end
+
+                              else if counter==3 then begin
+                                    game_ui_enable;
+                              end
+
+                              counter++;
+end
+
+procedure after_dead_jasper_invasion begin
+   if global_var(CRITTER1) == 0 then begin
+      if get_critter_stat(jasper_obj,STAT_current_hp) <= 0 then begin
+         inc_global_var(CRITTER1);
+         add_timer_event(self_obj, 15, AFTER_DEAD_JASPER_INVASION);
+         game_ui_disable;
+      end
+      else add_timer_event(self_obj, 1, AFTER_DEAD_JASPER_INVASION);
+   end
+   else if global_var(CRITTER1) == 1 then begin
+      Face_Critter(dude_obj, other_sir);
+      if dude_is_male then float_msg(other_sir,mstr(9957) , 2); else float_msg(other_sir,mstr(9958) , 2);
+      Face_Critter(dude_obj, cut_mut);
+      Face_Critter(cut_mut, dude_obj);
+      inc_global_var(CRITTER1);
+      add_timer_event(self_obj, 44, AFTER_DEAD_JASPER_INVASION);
+   end
+   else if global_var(CRITTER1) == 2 then begin
+      animate_move_obj_to_tile(dude_obj, tile_num_in_direction(dude_tile, 3, 15), ANIMATE_RUN);
+      inc_global_var(CRITTER1);
+      add_timer_event(self_obj, 20, AFTER_DEAD_JASPER_INVASION);
+   end
+   else if global_var(CRITTER1) == 3 then begin
+      Face_Critter(dude_obj, cut_mut);
+      reg_anim_begin();
+         reg_anim_animate(cut_mut, ANIM_fire_burst, -1);
+         //reg_anim_animate(cave_jasper, ANIM_fire_dance, -1);
+         //reg_anim_animate(cave_jasper, ANIM_burned_to_nothing, -1);
+         reg_anim_animate_reverse(cut_mut, ANIM_fire_burst, -1);
+         reg_anim_end();
+
+         critter_dmg(dude_obj, random(150, 200), DMG_normal_dam);
+   end
+end
+

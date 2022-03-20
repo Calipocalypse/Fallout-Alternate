@@ -1,0 +1,47 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Map Script for Sierra Army Base, Outside area
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\v13ent.h"
+
+#define NAME                    SCRIPT_VAULTNEC
+#include "..\headers\command.h"
+#include "..\headers\VAULT15.h"
+
+
+//export variable fighter_obj;
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+procedure correct_pos;
+
+procedure start begin
+
+end
+
+variable item;
+procedure map_enter_p_proc begin
+//call award;
+Cavern_Lighting;
+if global_var(GVAR_CORRECT_POSITION) == 6 then call correct_pos;
+item:=create_object(PID_M72_GAUSS_RIFLE,0,0);
+add_obj_to_inven(dude_obj,item);
+item:=create_object(PID_2MM_EC_AMMO,0,0);
+add_obj_to_inven(dude_obj,item);
+end
+
+procedure map_update_p_proc begin
+Cavern_Lighting;
+end
+
+procedure correct_pos begin
+move_to(dude_obj,27104,0);
+set_global_var(GVAR_CORRECT_POSITION,0);
+end

@@ -1,0 +1,25 @@
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+#define NAME                    SCRIPT_8_SPAT01
+
+#define LVAR_Only_Once (0)
+
+import variable obj_map_script;
+
+procedure start;
+procedure spatial_p_proc;
+
+procedure start begin
+end
+
+procedure spatial_p_proc begin
+   if local_var(LVAR_Only_Once) == 0 then begin
+      set_local_var(LVAR_Only_Once, 1);
+      ate(obj_map_script, 0, SHED_FIRST_ENCOUNTER);
+      reg_anim_clear(dude_obj);
+   end
+end
+

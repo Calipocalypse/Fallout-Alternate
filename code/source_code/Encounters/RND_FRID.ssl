@@ -1,0 +1,132 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure damage_p_proc;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+procedure drop_p_proc;
+procedure is_dropping_p_proc;
+procedure pickup_p_proc;
+
+procedure lodowka;
+procedure chrysler;
+procedure deathclaw_trap;
+
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+
+end
+
+
+procedure map_enter_p_proc begin
+
+if global_var(GVAR_ENCO_FRIDGE_VISITED) == 0 THEN CALL lodowka;
+
+set_global_var(GVAR_ENCO_FRIDGE_VISITED, 1);
+
+
+/*
+   if los == 2 then begin
+      if global_var(GVAR_ENCO_CHRYSLER_VISITED) == 0 then call chrysler;
+      else call map_enter_p_proc;
+   end
+
+   if los >= 3 or los <= 7 then begin
+      if global_var(GVAR_ENCO_DEATHCLAW_TRAP) == 0 then call deathclaw_trap;
+      else call map_enter_p_proc;
+   end
+*/
+end
+
+procedure lodowka begin
+variable lodowka_item;
+   lodowka_item := create_object(PID_FRIDGE, tile_num_in_direction(dude_tile, random(1, 5), random(4, 10)),dude_elevation);
+   add_obj_to_inven(lodowka_item, create_object(PID_RED_RYDER_LE_BB_GUN,0,0));
+   add_obj_to_inven(lodowka_item, create_object(PID_BBS,0,0));
+   set_global_var(GVAR_ENCO_FRIDGE_VISITED, 1);
+end
+
+variable dead_man;
+procedure deathclaw_trap begin
+
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+
+end
+
+procedure description_p_proc begin
+   script_overrides;
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure use_p_proc begin
+
+end
+
+procedure use_obj_on_p_proc begin
+
+end
+
+procedure use_skill_on_p_proc begin
+
+end
+
+procedure drop_p_proc begin
+
+end
+
+procedure is_dropping_p_proc begin
+
+end
+
+procedure pickup_p_proc begin
+
+end

@@ -1,0 +1,36 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/*
+        Map Script for Sierra Army Base, Outside area
+*/
+
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\v13ent.h"
+
+#define NAME                    SCRIPT_SHADYCAV
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+     
+     //if map_first_run then display_mstr(100);
+     
+end
+
+procedure map_update_p_proc begin
+      Cavern_Lighting;
+end

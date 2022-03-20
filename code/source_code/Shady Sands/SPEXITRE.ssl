@@ -1,0 +1,17 @@
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\v13ent.h"
+
+#define NAME                    SCRIPT_SPEXITRE
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+#define LVAR_Herebefore                 (4)
+
+
+procedure spatial_p_proc;
+
+procedure spatial_p_proc begin
+      if source_obj==dude_obj and global_var(GVAR_SHADY_INFOFORV15)>0 then load_map(20,0);
+end

@@ -1,0 +1,41 @@
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\v13ent.h"
+
+#define NAME                    SCRIPT_MAGAZINE
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+#define LVAR_Herebefore                 (4)
+
+/** PROCEDURY **/
+procedure map_enter_p_proc;
+      procedure map_first_run_proc;
+      procedure override_map_start_hex;
+      procedure shady_temp_variables;
+      procedure check_gvar_about_shady;
+procedure map_update_p_proc;
+procedure timed_event_p_proc;
+
+procedure restock_shop;
+procedure update_khans_weapons;
+
+procedure map_enter_p_proc begin
+      if map_first_run then call map_first_run_proc;
+      set_global_var(GVAR_QUEST_SHADY_MAGAZINE, 1);
+      set_global_var(GVAR_VISITED_MAGAZINE,1);
+end
+
+      procedure map_first_run_proc begin
+
+      end
+
+procedure map_update_p_proc begin
+set_light_level(49);
+end
+
+
+procedure timed_event_p_proc begin
+
+end

@@ -1,0 +1,234 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_9_SCRCOM
+
+/* Standard Script Procedures */
+procedure start;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure damage_p_proc;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+procedure timed_event_p_proc;
+
+procedure switch_screens;
+procedure run_forest_run;
+
+procedure Screen1;
+procedure Screen2;
+procedure Node999;
+
+import variable master_screen;
+import variable normal_screen;
+import variable obj_gregory;
+/* Defines */
+
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+#define LVAR_Gave_XP         (0)
+#define LVAR_Counter         (1)
+#define LVAR_Run_Away        (2)
+#define LVAR_Screen_Enabled  (3)
+
+#define TILE_START               (20696)
+#define TILE_END                 (19439)
+#define gregory_tile         (tile_num(obj_gregory))
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+
+procedure start begin
+
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+
+end
+
+procedure description_p_proc begin
+   script_overrides;
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure use_p_proc begin
+   if local_var(LVAR_Screen_Enabled) == 0 then display_mstr(200);
+   else if local_var(LVAR_Screen_Enabled) == 1 then start_dialog_at_node(Screen1);
+end
+
+procedure Screen1 begin
+   Reply(400);
+   NOption(401, Screen2, 001);
+   NOption(402, Node999, 001);
+end
+
+procedure Node999 begin
+
+end
+
+procedure Screen2 begin
+   set_local_var(LVAR_Screen_Enabled, 2);
+   add_timer_event(self_obj, 0, 0);
+end
+
+procedure use_obj_on_p_proc begin
+
+end
+
+variable Roll;
+procedure use_skill_on_p_proc begin
+
+   script_overrides;
+   Roll := roll_vs_skill(dude_obj, SKILL_SCIENCE, 30) ;
+
+   if action_being_used == SKILL_SCIENCE and local_var(LVAR_Screen_Enabled) == 0 then begin
+
+
+      if (is_success(Roll)) then begin
+
+       display_msg(mstr(170));
+
+       if (local_var(LVAR_Gave_XP) == 0) then begin
+           set_local_var(LVAR_Gave_XP,1);
+           give_xp(75);
+           set_local_var(LVAR_Screen_Enabled, 1);
+           start_dialog_at_node(Screen1);
+       end
+   end
+
+   else if (is_critical(Roll)) then begin
+       explosion(self_tile, 0, 15);
+       attack_setup(obj_gregory, dude_obj);
+       display_msg(mstr(171));
+   end
+
+   else begin
+           display_msg(mstr(172));
+   end
+
+   end
+end
+
+procedure timed_event_p_proc begin
+   if fixed_param == 0 then begin
+      if local_var(LVAR_Counter) == 0 then begin
+      game_ui_disable;
+      add_timer_event(self_obj, 10, 0);
+      end
+
+      else if local_var(LVAR_Counter) == 1 then begin
+         call switch_screens;
+         float_msg(master_screen, mstr(500), FLOAT_MSG_GREEN);
+         add_timer_event(self_obj, game_ticks(1), 0);
+      end
+
+      else if local_var(LVAR_Counter) == 2 then begin
+         Face_Critter(master_screen, obj_gregory);
+         add_timer_event(self_obj, game_ticks(4), 0);
+      end
+
+      else if local_var(LVAR_Counter) == 3 then begin
+         float_msg(master_screen, mstr(501), FLOAT_MSG_GREEN);
+         add_timer_event(self_obj, game_ticks(5), 0);
+      end
+
+      else if local_var(LVAR_Counter) == 4 then begin
+         float_msg(master_screen, mstr(502), FLOAT_MSG_GREEN);
+         add_timer_event(self_obj, game_ticks(5), 0);
+      end
+
+      else if local_var(LVAR_Counter) == 5 then begin
+         float_msg(master_screen, mstr(503), FLOAT_MSG_GREEN);
+         add_timer_event(self_obj, game_ticks(3), 0);
+      end
+
+      else if local_var(LVAR_Counter) == 6 then begin
+         float_msg(obj_gregory, mstr(504), 2);
+         add_timer_event(self_obj, game_ticks(3), 0);
+      end
+
+      else if local_var(LVAR_Counter) == 7 then begin
+         float_msg(master_screen, mstr(505), FLOAT_MSG_GREEN);
+         add_timer_event(self_obj, game_ticks(3), 0);
+      end
+
+      else if local_var(LVAR_Counter) == 8 then begin
+         float_msg(obj_gregory, mstr(506), 2);
+         add_timer_event(self_obj, game_ticks(3), 0);
+      end
+
+      else if local_var(LVAR_Counter) == 9 then begin
+         float_msg(obj_gregory, mstr(507), 2);
+         add_timer_event(self_obj, game_ticks(2), 0);
+      end
+
+      else if local_var(LVAR_Counter) == 10 then begin
+         call run_forest_run;
+         if obj_is_visible_flag(obj_gregory) then dec_local_var(LVAR_Counter);
+         add_timer_event(self_obj, game_ticks(1), 0);
+      end
+
+      inc_local_var(LVAR_Counter);
+
+   end
+end
+
+procedure run_forest_run begin
+   if tile_distance(gregory_tile, TILE_START) > 2 and tile_distance(gregory_tile, TILE_START) < 60  then animate_move_obj_to_tile(obj_gregory, TILE_START, ANIMATE_RUN);
+
+   if tile_distance(gregory_tile, TILE_START) < 5 then begin
+      FadeOut(700);
+      set_obj_visibility(obj_gregory, true);
+      give_xp(400);
+      call switch_screens;
+      FadeIn(700);
+      if game_ui_is_disabled then game_ui_enable;
+   end
+
+end
+
+procedure switch_screens begin
+
+   if obj_is_visible_flag(master_screen) == true and obj_is_visible_flag(normal_screen) == false then begin
+      set_obj_visibility(master_screen, true);
+      set_obj_visibility(normal_screen, false);
+   end
+   else if obj_is_visible_flag(normal_screen) == true and obj_is_visible_flag(master_screen) == false then begin
+      set_obj_visibility(normal_screen, true);
+      set_obj_visibility(master_screen, false);
+   end
+
+end

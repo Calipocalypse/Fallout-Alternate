@@ -1,0 +1,109 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_MUT
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+end
+
+procedure map_exit_p_proc begin
+end
+
+variable pos_close:=20512;
+variable pos_far:=21472;
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+   
+   if tile_distance_objs(self_obj,dude_obj) < 8 then begin
+   
+   	//play_gmovie
+   	signal_end_game;
+   
+   end
+   
+   if global_var(GVAR_V13_START_DOOR) == 3 then begin
+   
+   
+	if tile_distance(self_tile,pos_close) < 5 or tile_distance(self_tile,pos_far) <= tile_distance(pos_close,pos_far) then begin
+	
+		animate_run_to_tile(pos_far);
+	
+	end
+	else begin
+		
+		animate_run_to_tile(pos_close);
+		
+	end
+   	
+   
+   end
+   
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end

@@ -1,0 +1,158 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_9_MUTANT
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+
+import variable caravan_mut_1_1;
+import variable caravan_mut_1_2;
+import variable caravan_mut_1_3;
+import variable caravan_mut_2_1;
+import variable caravan_mut_2_2;
+import variable caravan_mut_3_1;
+import variable caravan_mut_3_2;
+
+import variable static_mut1;
+import variable static_mut2;
+import variable static_mut3;
+import variable static_mut4;
+import variable static_mut5;
+
+import variable cave_mut1;
+import variable cave_mut2;
+import variable cave_mut3;
+import variable cave_mut4;
+import variable cave_stong_mut5;
+import variable cave_stong_mut6;
+
+import variable v13_mut1;
+import variable v13_mut2;
+import variable v13_mut3;
+import variable v13_mut4;
+
+import variable cave_jasper;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+	critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_SUPER_MUTANT);
+	critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_V13_SUPERMUTANTS);
+
+	if map_first_run then set_local_var(LVAR_Home_Tile,self_tile);
+
+   //V13_MUT
+	if local_var(LVAR_Home_Tile) == 19915 then caravan_mut_1_1:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 19116 then caravan_mut_1_2:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 19919 then caravan_mut_1_3:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 20327 then caravan_mut_2_1:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 19123 then caravan_mut_2_2:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 17921 then caravan_mut_3_1:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 17524 then caravan_mut_3_2:=self_obj;
+
+	else if local_var(LVAR_Home_Tile) == 21299 then static_mut1:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 20741 then static_mut2:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 16107 then static_mut3:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 15930 then static_mut4:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 14724 then static_mut5:=self_obj;
+	//V13ENT
+	else if local_var(LVAR_Home_Tile) == 24700 then cave_mut1:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 26490 then cave_mut2:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 19686 then cave_mut3:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 19696 then cave_mut4:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 26267 then cave_stong_mut5:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 24463 then cave_stong_mut6:=self_obj;
+	//VAULT13
+	else if local_var(LVAR_Home_Tile) == 14302 then v13_mut1:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 14297 then v13_mut2:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 14490 then v13_mut3:=self_obj;
+	else if local_var(LVAR_Home_Tile) == 15876 then v13_mut4:=self_obj;
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+
+   if (((local_var(LVAR_Hostile) == 2) or global_var(GVAR_VAULT13MUT_ALARM) == DUDE_IS_ENEMY) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   //float_msg(self_obj,""+local_var(LVAR_Home_Tile),FLOAT_MSG_GREEN);
+
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+	if get_critter_stat(self_obj,STAT_dmg_resist) < 30 then float_msg(self_obj,mstr(random(200,206)),FLOAT_MSG_GREEN);
+   else float_msg(self_obj, mstr(random(300, 305)), FLOAT_MSG_GREEN);
+
+end
+
+procedure destroy_p_proc begin
+
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+
+   if fixed_param==0 and self_obj==cave_stong_mut6 then begin
+      attack_complex(cave_jasper, 1, 2, 0, 212, 256, 0, 0);
+   end
+
+end

@@ -1,0 +1,369 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCPEASAN
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+      procedure assign_home_tile;
+      procedure assign_basic_eq;
+      procedure day_night_position;
+procedure map_exit_p_proc;
+procedure timed_event_p_proc;
+      procedure Rebelion_Gvar40;
+      procedure Gvar40;
+/* Grave Isaac Speech */
+procedure IsaacsGraveSpeech;
+      procedure Check_IsaacsGraveSpeech;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+#define LVAR_Night_Tile                 (9)
+#define LVAR_Cutscene_Counter           (10)
+#define LVAR_Grave_Tile                 (11)
+
+import variable rebel_isaac;
+import variable rebel_peasant1;
+import variable rebel_peasant2;
+import variable rebel_peasant3;
+import variable rebel_peasant4;
+import variable rebel_peasant5;
+import variable rebel_peasant6;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then call assign_home_tile;
+      if map_first_run then call assign_basic_eq;
+
+      if not is_loading_game then add_timer_event(self_obj,0,0); /* Jest to zapobieganie nakladania sie timed_event_p_proc na timed_event_p_proc, chyba xD */
+      //day_night_position /\
+
+      critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_REBELLION);
+
+      if local_var(LVAR_Home_Tile) == 22518 then rebel_peasant1:=self_obj;
+      else if local_var(LVAR_Home_Tile) == 23513 then rebel_peasant2:=self_obj;
+      else if local_var(LVAR_Home_Tile) == 24309 then rebel_peasant3:=self_obj;
+      else if local_var(LVAR_Home_Tile) == 21709 then rebel_peasant4:=self_obj;
+      else if local_var(LVAR_Home_Tile) == 18472 then rebel_peasant5:=self_obj;
+      else if local_var(LVAR_Home_Tile) == 19072 then rebel_peasant6:=self_obj;
+
+
+
+end
+
+      procedure assign_home_tile begin
+            set_local_var(LVAR_Home_Tile,self_tile);
+
+            if local_var(LVAR_Home_Tile) == 22518 then set_local_var(LVAR_Night_Tile,13893);
+            else if local_var(LVAR_Home_Tile) == 23513 then set_local_var(LVAR_Night_Tile,14693);
+            else if local_var(LVAR_Home_Tile) == 24309 then set_local_var(LVAR_Night_Tile,13296);
+            else if local_var(LVAR_Home_Tile) == 21709 then set_local_var(LVAR_Night_Tile,13898);
+            else if local_var(LVAR_Home_Tile) == 18472 then set_local_var(LVAR_Night_Tile,13902);
+            else if local_var(LVAR_Home_Tile) == 19072 then set_local_var(LVAR_Night_Tile,13504);
+
+            if local_var(LVAR_Home_Tile) == 22518 then set_local_var(LVAR_Grave_Tile,17670);
+            else if local_var(LVAR_Home_Tile) == 23513 then set_local_var(LVAR_Grave_Tile,18472);
+            else if local_var(LVAR_Home_Tile) == 24309 then set_local_var(LVAR_Grave_Tile,17873);
+            else if local_var(LVAR_Home_Tile) == 21709 then set_local_var(LVAR_Grave_Tile,18475);
+            else if local_var(LVAR_Home_Tile) == 18472 then set_local_var(LVAR_Grave_Tile,19072);
+            else if local_var(LVAR_Home_Tile) == 19072 then set_local_var(LVAR_Grave_Tile,19872);
+
+            set_global_var(GVAR_SHADY_DAY_NIGHT_DISABLED,1);
+            move_to(self_obj,local_var(LVAR_Grave_Tile),1); // Przesuwa wiesniakow na pogrzeb ktory zawsze na poczatku jest
+      end
+
+      variable item;
+      procedure assign_basic_eq begin
+            item:=create_object(PID_KNIFE,0,0);
+            add_obj_to_inven(self_obj,item);
+            item_caps_adjust(self_obj,23);
+      end
+
+      procedure day_night_position begin
+
+            if global_var(GVAR_SHADY_DAY_NIGHT_DISABLED) == 0 then begin
+
+                  if day then move_to(self_obj,local_var(LVAR_Home_Tile),1); // w innych przypadkach moze byc problem z elewacj?
+                  else if game_time_hour==1800 then move_to(self_obj,local_var(LVAR_Night_Tile),1);
+                  else move_to(self_obj,local_var(LVAR_Night_Tile),1); // w innych przypadkach moze byc problem z elewacj?
+
+                  /*
+
+                  if (not day) or game_time_hour==1800 then begin
+
+                  reg_anim_begin();
+                  reg_anim_animate(self_obj, ANIM_fall_front_sf, -1);
+                  reg_anim_end();
+                  display_msg("noc");
+
+                  end
+
+                  else begin
+                  display_msg("dzien");
+                  reg_anim_begin();
+                  reg_anim_clear(self_obj);
+                  reg_anim_end();
+                  end
+                  */
+
+            end
+
+            add_timer_event(self_obj,15,0);
+
+      end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+
+   call Check_IsaacsGraveSpeech;
+
+end
+
+procedure damage_p_proc begin
+
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+       if global_var(GVAR_SHADY_UNDER_REBELLION) == 0 then set_global_var(GVAR_ALARM_SHADYSANDS,1);
+   end
+
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+      if global_var(GVAR_SHADY_REBELLION) >50 THEN BEGIN
+         floater_rand(230, 232);
+      end
+
+      else if global_var(GVAR_SHADY_REBELLION) >0 THEN BEGIN
+         floater_rand(228, 229);
+      end
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+   set_global_var(GVAR_SHADY_ISAAC_DEAD,1);
+end
+
+procedure look_at_p_proc begin
+   //display_msg("tet: " + local_var(LVAR_Home_Tile));
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+
+variable test;
+procedure timed_event_p_proc begin
+
+      if (fixed_param==0) then begin
+
+            //test+=1;
+            //display_msg("test"+test);
+
+            call day_night_position;
+
+      end
+
+      if (fixed_param==1) then begin
+
+            call IsaacsGraveSpeech;
+
+      end
+
+end
+
+      procedure Rebelion_Gvar40 begin
+            Reply("Teraz idziemy po Oswalda - zarzadce obozu");
+            NOption("Dajcie mi jeszcze chwile zeby sie ogarnac",Node999,004);
+            NOption("Zgoda",Gvar40,004);
+      end
+
+      procedure Gvar40 begin
+            game_ui_disable;
+            set_global_var(GVAR_SHADY_REBELLION,41);
+      end
+
+procedure Check_IsaacsGraveSpeech begin
+      if global_var(GVAR_SHADY_GRAVE_SPEECH_STATE) == 0 and tile_distance_objs(dude_obj,rebel_isaac) < 10 and self_obj==rebel_peasant1 then call IsaacsGraveSpeech;
+end
+
+      procedure IsaacsGraveSpeech begin
+
+            if local_var(LVAR_Cutscene_Counter) == 0 then begin
+                  set_global_var(GVAR_SHADY_GRAVE_SPEECH_STATE,1);
+                  float_msg(rebel_isaac,mstr(200),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(4),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 1 then begin
+                  float_msg(rebel_isaac,mstr(202),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 2 then begin
+                  float_msg(rebel_isaac,mstr(203),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 3 then begin
+                  float_msg(rebel_isaac,mstr(204),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 4 then begin
+                  float_msg(rebel_isaac,mstr(201),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(5),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 5 then begin
+                  float_msg(rebel_isaac,mstr(205),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(7),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 6 then begin
+                  float_msg(rebel_isaac,mstr(206),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(2),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 7 then begin
+                  float_msg(rebel_isaac,mstr(207),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 8 then begin
+                  float_msg(rebel_isaac,mstr(208),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(2),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 9 then begin
+                  float_msg(rebel_isaac,mstr(209),FLOAT_MSG_WHITE);
+                  add_timer_event(self_obj,game_ticks(7),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 10 then begin
+                  float_msg(rebel_isaac,mstr(221),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(2),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 11 then begin
+                  float_msg(rebel_isaac,mstr(210),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(2),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 12 then begin
+                  float_msg(rebel_isaac,mstr(211),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 13 then begin
+                  float_msg(rebel_isaac,mstr(212),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 14 then begin
+                  float_msg(rebel_isaac,mstr(213),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 15 then begin
+                  float_msg(rebel_isaac,mstr(214),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 16 then begin
+                  float_msg(rebel_isaac,mstr(215),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 17 then begin
+                  float_msg(rebel_isaac,mstr(216),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 18 then begin
+                  float_msg(rebel_isaac,mstr(217),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 19 then begin
+                  float_msg(rebel_isaac,mstr(218),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 20 then begin
+                  float_msg(rebel_isaac,mstr(219),FLOAT_MSG_WHITE);
+                  add_timer_event(self_obj,game_ticks(1),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 21 then begin
+                  float_msg(rebel_peasant1,mstr(219),FLOAT_MSG_WHITE);
+                  float_msg(rebel_peasant2,mstr(219),FLOAT_MSG_WHITE);
+                  float_msg(rebel_peasant3,mstr(219),FLOAT_MSG_WHITE);
+                  float_msg(rebel_peasant4,mstr(219),FLOAT_MSG_WHITE);
+                  float_msg(rebel_peasant5,mstr(219),FLOAT_MSG_WHITE);
+                  float_msg(rebel_peasant6,mstr(219),FLOAT_MSG_WHITE);
+                  add_timer_event(self_obj,game_ticks(6),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 22 then begin
+                  float_msg(rebel_isaac,mstr(220),FLOAT_MSG_NORMAL);
+                  add_timer_event(self_obj,game_ticks(3),1);
+            end
+
+            if local_var(LVAR_Cutscene_Counter) == 23 then begin
+                  fadeout(200);
+                  set_global_var(GVAR_SHADY_GRAVE_SPEECH_STATE,2);
+                  move_to(self_obj,local_var(LVAR_Home_Tile),1);
+                  set_global_var(GVAR_SHADY_DAY_NIGHT_DISABLED,0);
+                  fadein(200);
+            end
+
+
+            inc_local_var(LVAR_Cutscene_Counter);
+
+      end

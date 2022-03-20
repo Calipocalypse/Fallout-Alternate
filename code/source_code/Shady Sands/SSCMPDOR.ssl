@@ -1,0 +1,57 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SSCMPDOR
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+procedure use_p_proc;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_tile                  (8)
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+end
+
+procedure use_p_proc begin
+		obj_lock(self_obj); // <-- to dziala
+		script_overrides;
+
+      if dude_elevation == 0 then begin
+         //if global_var(GVAR_SHADY_REBELLION) > 80 then
+            move_to(dude_obj,15337,1); //dodac warunek ze jest khanem
+      end
+      else begin
+         //if global_var(GVAR_SHADY_REBELLION) == 30 or global_var(GVAR_SHADY_REBELLION) >= 80 then
+            move_to(dude_obj,21058,0);
+         float_msg(self_obj, message_str(SCRIPT_SCCONTR3, 230), 2);
+      end
+
+      obj_close(self_obj);
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure destroy_p_proc begin
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end

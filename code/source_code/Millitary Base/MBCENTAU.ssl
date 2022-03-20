@@ -1,0 +1,103 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MBCENTAU
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+	procedure sprawdz_czy_gracz_nosi_szaty;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+
+variable grr;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_MB_MUTANTS);
+      if map_first_run then critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_AI_PACKET,AI_CENTAUR);
+
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+   
+   call sprawdz_czy_gracz_nosi_szaty;
+
+end
+
+      procedure sprawdz_czy_gracz_nosi_szaty begin
+            if (obj_pid(critter_inven_obj(dude_obj,INVEN_TYPE_WORN)) != PID_PURPLE_ROBE) and obj_can_see_obj(self_obj,dude_obj) then begin
+                  self_attack_dude;
+                  float_msg(self_obj,mstr(400),2);
+            end
+      end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+
+	if grr==0 then float_msg(self_obj,mstr(200),2);
+	else if grr==1 then float_msg(self_obj,mstr(201),2);
+	else if grr>1 then call Node998;
+	grr++;
+
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end

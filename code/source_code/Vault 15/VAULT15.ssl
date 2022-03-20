@@ -1,0 +1,99 @@
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\v13ent.h"
+
+#define NAME                    SCRIPT_VAULT15
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+#define LVAR_Herebefore                 (4)
+
+/* Map script */
+export variable map_script_obj;
+
+/** PROCEDURY **/
+procedure map_enter_p_proc;
+      procedure map_first_run_proc;
+      procedure override_map_start_hex;
+      procedure shady_temp_variables;
+      procedure check_gvar_about_shady;
+procedure map_update_p_proc;
+      procedure global_pointers;
+procedure timed_event_p_proc;
+      procedure Battle_with_Khans_Start;
+      procedure Conversation_about_what_happened_in_Shady_Sands;
+
+procedure restock_shop;
+procedure update_khans_weapons;
+
+procedure map_enter_p_proc begin
+      map_script_obj:=self_obj;
+      if map_first_run then call map_first_run_proc;
+      set_global_var(GVAR_VISITED_SHADYSANDS,1);
+      call check_gvar_about_shady;
+end
+
+      procedure map_first_run_proc begin
+            call override_map_start_hex;
+            //display_msg(";"+self_obj);
+      end
+
+
+      procedure override_map_start_hex begin
+            override_map_start_hex(12108,0,2);
+      end
+      
+      variable shady_war_cutscene;
+      variable shady_garldead_cutscene;
+      procedure shady_temp_variables begin
+            shady_war_cutscene:=1;
+            shady_garldead_cutscene:=2;
+      end
+      
+      procedure check_gvar_about_shady begin
+      
+            if global_var(GVAR_SHADY_INFOFORV15) == 1 then begin
+                  add_timer_event(self_obj,shady_war_cutscene,0);
+                  set_global_var(GVAR_SHADY_INFOFORV15,0);
+            end
+            
+            if global_var(GVAR_SHADY_INFOFORV15) == 2 then begin
+                  add_timer_event(self_obj,shady_garldead_cutscene,0);
+                  set_global_var(GVAR_SHADY_INFOFORV15,0);
+            end
+            
+      end
+
+
+procedure map_update_p_proc begin
+Lighting;
+
+end
+
+      procedure global_pointers begin
+      //if global_var(GVAR_MAXSTONE_POINTER)!=0 then obj_maxstone:=global_var(GVAR_MAXSTONE_POINTER);
+      //if global_var(GVAR_POINTER_LAURA)!=0 then laura_obj:=global_var(GVAR_POINTER_LAURA);
+      //if global_var(GVAR_TYCHO_POINTER)!=0 then obj_tycho:=global_var(GVAR_TYCHO_POINTER);
+      //if global_var(GVAR_MATT_POINTER)!=0 then obj_matt:=global_var(GVAR_MATT_POINTER);
+      end
+
+procedure update_khans_weapons begin
+add_timer_event(self_obj,30,0);
+end
+
+procedure timed_event_p_proc begin
+
+      if (fixed_param) == shady_war_cutscene then call Battle_with_Khans_Start;
+      
+      if (fixed_param) == shady_garldead_cutscene then call Conversation_about_what_happened_in_Shady_Sands;
+
+end
+
+      procedure Battle_with_Khans_Start begin
+      move_to(dude_obj,18735,2);
+      end
+      
+      procedure Conversation_about_what_happened_in_Shady_Sands begin
+      move_to(dude_obj,18735,2);
+      end

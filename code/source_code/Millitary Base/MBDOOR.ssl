@@ -1,0 +1,76 @@
+/*
+	Copyright 1998-2003 Interplay Entertainment Corp.  All rights reserved.
+*/
+
+/******************************************************************************************
+        Item: Rope
+        Description: It transports you to the other side of the ncr wall
+
+        Log:
+           Please note any changes that have been made to the file in Updated. Then comment
+           the code which you have changed/altered/commented out. Please, do not delete any
+           code which was written.
+
+           Created: September 26, 1997
+
+           Updated:
+******************************************************************************************/
+
+
+/* Include Files */
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_MBDOOR
+
+#include "..\headers\command.h"
+
+/* Standard Script Procedures */
+procedure start;
+procedure use_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure use_obj_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_update_p_proc;
+
+procedure start begin
+end
+
+procedure timed_event_p_proc begin
+
+end
+
+procedure use_p_proc begin
+      script_overrides;
+      display_mstr(200);
+end
+
+procedure look_at_p_proc begin
+end
+
+
+procedure description_p_proc begin
+end
+
+
+procedure use_skill_on_p_proc begin
+      display_mstr(200);
+end
+
+procedure use_obj_on_p_proc begin
+end
+
+
+procedure damage_p_proc begin
+end
+
+procedure map_enter_p_proc begin
+      obj_lock(self_obj);
+      script_overrides;
+end
+
+
+procedure map_update_p_proc begin
+end

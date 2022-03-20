@@ -1,0 +1,125 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_BROCORPS
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+
+
+procedure start begin
+end
+
+variable item;
+procedure map_enter_p_proc begin
+      if map_first_run then begin
+      
+            if self_tile==21297 then begin
+                  item:=create_object(PID_MICRO_FUSION_CELL,0,0);
+                  add_obj_to_inven(self_obj,item);
+                  item:=create_object(PID_SUPER_STIMPAK,0,0);
+                  add_obj_to_inven(self_obj,item);
+                  item:=create_object(PID_DOG_TAGS,0,0);
+                  add_obj_to_inven(self_obj,item);
+                  kill_critter(self_obj,ANIM_fall_back_blood_sf);
+            end
+            
+            if self_tile==21505 then begin
+                  item:=create_object(PID_5MM_JHP,0,0);
+                  add_obj_to_inven(self_obj,item);
+                  item:=create_object(PID_5MM_JHP,0,0);
+                  add_obj_to_inven(self_obj,item);
+                  item:=create_object(PID_DOG_TAGS,0,0);
+                  add_obj_to_inven(self_obj,item);
+                  kill_critter(self_obj,ANIM_fall_front_blood_sf);
+            end
+            
+            if self_tile==21499 then begin
+                  item:=create_object(PID_MICRO_FUSION_CELL,0,0);
+                  add_obj_to_inven(self_obj,item);
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(self_obj,item);
+                  item:=create_object(PID_STIMPAK,0,0);
+                  add_obj_to_inven(self_obj,item);
+                  item:=create_object(PID_DOG_TAGS,0,0);
+                  add_obj_to_inven(self_obj,item);
+                  kill_critter(self_obj,ANIM_sliced_in_half_sf);
+            end
+            
+      end
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+   float_msg(self_obj,"tile: "+self_tile,random(1,12));
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end

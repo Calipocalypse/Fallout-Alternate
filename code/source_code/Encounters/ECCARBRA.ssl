@@ -1,0 +1,111 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Critters template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+#define NAME                    SCRIPT_ECCARBRA
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure critter_p_proc;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+
+procedure Only_Once;
+
+/* Defines */
+
+#define LVAR_Only_Once               (0)
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+procedure start begin
+   critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_TEAM_NUM, TEAM_CARAVAN);
+   critter_add_trait(self_obj, TRAIT_OBJECT, OBJECT_AI_PACKET, AI_BRAHMIN_WIMPY);
+   if local_var(LVAR_Only_Once) == 0 then call Only_Once;
+end
+
+procedure map_enter_p_proc begin
+
+end
+
+procedure Only_Once begin
+   variable brahmin;
+   set_local_var(LVAR_Only_Once, 1);
+   animate_rotation(1);
+   //move_to(self_obj, tile_num_in_direction(self_tile, random(0, 5), random(5, 15)),self_elevation);
+   brahmin:= create_object(PID_BRAHMIN, tile_num_in_direction(self_tile, 5, 2), self_elevation);
+   critter_add_trait(brahmin, TRAIT_OBJECT, OBJECT_TEAM_NUM, TEAM_CARAVAN);
+   create_object(random(33554959,33554960), tile_num_in_direction(self_tile, 4, 3), self_elevation);
+   create_object(PID_LIGHT, self_tile, self_elevation);
+end
+
+procedure critter_p_proc begin
+
+
+end
+
+procedure look_at_p_proc begin
+	script_overrides;
+	display_msg(mstr(100));
+end
+
+procedure description_p_proc begin
+	script_overrides;
+	display_msg(mstr(101));
+end
+
+procedure pickup_p_proc begin
+   //script_overrides;
+
+end
+
+procedure talk_p_proc begin
+
+end
+
+procedure use_skill_on_p_proc begin
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure destroy_p_proc begin
+
+end

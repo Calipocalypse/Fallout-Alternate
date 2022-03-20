@@ -1,0 +1,276 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCTRADER
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+procedure map_exit_p_proc;
+
+procedure Node998;
+procedure Node999;
+
+procedure core_Main;
+procedure Main;
+procedure Main_Rollback;
+procedure Shopping_tools;
+procedure Shopping_weapons;
+procedure Shopping_armours;
+
+procedure Shopping_weapons_exit;
+procedure Shopping_tools_exit;
+procedure Shopping_armours_exit;
+
+procedure GetItBackTo_pancerze;
+procedure GetItBackTo_bronie;
+procedure GetItBackTo_narzedzia;
+
+procedure ExitShoppingNode;
+
+procedure timed_event_p_proc;
+
+procedure DontTouchKurwaMuch;
+
+procedure Questions;
+procedure type_Questions;
+procedure khans1_Questions;
+procedure khans2_Questions;
+procedure khans3_Questions;
+procedure job_Questions;
+procedure secret_Questions;
+procedure Tandi_Questions;
+
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+
+
+import variable box_bronie;
+import variable box_pancerze;
+import variable box_narzedzia;
+
+import variable person_trader;
+
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+person_trader:=self_obj;
+if map_first_run then begin
+      critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_KHANS);
+end
+end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+if global_var(GVAR_SHADY_REBELLION) == 0 then begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+   start_gdialog(NAME,self_obj,4,-1,-1);
+      gSay_Start;
+         call Main;
+      gSay_End;
+      end_dialogue;
+end
+else floater(1000);
+end
+
+procedure core_Main begin
+NOption(201,Shopping_tools,001);
+NOption(202,Shopping_weapons,001);
+NOption(203,Shopping_armours,004);
+NOption(400,Questions,004);
+NOption(204,Node999,004);
+end
+
+procedure Main begin
+Reply(mstr(200));
+call core_Main;
+end
+
+procedure Main_Rollback begin
+Reply(mstr(199));
+call core_Main;
+end
+
+procedure Shopping_tools begin
+      move_obj_inven_to_obj(box_narzedzia,self_obj);
+      gdialog_barter;
+      call Shopping_tools_exit;
+end
+
+procedure Shopping_weapons begin
+      move_obj_inven_to_obj(box_bronie,self_obj);
+      gdialog_barter;
+      call Shopping_weapons_exit;
+end
+
+procedure Shopping_armours begin
+      move_obj_inven_to_obj(box_pancerze,self_obj);
+      gdialog_barter;
+      call Shopping_armours_exit;
+end
+
+procedure Shopping_armours_exit begin
+      Reply(mstr(250));
+      NOption(251,GetItBackTo_pancerze,001);
+end
+
+procedure Shopping_weapons_exit begin
+      Reply(mstr(250));
+      NOption(251,GetItBackTo_bronie,001);
+end
+
+procedure Shopping_tools_exit begin
+      Reply(mstr(250));
+      NOption(251,GetItBackTo_narzedzia,001);
+end
+
+procedure GetItBackTo_pancerze begin
+move_obj_inven_to_obj(self_obj,box_pancerze);
+call Node999;
+end
+
+procedure GetItBackTo_bronie begin
+move_obj_inven_to_obj(self_obj,box_bronie);
+call Node999;
+end
+
+procedure GetItBackTo_narzedzia begin
+move_obj_inven_to_obj(self_obj,box_narzedzia);
+call Node999;
+end
+
+
+procedure ExitShoppingNode begin
+Reply(mstr(250));
+NOption(251,Node999,001);
+end
+
+procedure destroy_p_proc begin
+   inc_good_critter
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+procedure timed_event_p_proc begin
+      script_overrides;
+      start_dialog_at_node(DontTouchKurwaMuch);
+end
+
+procedure DontTouchKurwaMuch begin
+Reply(mstr(300));
+NOption(301,Node999,004);
+end
+
+procedure core_Questions begin
+NOption(402,type_Questions,004);
+NOption(403,khans1_Questions,004);
+NOption(404,job_Questions,004);
+NOption(408,Tandi_Questions,004);
+NOption(405,secret_Questions,004);
+NOption(406,Main_Rollback,004);
+NOption(407,Node999,004);
+end
+
+procedure Questions begin
+Reply(mstr(401));
+call core_Questions;
+end
+
+procedure Questions_Rollback begin
+Reply(mstr(399));
+call core_Questions;
+end
+
+procedure type_Questions begin
+Reply(mstr(460));
+call core_Questions;
+end
+
+procedure job_Questions begin
+Reply(mstr(470));
+call core_Questions;
+end
+
+procedure secret_Questions begin
+Reply(mstr(480));
+call core_Questions;
+end
+
+procedure khans1_Questions begin
+Reply(mstr(430));
+NOption(431,khans2_Questions,004);
+NOption(432,Questions_Rollback,004);
+end
+
+procedure khans2_Questions begin
+Reply(mstr(440));
+NOption(441,khans3_Questions,004);
+end
+
+procedure khans3_Questions begin
+Reply(mstr(450));
+NOption(451,Questions_Rollback,004);
+end
+
+procedure tandi_Questions begin
+Reply(mstr(490));
+call core_Questions;
+end

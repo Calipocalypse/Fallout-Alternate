@@ -1,0 +1,167 @@
+/*******************************************************************************
+        Name:
+        Location:
+        Description: Object template script
+
+            Created: by sFall Script Editor
+            Updated:
+
+*******************************************************************************/
+
+/* Include Files */
+#include "..\headers\define.h"
+#include "..\headers\command.h"
+
+
+/* Standard Script Procedures */
+procedure start;
+procedure map_enter_p_proc;
+procedure description_p_proc;
+procedure look_at_p_proc;
+procedure damage_p_proc;
+procedure use_p_proc;
+procedure use_obj_on_p_proc;
+procedure use_skill_on_p_proc;
+procedure drop_p_proc;
+procedure is_dropping_p_proc;
+procedure pickup_p_proc;
+
+procedure body1;
+procedure body2;
+procedure body3;
+procedure body4;
+
+/* Defines */
+
+#define LVAR_Only_Once            (0)
+
+/*****************************************************************
+   Local Variables which are saved.
+   All Local Variables need to be prepended by LVAR_
+*****************************************************************/
+
+
+/*******************************************************************
+   Imported variables from the Map scripts. These should only be
+   pointers and variables that need not be saved. If a variable
+   Needs to be saved, make it a map variable (MVAR_)
+*******************************************************************/
+
+
+/*******************************************************************
+   Local variables which do not need to be saved between map changes.
+*******************************************************************/
+
+
+/*******************************************************************
+*                           PROCEDURES                             *
+*******************************************************************/
+variable body;
+variable item;
+
+procedure start begin
+
+   if local_var(LVAR_Only_Once) == 0 then begin
+      if global_var(GVAR_ENCO_BODY1) == 0 then begin
+         set_global_var(GVAR_ENCO_BODY1, 1);
+         call body1;
+      end
+      else if global_var(GVAR_ENCO_BODY2) == 0 then begin
+         set_global_var(GVAR_ENCO_BODY2, 1);
+         call body2;
+      end
+      else if global_var(GVAR_ENCO_BODY3) == 0 then begin
+         set_global_var(GVAR_ENCO_BODY3, 1);
+         call body3;
+      end
+      else if global_var(GVAR_ENCO_BODY4) == 0 then begin
+         set_global_var(GVAR_ENCO_BODY4, 1);
+         call body4;
+      end
+
+      set_local_var(LVAR_Only_Once, 1);
+
+   end
+
+end
+
+   procedure body1 begin
+
+   end
+
+   procedure body2 begin
+
+   end
+
+   procedure body3 begin
+
+   end
+
+   procedure body4 begin
+   body := create_object(16777775,tile_num_in_direction(dude_tile,random(0,5),random(3,7)) , dude_elevation);
+   anim(body, ANIMATE_ROTATION, random(0, 5));
+
+   if dude_luck > 6 then begin
+      add_obj_to_inven(body, create_object(PID_TURBO_PLASMA_RIFLE, 0, 0));
+      add_obj_to_inven(body, create_object(PID_MICRO_FUSION_CELL, 0, 0));
+      add_obj_to_inven(body, create_object(PID_MICRO_FUSION_CELL, 0, 0));
+   end
+   else begin
+      add_obj_to_inven(body, create_object(PID_PLASMA_RIFLE, 0, 0));
+      add_obj_to_inven(body, create_object(PID_MICRO_FUSION_CELL, 0, 0));
+   end
+   add_obj_to_inven(body, create_object(PID_SUPER_STIMPAK, 0, 0));
+   add_obj_to_inven(body, create_object(PID_SUPER_STIMPAK, 0, 0));
+   add_obj_to_inven(body, create_object(PID_SUPER_STIMPAK, 0, 0));
+   add_obj_to_inven(body, create_object(PID_MOTION_SENSOR, 0, 0));
+
+   Face_Critter(body, dude_obj);
+
+   kill_critter(body, ANIM_sliced_in_half_sf);
+
+   anim(create_object_sid(16777224, tile_num_in_direction(tile_num(body), 4, 2), dude_elevation, 791), ANIMATE_ROTATION, 1);
+   anim(create_object_sid(16777224, tile_num_in_direction(tile_num(body), 2, 3), dude_elevation, 791), ANIMATE_ROTATION, 4);
+   end
+
+
+procedure map_enter_p_proc begin
+
+end
+
+procedure look_at_p_proc begin
+   script_overrides;
+
+end
+
+procedure description_p_proc begin
+   script_overrides;
+
+end
+
+procedure damage_p_proc begin
+
+end
+
+procedure use_p_proc begin
+
+end
+
+procedure use_obj_on_p_proc begin
+
+end
+
+procedure use_skill_on_p_proc begin
+
+end
+
+procedure drop_p_proc begin
+
+end
+
+procedure is_dropping_p_proc begin
+
+end
+
+procedure pickup_p_proc begin
+
+end

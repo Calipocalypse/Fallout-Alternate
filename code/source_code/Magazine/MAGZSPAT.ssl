@@ -1,0 +1,26 @@
+#include "..\headers\define.h"
+#include "..\headers\updatmap.h"
+#include "..\headers\v13ent.h"
+
+#define NAME                    SCRIPT_MAGZSPAT
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+#define LVAR_Herebefore                 (4)
+
+
+procedure spatial_p_proc;
+
+procedure spatial_p_proc begin
+      if source_obj==dude_obj then begin
+         if global_var(GVAR_QUEST_SHADY_MAGAZINE) == 1 then begin
+      	set_global_var(GVAR_QUEST_SHADY_MAGAZINE,2);
+      	display_msg(mstr(100));
+      	give_xp(EXP_SHADY_SANDS_MAGAZINE_DISCOVERED_ROOM);
+      	end
+      	else if global_var(GVAR_QUEST_SHADY_MAGAZINE) == 0 then begin
+      	set_global_var(GVAR_QUEST_SHADY_MAGAZINE,-1);
+      	end
+      end
+end

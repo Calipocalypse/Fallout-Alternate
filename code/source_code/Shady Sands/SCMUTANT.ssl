@@ -1,0 +1,305 @@
+
+#include "..\headers\define.h"
+
+#define NAME                    SCRIPT_SCMUTANT
+#define TOWN_REP_VAR            (GVAR_TOWN_REP_ARROYO)
+
+#include "..\headers\command.h"
+#include "..\headers\ModReact.h"
+
+
+procedure start;
+procedure critter_p_proc;
+procedure pickup_p_proc;
+procedure talk_p_proc;
+procedure destroy_p_proc;
+procedure look_at_p_proc;
+procedure description_p_proc;
+procedure use_skill_on_p_proc;
+procedure damage_p_proc;
+procedure map_enter_p_proc;
+      procedure map_first_run_procedure;
+            procedure przydziel_home_tile;
+            //procedure uzbrojenie;
+      procedure przydziel_imported_variable;
+procedure map_exit_p_proc;
+/* Supermutant Invasion */
+procedure Sprawdz_Inwazje; // rozpoczyna sie w map_enter_p_proc
+      procedure Inwazja;
+            procedure MasakraMieszkancow;
+                  procedure kill_khans;
+                  procedure dissaper_rebels;
+            procedure MoveTo_Supermutanci;
+
+procedure Node998;
+procedure Node999;
+
+#define LVAR_Herebefore                 (4)
+#define LVAR_Hostile                    (5)
+#define LVAR_Personal_Enemy             (6)
+#define LVAR_Looked_Before              (7)
+#define LVAR_Home_Tile                  (8)
+
+import variable mutantnormal_1;
+import variable mutantnormal_2;
+import variable mutantnormal_3;
+import variable mutantnormal_4;
+import variable mutantnormal_5;
+import variable mutantstronger_1;
+import variable mutantstronger_2;
+import variable mutantstronger_3;
+import variable mutantstronger_4;
+import variable mutantstronger_5;
+import variable mutantstronger_6;
+import variable mutantstronger_7;
+import variable mutantstronger_8;
+import variable mutantboss;
+import variable mutantweaker_1;
+import variable mutantweaker_2;
+
+/* NEUTRALNE OSOBY Z BARU KTORE ZNIKNA */
+import variable person_1drunk;
+import variable person_2drunk;
+
+/* NEUTRALNE OSOBY */
+import variable person_felix;
+import variable person_1bimber;
+import variable person_2bimber;
+
+/* Dzieci Katedry */
+import variable jasper_obj;
+import variable childrn_obj;
+import variable childrn2_obj;
+import variable laura_obj;
+
+/* Chanowie */
+import variable obj_garl;
+import variable obj_mark;
+import variable obj_matt;
+import variable point_tycho; // nie khan
+import variable person_1khan;
+import variable person_2khan;
+import variable person_3khan;
+import variable person_bar1khan;
+import variable person_bar2khan;
+import variable person_radio1khan;
+import variable person_radio2khan;
+import variable person_barman;
+
+/* W Srodku u Chanow w domu Garla */
+import variable jackal_door;
+import variable person_khan1_inside;
+import variable person_khan2_inside;
+import variable person_khan3_inside;
+import variable person_khan4_inside;
+
+/* W srodku obozu - rebelianci */ //14.03.2019
+import variable rebel_isaac;
+import variable rebel_jerome;
+import variable rebel_anna;
+import variable rebel_annadaughter;
+import variable rebel_mack;
+import variable rebel_mackdog;
+import variable rebel_peasant1;
+import variable rebel_peasant2;
+import variable rebel_peasant3;
+import variable rebel_peasant4;
+import variable rebel_peasant5;
+import variable rebel_peasant6;
+//23.03.2019
+import variable guard_camp_garden1;
+import variable guard_camp_garden2;
+import variable guard_camp_doors1;
+import variable guard_camp_doors2;
+import variable guard_camp_doggo;
+//06.04.2019
+import variable guard_camp_oswald;
+import variable wooof_1;
+import variable wooof_2;
+import variable wooof_3;
+import variable wooof_4;
+import variable wooof_5;
+
+procedure start begin
+end
+
+procedure map_enter_p_proc begin
+
+      if map_first_run then call map_first_run_procedure;
+      call przydziel_imported_variable;
+      if self_obj==mutantnormal_1 then call Sprawdz_Inwazje;
+
+end
+
+      procedure map_first_run_procedure begin
+      
+             critter_add_trait(self_obj,TRAIT_OBJECT,OBJECT_TEAM_NUM,TEAM_SHADY_MUTANTS);
+             
+             call przydziel_home_tile;
+             //call uzbrojenie;
+      
+      end
+
+            procedure przydziel_home_tile begin
+            
+                  set_local_var(LVAR_Home_Tile,self_tile);
+                  
+            
+            end
+      
+      procedure przydziel_imported_variable begin
+      
+            if local_var(LVAR_Home_Tile) == 7101 then mutantnormal_1:=self_obj;
+            if local_var(LVAR_Home_Tile) == 7099 then mutantnormal_2:=self_obj;
+            if local_var(LVAR_Home_Tile) == 7097 then mutantnormal_3:=self_obj;
+            if local_var(LVAR_Home_Tile) == 7095 then mutantnormal_4:=self_obj;
+            if local_var(LVAR_Home_Tile) == 7093 then mutantnormal_5:=self_obj;
+            if local_var(LVAR_Home_Tile) == 7091 then mutantstronger_1:=self_obj;
+            if local_var(LVAR_Home_Tile) == 7089 then mutantstronger_2:=self_obj;
+            if local_var(LVAR_Home_Tile) == 7087 then mutantstronger_3:=self_obj;
+            if local_var(LVAR_Home_Tile) == 6876 then mutantstronger_4:=self_obj;
+            if local_var(LVAR_Home_Tile) == 6869 then mutantstronger_5:=self_obj;
+            if local_var(LVAR_Home_Tile) == 6275 then mutantstronger_6:=self_obj;
+            if local_var(LVAR_Home_Tile) == 6068 then mutantstronger_7:=self_obj;
+            if local_var(LVAR_Home_Tile) == 5671 then mutantstronger_8:=self_obj;
+            if local_var(LVAR_Home_Tile) == 6472 then mutantboss:=self_obj;
+            if local_var(LVAR_Home_Tile) == 7085 then mutantweaker_1:=self_obj;
+            if local_var(LVAR_Home_Tile) == 7083 then mutantweaker_2:=self_obj;
+      
+      end
+
+procedure map_exit_p_proc begin
+end
+
+procedure critter_p_proc begin
+   if ((local_var(LVAR_Hostile) == 2) and (obj_can_see_obj(self_obj,dude_obj))) then begin
+       set_local_var(LVAR_Hostile,1);
+       attack(dude_obj);
+   end
+   
+   //float_msg(self_obj,""+self_tile,random(1,12));
+end
+
+procedure damage_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Personal_Enemy,1);
+   end
+end
+
+procedure pickup_p_proc begin
+   if (source_obj == dude_obj) then begin
+       set_local_var(LVAR_Hostile,2);
+   end
+end
+
+procedure talk_p_proc begin
+   Evil_Critter:=0;
+   Slavery_Tolerant:=SLAVE_TOLERANT;
+   Karma_Perception:=KARMA_PERCEPTION1;
+
+   CheckKarma;
+
+   GetReaction;
+end
+
+procedure destroy_p_proc begin
+
+end
+
+procedure look_at_p_proc begin
+end
+
+procedure description_p_proc begin
+end
+
+procedure use_skill_on_p_proc begin
+end
+
+procedure Node998 begin
+   set_local_var(LVAR_Hostile,2);
+end
+
+procedure Node999 begin
+end
+
+
+procedure Sprawdz_Inwazje begin
+      //if game_time>game_ticks(60*60*24*3) and global_var(GVAR_SHADY_SUPERMUTANT_INVASION)==0 then call Inwazja;
+end
+      
+      procedure Inwazja begin
+            set_global_var(GVAR_SHADY_SUPERMUTANT_INVASION,1);
+            call MasakraMieszkancow;
+            call MoveTo_Supermutanci;
+            display_msg("wywoalen");
+      end
+      
+            procedure MasakraMieszkancow begin
+                  call kill_khans;
+                  call dissaper_rebels;
+                  display_msg("wywoalen2");
+
+            end
+            
+                  procedure kill_khans begin
+                        kill_critter(obj_mark,ANIM_big_hole_sf);
+                        kill_critter(person_1drunk,ANIM_sliced_in_half_sf);
+                        kill_critter(person_2drunk,ANIM_sliced_in_half_sf);
+                        kill_critter(person_felix,ANIM_sliced_in_half_sf);
+                        kill_critter(person_1bimber,ANIM_sliced_in_half_sf);
+                        kill_critter(person_2bimber,ANIM_sliced_in_half_sf);
+                        kill_critter(jasper_obj,ANIM_sliced_in_half_sf);
+                        kill_critter(childrn_obj,ANIM_sliced_in_half_sf);
+                        kill_critter(childrn2_obj,ANIM_sliced_in_half_sf);
+                        kill_critter(laura_obj,ANIM_sliced_in_half_sf);
+                        kill_critter(obj_garl,ANIM_sliced_in_half_sf);
+                        kill_critter(obj_matt,ANIM_sliced_in_half_sf);
+                        
+            
+                        kill_critter(point_tycho,ANIM_sliced_in_half_sf);
+                        kill_critter(person_1khan,ANIM_sliced_in_half_sf);
+                        kill_critter(person_2khan,ANIM_sliced_in_half_sf);
+                        kill_critter(person_3khan,ANIM_sliced_in_half_sf);
+                        kill_critter(person_bar1khan,ANIM_sliced_in_half_sf);
+                        kill_critter(person_bar2khan,ANIM_sliced_in_half_sf);
+                        kill_critter(person_radio1khan,ANIM_sliced_in_half_sf);
+                        kill_critter(person_radio2khan,ANIM_sliced_in_half_sf);
+                        kill_critter(person_barman,ANIM_sliced_in_half_sf);
+                        kill_critter(jackal_door,ANIM_sliced_in_half_sf);
+            
+                        kill_critter(guard_camp_garden1,ANIM_sliced_in_half_sf);
+                        kill_critter(guard_camp_garden2,ANIM_sliced_in_half_sf);
+                        kill_critter(guard_camp_doors1,ANIM_sliced_in_half_sf);
+                        kill_critter(guard_camp_doors2,ANIM_sliced_in_half_sf);
+                        kill_critter(guard_camp_doggo,ANIM_sliced_in_half_sf); 
+                        kill_critter(guard_camp_oswald,ANIM_sliced_in_half_sf);
+                        
+                        kill_critter(wooof_1,ANIM_sliced_in_half_sf); 
+                        kill_critter(wooof_2,ANIM_sliced_in_half_sf);
+                        kill_critter(wooof_3,ANIM_sliced_in_half_sf); 
+                        kill_critter(wooof_4,ANIM_sliced_in_half_sf); 
+                        kill_critter(wooof_5,ANIM_sliced_in_half_sf); 
+                        kill_critter(rebel_mackdog,ANIM_sliced_in_half_sf); 
+                        kill_critter(person_khan4_inside,ANIM_sliced_in_half_sf); 
+                        kill_critter(person_khan4_inside,ANIM_sliced_in_half_sf); 
+                        display_msg("wywoale kill");
+                  end
+                  
+                  procedure dissaper_rebels begin
+                        set_obj_visibility(rebel_isaac,true);
+                        set_obj_visibility(rebel_jerome,true);
+                        set_obj_visibility(rebel_anna,true);
+                        set_obj_visibility(rebel_annadaughter,true);
+                        set_obj_visibility(rebel_mack,true);
+                        set_obj_visibility(rebel_peasant1,true);
+                        set_obj_visibility(rebel_peasant2,true);
+                        set_obj_visibility(rebel_peasant3,true);
+                        set_obj_visibility(rebel_peasant4,true);
+                        set_obj_visibility(rebel_peasant6,true);
+                        set_obj_visibility(rebel_peasant5,true);
+                        
+                  end
+            
+            procedure MoveTo_Supermutanci begin
+            
+            end
