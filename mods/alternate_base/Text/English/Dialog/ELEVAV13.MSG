@@ -1,0 +1,2 @@
+{100}{}{Na wyœwietlaczu windy wyœwietla siê tekst: "Brak uprawnieñ administratora"}
+{101}{}{Z poziomu winy nie jesteœ w stanie nic zrobiæ}

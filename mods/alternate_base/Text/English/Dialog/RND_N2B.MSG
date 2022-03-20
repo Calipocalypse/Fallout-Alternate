@@ -1,0 +1,42 @@
+{200}{}{A niech mnie…} #I’ll be damned
+{201}{}{Inny ocalony!} #Vault dweller!
+
+{300}{}{Spokojnie} #Easy there
+{301}{}{Ja nie chcê problemów}
+{302}{}{Niech ka¿dy z nas pójdzie po prostu w swoim kierunku}
+#200
+{303}{}{O co chodzi?}
+{304}{}{Jesteœ z trzynastki?}
+#7 sekund
+{305}{}{Jestem}
+{306}{}{A ty?}
+{307}{}{Ja te¿}
+{308}{}{Jasny gwint}
+
+
+{400}{}{Szansa jeden na milion}
+{401}{}{Byæ mo¿e prze¿y³o nas wiêcej}
+
+{402}{}{Musimy sobie chyba du¿o opowiedzieæ}
+{403}{}{Macie jakieœ swoje miejsce?}
+
+{404}{}{Nie}
+{405}{}{Praktycznie ca³y czas siê tu³amy}
+{406}{}{Jest was wiêcej?}
+
+{407}{}{Jest nas trzech}
+{408}{}{Bywa ciê¿ko, ale radzimy sobie}
+{409}{}{ZnaleŸliœmy w górach star¹ szopê}
+{410}{}{Byæ mo¿e nie jest kwatera mieszkalna jak w krypcie…}
+
+
+{411}{}{Jasne}
+{412}{}{Wpadniemy}
+
+{413}{}{Œwietnie}
+{414}{}{Widzê, ¿e masz Pip-Boya}
+{415}{}{Pozwól, ¿e zaznaczê} #Let me mark
+
+{416}{}{Gotowe}
+{417}{}{Liczê, ¿e niebawem wpadniesz}
+{418}{}{Przyda³aby siê nam pomoc}

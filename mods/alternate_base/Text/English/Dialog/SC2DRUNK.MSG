@@ -1,0 +1,49 @@
+{200}{}{Ty piephszony lamuusiee! Nie widzisz, ¿e jesteœmy zajêci?! :czka: Wypierldalaj!}
+{201}{}{Cha! Od pocz¹tku wiedzialem, ¿e to zwyk³y lamus!}
+{202}{}{O kurwa przepraszam! Jesteœ ca³y?}
+
+#200
+{210}{}{Barman ka¿e wam opuœciæ lokal i ja dopilnuje tego, ¿eby wasze zawszone ty³ki nie przekroczy³y progu tego baru.}
+{211}{}{[Chyba ma racjê. Ja tu nic nie znaczê.] Przepraszam, kontynuujcie sobie.}
+
+{220}{}{Chaaaahaa! Weeeœ mnie nie rozœmieszaj chopie! Kim ty jesteœ, ¿eby nam roskazywaæ?!}
+{221}{}{[Si³a] [Zignoruj jego zniewagê, podnieœ ich za fraki i ciœnij o ziemiê.]}
+{222}{}{[Retoryka] Wiecie co wasza dupa ma wspólnego z g³owic¹ nuklearn¹?}
+{223}{}{[Walka wrêcz] Wypierdalajcie i nie wkurwiajcie ludzi. Won.}
+
+{230}{}{Eee? Co ty kuhwa piehdolisz?!}
+{231}{}{Widzicie... ja te¿ nie wiem, ale uprzedzam! Jeœli zaraz nie znajdziecie siê poza progiem tego lokalu to piekota waszej dupy bêdzie porównywalna z wybuchem tej¿e g³owicy.}
+{232}{}{Cha cha! Ty nam grozisz?}
+{233}{}{Widzicie tych trzech goœci? [Pokazujesz na stolik obok.] To najbardziej znani homoterroryœci na pustkowiach. Zrobi¹ wam z dupy jesieñ œredniowiecza!}
+{234}{}{Cholehra... on mo¿e mieæ racje. Lepi bedzie jak dokoñczymy to na zewn¹tsz...}
+{235}{}{Poza miastem.}
+{236}{}{Dobha dobha. Poza miastem.}
+{237}{}{[KONIEC]}
+
+#SIla cutscene
+{300}{}{Znowu siê lej¹, idŸ¿e tam zrobiæ porz¹dek}
+{301}{}{Bêdziesz siê tak gapi³, czy pomo¿esz mi wynieœæ te œcierwa?}
+
+#INtelignecja cutscene
+{330}{}{[Inteligencja] Mam was doœæ. Na œrodku miasteczka jest ring. Idziecie tam i rozwi¹zujecie sprawê.}
+{331}{}{A ¿ebys wiedzia³, ¿e pójdê i rozwalê frajera!}
+{332}{}{Taaa... zgniotê ciê jak karakana oszo³omie!}
+{333}{}{CHUJE, WYPUŒCIE MNIEEE!!!}
+
+#ZWinnosc cutescene
+{350}{}{[Zwinnoœæ] ChodŸcie cwaniaczki, przywalcie mi. No! Takie z was pizdeczki teraz?}
+{351}{}{Zadar³eœ z niew³aœciwymi ludŸmi...}
+{352}{}{Masz przesrane...}
+{353}{}{AAARRRGHHH}
+{354}{}{KURWA, DLACZEGO}
+{355}{}{CHUJU, POSTRZELI£EŒ MNIE W NOGÊ, CHUJU!}
+{356}{}{AHHHHH}
+{357}{}{Rozumiemy sie?}
+{358}{}{Tak, tak! JAK NAJJAŒNIEJ!}
+{359}{}{Kurwa, kto to teraz wszystko posprz¹ta?}
+{360}{}{Wynoœcie siê st¹d, RAZ NA ZAWSZE}
+
+#punch cutscene
+{380}{}{Dobha kuhwa, nie jesteœ z³y w te klocki. O chuj ci chodzi?}
+{381}{}{Wkurwiacie wszystkich w barze. ZnajdŸcie sobie lepsze miejsce do bitki. WON!}
+{382}{}{DOBRA, DOBRA. Ju¿ idziemy}

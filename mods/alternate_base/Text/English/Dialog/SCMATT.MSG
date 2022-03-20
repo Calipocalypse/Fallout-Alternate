@@ -1,0 +1,26 @@
+{200}{}{Huh? [Patrzy siê na ciebie otêpia³ym wzrokiem.]}
+{201}{}{Haha! Wiedzia³em, debil!}
+{202}{}{Chyba nie powinienem ciê zaczepiaæ.}
+
+{210}{}{[Matt nagle powa¿nieje.] Nug nug, bach! [Wykonuje zamach rêk¹. Dziêki wysokiej zwinnoœci unikasz ciosu.]}
+{211}{}{[Matt nagle powa¿nieje.] Nug nug, bach! [Wykonuje zamach rêk¹. Obrywasz.]}
+
+{220}{}{Auæ!} #Upadek
+
+{230}{}{[DALEJ.]}
+{231}{}{Przestañ go zaczepiaæ, albo ten obrzyn zagra tango!}
+{232}{}{[Ignoruje ciê.]}
+{233}{}{[Upadnij.]}
+
+{240}{}{Ha! A jednak coœ rozumiesz!}
+
+{250}{}{Eh?} #Drugie podejœcie
+{251}{}{Hej! To by³o niemi³e z twojej strony!}
+{252}{}{Lepiej nie bêdê ciebie ju¿ zaczepia³.}
+
+{260}{}{Bach Bach! [Znowu obrywasz.]}
+{261}{}{[Upadnij ponownie.]}
+
+{269}{}{[Patrzy na ciebie z pogard¹.]}
+{270}{}{Przesadzi³eœ w tym momencie!} #3 podejscie
+{271}{}{Odpierdol siê od niego, albo ten obrzyn zagra tango!}

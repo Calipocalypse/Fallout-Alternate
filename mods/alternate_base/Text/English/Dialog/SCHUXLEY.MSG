@@ -1,0 +1,80 @@
+{200}{}{Zak³adam, ¿e wys³ali ciê tutaj, ¿ebyœ ze mn¹ skoñczy³. Œmia³o, dobij mnie, dobij Huxley'a. Tylko wyœwiadczysz mi przys³ugê. Doœæ siê tutaj nacierpia³em.}
+{201}{}{To nie bêdzie koniecznie. Mo¿e uda nam siê jakoœ dogadaæ.}
+{202}{}{Sprawiê, ¿e bêdziesz cierpia³ jeszcze bardziej.}
+{203}{}{Dziêki, fajnie, ¿e u³atwiasz sprawê.}
+{204}{}{Jak siê tu znalaz³eœ?}
+
+{210}{}{Karma ciê dopadnie, sukinsynu...}
+
+{300}{}{A co ciê to kurwa... a z reszt¹... chcia³em po prostu uciec z tego pierdolnika zwanego wci¹¿ Cienistymi Piaskami, wiêc bêd¹c jeszcze w obozie zacz¹³em siê podlizywaæ. Przenieœli mnie poza obóz, wykorzysta³em ich naiwnoœæ, spakowa³em siê i w nocy przeœlizgn¹³em siê miêdzy œpi¹cymi stra¿nikami bramy.}
+{301}{}{I co dalej?}
+{302}{}{Przeszed³em tak z 500 metrów i nagle zaczê³y mi œwistaæ kule miêdzy uszami. Wpad³em w panikê i zacz¹³em biec zygzakiem, obróci³em siê za siebie, a oni wci¹¿ mnie gonili. Poczu³em ból w ³ydce. Postrzelili mnie.}
+{303}{}{No nieŸle, a jak siê sta³o, ¿e tu trafi³eœ?}
+{304}{}{Zacz¹³em utykaæ na nogê, ju¿ wtedy wiedzia³em, ¿e nie dam im rady uciec. Nagle zobaczy³em œwiate³ko w tunelu… tyle, ¿e na odwrót. Przede mn¹ ukaza³a siê ciemna bardziej ni¿ wszystko co znam jaskinia. Wiêc wbieg³em do œrodka maj¹c nadziejê, ¿e mnie nie zobacz¹, ale oni wiedzieli.}
+{305}{}{Nie weszli za tob¹?}
+{306}{}{Postrada³eœ zmys³y? Nie czujesz tego smrodu na oko³o? Mogli siê te¿ spodziewaæ czegoœ w rodzaju podstêpu, bo jak ju¿ zauwa¿y³eœ jest tu ciemno jak cholera. Ledwo uda³o mi siê zatamowaæ krwawienie, takiej prowizorki jeszcze w ¿yciu nie widzia³em.}
+{307}{}{Sk¹d ten smród?}
+{308}{}{Widocznie ta jama s³u¿y³a przez pewien czas za dom radskorpionom. Ktoœ im jednak z³o¿y³ niespodziewan¹ wizytê. To ich pozosta³oœci s¹ przyczyn¹ tego smrodu. Poza tym nagromadzi³o siê tu wiele ¿eruj¹cych szczurów. To dlatego jeszcze nie zdech³em z g³odu.}
+{309}{}{No dobra, ale dlaczego tu le¿ysz?}
+{310}{}{Ból w ³ydce promieniuje na ca³¹ nogê. Niewa¿ne co zrobiê, czy poruszê ni¹ lekko, czy dotknê j¹ palcem powoduje, ¿e mam ochotê siê zabiæ. Wiêc jeœli jesteœ tu, ¿eby ze mn¹ skoñczyæ, czyñ swoj¹ powinnoœæ.}
+
+{311}{}{Jestem tutaj, ¿eby ci pomóc. Nie zabijaæ ciê.}
+{312}{}{Potrzebujê tylko pewnej czêœci twojego cia³a, to nie zajmie d³ugo.}
+{313}{}{Mówisz i masz.}
+
+{315}{}{Przynajmniej nie umieram z pustym ¿o³¹dkiem.} 
+
+{320}{}{Dogadaæ? Cha cha. Wy Chanowie, to dopiero macie poczucie humoru. No dalej, nie pozwól mi czekaæ.}
+{321}{}{Pomóc? Cha cha. Wy Chanowie, to dopiero macie poczucie humoru. No dalej, nie pozwól mi czekaæ.}
+{322}{}{Naprawdê jestem po to, ¿eby ci pomóc.}
+{323}{}{Masz racjê, po¿egnaj siê z tym œwiatem.}
+
+{324}{}{Wiêc ty nie jesteœ Chanem?}
+{325}{}{Nie.}
+
+{330}{}{Wiesz, ¿e wyci¹gniêcie mnie z tego stanu graniczy z cudem?}
+{331}{}{Zdajê sobie z tego sprawê, ale musisz zrobiæ te¿ coœ dla mnie.}
+
+{332}{}{Ja? Co masz na myœli?}
+{333}{}{Garl za¿yczy³ sobie twojego ucha jako trofeum i dowód za wykonanie roboty.}
+
+{334}{}{Chyba sobie jaja robisz. Ju¿ bêdzie lepiej jak mnie dobijesz, a potem je sobie weŸmiesz. Za du¿o siê nacierpia³em.}
+{335}{}{Skoro nie ma innej drogi...}
+{336}{}{Pozwolisz mi odci¹æ to ucho, a ju¿ nigdy w ¿yciu nie ujrzysz ¿adnego Chana.}
+{337}{}{Odetnê ci to ucho, czy tego chcesz czy nie.}
+
+{340}{}{Niech ciê krew zaleje za to…}
+{341}{}{(Cholera zapomnia³em no¿a...) Zaraz wracam.}
+{342}{}{Ch³opaki, nie macie po¿yczyæ no¿a?}
+
+{350}{}{Dobra, dobra ju¿ dobra! Tylko nie pozwól mi siê wykrwawiæ na œmieræ tutaj, po tym jak odetniesz ucho. Kurwa, jak to brzmi... Musisz zatamowaæ krwawienie, pamiêtaj.}
+{351}{}{Zaraz wracam, zapomnia³em no¿a...}
+{352}{}{[Wyci¹gnij nó¿ i przymierz siê do odciêcia.] Lecimy z tematem.}
+{353}{}{Zaczekaj tu chwilê, muszê coœ ogarn¹æ. Bêdê za minutkê.}
+
+{360}{}{I jak? Bêdzie ciête czy nie?}
+
+# do poprawy
+
+{370}{}{[Dynamicznym ruchem odcinasz ucho, ale przypadkiem uszkadzasz ¿y³ê z której lej¹ siê strumienie krwi] Arrghh!}
+{371}{}{[U¿yj apteczki, aby zatamowaæ krwawienie.]}
+{372}{}{[Zatamuj krwawienie wed³ug najlepszej medycznej wiedzy.]}
+{373}{}{[Spróbuj zatamowaæ krwawienie dociskaj¹c ¿y³ê.]}
+{374}{}{[Spróbuj zatamowaæ krwawienie tak jak by³o napisane w podrêczniku przertwania.]}
+
+{380}{}{[Huxley przestaje kontaktowaæ, umiera.]}
+{381}{}{No i chuj no i czeœæ...}
+
+{390}{}{[Zrêcznie tamujesz krwawienie.]}
+{391}{}{Chyba siê uda³o.}
+
+{400}{}{Uch... mam nadziejê. To co teraz?}
+{401}{}{Powinni odejœæ st¹d za nied³ugo, dla bezpieczeñstwa zaczekaj parê dni nim odejdziesz.}
+
+{410}{}{Cholercia, dziêki! Mam nadziejê, ¿e kiedyœ siê jeszcze spotkamy. Dziêki, przyjacielu}
+{411}{}{Drobiazg, ¿egnaj.}
+
+{415}{}{Dziêki, przyjacielu!}
+
+{997}{}{No dalej! Tnij sukinsynu!}
+{998}{}{No dalej! Wykoñcz mnie!}

@@ -1,0 +1,3 @@
+{108}{}{Nie udaje ci siê ustabilizowaæ generatora.}
+{109}{}{Wygl¹da na to, ¿e uda³o ci siê ustabilizowaæ napiêcie generatora.}
+{110}{}{Generator nie wymaga majstrowania przy nim.}

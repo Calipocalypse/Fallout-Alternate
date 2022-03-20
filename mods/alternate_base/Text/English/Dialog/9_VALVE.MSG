@@ -1,0 +1,7 @@
+{200}{}{Widzisz masywny czerwony zawór, który wydaje siê prosiæ by ktoœ siê nim pobawi³.}
+{201}{}{[SI£A 5] Odkrêæ zawór. Zobaczymy co siê stanie.}
+{202}{}{[SI£A 5] [INTELIGENCJA 7] Odkrêæ zawór w taki sposób, aby ustawiæ minimalny przep³yw substancji.}
+{203}{}{OdejdŸ.}
+
+{300}{}{Hej! Trzymaj ³apska z dala od tego!}
+{301}{}{Miarka siê przebra³a, nie bêdê ryzykowa³ niepowodzenia naszej szczytnej misji!}

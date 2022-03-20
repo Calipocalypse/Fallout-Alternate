@@ -1,0 +1,18 @@
+#IN CHURCH
+{200}{}{Mama?}
+{201}{}{Coœ ca³y czas dosypuj¹ nam do wody...}
+{202}{}{To co mówi ten goœæ, mo¿e ma jakiœ sens jednak...}
+{203}{}{Ooo jaki piêkny witra¿...}
+{204}{}{Jednoœæ, jednoœæ, jeeednoœæ... Hrrr...}
+#IN CAGES
+{300}{}{Zawsze chcia³em zobaczyæ œwiat zewnêtrzny, ale teraz ju¿ chcê wracaæ}
+{301}{}{Hej, ta iguana jest ca³kiem, ca³kiem!}
+{302}{}{Mam nadziejê, ¿e nie przerobi¹ nas na miêso}
+{303}{}{To ju¿ kolejny, którego zrzucili w przepaœæ, sk¹d oni siê bior¹?}
+{304}{}{Nie chcê wygl¹daæ tak jak oni...}
+{305}{}{Chuje, wypuœcie mnie, chuje!}
+{306}{}{Nie o tak¹ kryptê walczy³em!}
+{307}{}{Blue lives matter!}
+{308}{}{Nie chcê wiedzieæ, co siê z nami stanie}
+{309}{}{Mam nadziejê, ¿e ten od hydroprocesora nas ocali}
+{310}{}{Coœ czujê, ¿e i nas zamieni¹ w zielonych, brzydkich mutantów}

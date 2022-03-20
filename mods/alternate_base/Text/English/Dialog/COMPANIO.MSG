@@ -1,0 +1,239 @@
+###
+###First Talk
+###
+
+{200}{}{Witaj nietutejszy, co sprowadza ciebie w te strony? Niecodziennie zobaczyæ kogoœ w tym kombinezonie.}
+{201}{}{Moja krypta zosta³a zaatakowana przez supermutantów. Nieliczni zdo³ali uciec. Martwiê siê co z reszt¹.}
+{202}{}{Trzymaj nosa z dala od nie swoich pieprzonych spraw.}
+
+#202
+{210}{}{Zatem nie mamy o czym rozmawiaæ.}
+{211}{}{Nie mamy o czym rozmawiaæ.}
+
+{220}{}{Kiedyœ myœla³em, ¿e krypty to tylko bajki dla grzecznych dzieci, ale rzeczywiœcie te miejsca istniej¹. Moim zdaniem im d³u¿ej zwlekaj¹ z otwarciem wrót tym gorzej dla nich samych.}
+{221}{}{Dlaczego s¹dzisz, ¿e izolacja nie sprzyja kryptom?}
+
+{230}{}{Podró¿e kszta³c¹, a tak siê sk³ada, ¿e jestem podró¿nikiem. Daleko na pó³nocny wschód st¹d jest miasto Krypty 8. W przeciwieñstwie do innych krypt stanowi ju¿ jak¹œ si³ê militarn¹ i polityczn¹ w regionie. Zobacz - twoja krypta nigdy siê nie otworzy³a, wiêc mieszkañcy nie zdawali sobie sprawy z zagro¿eñ na zewn¹trz. To musia³o siê tak skoñczyæ.}
+{231}{}{Krypta 8?}
+
+{240}{}{Krypta 8 jak ju¿ mówi³em znajduje siê bardzo daleko st¹d na pó³nocny wschód. Oni wyszli na powierzchniê bodaj¿e 10 lat po wojnie by skolonizowaæ powierzchniê za pomoc¹ takich œmiesznych skrzyneczek z nasionami i ró¿nymi innymi zabawkami. Kawa³ przedwojennej techniki. Kto ma technologiê rz¹dzi.}
+{241}{}{Jakie znasz jeszcze inne miejsca na Œwiecie?}
+
+{250}{}{Facet, znam tyle miejsc, ¿e w ¿yciu nie zdo³a³bym ci o nich opowiedzieæ siedz¹c w jednym barze. Na wschód st¹d nie ma raczej nic co ciê interesuje. Daleko na po³udnie w ruinach miasta Los Angeles mo¿na kupiæ nieco sprzêtu. Choæ i tam ju¿ grasuj¹ supermutanci. By³y jeszcze inne miasta na po³udniu, ale to ju¿ przesz³oœæ za spraw¹ tych których by³o dane ci poznaæ. Na pó³nocy ¿yj¹ dzikie plemiona, które zjedz¹ ciê ze smakiem przy najbli¿szej okazji.}
+{251}{}{Szukam ludzi do pomocy w odbiciu krypty. Wygl¹dasz na kogoœ kto zna siê na sprawie.}
+
+{260}{}{Hola, hola. Nigdzie nie powiedzia³em, ¿e chce siê anga¿owaæ pomoc twojej krypcie. Widzisz, nie bez powodu w tym Œwiecie przybysze z krypty nie s¹ darzeni wielk¹ sympati¹.}
+{261}{}{Dlaczego ludzie z pustkowi nie szanuj¹ przybyszów z krypt?}
+
+{270}{}{Podziêkuj twojemu kochasiowi z krypty 13, który… a z reszt¹. Sam dojdziesz do dlaczego. Na szczêœcie ja ¿yjê w œwiecie w którym cz³owieka okreœla iloœæ dokonañ, wiêc mogê ci daæ szansê.}
+{271}{}{O czym ty do cholery mówisz?}
+
+{280}{}{Wszystko w swoim czasie, przyjacielu. Jest wiel spraw, które oczekuj¹ rozwi¹zania. Niemniej wa¿nych od twoich kochasiów z krypty.}
+{281}{}{Takie jak?!}
+
+{290}{}{CISZEJ do jasnej cholery… chcesz ¿ebym ci zaufa³? A uwierz mi, ja dbam o tych którym ufam.}
+{291}{}{Co chcesz ode mnie, ¿ebyœ mi zaufa³?}
+
+{300}{}{le do tego podchodzisz. Nasze cele mog¹ byæ ca³kiem dobrze ze sob¹ ca³kowicie zbie¿ne, albo i nie... }
+{301}{}{Mam ciebie doœæ, podejrzany typie.}
+{302}{}{W porz¹dku. To mo¿e inaczej. W czym mogê ci siê przys³u¿yæ?}
+
+#301
+{310}{}{Zatem nie mamy o czym rozmawiaæ.}
+{311}{}{Nie mamy o czym rozmawiaæ.}
+
+{320}{}{Tak lepiej. Teraz s³uchaj uwa¿nie, bo nie bêdê powtarza³.}
+{321}{}{W porz¹dku.}
+{322}{}{Co?}
+
+#322
+{330}{}{Powiedzia³em, ¿ebyœ s³ucha³ uwa¿nie bo nie bêdê powtarza³.}
+{331}{}{Aha. Kontynuuj.}
+
+{340}{}{Wiêc s³uchaj. Nie wiem czy zwróci³eœ uwagê, ale mamy tutaj ma³y szpital prowadzony przez szpiegów supermutantów. Oczywiœcie nikt z tej wioski nie zdaje sobie sprawy z zagro¿enia, no mo¿e nikt oprócz biednego Marka z bramy... Myœlê ¿e móg³byœ z nim porozmawiaæ na ten temat. Trzeba sprawiæ by opuœcili wioskê. Niestety ja nie mogê do tego przy³o¿yæ rêki.}
+{341}{}{Mam ich zabiæ?}
+{342}{}{Mi³o, ¿e mi o tym wszystkim mówisz. Zobaczymy co siê stanie kiedy Chanowie siê o tym dowiedz¹.}
+{343}{}{Jasne, zajmê siê tym od razu.}
+
+{350}{}{[Nieznajomy bierze pust¹ butelkê po wódce do rêki i rozbija j¹ sobie na g³owie. Wszystkie oczy w barze skupione s¹ na was.] Ahh… sukinsynu… zap³acisz mi za to!}
+{351}{}{Panowie to nie tak!}
+
+{360}{}{Hola, hola! Nikogo nie bêdziemy zabijaæ, o ile nie bêdzie to konieczne...  To jak? Jesteœ zaj¹æ siê tym tematem?}
+{361}{}{Pewnie, do³o¿ê wszelkich starañ.}
+
+{370}{}{Œwietnie, udaj siê do Marka i zagadaj na ich temat.}
+{371}{}{To w³aœnie chcia³em zrobiæ.}
+
+#GRACZ Z POWROTEM W TRAKCIE MISJI Z DZIECMI KATEDRY
+
+{400}{}{Jesteœ i z powrotem. Co s³ychaæ przyjacielu? Czy problem szpitala zosta³ rozwi¹zany?}
+{401}{}{Poradzi³em sobie z problemem szpiegów. Gryz¹ piach.}
+{402}{}{Poradzi³em sobie z problemem szpiegów. Wrócili tam sk¹d przybyli.}
+{403}{}{Pracujê nad tym.}
+
+{410}{}{Nie chcia³bym ciê pospieszaæ, ale przed³u¿aj¹c to ryzykujemy inwazj¹ supermutantów.}
+
+{420}{}{Nie jestem pewny czy by³a to konieczna droga, ale takie mamy czasy, ¿e musimy wybieraæ mniejsze z³o.}
+{421}{}{Doskonale! Zachowa³eœ siê jak Stra… hmmmm… bardzo dobrze siê zachowa³eœ!}
+{422}{}{[DALEJ.]}
+
+{440}{}{Myœlê, ¿e w koñcu mo¿emy przejœæ do konkretów.}
+
+#MUSIMY USZKDOZIÆ RADIOSTACJÊ
+
+{500}{}{Widzisz... za³atwi³eœ ju¿ mi problem ze purporowymi szpiegami, ale niestety stworzy³eœ nowy.}
+{501}{}{Co siê sta³o?}
+
+{510}{}{Nie bez powodu radiostacja Felixa wczeœniej nie dzia³a³a. To by³a czêœæ nasz… mojego planu. Nie mog³eœ o tym wiedzieæ. Zanim przyst¹pimy do finalnego kroku musimy znowu wy³¹czyæ radiostacjê. Tym razem na dobre.}
+{511}{}{Teraz ju¿ nie jestem pewny czy dobrze robiê pomagaj¹c ci.}
+{512}{}{Chcesz ¿ebym uszkodzi³ radiostacjê?}
+
+{520}{}{Rozumiem, ¿e to wszystko dla ciebie zagmatwane, ale to miejsce siê zmieni ju¿ teraz, albo Chanowie zasil¹ armiê Jednoœci.}
+{521}{}{Armia Jednoœci?}
+#512
+
+{530}{}{Armia Jednoœci czyli inaczej armia supermutantów. Jeœli chcesz pokierowaæ tak¹ grup¹ supermutantów musisz dorobiæ do tego ideologiê. Nikt nie bêdzie œlepo mordowa³ ludzi.}
+#512
+
+{540}{}{Tak. W tym wszystkim szkoda tylko tego biedaka. Felixa. To pasjonat radia i technologii z nim zwi¹zanych. Zabraæ mu radio to jak zabraæ ma³pie banana.}
+{541}{}{Wydaje mi siê, ¿e jest ci go szkoda. Masz coœ do zaproponowania Felixowi?}
+
+{550}{}{Cha! Trafi³eœ w sedno. Tak siê sk³ada, ¿e jest takie pewne miejsce, gdzie Felix móg³by siê ca³kowicie zrealizowaæ. Felix jest niezale¿ny. Nie zale¿y mu na ¿adnej ideologii - tylko na pasji.}
+{551}{}{Kim ty do cholery jesteœ, ¿e dysponujesz takimi œrodkami?}
+
+{560}{}{Dowiesz siê w swoim czasie. A teraz zrobisz to dla mnie? Potrzebujemy wy³¹czyæ radio by nikt nie móg³ pods³uchiwaæ naszych rozmów.}
+{561}{}{[Nauka 50] Wiêc mo¿e po prostu wystarczy wy³¹czyæ odpowiednie czêstotliwoœci?}
+{562}{}{W porz¹dku, zrobiê to.}
+
+{570}{}{Nie mamy wystarczaj¹co czasu, ¿eby bawiæ siê w podchody. Chyba, ¿e jeœli masz odpowiednie predyspozycje do tego to czemu by nie.}
+{571}{}{Jasne.}
+
+{580}{}{Pospiesz siê, proszê… Mo¿emy mieæ nie za wiele czasu.}
+{581}{}{Zaraz wracam.}
+
+##Status
+
+{600}{}{No i jak tam? Czy radio Felixa dalej odbiera?}
+{601}{}{Za³o¿y³em filtr czêstotliwoœci. Felix nie zauwa¿y jak rozmawiamy na niektórych czêstotliwoœciach.}
+{602}{}{Dalej odbiera, ale ju¿ siê za to zabieram.}
+
+{610}{}{Œwietnie, mo¿emy przejœæ do realizacji tego co przygotowywa³em przez ten ca³y czas...}
+{611}{}{Co takiego?}
+
+#Druga droga
+
+{620}{}{Chcê tylko powiedzieæ, ¿e to co zrobi³eœ by³o bardzo nieodpowiedzialne i bardzo mi siê nie podoba³o. Trochê straci³em zaufanie w twoje kompetencje.}
+{621}{}{[DALEJ]}
+
+{630}{}{Niemniej jednak uda³o mi siê przekonaæ go do przejœcia na nasz¹ stronê tym razem ju¿ w nowym miejscu. Felix dostanie taki sprzêt o jakim tylko czyta³ w przedwojennych magazynach. Uwa¿am, ¿e mo¿emy przejœæ do finalnego kroku jakim jest wyswobodzenie wiêŸniów z niewoli.}
+{631}{}{Gdzie i co to za nowe miejsce?}
+{632}{}{Dlaczego Felix oddalil siê z jednym z Chanów?}
+{633}{}{Finalny krok?}
+
+{640}{}{Nie a¿ tak daleko i nie a¿ tak blisko by dojœæ tam w jeden dzieñ i nie na tyle ³atwe do opisania w jednym zdaniu. Nie mam czasu by ci o tym mówiæ.}
+
+{650}{}{To by³ mój pomocnik. Odprowadzi go do nowej radiostacji. Tylko nie mów o tym nikomu.}
+
+##MUSIMY ZAPEWNIÆ £¥CZNOŒÆ Z OBOZEM
+
+{700}{}{Jak pewnie ju¿ zauwa¿y³eœ we wschodniej czêœci miasteczka Chanowie zrobili grodzony obóz z niewolnikami i ja nie dopuszczê, ¿eby to tak zosta³o. Pomo¿esz mi w likwidacji tego dziadostwa?}
+{701}{}{Chcesz przej¹æ w³adzê w Cienistych Piaskach?}
+{702}{}{Od pocz¹tku wiedzia³em, ¿e coœ tutaj kombinujesz. Teraz Garl siê o wszystkim dowie!}
+
+{710}{}{To by³yby bardzo prymitywne ambicje gdybym rzeczywiœcie tego chcia³.}
+{711}{}{Sk¹d mam wiedzieæ, ¿e nie trafi¹ ci ludzie do gorszej niewoli?}
+
+{720}{}{Nie trafi¹. Kiedy dostan¹ do rêki pistolet stan¹ siê prawdziwie wolnymi ludŸmi.}
+{721}{}{Uzbroisz ich wszystkich?}
+
+{730}{}{Ju¿ to zrobi³em. Czas na finalny krok.}
+{731}{}{JAK to JU¯ zrobi³eœ… nic mi konkretnego nie mówisz. I my mamy wspó³pracowaæ?}
+
+{740}{}{Zobaczysz ju¿ nied³ugo... Jeszcze nieŸle razem wypijemy i wszystko ci ze szczegó³ami opowiem.}
+{741}{}{Dobra… dobra. To jaki jest plan?}
+
+{750}{}{Teraz gdy Felix jest pozbawiony ³¹cznoœci mo¿emy komunikowaæ siê z wiêŸniami z obozu i przeprowadziæ rebeliê przeciwko Chanom.}
+{751}{}{Nie uwa¿asz, ¿e istnieje lepszy pomys³ jednoczeœnie unikaj¹c walki?}
+
+{760}{}{Mo¿liwe, ale nie mamy czasu by myœleæ o tym tylko wprost zabraæ siê za to. Myœla³em o ró¿nych rozwi¹zaniach. Miêdzy innymi wysadzenie muru, czy przedostanie siê na drug¹ stronê za pomoc¹ liny. W jednym i drugim przypadku brakuje mi materia³u, a drugi jest jeszcze bardziej ryzykowny ni¿ pierwszy.}
+{761}{}{Co gdyby mi siê uda³o jednak za³atwiæ jedn¹ z tych rzeczy?}
+{762}{}{Racja, przejdŸmy do najkonkretniejszego rozwi¹zania.}
+
+{770}{}{Nieee… nie mamy na to czasu, ale… ale gdyby przypadkiem mia³byœ materia³y wybuchowe lub linê to mo¿na by³oby siê zastanowiæ nad przemyceniem tego do obozu. Ale zanim to pozwól, ¿e przedstawiê ci moj¹ wersjê.}
+{771}{}{W porz¹dku.}
+
+{780}{}{Mój plan opiera siê na wszczêciu rebelii w samym sercu obozu. Reszt¹ zajmê siê ja. ¯eby zdezorganizowaæ odpowiednio Chanów potrzebujemy zsynchronizowaæ nasze dzia³ania. Chcê ¿ebyœ przeszed³ do obozu wraz z radiem, które ci dam. To ostatnie brakuj¹ce ogniwo w ³añcuchu mojego planu.}
+{781}{}{Mam siê sam oddaæ Chanom?}
+{782}{}{Niech bêdzie… zrobiê to.}
+
+{790}{}{Jeœli wszystko dobrze pójdzie nie spêdzisz tam nawet jednego dnia. Trzeba im tylko przekazaæ radio i powiedzieæ, ¿e jesteœmy gotowi.}
+{791}{}{Niech bêdzie… daj mi to radio. Zobaczê co siê da zrobiæ.}
+{792}{}{To zasz³o ju¿ za daleko. Bêdzie rozlew krwi. Muszê powiedzieæ wszystko Chanom!}
+
+{800}{}{Nie uwa¿am tak. Niemniej jednak weŸ ode mnie to radio... [Przekazuje ci urz¹dzenie.] i zrób co uwa¿asz za s³uszne.}
+{801}{}{Dobra.}
+
+{810}{}{Œwietnie. ZnajdŸ kogoœ kto tam dowodzi wiêŸniami. Na pewno stworzyli sobie coœ na wzór pewnej hierarchii. Przeka¿ mu radio i powiedz, ¿e jesteœmy chêtni im pomóc.}
+{811}{}{Zobaczymy.}
+
+#Oboz status
+
+{850}{}{Mam nadziejê, ¿e wkrótce zabierzesz siê za to o co ciê prosi³em. Liczy siê ka¿da sekunda.}
+{851}{}{Mo¿esz mi powtórzyæ co mia³em zrobiæ?}
+{852}{}{Hej, mam materia³y wybuchowe.}
+{853}{}{Hej, znalaz³em linê.}
+{854}{}{Przyszed³em powiedzieæ, ¿e w³aœnie siê za to zabieram.}
+#855 Mam parê pytañ
+
+{880}{slk65}{What you be needing?}
+{881}{}{I need you to get out of my way.}
+{882}{}{I want to change combat tactics.}
+{883}{}{I need you to wait here.}
+{884}{}{You should heal yourself.}
+{885}{}{Tell me how you are.}
+{886}{}{That's it for now, Sulik.}
+{887}{}{Tell me about this place.}
+
+{890}{slk66}{What be the fighting strategy?}
+{891}{}{I want you to change your distance.}
+{892}{}{I want you to use your best weapon.}
+{893}{}{I want you to use your best armor.}
+{894}{}{I want you to change your aggressiveness.}
+{895}{}{Never mind.}
+
+{900}{slk67}{What distance you need us at?}
+{901}{}{I want you to stay at only a Short distance.}
+{902}{}{I want you to stay at Medium distance.}
+{903}{}{I want you to stay at Long distance.}
+{904}{}{I need you to Scout Ahead.}
+
+{905}{slk68}{How do you want us to fight?}
+{906}{}{I want you to Fight Defensively for now.}
+{907}{}{I need you to Fight Normally.}
+{908}{}{I need you to Fight Aggressively.}
+
+{910}{slk69}{One survivor. Dude was in bad shape. Said evil warriors came with magic torches. Fire
+ would lick tribe warriors and they'd go to the spirit.}
+{911}{}{What about your sis?}
+
+{912}{slk69a}{The evil warriors tied up the rest and took off. Sis with 'em. Fren, we be finding her or
+ dying trying.}
+{913}{}{Sounds like slavers to me. Have you found anything out about them?}
+{914}{}{I'm sorry to hear that. I hope you find her. Let me ask you something else.}
+{915}{}{I think that's all I need to know for now. Goodbye.}
+
+{916}{slk70a}{Be like middle of ant hill here. Too crowded for us.}
+{917}{slk70b}{Our tribe seems smaller than this. Too many people for this trip.}
+{918}{slk70c}{You have your army. Don't need we and I for help now.}
+
+{919}{slk71}{We and I sad to see you take the mark. Think you growing dark in the soul. Have to
+ go. See you.}
+
+{920}{slk72}{You think owning people OK? Some fren. We're gone.}
+
+{921}{slk73a}{You got a lot of problems with people. We'll go until you be figuring that one out.}
+{922}{slk73b}{You like a bad dream. We gotta go.}
+
+{923}{slk74}{No way we be frens with Child Killer.}
+
+{924}{slk75}{We think you're making a big mistake, but OK.}

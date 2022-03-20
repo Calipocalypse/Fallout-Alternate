@@ -1,0 +1,31 @@
+{100}{}{Widzisz mê¿czyznê w fioletowych szatach.}
+{101}{}{Widzisz mê¿czyznê w fioletowych szatach. Stoj¹c na tej scenie wydaje siê pe³niæ tutaj wa¿n¹ funkcjê.}
+
+#W nocy
+{200}{}{Czy postrada³eœ zmys³y bracie? PrzyjdŸ rano}
+{201}{}{Czy postrada³aœ zmys³y siostro? PrzyjdŸ rano}
+
+{298}{}{Witaj, jestem ojciec Gregory. A ty siostro, jesteœ now¹ twarz¹. Co ciebie do mnie sprowadza?}
+{299}{}{Witaj, jestem ojciec Gregory. A ty bracie, jesteœ now¹ twarz¹. Co ciebie do mnie sprowadza?}
+{300}{}{Co ojciec Gregory mo¿e dla ciebie zrobiæ tym razem?}
+
+{301}{}{Koœció³ na zboczu góry? Po co to wszystko?}
+{302}{}{Kim jesteœ?}
+{303}{}{O jakim darze mowa?}
+{304}{}{Czy czasami w¹tpisz to co wierzysz?}
+{305}{}{Jaka jest twoja historia?}
+{306}{}{Kim jest dok³adnie Mistrz?}
+{309}{}{Muszê ju¿ iœæ.}
+
+{310}{}{To wszystko po to, aby pokazaæ wszystkim owieczkom, ¿e ich pasterz jest w stanie zapewniæ im budz¹c¹ szacunek zagrodê. Ca³kiem dobrze moglibyœmy zbudowaæ zwyk³y sza³as ze z³omu, ale czy by to wtedy nie odejmowa³o godnoœci Œwiêtemu P³omieniu?}
+{320}{}{Ja jestem ojciec Gregory. Prowadzê te owieczki ku œwietlanej przysz³oœci. Jeszcze nie rozumiej¹ jaki dar za nied³ugo otrzymaj¹.}
+{330}{}{Wielki dar przemienienia. Dostan¹ drugie ¿ycie, prawie nieœmiertelne. Chocia¿ wielu z nich zatraci zdolnoœæ roztropnego rozumowania... Wszystko to po to, aby Wielki Plan Mistrza wobec nas wype³ni³ siê.}
+{340}{}{Zdarza siê, ale by totalnie zw¹tpiæ musia³bym zobaczyæ, ¿e wszystko jest k³amstwem, a Jednoœæ buduje we mnie przekonanie, ¿e w koñcu odnalaz³em prawdê.}
+{350}{}{Niecodzienne pytanie. Dorasta³em w ruinach miasta Los Angeles. Po nag³ej œmierci rodziców z r¹k gangu Rozpruwaczy zacz¹³em siê b³¹kaæ i szukaæ prawdy. Odnalaz³y mnie Dzieci Katedry. PóŸniej wyruszy³em z misj¹ na pó³noc.}
+{360}{}{To bardzo dobre pytanie. Niewielu wybranych go widzia³o. Niestyty mówi siê, ¿e Mistrz wype³ni³ swoj¹ misjê tutaj na Ziemi i zamieni³ siê w Œwiêty P³omieñ jeszcze raz na dowód, ¿e jest naszym Mistrzem.}
+
+{400}{}{Œwiêty P³omieñ zmiót³ z powierzchni Ziemi tych co j¹ niszczyli}
+{401}{}{Mistrz o którym wam opowiada³em}
+{402}{}{Ten którego nauki doprowadz¹ nas kiedyœ do Jednoœci}
+{403}{}{Sta³ siê drugim Œwiêtym P³omieniem bêd¹c dowodem na to, ¿e nigdy nie by³ zwyk³ym œmiertelnikiem}
+{404}{}{Kiedy Jednoœæ stanie siê faktem, pamiêæ o nim nigdy nie zginie...}

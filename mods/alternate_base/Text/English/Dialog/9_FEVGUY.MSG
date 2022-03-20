@@ -1,0 +1,38 @@
+{200}{}{Hmmm… elektronow¹ czy migomatem…} 
+{201}{}{Migomatem!}
+{202}{}{Jednak elektronow¹. Migomatem to siê zaraz sam pierdolnê}
+
+{300}{}{O czeœæ! Móg³byœ mi pomóc? Obiecujê, ¿e to nie zajmie d³ugo. Oj, tylko jakbyœ móg³ przytrzymaæ rurkê o w tym miejscu.}
+{301}{}{Pewnie!}
+{302}{}{Eee, chyba ju¿ pójdê.}
+
+{305}{}{Tak, pewnie. Niech siê stary Sarius sam z tym mêczy!}
+{306}{}{Uhh...}
+
+{310}{}{{Trzymaj to w ten sposób, bo jeœli siê przechyli to ca³a breja siê na nas wyleje.}
+{311}{}{Co jest w tych zbiornikach?}
+
+{320}{}{Œwiêty p³yn. Przed wojn¹ nazywali to wirusem F.E.V. Najproœciej mówi¹c to jest to co zmienia ludzi w supermutantów.}
+{321}{}{Chcecie… to znaczy chcemy zmieniæ wszystkich mieszkañców krypty w supermutantów?}
+
+{330}{}{Docelowo tak, ale nie od razu! Bardzo ³atwo jest zmarnowaæ potencja³ takiej krypty. Ale po kolei. Populacja krypty to tysi¹c mieszkañców. Na rozkaz góry mamy siê wstrzymaæ z masow¹ przemian¹. Docelowo 10% mieszkañców krypty bêdzie testowana próbkami F.E.V.-u przez 200 dni.}
+{331}{}{Kiedy wiêc bêdzie masowa przemiana mieszkañców?}
+
+{340}{}{Œciœle mówi¹c to bêdzie to za }
+{341}{}{ dni. Przez ca³y ten czas muszê utrzymywaæ zbiorniki w szczelnoœci. Breja paruje w skutek temperatury} #setgvar #giveexp #display_msg
+{342}{}{Dlaczego zmieniamy akurat mieszkañców krypty?}
+
+{350}{}{Bo istnieje wysokie podejrzenie, ¿e promieniowanie jonizuj¹ce oddzia³uje na jakoœæ dzia³ania F.E.V. Ludzkoœæ od czasów Wielkiej Wojny to a¿ trzy, cztery pokolenia bêd¹ce wystawione na dzia³anie promieniowania. Szukaæ dzisiaj czystych genetycznie ludzii to jak szukanie ogniwa termoj¹drowego w ty³ku brahmina - gówniana sprawa.}
+{351}{}{To dlaczego trzymacie mieszkañców poza krypt¹? Przecie¿ tu te¿ jest promieniowanie!}
+
+{360}{}{Promieniowanie ju¿ dawno zesz³o tutaj do przedwojennych norm. To jest te¿ kolejna grupa badawcza. Niestety paru z nich nam uciek³o w pierwszym dniu. Biedaki… pewnie po¿ar³ ich pierwszy lepszy radskorpion.}
+{361}{}{Mogê to ju¿ puœciæ? Rêka mi cierpnie...}
+
+{370}{}{Jeszcze tylko chwilkê!} #game_time_advance
+{371}{}{[Czekaj.]}
+
+{380}{}{Dziêki za pomoc. Trzymaj tutaj w ramach podziêkowania ma³y upominek ode mnie.} #cripple
+{381}{}{Uhh, dziêki.}
+
+{390}{}{Otrzymujesz 100 kapsli.}
+{391}{}{Wygl¹da na to, ¿e twoja rêka wskutek nadmiernego wysi³ku bêdzie potrzebowa³a pomocy lekarza.}

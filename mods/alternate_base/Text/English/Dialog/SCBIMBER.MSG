@@ -1,0 +1,35 @@
+{200}{}{Nie przeszkadzaj nam w pêdzeniu bimbru. Znowu nam siê dostanie po ³apach jak nie wypracujemy normy.}
+{201}{}{Barman mnie przysy³a. Podobno siê opierdalacie, a on chce ¿ebyœcie pracowali szybciej, a jestem tu po to, ¿eby was przekonaæ do jego pomys³u.}
+{202}{}{[OdejdŸ.]}
+
+{210}{}{To mo¿esz mu powiedzieæ, ¿e wyrabiamy 100% normy i wcale nie uwa¿amy, ¿e to za ma³o. Nie da siê robiæ szybciej, serio.}
+{211}{}{[Inteligencja] Gdybyœcie robili wiêcej, moglibyœcie wzi¹æ coœ dla siebie i nikt by nic nie zauwa¿y³ [Mrugasz lewym okiem.]}
+{212}{}{[Retoryka/Charyzma] Jak zaraz nie ruszycie mi dupska i nie bêdziecie robiæ tyle ile chce barman to... to... widzicie ten ring? W³aœnie tam skoñczycie, jako g³ówna atrakcja wszystkich Chanów!}
+{213}{}{Gówno mnie to interesuje. Jak zaraz siê nie pospieszycie to... inaczej pogadamy.}
+{214}{}{[OdejdŸ.]}
+
+{220}{}{A³uuu. Zabrzmia³o groŸnie. Kim ty jesteœ w ogóle cz³owieku, odejdŸ i daj nam pracowaæ.}
+{221}{}{Jeszcze tu wrócê.}
+
+{230}{}{Hmm... wiesz co? Nie patrzyliœmy nigdy z tej strony... dobra. Powiedz temu zgredowi, ¿e bêdziemy robiæ wiêcej. Przy okazji sami weŸmiemy coœ dla siebie i nikt siê nie po³apie, hehe.}
+{231}{}{I piccolo.}
+
+{240}{}{Cholera... Serio tak powiedzia³? Dobra. Zobaczymy co siê da zrobiæ.}
+{241}{}{Idealnie.}
+
+{250}{}{S³ysza³em, ¿e wam siê nie chce pracowaæ}
+{251}{}{S³uchajcie, nie mam oporów by was naprostowaæ}
+{252}{}{Po prostu mi siê nie chce}
+{253}{}{Wiêc grzecznie przyœpieszcie tempa tak jak ja was uprzejmie proszê}
+{254}{}{Ale...}
+{255}{}{¯adnego do jasnej cholery ALE}
+{256}{}{ZAPIERDALAÆ}
+{257}{}{Tak, jest!}
+
+#punch
+{300}{}{Czy ty jesteœ normalny?! Masz w zwyczaju klepaæ codziennie losowych ludzi?}
+{301}{}{Mówi³em - robicie ponad normê, albo wracam tutaj i skoñczy siê tym razem inaczej.}
+{302}{}{Dobra, ju¿ DOBRA. Powiedz zgredowi, ¿e bêdzie mia³ wiêksze dostawy teraz.}
+
+#Rebelia
+{1000}{}{Cholera... to siê porobi³o...}

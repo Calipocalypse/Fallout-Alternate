@@ -1,0 +1,34 @@
+
+#First Time
+{100}{}{[Przed sob¹ widzisz ros³ego mê¿czyznê. Jego wyraz twarzy wydaje siê jednoczeœnie budziæ respekt i przera¿enie. Widz¹c ciebie jego kamienna twarz nawet nie drga. Tylko Ÿrenice skupiaj¹ce siê na tobie sugeruj¹, ¿e przykuwasz jego uwagê.]}
+{101}{}{Hej. Ty te¿ jesteœ z krypty!}
+{105}{}{[Jego g³owa lekko unios³a siê do góry, prawdopodobnie na znak potwierdzenia.]}
+{106}{}{To ciebie podobno robot medyczny upuœci³ zaraz po porodzie jak uderzy³eœ o posadzkê!}
+{110}{}{[Jego powieki mru¿¹ siê w grymasie.]}
+{111}{}{Ale… ale to to ciebie nazywaj¹ Max Stone! Mo¿e mnie nie znasz, ale widzia³em ciê wiele razy na si³owni…!}
+{115}{}{[...]}
+{116}{}{Myœlê, ¿e powinniœmy siê trzymaæ razem. Na pewno to nam nie zaszkodzi.}
+{120}{}{[Niepozornie skiwa g³ow¹ w dó³.]}
+{121}{}{A ty w ogóle coœ mówisz?}
+{122}{}{Dobra, ruszajmy.}
+{125}{}{[Maxwell obraca g³owê w praw¹ stronê wskazuj¹c na rozleg³¹ ciemnoczerwon¹ ranê poparzeniow¹. Mo¿na siê tylko domyœlaæ do czego dosz³o w œrodku. Imponuj¹ce jest to jak twardy jest ten skurwiel.]}
+{126}{}{Dobra. Widzê. Mo¿e w przysz³oœci coœ zaradzimy. Ruszajmy.}
+#First Time Garl
+{130}{}{[Kamienna twarz, nawet okiem nie mruga. Jego wyraz twarzy wydaje siê jednoczeœnie budziæ respekt i przera¿enie.]}
+{131}{}{Chyba dobrze siê sta³o, ¿e ciê stamt¹d wyci¹gn¹³em. Musimy sprawdziæ ten magazyn na po³udniu.}
+#121
+
+{150}{}{Max Stone przy³¹cza siê do twojej dru¿yny.}
+
+{10000}{}{???}
+{10001}{}{Ruszajmy, Maxwell. Mamy sprawy do za³atwienia.}
+{10002}{}{Jeszcze do ciebie wrócê. Nigdzie siê nie ruszaj}
+
+{10005}{}{[Nieœmia³o unosi kciuk w górê na znak OK.]}
+
+{10010}{}{[Maxwell wygl¹da ju¿ dobrze.]}
+{10011}{}{[Maxwell powoli wraca do si³.]}
+{10012}{}{[Maxwell dalej jest w s³abym stanie.]}
+{10013}{}{[Maxwell dalej wygl¹da koszmarnie.]}
+
+{10015}{}{[Maxwell przyjmuje postawê zamkniêt¹. Wygl¹da na to, ¿e nie ma miejsca dla niego w twojej dru¿ynie.]}

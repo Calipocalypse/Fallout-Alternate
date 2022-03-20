@@ -1,0 +1,6 @@
+{200}{}{Miejsce to zmieni³o siê od ostatniego razu. Bramy pilnuje dwóch gróŸnie wygl¹daj¹cych uzbrojonych po zêby supermutantów. To mo¿e byæ twardy orzech do zgryzienia.}
+
+{400}{}{NIEEEE}
+{401}{}{NIE MO¯ESZ TAK PO PROSTU WYJŒÆ Z KRYPTY}
+{402}{}{Mogê}
+{403}{}{To wersja demonstracyjna}

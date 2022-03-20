@@ -1,0 +1,80 @@
+{100}{}{Widzisz m³od¹ urodziw¹ kobietê.}
+{101}{}{Widzisz m³od¹ urodziw¹ kobietê.}
+{102}{}{Widzisz m³od¹ urodziw¹ kobietê. Wydawa³oby siê, ¿e nie pasuje do tego miejsca.}
+
+{300}{}{Nudy...}
+{301}{}{Jest jakiœ facet w okolicy? Byle nie klecha}
+{302}{}{Tylko jedno w g³owie mam...}
+
+{401}{}{Co tutaj robisz?}
+{402}{}{[OdejdŸ.]}
+
+{410}{}{Aktualnie nic. Mojego by³ego ch³opaka zjad³ wisielec. No có¿, ka¿dego szkoda.}
+{411}{}{Chyba niezbyt ci na nim zale¿a³o...}
+
+{420}{}{No przecie¿ oczywiœcie, ¿e nie. Byliœmy tylko dla jednej sprawy. Teraz gdy jestem sama nie radzê sobie ze sob¹.}
+{421}{}{Rozejrzyj siê, dooko³a sami faceci.}
+
+{430}{}{Daj spokój, to nieboszczyki! I zapominasz o supermutantach...}
+{431}{}{No w³aœnie co z nimi?}
+
+{440}{}{Pierwszy i ostatni raz... nie mam ochoty tego komentowaæ. W ka¿dym razie jego asortyment po prostu rozlecia³ siê...}
+{441}{}{Przykro mi to s³yszeæ...}
+
+{450}{}{Ale ty jesteœ inny...} #man
+{451}{}{Co masz na myœli?}
+
+{455}{}{Wiêc chyba rozumiesz doskonale moje problemy.} #fem
+{456}{}{Mia³abym do ciebie pewn¹ sprawê...}
+
+{460}{}{DAJ SPOKÓJ, wiesz o co mi chodzi.}
+{461}{}{Och, no dobra. [IdŸ za ni¹.]}
+{462}{}{Mo¿e innym razem. Ale widzê rozwi¹zanie twojego problemu.}
+
+#S + W + C + A > 25
+
+{470}{}{No i nie jesteœ pierwszym lepszym. A i ¿eby by³a jasnoœæ - wcale mnie nie obchodzi twój kombinezon krypty. Nie wiem co tu robisz, nie obchodzi mnie to. }
+{471}{}{ Mimo to twój ryj pozostawia wiele do ¿yczenia. } #CH1
+{472}{}{Mo¿esz do mnie wpaœæ za jakiœ czas.}
+{474}{}{W³aœciwie to jestem tutaj w pewnej sprawie.}
+
+{475}{}{No musisz trochê poæwiczyæ. Potrzebujê kogoœ z praktyk¹...}
+
+{480}{}{Taaaak?}
+{481}{}{Ty pracujesz z tym ch³opakiem w pomieszczeniu obok?}
+
+{490}{}{Niby tak, ale to jest ¿yciowy nieudacznik! Bez starego doktora to nawet stimpaka nie u¿yje poprawnie!}
+{491}{}{Ch³opakowi trzeba pomóc. Myœlê, ¿e skrycie drzemie w nim coœ wiêcej...}
+
+{500}{}{Chyba mnie masz za wariatkê, jeœli myœlisz, ¿e siê za niego zabiorê...}
+{501}{}{[RETORYKA] Jeœli obudzisz w ch³opaku pewnoœæ siebie, wiedz, ¿e wyzwolisz w nim jego prawdziwe ja i poznasz na prawdê jakim jest.}
+{502}{}{Mo¿e pewna sumka kapsli zmieni twoje zdanie?}
+{503}{}{Dobra, zapomnij...}
+
+{510}{}{Co ty MNIE masz za DZIWKÊ?}
+{511}{}{W³aœciwie to tak...} #1
+{512}{}{300 kapsli?}  #5
+{513}{}{Eee... wybacz.} #2
+{514}{}{20 kapsli?} #3
+{515}{}{50 kapsli?} #4
+
+{520}{}{STRA¯E!!!}
+
+{530}{}{A to zaczynamy w koñcu rozmawiaæ. Niech bêdzie.}
+{531}{}{Œwietnie. [Daj kapsle.]}
+
+{540}{}{Dobra... Mo¿esz mieæ racjê. Ale robiê to tylko ze wzglêdu na ciebie!}
+{541}{}{Wspaniale!}
+
+{550}{}{[Widzisz wracaj¹c¹ asystentkê. Po jej twarzy na razie niczego nie da siê odczytaæ.] Nie powiem... jak na pierwszy raz... nie by³o Ÿle. Mo¿e kolejnym razem poka¿ê mu parê... technik.}
+{551}{}{Dziêki! Muszê ju¿ iœæ.}
+
+{560}{}{Dlaczego sama tego nie zrobisz?}
+{561}{}{W sumie...}
+{562}{}{[RETORYKA] Bo potrzebujesz kogoœ kto ci wype³ni lukê zanim znajdziesz odpowiedniego partnera.} #540
+
+{600}{}{Hej, mogê ci w czymœ pomóc?}
+
+{700}{}{Och, to ty... mi³o ciê znowu widzieæ}
+{701}{}{Mi³o znów... byæ w formie}
+{702}{}{Pracuje siê nam co raz lepiej}

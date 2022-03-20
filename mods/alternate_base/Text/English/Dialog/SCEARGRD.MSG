@@ -1,0 +1,56 @@
+### WELCOME TO CAVE ###
+{200}{}{Jesteœmy na miejscu. Tu go ostatnio widziano, jak dobrze wiesz, masz nam przynieœæ jego ucho jak ju¿ zezgonuje. ¯adnych sztuczek, dopilnujemy tego.}
+{201}{}{Co jest nie tak z tym miejscem?}
+{202}{}{Dlaczego sami nie za³atwiliœcie tego wczeœniej?}
+{203}{}{Czemu siê tak na niego uwziêliœcie? A¿ tak zaszed³ wam za skórê?}
+{204}{}{Po co mu to ucho? Barszcz z uszkami bêdzie gotowa³?}
+{205}{}{Dobra, idê go odszukaæ.}
+
+{210}{}{Kurwa nie czujesz tego smrodu? Zrobiê jeszcze krok dalej, a siê porzygam. Goœciu i tak pewnie ju¿ wyrzyga³ w³asne p³uca.}
+#203
+#204
+#205
+
+{220}{}{Ukrad³ nam rzeczy i uciek³ razem z nimi. To nie jest wystarczaj¹cy powód?}
+#202
+#201
+#204
+#205
+
+{230}{}{Nie mnie pytaj. Garl mo¿e jest popierdolony, ale to dobry przywódca. To dziêki niemu jeszcze nie gryziemy piachu.}
+#201
+#202
+#203
+#205
+
+{240}{}{Najwy¿sza pora, tylko nie wracaj bez dowodu. Mamy polecenie ciê zabiæ, jeœli skapitulujesz, wiêc idŸ to za³atwiæ szybko.}
+{241}{}{Rozumie siê.}
+
+{250}{}{Mnie o nic nie pytaj, on tu jest mózgiem operacji.}
+
+### DURING ###
+
+{300}{}{Zrobione?}
+{301}{}{Mogê wróciæ do wioski?}
+{302}{}{Jeszcze nie.}
+{303}{}{Ch³opaki nie mielibyœcie mo¿e po¿yczyæ no¿a?}
+{304}{}{Ch³opaki nie mielibyœcie mo¿e po¿yczyæ zestawu pierwszej pomocy?}
+{305}{}{[Poka¿ im odciête ucho.] Patrzcie co tu mam!}
+
+{310}{}{Garl siê wœcieknie jak ci pozwolimy wróciæ, idŸ to za³atwiæ szybko i bêdziemy raz dwa w domu.}
+{311}{}{Dobra.}
+{312}{}{A mo¿e po prostu ciê zabijê i przejdê po twoim trupie?}
+
+{320}{}{S³uchaj, to jest tylko formalnoœæ. Nie chce mi siê tu staæ ca³y dzieñ, po prostu to zrób!}
+{321}{}{Idê, idê.}
+
+{330}{}{Przygotowa³em siê na tak¹ ewentualnoœæ... ¿eby nie mieæ przesrane u szefa. [Daje ci nó¿.]}
+{331}{}{O rany, dziêki. Wybacz moje nierozgraniêcie.}
+
+{340}{}{Zestawu, kurwa, czego? Na kogo ci ja wygl¹dam? Poza tym na co ci to jak sam dobrze wygl¹dasz!?}
+{341}{}{Niewa¿ne, zapomnij.}
+
+### RECEIVED EAR ###
+
+{400}{}{Œwietnie, wracamy do szefa.}
+{401}{}{Idziemy.}

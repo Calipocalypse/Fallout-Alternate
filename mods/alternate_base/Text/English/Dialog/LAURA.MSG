@@ -1,0 +1,60 @@
+{1000}{}{Nie wolno mi z tob¹ rozmawiaæ.}
+{1001}{}{Ruszajmy. Przygoda czeka!}
+{1002}{}{Nie mogê siê doczekaæ kiedy zobaczê te wszystkie miejsca!}
+{1003}{}{Chcia³abym byæ ju¿ w drodze!}
+
+{1010}{}{Oo… masz na sobie kombinezon krypty… ale fajnie…}
+
+{1015}{}{Dobra.}
+{1016}{}{Mam ju¿ dosyæ udawania.}
+{1017}{}{???}
+
+###Blue
+{1100}{}{Dobra.}
+{1101}{}{Wyt³umacz mi sk¹d u ciebie siê wzi¹³ ten kombinezon z Krypty 13.}
+{1102}{}{Poniewa¿ stamt¹d pochodzê.}
+{1103}{}{Na pustyni znalaz³em trupa i przywdzia³em. Fajny, taki niebieski nie?}
+#No
+{1105}{}{Nie, niefajny. Jak dla mnie jesteœ tylko ³ajdakiem, jesteœ hien¹… jednym z nich. Nienawidzê Dzieci. Szpiegowa³am ich przez ten ca³y czas. Myœla³am, ¿e za tym kostiumem kryje siê inna historia. [Wyci¹ga broñ.] Czas umieraæ.}
+{1106}{}{Zaczekaj, ja…!}
+#Ok
+{1115}{}{Ty i Krypta 13? Jak to jest w ogóle mo¿liwe? Ty dostarcza³eœ miêdzy nimi holodyski i informacje. Po co?}
+{1116}{}{Zap³acili mi.}
+{1117}{}{W sumie to nie powinienem tego robiæ… eee… szuka³em sposobu, ¿eby dostaæ siê do krypty z powrotem.}
+{1118}{}{Chcia³em siê pozbyæ Jaspera z wioski na wschód st¹d.}
+
+{1125}{}{Ty ³ajdaku…}
+{1126}{}{Ale teraz, przez ciebie jeszcze szybciej dojdzie do inwazji na Cieniste Piaski przez supermutantów. Wiem, bo Syriusz zbytnio siê z tym nie kry³! Je¿eli dojdzie tam do walki, supermutanci j¹ wygraj¹. Jak najszybciej udajmy siê do Cienistych Piasków!}
+{1127}{}{No dobra, ale kim ty w ogóle do cholery jesteœ?}
+{1128}{}{Bêdzie bardziej odpowiedni czas, wtedy ci wyjaœniê. Na razie musimy rozwi¹zaæ problem na wschodzie. Nie mogê dopuœciæ, ¿eby przemienili wiêcej ludzi.}
+{1129}{}{No dobra. ChodŸmy...}
+
+###Purple
+
+{1200}{}{Bêdziesz mi musia³ daæ dobry powód, ¿ebym ciê oszczêdzi³a.}
+{1201}{}{Tak d³ugo was obserwowa³am.}
+{1202}{}{Niczego nawet nie zauwa¿yliœcie.}
+{1203}{}{Nie jestem jedn¹ z nich, g³upcze.}
+
+{1211}{}{To dosyæ zabawne. Ja równie¿ nie mam z nimi nic wspólnego.} # -> 1230
+{1212}{}{Nie! Ja jestem z krypty 13, musisz mi uwierzyæ!}
+{1213}{}{Nie mam ochoty ci nic udowadniaæ.}
+
+{1220}{}{Cha, cha… Chcesz mi powiedzieæ, ¿e w kilka, kilkanaœcie, miesi¹c, parê miesiêcy sta³eœ siê ich szpiegiem? Wiesz, co? Zastanawiam siê jak to jest umrzeæ z mask¹ klauna…}
+{1221}{}{Zaczekaj! To nie tak jak myœlisz!}
+
+{1225}{}{Nie najgorsze ostatnie s³owa}
+{1226}{}{Marne twoje ostatnie s³owa!}
+
+{1230}{}{Cha, cha… w obliczu faktów wygl¹da to naprawdê s³abo. Oj… bardzo.}
+{1231}{}{Faktów? Jakie s¹  T W O J E  fakty?}
+{1235}{}{Och, no na przyk³ad fakt, ¿e dostarczasz miêdzy nimi holodyski oraz przekazujesz informacje nie jest wystarczaj¹cy? Jesteœ dla nich zwyk³ym ch³opcem na posy³ki, a ja takich ch³opców nie lubiê. Dlatego wprowadzê ciê do grobu.}
+{1236}{}{Jak ci nie wstyd? Wszystko co robi³em by³o podyktowane tym, ¿e chcê ocaliæ kryptê i moich ludzi. Osi¹gn¹³em to co chcia³em - pozby³em siê Jaspera. I nie mam zamiaru zrezygnowaæ ze znalezieniem pigu³ek dla Syriusza, które mog¹ od³o¿yæ w czasie to co siê spodziewam, ¿e siê stanie z krypt¹. Jeszcze jakieœ pytania, bo to chyba je powinienem teraz zadawaæ?}
+#100 PD
+{1240}{}{[Na twarzy dyskutantki widaæ t³umione zirytowanie. Nastêpuje chwila ciszy.] Wiêc gdzie jest twój kombinezon krypty?}
+{1241}{}{Zawsze by³ tutaj. [Zrzuæ z siebie szaty]}
+{1250}{}{[W koñcu widaæ wyraŸne zmieszanie.] Przepraszam, mam teraz pewien dysonans... }
+{1251}{}{Nie przejmuj. Lepiej mi powiedz kim do cholery jesteœ?}
+{1260}{}{Bêdzie bardziej odpowiedni czas, wtedy ci wyjaœniê. Na razie musimy rozwi¹zaæ problem na wschodzie. Przez ciebie jeszcze szybciej dojdzie do inwazji na Cieniste Piaski przez supermutantów. Wiem, bo Syriusz zbytnio siê z tym nie kry³! Je¿eli dojdzie tam do walki, supermutanci j¹ wygraj¹. Jak najszybciej udajmy siê do Cienistych Piasków!}
+{1261}{}{Chyba nie mam innego wyboru...}
+{1262}{}{Ruszajmy.}

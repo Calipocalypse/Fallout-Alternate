@@ -1,0 +1,1428 @@
+
+; Note: Max line length is _MAX_PATH, which is 144 under watcom 10.6/Dos
+
+; Note: For speedup, it could save out *all* of this info into a file
+;   and if the timestamp on the source is later than this saved file,
+;   just rebuild the file.  This would be a good idea for speed
+;   purposes, especially if this takes a while to parse, but would
+;   require extra coding for saving/loading this information.
+
+; Note: This could also affect patches with regards to savegames,
+;   because some of this information is saved and not dynamically
+;   re-read from the original file.  This means that some things
+;   wouldn't change unless we had a way of forcing them.  However,
+;   it also means that things that aren't saved *WILL* be changed
+;   if they are patched.  So we could change frequencies of
+;   encounters, or what the encounters *are*, even though a save
+;   in a random encounter map might not be in the same state (have
+;   to keep track of this to prevent possible problems.)
+
+; Note: Scripts need accessor functions to turn on/off locations,
+;   as well as (possibly) mark world tiles as known/unknown (?).
+
+[Data]
+Forced=100%        ; This shouldn't change
+Frequent=9%       ; 43 Was 9/3d6 - edit by killap (was 38%)
+Common=8%         ; 27 Was 8/3d6 - edit by killap (was 22%)
+Uncommon=7%       ; 15 Was 6/3d6 - edit by killap (was 12%)
+Rare=6%            ; 6 Was 5/3d6 - edit by killap (was 4%)
+None=0%            ; This shouldn't change
+
+;Fallout 2: 25 hours for desert / city / coast, 32.5 hours for mountains.
+;Fallout 1: 10 hours for desert / coast, 20 for mountains, 6 for city.
+
+;	terrain_types=Desert:1, Mountain:2, City:1, Ocean:1
+terrain_types=Desert:1, Mountain:2, City:1, Ocean:1, Unknown:1, Highway:1, MountainCoast:2
+terrain_short_names=DES, MNT, CTY, OCN, UNK, HIG, OMT
+
+[Random Maps: Desert]
+map_00=Desert Encounter 1
+map_01=Desert Encounter 2
+map_02=Desert Encounter 3
+
+[Random Maps: Mountain]
+map_00=Mountain Encounter 1
+map_01=Mountain Encounter 2
+map_02=Cavern Encounter 0
+
+[Random Maps: City]
+map_00=City Encounter 1
+map_01=City Encounter 2
+map_02=City Encounter 3
+
+[Random Maps: Ocean]
+map_00=Coast Encounter 1
+map_01=Coast Encounter 2
+
+[Random Maps: Highway]
+map_00=Highway Encounter 1
+map_01=Highway Encounter 2
+map_02=Highway Encounter 3
+map_03=Highway Encounter 4
+
+[Random Maps: MountainCoast]
+map_00=Cliff 1
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Alternate;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[Encounter: Szopa_FirstMeet]
+type_00=pid:33555584, Script:1447
+
+[Encounter: DeadDweller_First]
+type_00=pid:33555584, Script:1449
+
+;;;Fun;;;
+[Encounter: Random_Items]
+type_00=pid:33555584, Script:1453
+[Encounter: Chrysler]
+type_00=pid:33555584, Script:1459
+[Encounter: Lodowka]
+type_00=pid:33555584, Script:1460
+
+[Encounter: Random_loot_maps]
+type_00=pid:33555584, Script:1461
+[Encounter: Random_body]
+type_00=pid:33555584, Script:1463
+[Encounter: Random_body2]
+type_00=pid:33555584, Script:1464
+[Encounter: Random_body3]
+type_00=pid:33555584, Script:1465
+[Encounter: Random_body4]
+type_00=pid:33555584, Script:1466
+
+[Encounter: Duc]
+type_00=pid:16777825, Script:1467
+type_01=Ratio:100%, pid:16777826, Script:1468
+position=huddle, spacing:3
+
+[Encounter: Szopa_Czepku]
+type_00=pid:16777794, Script:1471 ;purple
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Zielony;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Encounter: Mroczni]
+type_00=pid:16777820, Item:13(wielded), Script:346
+type_01=pid:16777820, Item:11(wielded), Script:346
+type_02=pid:16777820, Item:350(wielded), Script:346
+type_03=Ratio:50%, pid:16777837, Script:346
+type_04=Ratio:50%, pid:16777838, Script:346
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Khaki;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Encounter: Drobny_Patrol_Supermutant]
+type_00=pid:16777819, Item:234(wielded), Script:346
+type_01=Ratio:5%, pid:16777819, Item:15(wielded), Script:346, If (Rand(25%)) 
+type_02=Ratio:5%, pid:16777819, Item:118(wielded), Script:346, If (Rand(25%)) 
+type_03=Ratio:5%, pid:16777819, Item:6(wielded), Script:346, If (Rand(25%)) 
+type_04=Ratio:5%, pid:16777819, Item:7(wielded), Script:346, If (Rand(25%)) 
+type_05=Ratio:5%, pid:16777819, Item:10(wielded), Script:346, If (Rand(25%)) 
+type_06=Ratio:10%, pid:16777777, Item:24(wielded), Script:346, If (Rand(15%))
+type_07=Ratio:10%, pid:16777777, Item:116(wielded), Script:346
+type_08=Ratio:1%, pid:16777777, Item:406(wielded), Script:346, If (Rand(1%)) 
+type_09=pid:16777819, Item:234(wielded), Script:346
+
+[Encounter: Drobny_Patrol_Supermutant2]
+type_00=Ratio:33%, pid:16777819, Item:234(wielded), Script:346
+type_01=Ratio:33%, pid:16777462, Script:346
+type_02=Ratio:34%, pid:16777464, Script:346
+
+[Encounter: Zwierzatka]
+type_00=Ratio:50%, pid:16777462, Script:346
+type_01=Ratio:50%, pid:16777464, Script:346
+
+[Encounter: ZwierzatkaTwarde]
+type_00=Ratio:50%, pid:16777463, Script:346
+type_01=Ratio:50%, pid:16777465, Script:346
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Niebieski;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[Encounter: Supermutant_Chase]
+type_00=Ratio:100%, pid:16777772, Script:1462
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Inny;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Encounter: Radskorpion]
+type_00=Ratio:100%, pid:16777222
+[Encounter: Radskorpion_Familia]
+type_00=Ratio:50%, pid:16777222
+type_01=Ratio:100%, pid:16777221
+type_02=pid:16777817, Item:11(wielded), If (Rand(2%)) AND If(Global(876) == 0)
+[Encounter: Zwloki_i_szczury]
+type_00=Ratio:80%, pid:16777227
+type_01=Dead, pid:16777442, If (Rand(25%))
+[Encounter: Szczur]
+type_00=Ratio:100%, pid:16777227
+[Encounter: Szczur_kolo]
+type_00=Ratio:100%, pid:16777227
+position=huddle, spacing:1
+[Encounter: Swinioszczur]
+type_00=Ratio:100%, pid:16777328
+[Encounter: Kretoszczur]
+type_00=Ratio:100%, pid:16777326, Script:617
+[Encounter: Kretoszczur_Familia]
+type_00=Ratio:65%, pid:16777328, Script:617
+type_01=Ratio:35%, pid:16777326, Script:617
+[Encounter: Swinioszczury]
+type_00=Ratio:100%, pid:16777328, Script:617
+[Encounter: Modliszki]
+type_00=ratio:40%, pid:16777228, Script:630                                     ; Mantis from Arroyo Caves
+type_01=ratio:60%, pid:16777432, Script:630                                     ; Medium Mantis
+type_02=Dead, pid:16777222, If (Rand(15%))                                      ; Dead Large Radscorpion
+;position=huddle, spacing:1
+[Encounter: Modliszki_Kolo]
+type_00=ratio:40%, pid:16777228, Script:630                                     ; Mantis from Arroyo Caves
+type_01=ratio:60%, pid:16777432, Script:630                                     ; Medium Mantis
+type_02=Dead, pid:16777222, If (Rand(15%))                                      ; Dead Large Radscorpion
+position=huddle, spacing:1
+[Encounter: Brahminy]
+type_00=ratio:30%, pid:16777226, Script:631                                     ; Brahmin
+type_01=ratio:20%, pid:16777330, Script:631                                     ; Weak Brahmin
+type_02=ratio:50%, pid:16777435, Script:631                                     ; Wild Brahmin
+;position=Surrounding
+;position=straight_line, spacing:1
+;position=straight_line, spacing:2
+;position=double_line, spacing:1
+;position=wedge, spacing:2
+;position=cone, spacing:2
+;position=huddle, spacing:2
+
+[Encounter: Szpony_Smierci]
+type_00=Ratio:100%, pid:16777224, Script:22
+[Encounter: Szpony_Smierci_Familia]
+type_00=Ratio:35%, pid:16777224, Script:22
+type_01=Ratio:65%, pid:16777223, Script:22
+
+[Encounter: Latwi_Bandyci]
+type_00=Ratio:20%, pid:16777815, Item:8(wielded), Script:624
+type_01=Ratio:80%, pid:16777815, Item:4(wielded), Script:624
+[Encounter: Sredni_Bandyci]
+type_00=Ratio:50%, pid:16777815, Item:8(wielded), Script:624
+type_01=Ratio:40%, pid:16777815, Item:4(wielded), Script:624
+type_02=pid:16777815, Item:18(wielded), Script:624
+[Encounter: Twardzi_Bandyci]
+type_00=Ratio:80%, pid:16777815, Item:8(wielded), Script:624
+type_01=Ratio:20%, pid:16777815, Item:18(wielded), Script:624
+type_02=pid:16777815, Item:22(wielded), Script:624
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Highway;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Encounter: WILD1_Trader]
+type_00=pid:16777277, Item:332(wielded), Item:(0-60)41, Script:1453                                         ; Master Trader female w/ Needler Pistol
+type_01=ratio:15%, pid:16777477, Item:242(wielded), Item:(0-30)41, Script:1454                              ; NCR Ranger male w/ Combat Shotgun
+type_02=ratio:15%, pid:16777477, Item:11(wielded), Item:(0-40)41, Script:1454                               ; NCR Ranger male w/ Flamer
+type_03=ratio:15%, pid:16777478, Item:268(wielded), Item:(0-30)41, Script:1454                              ; NCR Ranger female w/ H&K CAWS
+type_04=ratio:15%, pid:16777478, Item:332(wielded), Item:(0-40)41, Script:1454                              ; NCR Ranger female w/ Grease Gun
+position=cone, spacing:2
+
+[Encounter: WILD1_Trader_Brahmins]
+type_00=ratio:100%, pid:16777226, Script:1455
+
+[Encounter: WILD1_Trader_More_Guards]
+type_00=ratio:25%, pid:16777477, Item:242(wielded), Item:(0-30)41, Script:1454                              ; NCR Ranger male w/ Combat Shotgun
+type_01=ratio:25%, pid:16777477, Item:11(wielded), Item:(0-40)41, Script:1454                               ; NCR Ranger male w/ Flamer
+type_02=ratio:25%, pid:16777478, Item:268(wielded), Item:(0-30)41, Script:1454                              ; NCR Ranger female w/ H&K CAWS
+type_03=ratio:25%, pid:16777478, Item:332(wielded), Item:(0-40)41, Script:1454                              ; NCR Ranger female w/ Grease Gun
+position=cone, spacing:2
+
+[Encounter: Duza_Karawana_Zbrojeniowcy]
+type_00=pid:33555584, Script:1456
+
+[Encounter: Duza_Karawana_Zbrojeniowcy_vs_Szpony]
+type_00=pid:33555584, Script:1458
+
+[Encounter: Patrick]
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Encounter Table 0]
+lookup_name=Encounter_0  ; don't use, crashes on second encounter
+maps=
+enc_00=
+
+[Encounter Table 1]
+lookup_name=Bialy
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+enc_00=Chance:0%,Enc:(1-1) Random_Items
+enc_01=Chance:0%,Enc:(1-1) Radskorpion AMBUSH Player
+enc_02=Chance:0%,Enc:(2-4) Radskorpion AMBUSH Player
+enc_03=Chance:0%,Enc:(5-9) Radskorpion_Familia AMBUSH Player
+enc_04=Chance:0%,Enc:(10-18) Radskorpion_Familia AMBUSH Player
+enc_05=Chance:0%,Enc:(3-9) Zwloki_i_szczury AMBUSH Player
+enc_06=Chance:0%,Enc:(12-21) Zwloki_i_szczury AMBUSH Player
+enc_07=Chance:0%,Enc:(2-4) Kretoszczur AMBUSH Player
+enc_08=Chance:0%,Enc:(7-12) Kretoszczur_Familia AMBUSH Player
+enc_09=Chance:0%,Enc:(7-12) Modliszki AND (7-12) Modliszki AMBUSH Player
+enc_10=Chance:0%,Enc:(7-12) Modliszki_Kolo AMBUSH Player
+enc_11=Chance:0%,Enc:(4-7) Swinioszczury AMBUSH Player
+enc_12=Chance:0%,Enc:(8-15) Brahminy AMBUSH Player
+enc_13=Chance:0%,Enc:(3-4) Radskorpion FIGHTING (4-5) Kretoszczur
+enc_14=Chance:0%,Enc:(6-6) Modliszki_Kolo AND (6-6) Modliszki_Kolo FIGHTING (3-6) Kretoszczur
+enc_15=Chance:0%,Enc:(6-6) Modliszki_Kolo AND (6-6) Modliszki_Kolo FIGHTING (3-5) Radskorpion
+enc_16=Chance:0%,Enc:(6-6) Modliszki_Kolo AND (6-6) Modliszki_Kolo FIGHTING (8-12) Szczur
+enc_17=Chance:0%,Enc:(6-6) Modliszki_Kolo AND (6-6) Modliszki_Kolo FIGHTING (8-12) Kretoszczur_Familia
+enc_18=Chance:0%,Enc:(6-6) Modliszki_Kolo AND (6-6) Modliszki_Kolo FIGHTING (8-12) Radskorpion_Familia
+enc_19=Chance:0%,Enc:(5-8) Brahminy FIGHTING (8-12) Radskorpion_Familia
+enc_20=Chance:0%,Enc:(5-8) Brahminy FIGHTING (8-12) Kretoszczur_Familia
+enc_21=Chance:0%,Enc:(5-8) Brahminy FIGHTING (4-6) Radskorpion
+enc_22=Chance:0%,Enc:(5-8) Brahminy FIGHTING (4-6) Kretoszczur
+enc_23=Chance:0%,Enc:(1-1) Chrysler AMBUSH Player ; TODO
+enc_24=Chance:0%,Enc:(1-1) Lodowka AMBUSH Player ; TODO
+enc_25=Chance:0%,Enc:(5-7) Kretoszczur FIGHTING (8-12) Radskorpion_Familia
+enc_26=Chance:0%,Enc:(8-12) Kretoszczur_Familia FIGHTING (8-12) Radskorpion_Familia
+enc_27=Chance:0%,Enc:(8-12) Kretoszczur_Familia FIGHTING (4-6) Radskorpion
+enc_28=Chance:0%,Counter:1,Special,Map:Encounter Gas Station,Enc:Special1
+enc_29=Chance:0%,Enc:(1-1) Random_body, If(Global(904)==0)
+enc_30=Chance:0%,Enc:(1-1) Random_body2, If(Global(905)==0) AND If(Global(904)==1)
+enc_31=Chance:0%,Enc:(1-1) Random_body3, If(Global(906)==0) AND If(Global(905)==1) AND If(Global(904)==1)
+enc_32=Chance:0%,Enc:(1-1) Random_body4, If(Global(907)==0) AND If(Global(906)==1) AND If(Global(905)==1) AND If(Global(904)==1)
+enc_33=Chance:0%,Enc:(5-5) Duc, If(Global(908)==0)
+enc_34=Chance:100%,Enc:(1-1) Szopa_Czepku, If(Global(909)>=1)
+
+
+
+[Encounter Table 2]
+lookup_name=Bordowy
+maps=Mountain Encounter 1, Mountain Encounter 2, Cavern Encounter 0
+enc_00=Chance:1%,Enc:(1-1) Szopa_FirstMeet AMBUSH Player, If(Global(877)==0)
+enc_01=Chance:1%,Enc:(2-4) Radskorpion AMBUSH Player
+enc_02=Chance:97%,Enc:(2-5) Kretoszczur AMBUSH Player
+enc_03=Chance:1%,Enc:(3-8) Kretoszczur_Familia AMBUSH Player
+
+[Encounter Table 3]
+lookup_name=Olive      ; should be north + south table
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+enc_00=
+
+[Encounter Table 4]
+lookup_name=Zielony
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+enc_00=Chance:10%, Enc:(1-1) Mroczni AMBUSH Player
+; Patrol mrocznych (3-4) i zwierzaki (5-8)
+; Patrol mrocznych (3-4), zwierzaki (2-5), fioletowi (1-4)
+; Patrol supermutantów Medium (5-10), zwierzaki (2-5)
+; Patrol supermutantów Medium (5-10), zwierzaki (2-5), fioletowi (1-6)
+; Zwierzaki (1-1)
+; Zwierzaki (4-9)
+
+[Encounter Table 5]
+lookup_name=Khaki
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+enc_00=Chance:16%,Enc:(1-5) Drobny_Patrol_Supermutant AMBUSH Player
+enc_01=Chance:16%,Enc:(3-9) Drobny_Patrol_Supermutant2 AMBUSH Player
+enc_02=Chance:17%,Enc:(3-6) Drobny_Patrol_Supermutant2
+enc_03=Chance:17%,Enc:(1-6) Zwierzatka
+enc_04=Chance:17%,Enc:(1-6) Zwierzatka FIGHTING (3-9) Radskorpion
+enc_05=Chance:17%,Enc:(2-5) Zwierzatka FIGHTING (2-5) Szpony_Smierci
+
+[Encounter Table 6]
+lookup_name=Oranz
+maps=City Encounter 1, City Encounter 2, City Encounter 3
+enc_00=
+
+[Encounter Table 7]
+lookup_name=Blekit
+maps=Mountain Encounter 1, Mountain Encounter 2, Cavern Encounter 0
+enc_00=Chance:100%,Enc:(1-1) DeadDweller_First AMBUSH Player, If(Global(878)==0)
+enc_01=Chance:12%,Enc:(1-1) Radskorpion AMBUSH Player
+enc_02=Chance:14%,Enc:(2-3) Kretoszczur AMBUSH Player
+enc_03=Chance:15%,Enc:(3-8) Kretoszczur_Familia AMBUSH Player
+enc_04=Chance:12%,Enc:(4-7) Szczur AMBUSH Player
+enc_05=Chance:15%,Enc:(1-1) Supermutant_Chase AMBUSH Player
+enc_06=Chance:3%,Enc:(1-1) Random_body, If(Global(904)==0)
+enc_07=Chance:3%,Enc:(1-1) Random_body2, If(Global(905)==0) AND If(Global(904)==1)
+enc_08=Chance:3%,Enc:(1-1) Random_body3, If(Global(906)==0) AND If(Global(905)==1) AND If(Global(904)==1)
+enc_09=Chance:3%,Enc:(1-1) Random_body4, If(Global(907)==0) AND If(Global(906)==1) AND If(Global(905)==1) AND If(Global(904)==1)
+enc_10=Chance:4%,Enc:(1-1) Random_Items
+
+[Encounter Table 8]
+lookup_name=Krwisto
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+enc_00=
+
+[Encounter Table 9]
+lookup_name=Czerwony
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+enc_00=Chance:50%,Enc:(3-5) Szpony_Smierci AMBUSH Player
+enc_01=Chance:50%,Enc:(5-12) Szpony_Smierci_Familia AMBUSH Player
+
+[Encounter Table 10]
+lookup_name=Piaskowy
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+
+;      enc_06=Chance:3%,Enc:(2-4) hunters
+enc_00=
+
+[Encounter Table 11]
+lookup_name=Trzynascie
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+
+enc_00=
+
+[Encounter Table 12]
+lookup_name=Pietnascie
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+
+enc_00=
+
+[Encounter Table 13]
+lookup_name=Dwanascie
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+
+enc_00=
+
+[Encounter Table 14]
+lookup_name=Czternascie
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+
+enc_00=
+
+[Encounter Table 15]
+lookup_name=Osiem
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+
+enc_00=
+
+[Encounter Table 16]
+lookup_name=Dziewiec
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+
+enc_00=
+
+[Encounter Table 17]
+lookup_name=Trzy
+maps=Desert Encounter 1, Desert Encounter 2, Desert Encounter 3
+
+enc_00=
+
+[Encounter Table 18]
+lookup_name=ZielonyAleCliff
+maps=Cliff 1
+enc_00=Chance:10%,Enc:(1-1) Radskorpion AMBUSH Player
+;enc_00=Chance:10%,Enc:(1-1) Mroczni AMBUSH Player
+; Patrol mrocznych (3-4) i zwierzaki (5-8)
+; Patrol mrocznych (3-4), zwierzaki (2-5), fioletowi (1-4)
+; Patrol supermutantów Medium (5-10), zwierzaki (2-5)
+; Patrol supermutantów Medium (5-10), zwierzaki (2-5), fioletowi (1-6)
+; Zwierzaki (1-1)
+; Zwierzaki (4-9)
+
+[Encounter Table 19]
+lookup_name=KhakiAleCliff
+maps=Cliff 1
+enc_00=Chance:10%,Enc:(1-1) Radskorpion AMBUSH Player
+
+[Encounter Table 20]
+lookup_name=HighwayLVBF
+maps=Highway Encounter 1, Highway Encounter 2, Highway Encounter 3, Highway Encounter 4
+enc_00=Chance:1%,Enc:(1-1) Radskorpion AMBUSH Player
+enc_01=Chance:1%,Enc:(1-1) Szpony_Smierci AMBUSH Player
+enc_02=Chance:1%,Enc:(1-1) Duza_Karawana_Zbrojeniowcy
+enc_03=Chance:97%,Enc:(1-1) Duza_Karawana_Zbrojeniowcy_vs_Szpony
+[Encounter Table 21]
+lookup_name=Zolty
+maps=City Encounter 1, City Encounter 2, City Encounter 3
+enc_00=Chance:1%,Enc:(3-12) Szczur AMBUSH Player
+enc_01=Chance:1%,Enc:(4-8) Latwi_Bandyci AMBUSH Player
+enc_02=Chance:98%,Enc:(4-8) Sredni_Bandyci AMBUSH Player
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Tile Data]
+num_horizontal_tiles=4
+
+[Tile 0]
+art_idx=339
+encounter_difficulty=-300
+walk_mask_name=wrldmp00
+0_0=Mountain,No_Fill,Rare,Rare,Rare,Olive
+0_1=Mountain,No_Fill,Rare,Rare,Rare,Olive
+0_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Olive
+0_3=Mountain,No_Fill,Rare,Rare,Rare,Olive
+0_4=Mountain,No_Fill,Rare,Rare,Rare,Zielony
+0_5=MountainCoast,No_Fill,Rare,Rare,Rare,ZielonyAleCliff
+1_0=Mountain,No_Fill,Rare,Rare,Rare,Olive
+1_1=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Olive
+1_2=Mountain,No_Fill,Rare,Rare,Rare,Olive
+1_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Olive
+1_4=Mountain,No_Fill,Rare,Rare,Rare,Zielony
+1_5=Mountain,No_Fill,Rare,Rare,Rare,Zielony
+2_0=Mountain,No_Fill,Common,Common,Common,Olive
+2_1=Mountain,No_Fill,Common,Common,Common,Olive
+2_2=Mountain,No_Fill,Common,Common,Common,Olive
+2_3=Mountain,No_Fill,Common,Common,Common,Olive
+2_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Zielony
+2_5=Mountain,No_Fill,Common,Common,Common,Zielony
+3_0=Desert,No_Fill,Common,Common,Common,Olive
+3_1=Desert,No_Fill,None,None,None,Olive
+3_2=Desert,No_Fill,Common,Common,Common,Olive
+3_3=Mountain,No_Fill,Common,Common,Common,Olive
+3_4=Mountain,No_Fill,Common,Common,Common,Zielony
+3_5=Mountain,No_Fill,Rare,Rare,Rare,Zielony
+4_0=Desert,No_Fill,Common,Common,Common,Olive
+4_1=Desert,No_Fill,Common,Common,Common,Olive
+4_2=Desert,No_Fill,Common,Common,Common,Olive
+4_3=Desert,No_Fill,Common,Common,Common,Olive
+4_4=Mountain,No_Fill,Common,Common,Common,Zielony
+4_5=City,No_Fill,Uncommon,Uncommon,Uncommon,Oranz
+5_0=Desert,No_Fill,Common,Common,Common,Olive
+5_1=Desert,No_Fill,Common,Common,Common,Olive
+5_2=Desert,No_Fill,Common,Common,Common,Olive
+5_3=Desert,No_Fill,Common,Common,Common,Zielony
+5_4=Desert,No_Fill,Common,Common,Common,Zielony
+5_5=Desert,No_Fill,Rare,Rare,Rare,Zielony
+6_0=Desert,No_Fill,Rare,Rare,Rare,Olive
+6_1=Desert,No_Fill,Common,Common,Common,Olive
+6_2=Desert,No_Fill,Common,Common,Common,Zielony
+6_3=Desert,No_Fill,Common,Common,Common,Zielony
+6_4=Desert,No_Fill,Common,Common,Common,Zielony
+6_5=Desert,No_Fill,Rare,Rare,Rare,Zielony
+
+
+
+[Tile 1]
+art_idx=340
+encounter_difficulty=-300
+walk_mask_name=wrldmp01
+0_0=Desert,No_Fill,Rare,Rare,Rare,Zielony
+0_1=Desert,No_Fill,Rare,Rare,Rare,Zielony
+0_2=Desert,No_Fill,Rare,Rare,Rare,Zielony
+0_3=Desert,No_Fill,Rare,Rare,Rare,Zielony
+0_4=Desert,No_Fill,Rare,Rare,Rare,Zielony
+0_5=Desert,No_Fill,Rare,Rare,Rare,Zielony
+1_0=Desert,No_Fill,Rare,Rare,Rare,Zielony
+1_1=Desert,No_Fill,Rare,Rare,Rare,Zielony
+1_2=Desert,No_Fill,Rare,Rare,Rare,Zielony
+1_3=Desert,No_Fill,Rare,Rare,Rare,Zielony
+1_4=Desert,No_Fill,Rare,Rare,Rare,Zielony
+1_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+2_0=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+2_1=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+2_2=Desert,No_Fill,Rare,Rare,Rare,Khaki
+2_3=Desert,No_Fill,Rare,Rare,Rare,Khaki
+2_4=Desert,No_Fill,Rare,Rare,Rare,Khaki
+2_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+3_0=Mountain,No_Fill,Common,Common,Common,Khaki
+3_1=Mountain,No_Fill,Common,Common,Common,Khaki
+3_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+3_3=Desert,No_Fill,Rare,Rare,Rare,Khaki
+3_4=Desert,No_Fill,Rare,Rare,Rare,Khaki
+3_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+4_0=Mountain,No_Fill,Rare,Rare,Rare,Khaki
+4_1=Mountain,No_Fill,Common,Common,Common,Khaki
+4_2=Mountain,No_Fill,Common,Common,Common,Khaki
+4_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+4_4=Desert,No_Fill,Rare,Rare,Rare,Khaki
+4_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+5_0=Mountain,No_Fill,Rare,Rare,Rare,Khaki
+5_1=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+5_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+5_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+5_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+5_5=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+6_0=Mountain,No_Fill,Rare,Rare,Rare,Khaki
+6_1=Mountain,No_Fill,Rare,Rare,Rare,Khaki
+6_2=Mountain,No_Fill,Rare,Rare,Rare,Khaki
+6_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+6_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+6_5=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+
+
+
+
+[Tile 2]
+art_idx=341
+encounter_difficulty=-300
+walk_mask_name=wrldmp02
+0_0=Mountain,No_Fill,Rare,Rare,Rare,Khaki
+0_1=Mountain,No_Fill,Rare,Rare,Rare,Khaki
+0_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+0_3=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+0_4=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+0_5=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+1_0=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+1_1=Mountain,No_Fill,Rare,Rare,Rare,Khaki
+1_2=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+1_3=Mountain,No_Fill,Common,Common,Common,Bordowy
+1_4=Mountain,No_Fill,Common,Common,Common,Bordowy
+1_5=Mountain,No_Fill,Common,Common,Common,Bordowy
+2_0=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+2_1=Mountain,No_Fill,None,None,None,Blekit
+2_2=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+2_3=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+2_4=Desert,No_Fill,Rare,Rare,Rare,Bialy
+2_5=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+3_0=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+3_1=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+3_2=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+3_3=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+3_4=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+3_5=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+4_0=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+4_1=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+4_2=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+4_3=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+4_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+4_5=City,No_Fill,Common,Common,Common,Zolty
+5_0=Mountain,No_Fill,Rare,Rare,Rare,Blekit
+5_1=Desert,No_Fill,Rare,Rare,Rare,Blekit
+5_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Blekit
+5_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+5_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+5_5=Mountain,No_Fill,Common,Common,Common,Bordowy
+6_0=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Krwisto
+6_1=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+6_2=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Krwisto
+6_3=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_4=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_5=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+
+
+
+[Tile 3]
+art_idx=342
+encounter_difficulty=-300
+walk_mask_name=wrldmp03
+0_0=Desert,No_Fill,Common,Common,Common,Krwisto
+0_1=Desert,No_Fill,None,None,None,Krwisto
+0_2=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Krwisto
+0_3=Desert,No_Fill,Rare,Rare,Rare,Bialy
+0_4=Desert,No_Fill,Rare,Rare,Rare,Bialy
+0_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+1_0=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Krwisto
+1_1=Desert,No_Fill,Rare,Rare,Rare,Krwisto
+1_2=Mountain,No_Fill,Rare,Rare,Rare,Krwisto
+1_3=Desert,No_Fill,None,None,None,Bialy
+1_4=Desert,No_Fill,Common,Common,Common,Bialy
+1_5=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+2_0=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+2_1=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+2_2=Mountain,No_Fill,Rare,Rare,Rare,Piaskowy
+2_3=Mountain,No_Fill,Common,Common,Common,Piaskowy
+2_4=Desert,No_Fill,Common,Common,Common,Bialy
+2_5=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+3_0=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+3_1=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+3_2=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+3_3=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Piaskowy
+3_4=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+3_5=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+4_0=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+4_1=Desert,No_Fill,None,None,None,Piaskowy
+4_2=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Piaskowy
+4_3=Desert,No_Fill,Rare,Rare,Rare,Bialy
+4_4=Desert,No_Fill,Rare,Rare,Rare,Bialy
+4_5=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_0=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+5_1=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Piaskowy
+5_2=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+5_3=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_4=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_5=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_0=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+6_1=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+6_2=Desert,No_Fill,Rare,Rare,Rare,Piaskowy
+6_3=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_4=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+6_5=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+
+
+
+[Tile 4]
+art_idx=343
+encounter_difficulty=-300
+walk_mask_name=wrldmp04
+0_0=MountainCoast,No_Fill,Rare,Rare,Rare,ZielonyAleCliff
+0_1=Ocean,No_Fill,Rare,Rare,Rare,Khaki
+0_2=Ocean,No_Fill,Rare,Rare,Rare,Khaki
+0_3=Ocean,No_Fill,Rare,Rare,Rare,Khaki
+0_4=Ocean,No_Fill,Rare,Rare,Rare,Khaki
+0_5=Ocean,No_Fill,Rare,Rare,Rare,Khaki
+1_0=MountainCoast,No_Fill,Common,Common,Common,ZielonyAleCliff
+1_1=MountainCoast,Fill_W,Rare,Rare,Rare,ZielonyAleCliff
+1_2=MountainCoast,Fill_W,Rare,Rare,Rare,KhakiAleCliff
+1_3=MountainCoast,Fill_W,Rare,Rare,Rare,KhakiAleCliff
+1_4=Ocean,No_Fill,Rare,Rare,Rare,Khaki
+1_5=Ocean,No_Fill,Rare,Rare,Rare,Khaki
+2_0=Mountain,No_Fill,Rare,Rare,Rare,Zielony
+2_1=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Zielony
+2_2=MountainCoast,No_Fill,Rare,Rare,Rare,KhakiAleCliff
+2_3=MountainCoast,Fill_W,Uncommon,Uncommon,Uncommon,KhakiAleCliff
+2_4=MountainCoast,Fill_W,Rare,Rare,Rare,KhakiAleCliff
+2_5=Ocean,No_Fill,Rare,Rare,Rare,Khaki
+3_0=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Zielony
+3_1=Mountain,No_Fill,Rare,Rare,Rare,Zielony
+3_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+3_3=Desert,No_Fill,Rare,Rare,Rare,Khaki
+3_4=MountainCoast,No_Fill,Common,Common,Common,KhakiAleCliff
+3_5=City,Fill_W,Rare,Rare,Rare,Khaki
+4_0=Mountain,No_Fill,Common,Common,Common,Zielony
+4_1=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Zielony
+4_2=Desert,No_Fill,Rare,Rare,Rare,Khaki
+4_3=Desert,No_Fill,Rare,Rare,Rare,Khaki
+4_4=Desert,No_Fill,Rare,Rare,Rare,Khaki
+4_5=City,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+5_0=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Zielony
+5_1=Desert,No_Fill,Common,Common,Common,Khaki
+5_2=Desert,No_Fill,Rare,Rare,Rare,Khaki
+5_3=Desert,No_Fill,Rare,Rare,Rare,Khaki
+5_4=Desert,No_Fill,Rare,Rare,Rare,Khaki
+5_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+6_0=Desert,No_Fill,Rare,Rare,Rare,Khaki
+6_1=Desert,No_Fill,Rare,Rare,Rare,Khaki
+6_2=Desert,No_Fill,Rare,Rare,Rare,Khaki
+6_3=Desert,No_Fill,Rare,Rare,Rare,Khaki
+6_4=Desert,No_Fill,Rare,Rare,Rare,Khaki
+6_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+
+
+
+[Tile 5]
+art_idx=344
+encounter_difficulty=-300
+walk_mask_name=wrldmp05
+0_0=Desert,No_Fill,Rare,Rare,Rare,Khaki
+0_1=Desert,No_Fill,Rare,Rare,Rare,Khaki
+0_2=Desert,No_Fill,Rare,Rare,Rare,Khaki
+0_3=Desert,No_Fill,Rare,Rare,Rare,Khaki
+0_4=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+0_5=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+1_0=Desert,No_Fill,Rare,Rare,Rare,Khaki
+1_1=Desert,No_Fill,Rare,Rare,Rare,Khaki
+1_2=Desert,No_Fill,Rare,Rare,Rare,Khaki
+1_3=Desert,No_Fill,Rare,Rare,Rare,Khaki
+1_4=Desert,No_Fill,Rare,Rare,Rare,Khaki
+1_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+2_0=Desert,No_Fill,Rare,Rare,Rare,Khaki
+2_1=Desert,No_Fill,Rare,Rare,Rare,Khaki
+2_2=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+2_3=Desert,No_Fill,Rare,Rare,Rare,Khaki
+2_4=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Khaki
+2_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+3_0=Desert,No_Fill,Rare,Rare,Rare,Khaki
+3_1=Desert,No_Fill,Rare,Rare,Rare,Khaki
+3_2=Desert,No_Fill,Rare,Rare,Rare,Khaki
+3_3=Desert,No_Fill,Rare,Rare,Rare,Khaki
+3_4=Desert,No_Fill,Rare,Rare,Rare,Khaki
+3_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+4_0=Desert,No_Fill,Rare,Rare,Rare,Khaki
+4_1=Desert,No_Fill,Rare,Rare,Rare,Khaki
+4_2=Desert,No_Fill,Common,Common,Common,Khaki
+4_3=Desert,No_Fill,Common,Common,Common,Khaki
+4_4=Desert,No_Fill,Common,Common,Common,Khaki
+4_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+5_0=Desert,No_Fill,Rare,Rare,Rare,Khaki
+5_1=Desert,No_Fill,Common,Common,Common,Khaki
+5_2=Desert,No_Fill,Common,Common,Common,Khaki
+5_3=Desert,No_Fill,None,None,None,Khaki
+5_4=Desert,No_Fill,Common,Common,Common,Khaki
+5_5=Desert,No_Fill,Common,Common,Common,Khaki
+6_0=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+6_1=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+6_2=Mountain,No_Fill,Common,Common,Common,Bordowy
+6_3=Mountain,No_Fill,Common,Common,Common,Bordowy
+6_4=Mountain,No_Fill,Common,Common,Common,Bordowy
+6_5=Desert,No_Fill,Rare,Rare,Rare,Khaki
+
+
+
+[Tile 6]
+art_idx=345
+encounter_difficulty=-300
+walk_mask_name=wrldmp06
+0_0=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+0_1=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+0_2=City,No_Fill,Common,Common,Common,Zolty
+0_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+0_4=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+0_5=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+1_0=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+1_1=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+1_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+1_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+1_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+1_5=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+2_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+2_1=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+2_2=Mountain,No_Fill,Common,Common,Common,Bordowy
+2_3=Mountain,No_Fill,Common,Common,Common,Bordowy
+2_4=Desert,No_Fill,Common,Common,Common,Czerwony
+2_5=Desert,No_Fill,Common,Common,Common,Czerwony
+3_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+3_1=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+3_2=Desert,No_Fill,Common,Common,Common,Bialy
+3_3=Desert,No_Fill,Common,Common,Common,Bialy
+3_4=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+3_5=Desert,No_Fill,Common,Common,Common,Czerwony
+4_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+4_1=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+4_2=Desert,No_Fill,Common,Common,Common,Bialy
+4_3=Desert,No_Fill,Common,Common,Common,Bialy
+4_4=Desert,No_Fill,Common,Common,Common,Bialy
+4_5=Desert,No_Fill,Common,Common,Common,Bialy
+5_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_1=Desert,No_Fill,Common,Common,Common,Bialy
+5_2=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+5_3=Desert,No_Fill,Common,Common,Common,Bialy
+5_4=Desert,No_Fill,Common,Common,Common,Bialy
+5_5=Desert,No_Fill,Common,Common,Common,Bialy
+6_0=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+6_1=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+6_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+6_3=Desert,No_Fill,Common,Common,Common,Bialy
+6_4=Desert,No_Fill,Common,Common,Common,Bialy
+6_5=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+
+
+
+[Tile 7]
+art_idx=346
+encounter_difficulty=-300
+walk_mask_name=wrldmp07
+0_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+0_1=Desert,No_Fill,Common,Common,Common,Bordowy
+0_2=Mountain,No_Fill,Common,Common,Common,Bordowy
+0_3=Desert,No_Fill,Common,Common,Common,Bialy
+0_4=Desert,No_Fill,Rare,Rare,Rare,Bialy
+0_5=Desert,No_Fill,Rare,Rare,Rare,Bialy
+1_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+1_1=Mountain,No_Fill,Common,Common,Common,Bordowy
+1_2=Mountain,No_Fill,Common,Common,Common,Bordowy
+1_3=Desert,No_Fill,Rare,Rare,Rare,Bialy
+1_4=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+1_5=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+2_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+2_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+2_2=Desert,No_Fill,Rare,Rare,Rare,Bialy
+2_3=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+2_4=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+2_5=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+3_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+3_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+3_2=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+3_3=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+3_4=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+3_5=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+4_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+4_1=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+4_2=Highway,No_Fill,Rare,Rare,Rare,HighwayLVBF
+4_3=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+4_4=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+4_5=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+5_0=City,No_Fill,Common,Common,Common,Zolty
+5_1=City,No_Fill,Rare,Rare,Rare,Zolty
+5_2=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+5_3=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+5_4=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+5_5=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+6_0=City,No_Fill,Common,Common,Common,Zolty
+6_1=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+6_2=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+6_3=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+6_4=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+6_5=Desert,No_Fill,Rare,Rare,Rare,Czerwony
+
+
+
+[Tile 8]
+art_idx=347
+encounter_difficulty=-300
+walk_mask_name=wrldmp08
+0_0=Ocean,No_Fill,None,None,None,Pietnascie
+0_1=Ocean,No_Fill,None,None,None,Pietnascie
+0_2=Ocean,No_Fill,None,None,None,Pietnascie
+0_3=Ocean,No_Fill,None,None,None,Pietnascie
+0_4=Ocean,No_Fill,None,None,None,Pietnascie
+0_5=Ocean,No_Fill,None,None,None,Pietnascie
+1_0=Ocean,No_Fill,None,None,None,Pietnascie
+1_1=Ocean,No_Fill,None,None,None,Pietnascie
+1_2=Ocean,No_Fill,None,None,None,Pietnascie
+1_3=Ocean,No_Fill,None,None,None,Pietnascie
+1_4=Ocean,No_Fill,None,None,None,Pietnascie
+1_5=Ocean,No_Fill,None,None,None,Pietnascie
+2_0=Ocean,No_Fill,None,None,None,Pietnascie
+2_1=Ocean,No_Fill,None,None,None,Pietnascie
+2_2=Ocean,No_Fill,None,None,None,Pietnascie
+2_3=Ocean,No_Fill,None,None,None,Pietnascie
+2_4=Ocean,No_Fill,None,None,None,Pietnascie
+2_5=Ocean,No_Fill,None,None,None,Pietnascie
+3_0=Ocean,No_Fill,None,None,None,Pietnascie
+3_1=Ocean,No_Fill,None,None,None,Pietnascie
+3_2=Ocean,No_Fill,None,None,None,Pietnascie
+3_3=Ocean,No_Fill,None,None,None,Pietnascie
+3_4=Ocean,No_Fill,None,None,None,Pietnascie
+3_5=Ocean,No_Fill,None,None,None,Pietnascie
+4_0=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+4_1=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+4_2=Ocean,No_Fill,None,None,None,Pietnascie
+4_3=Ocean,No_Fill,None,None,None,Pietnascie
+4_4=Ocean,No_Fill,None,None,None,Pietnascie
+4_5=Ocean,No_Fill,None,None,None,Pietnascie
+5_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_1=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+5_2=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+5_3=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+5_4=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+5_5=Ocean,No_Fill,None,None,None,Pietnascie
+6_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_2=City,No_Fill,Rare,Rare,Rare,Bialy
+6_3=City,No_Fill,Rare,Rare,Rare,Bordowy
+6_4=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+6_5=Ocean,No_Fill,None,None,None,Pietnascie
+
+
+
+[Tile 9]
+art_idx=348
+encounter_difficulty=-300
+walk_mask_name=wrldmp09
+0_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+0_1=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+0_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+0_3=City,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+0_4=Ocean,No_Fill,Uncommon,Uncommon,Uncommon,Pietnascie
+0_5=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+1_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+1_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+1_2=Desert,No_Fill,Rare,Rare,Rare,Bialy
+1_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+1_4=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+1_5=Ocean,Fill_W,Uncommon,Uncommon,Uncommon,Pietnascie
+2_0=City,No_Fill,Common,Common,Common,Bialy
+2_1=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+2_2=Desert,No_Fill,Rare,Rare,Rare,Bialy
+2_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+2_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+2_5=Ocean,No_Fill,Common,Common,Common,Pietnascie
+3_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+3_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+3_2=Desert,No_Fill,Rare,Rare,Rare,Bialy
+3_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+3_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+3_5=Ocean,No_Fill,Common,Common,Common,Pietnascie
+4_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+4_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+4_2=Desert,No_Fill,Rare,Rare,Rare,Bialy
+4_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+4_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+4_5=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Trzynascie
+5_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_2=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_4=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+5_5=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Trzynascie
+6_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_2=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_4=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+6_5=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+
+
+
+[Tile 10]
+art_idx=349
+encounter_difficulty=-300
+walk_mask_name=wrldmp10
+0_0=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+0_1=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+0_2=Desert,No_Fill,Rare,Rare,Rare,Czternascie
+0_3=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+0_4=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Trzynascie
+0_5=City,No_Fill,Common,Common,Common,Trzynascie
+1_0=Mountain,No_Fill,Rare,Rare,Rare,Bordowy
+1_1=Desert,No_Fill,Rare,Rare,Rare,Czternascie
+1_2=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Czternascie
+1_3=Desert,No_Fill,Rare,Rare,Rare,Czternascie
+1_4=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Trzynascie
+1_5=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzynascie
+2_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+2_1=Desert,No_Fill,Common,Common,Common,Osiem
+2_2=Desert,No_Fill,Common,Common,Common,Osiem
+2_3=Desert,No_Fill,Common,Common,Common,Osiem
+2_4=Desert,No_Fill,Common,Common,Common,Trzynascie
+2_5=Mountain,No_Fill,Common,Common,Common,Trzynascie
+3_0=Desert,No_Fill,Common,Common,Common,Osiem
+3_1=Desert,No_Fill,Common,Common,Common,Osiem
+3_2=Desert,No_Fill,Rare,Rare,Rare,Osiem
+3_3=Desert,No_Fill,Common,Common,Common,Osiem
+3_4=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+3_5=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzynascie
+4_0=Desert,No_Fill,Common,Common,Common,Osiem
+4_1=Desert,No_Fill,Common,Common,Common,Osiem
+4_2=Desert,No_Fill,Common,Common,Common,Osiem
+4_3=Desert,No_Fill,Common,Common,Common,Osiem
+4_4=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+4_5=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+5_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_2=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bialy
+5_3=Desert,No_Fill,Rare,Rare,Rare,Osiem
+5_4=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+5_5=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+6_0=Desert,No_Fill,Common,Common,Common,Dziewiec
+6_1=Desert,No_Fill,Common,Common,Common,Dziewiec
+6_2=Desert,No_Fill,Common,Common,Common,Dziewiec
+6_3=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Osiem
+6_4=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+6_5=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+
+
+
+[Tile 11]
+art_idx=350
+encounter_difficulty=-300
+walk_mask_name=wrldmp11
+0_0=Desert,No_Fill,Common,Common,Common,Dziewiec
+0_1=City,No_Fill,Common,Common,Common,Dziewiec
+0_2=Desert,No_Fill,Common,Common,Common,Dziewiec
+0_3=Desert,No_Fill,Rare,Rare,Rare,Dziewiec
+0_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+0_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+1_0=City,No_Fill,Common,Common,Common,Dziewiec
+1_1=City,No_Fill,None,None,None,Dziewiec
+1_2=City,No_Fill,Common,Common,Common,Dziewiec
+1_3=Desert,No_Fill,Rare,Rare,Rare,Dziewiec
+1_4=Desert,No_Fill,Rare,Rare,Rare,Dziewiec
+1_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+2_0=Desert,No_Fill,Common,Common,Common,Dziewiec
+2_1=Desert,No_Fill,Common,Common,Common,Dziewiec
+2_2=Desert,No_Fill,Common,Common,Common,Dziewiec
+2_3=Desert,No_Fill,Rare,Rare,Rare,Dziewiec
+2_4=Desert,No_Fill,Rare,Rare,Rare,Dziewiec
+2_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+3_0=Desert,No_Fill,Rare,Rare,Rare,Dziewiec
+3_1=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Dziewiec
+3_2=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Dziewiec
+3_3=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Dziewiec
+3_4=Desert,No_Fill,Rare,Rare,Rare,Dziewiec
+3_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+4_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+4_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+4_2=Desert,No_Fill,Rare,Rare,Rare,Bialy
+4_3=City,No_Fill,Common,Common,Common,Dziewiec
+4_4=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+4_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_2=Desert,No_Fill,Rare,Rare,Rare,Bialy
+5_3=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+5_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_0=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_1=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_2=Desert,No_Fill,Rare,Rare,Rare,Bialy
+6_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+
+
+
+[Tile 12]
+art_idx=351
+encounter_difficulty=-300
+walk_mask_name=wrldmp12
+0_0=Ocean,No_Fill,None,None,None,Pietnascie
+0_1=Ocean,No_Fill,None,None,None,Pietnascie
+0_2=Ocean,No_Fill,None,None,None,Pietnascie
+0_3=Ocean,No_Fill,None,None,None,Pietnascie
+0_4=Ocean,No_Fill,None,None,None,Pietnascie
+0_5=Ocean,No_Fill,None,None,None,Pietnascie
+1_0=Ocean,No_Fill,None,None,None,Pietnascie
+1_1=Ocean,No_Fill,None,None,None,Pietnascie
+1_2=Ocean,No_Fill,None,None,None,Pietnascie
+1_3=Ocean,No_Fill,None,None,None,Pietnascie
+1_4=Ocean,No_Fill,None,None,None,Pietnascie
+1_5=Ocean,No_Fill,None,None,None,Pietnascie
+2_0=Ocean,No_Fill,None,None,None,Pietnascie
+2_1=Ocean,No_Fill,None,None,None,Pietnascie
+2_2=Ocean,No_Fill,None,None,None,Pietnascie
+2_3=Ocean,No_Fill,None,None,None,Pietnascie
+2_4=Ocean,No_Fill,None,None,None,Pietnascie
+2_5=Ocean,No_Fill,None,None,None,Pietnascie
+3_0=Ocean,No_Fill,None,None,None,Pietnascie
+3_1=Ocean,No_Fill,None,None,None,Pietnascie
+3_2=Ocean,No_Fill,None,None,None,Pietnascie
+3_3=Ocean,No_Fill,None,None,None,Pietnascie
+3_4=Ocean,No_Fill,None,None,None,Pietnascie
+3_5=Ocean,No_Fill,None,None,None,Pietnascie
+4_0=Ocean,No_Fill,None,None,None,Pietnascie
+4_1=Ocean,No_Fill,None,None,None,Pietnascie
+4_2=Ocean,No_Fill,None,None,None,Pietnascie
+4_3=Ocean,No_Fill,None,None,None,Pietnascie
+4_4=Ocean,No_Fill,None,None,None,Pietnascie
+4_5=Ocean,No_Fill,None,None,None,Pietnascie
+5_0=Ocean,No_Fill,None,None,None,Pietnascie
+5_1=Ocean,No_Fill,None,None,None,Pietnascie
+5_2=Ocean,No_Fill,None,None,None,Pietnascie
+5_3=Ocean,No_Fill,None,None,None,Pietnascie
+5_4=Ocean,No_Fill,None,None,None,Pietnascie
+5_5=Ocean,No_Fill,None,None,None,Pietnascie
+6_0=Ocean,No_Fill,None,None,None,Pietnascie
+6_1=Ocean,No_Fill,None,None,None,Pietnascie
+6_2=Ocean,No_Fill,None,None,None,Pietnascie
+6_3=Ocean,No_Fill,None,None,None,Pietnascie
+6_4=Ocean,No_Fill,None,None,None,Pietnascie
+6_5=Ocean,No_Fill,None,None,None,Pietnascie
+
+
+
+[Tile 13]
+art_idx=352
+encounter_difficulty=-300
+walk_mask_name=wrldmp13
+0_0=Ocean,No_Fill,None,None,None,Pietnascie
+0_1=Ocean,No_Fill,None,None,None,Pietnascie
+0_2=Ocean,No_Fill,None,None,None,Pietnascie
+0_3=Ocean,No_Fill,None,None,None,Pietnascie
+0_4=Ocean,No_Fill,None,None,None,Pietnascie
+0_5=Ocean,No_Fill,None,None,None,Pietnascie
+1_0=Ocean,No_Fill,None,None,None,Pietnascie
+1_1=Ocean,No_Fill,None,None,None,Pietnascie
+1_2=Ocean,No_Fill,None,None,None,Pietnascie
+1_3=Ocean,No_Fill,None,None,None,Pietnascie
+1_4=Ocean,No_Fill,None,None,None,Pietnascie
+1_5=Ocean,No_Fill,None,None,None,Pietnascie
+2_0=Ocean,No_Fill,None,None,None,Pietnascie
+2_1=Ocean,No_Fill,None,None,None,Pietnascie
+2_2=Ocean,No_Fill,None,None,None,Pietnascie
+2_3=Ocean,No_Fill,None,None,None,Pietnascie
+2_4=Ocean,No_Fill,None,None,None,Pietnascie
+2_5=Ocean,No_Fill,None,None,None,Pietnascie
+3_0=Ocean,No_Fill,None,None,None,Pietnascie
+3_1=Ocean,No_Fill,None,None,None,Pietnascie
+3_2=Ocean,No_Fill,None,None,None,Pietnascie
+3_3=Ocean,No_Fill,None,None,None,Pietnascie
+3_4=Ocean,No_Fill,None,None,None,Pietnascie
+3_5=Ocean,No_Fill,None,None,None,Pietnascie
+4_0=City,Fill_W,Common,Common,Common,Trzynascie
+4_1=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+4_2=Ocean,No_Fill,None,None,None,Pietnascie
+4_3=Ocean,No_Fill,None,None,None,Pietnascie
+4_4=Ocean,No_Fill,None,None,None,Pietnascie
+4_5=Ocean,No_Fill,None,None,None,Pietnascie
+5_0=City,No_Fill,Common,Common,Common,Trzynascie
+5_1=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+5_2=Ocean,No_Fill,None,None,None,Pietnascie
+5_3=Ocean,No_Fill,None,None,None,Pietnascie
+5_4=Ocean,No_Fill,None,None,None,Pietnascie
+5_5=Ocean,No_Fill,None,None,None,Pietnascie
+6_0=Desert,No_Fill,Common,Common,Common,Trzynascie
+6_1=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+6_2=Ocean,No_Fill,None,None,None,Pietnascie
+6_3=Ocean,No_Fill,None,None,None,Pietnascie
+6_4=Ocean,No_Fill,None,None,None,Pietnascie
+6_5=Ocean,No_Fill,None,None,None,Pietnascie
+
+
+
+[Tile 14]
+art_idx=353
+encounter_difficulty=-300
+walk_mask_name=wrldmp14
+0_0=City,No_Fill,Common,Common,Common,Trzynascie
+0_1=City,No_Fill,Rare,Rare,Rare,Trzynascie
+0_2=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+0_3=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+0_4=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+0_5=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+1_0=City,No_Fill,None,None,None,Trzynascie
+1_1=City,No_Fill,Common,Common,Common,Trzynascie
+1_2=City,No_Fill,None,None,None,Trzynascie
+1_3=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+1_4=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+1_5=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+2_0=City,No_Fill,Common,Common,Common,Trzynascie
+2_1=City,No_Fill,Common,Common,Common,Trzynascie
+2_2=City,No_Fill,Common,Common,Common,Trzynascie
+2_3=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+2_4=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+2_5=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+3_0=City,No_Fill,Common,Common,Common,Trzynascie
+3_1=Desert,No_Fill,Common,Common,Common,Trzynascie
+3_2=Ocean,No_Fill,Common,Common,Common,Pietnascie
+3_3=Ocean,No_Fill,Uncommon,Uncommon,Uncommon,Pietnascie
+3_4=Ocean,Fill_W,Uncommon,Uncommon,Uncommon,Pietnascie
+3_5=Ocean,No_Fill,Rare,Rare,Rare,Pietnascie
+4_0=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Trzynascie
+4_1=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Trzynascie
+4_2=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+4_3=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+4_4=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Bordowy
+4_5=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+5_0=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Trzynascie
+5_1=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+5_2=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Trzynascie
+5_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_5=City,No_Fill,Common,Common,Common,Bordowy
+6_0=Mountain,No_Fill,Rare,Rare,Rare,Trzynascie
+6_1=Desert,No_Fill,Rare,Rare,Rare,Trzynascie
+6_2=Mountain,No_Fill,Rare,Rare,Rare,Trzynascie
+6_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+6_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+6_5=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+
+
+
+[Tile 15]
+art_idx=354
+encounter_difficulty=-300
+walk_mask_name=wrldmp15
+0_0=Mountain,No_Fill,Rare,Rare,Rare,Trzy
+0_1=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+0_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+0_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+0_4=Mountain,No_Fill,Common,Common,Common,Trzy
+0_5=Mountain,No_Fill,Common,Common,Common,Trzy
+1_0=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+1_1=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+1_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+1_3=Mountain,No_Fill,Rare,Rare,Rare,Trzy
+1_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+1_5=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+2_0=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+2_1=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+2_2=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+2_3=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+2_4=Mountain,No_Fill,Rare,Rare,Rare,Trzy
+2_5=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+3_0=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+3_1=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+3_2=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+3_3=Desert,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+3_4=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+3_5=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+4_0=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+4_1=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+4_2=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+4_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+4_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+4_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_0=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_1=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_2=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_0=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_1=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_2=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+
+
+
+[Tile 16]
+art_idx=355
+encounter_difficulty=-300
+walk_mask_name=wrldmp16
+0_0=Ocean,No_Fill,None,None,None,Pietnascie
+0_1=Ocean,No_Fill,None,None,None,Pietnascie
+0_2=Ocean,No_Fill,None,None,None,Pietnascie
+0_3=Ocean,No_Fill,None,None,None,Pietnascie
+0_4=Ocean,No_Fill,None,None,None,Pietnascie
+0_5=Ocean,No_Fill,None,None,None,Pietnascie
+1_0=Ocean,No_Fill,None,None,None,Pietnascie
+1_1=Ocean,No_Fill,None,None,None,Pietnascie
+1_2=Ocean,No_Fill,None,None,None,Pietnascie
+1_3=Ocean,No_Fill,None,None,None,Pietnascie
+1_4=Ocean,No_Fill,None,None,None,Pietnascie
+1_5=Ocean,No_Fill,None,None,None,Pietnascie
+2_0=Ocean,No_Fill,None,None,None,Pietnascie
+2_1=Ocean,No_Fill,None,None,None,Pietnascie
+2_2=Ocean,No_Fill,None,None,None,Pietnascie
+2_3=Ocean,No_Fill,None,None,None,Pietnascie
+2_4=Ocean,No_Fill,None,None,None,Pietnascie
+2_5=Ocean,No_Fill,None,None,None,Pietnascie
+3_0=Ocean,No_Fill,None,None,None,Pietnascie
+3_1=Ocean,No_Fill,None,None,None,Pietnascie
+3_2=Ocean,No_Fill,None,None,None,Pietnascie
+3_3=Ocean,No_Fill,None,None,None,Pietnascie
+3_4=Ocean,No_Fill,None,None,None,Pietnascie
+3_5=Ocean,No_Fill,None,None,None,Pietnascie
+4_0=Ocean,No_Fill,None,None,None,Pietnascie
+4_1=Ocean,No_Fill,None,None,None,Pietnascie
+4_2=Ocean,No_Fill,None,None,None,Pietnascie
+4_3=Ocean,No_Fill,None,None,None,Pietnascie
+4_4=Ocean,No_Fill,None,None,None,Pietnascie
+4_5=Ocean,No_Fill,None,None,None,Pietnascie
+5_0=Ocean,No_Fill,None,None,None,Pietnascie
+5_1=Ocean,No_Fill,None,None,None,Pietnascie
+5_2=Ocean,No_Fill,None,None,None,Pietnascie
+5_3=Ocean,No_Fill,None,None,None,Pietnascie
+5_4=Ocean,No_Fill,None,None,None,Pietnascie
+5_5=Ocean,No_Fill,None,None,None,Pietnascie
+6_0=Ocean,No_Fill,None,None,None,Pietnascie
+6_1=Ocean,No_Fill,None,None,None,Pietnascie
+6_2=Ocean,No_Fill,None,None,None,Pietnascie
+6_3=Ocean,No_Fill,None,None,None,Pietnascie
+6_4=Ocean,No_Fill,None,None,None,Pietnascie
+6_5=Ocean,No_Fill,None,None,None,Pietnascie
+
+
+
+[Tile 17]
+art_idx=356
+encounter_difficulty=-300
+walk_mask_name=wrldmp17
+0_0=Ocean,No_Fill,None,None,None,Pietnascie
+0_1=Ocean,No_Fill,None,None,None,Pietnascie
+0_2=Ocean,No_Fill,None,None,None,Pietnascie
+0_3=Ocean,No_Fill,None,None,None,Pietnascie
+0_4=Ocean,No_Fill,None,None,None,Pietnascie
+0_5=Ocean,No_Fill,None,None,None,Pietnascie
+1_0=Ocean,No_Fill,None,None,None,Pietnascie
+1_1=Ocean,No_Fill,None,None,None,Pietnascie
+1_2=Ocean,No_Fill,None,None,None,Pietnascie
+1_3=Ocean,No_Fill,None,None,None,Pietnascie
+1_4=Ocean,No_Fill,None,None,None,Pietnascie
+1_5=Ocean,No_Fill,None,None,None,Pietnascie
+2_0=Ocean,No_Fill,None,None,None,Pietnascie
+2_1=Ocean,No_Fill,None,None,None,Pietnascie
+2_2=Ocean,No_Fill,None,None,None,Pietnascie
+2_3=Ocean,No_Fill,None,None,None,Pietnascie
+2_4=Ocean,No_Fill,None,None,None,Pietnascie
+2_5=Ocean,No_Fill,None,None,None,Pietnascie
+3_0=Ocean,No_Fill,None,None,None,Pietnascie
+3_1=Ocean,No_Fill,None,None,None,Pietnascie
+3_2=Ocean,No_Fill,None,None,None,Pietnascie
+3_3=Ocean,No_Fill,None,None,None,Pietnascie
+3_4=Ocean,No_Fill,None,None,None,Pietnascie
+3_5=Ocean,No_Fill,None,None,None,Pietnascie
+4_0=Ocean,No_Fill,None,None,None,Pietnascie
+4_1=Ocean,No_Fill,None,None,None,Pietnascie
+4_2=Ocean,No_Fill,None,None,None,Pietnascie
+4_3=Ocean,No_Fill,None,None,None,Pietnascie
+4_4=Ocean,No_Fill,None,None,None,Pietnascie
+4_5=Ocean,No_Fill,None,None,None,Pietnascie
+5_0=Ocean,No_Fill,None,None,None,Pietnascie
+5_1=Ocean,No_Fill,None,None,None,Pietnascie
+5_2=Ocean,No_Fill,None,None,None,Pietnascie
+5_3=Ocean,No_Fill,None,None,None,Pietnascie
+5_4=Ocean,No_Fill,None,None,None,Pietnascie
+5_5=Ocean,No_Fill,None,None,None,Pietnascie
+6_0=Ocean,No_Fill,None,None,None,Pietnascie
+6_1=Ocean,No_Fill,None,None,None,Pietnascie
+6_2=Ocean,No_Fill,None,None,None,Pietnascie
+6_3=Ocean,No_Fill,None,None,None,Pietnascie
+6_4=Ocean,No_Fill,None,None,None,Pietnascie
+6_5=Ocean,No_Fill,None,None,None,Pietnascie
+
+
+
+[Tile 18]
+art_idx=357
+encounter_difficulty=--300
+walk_mask_name=wrldmp18
+0_0=Ocean,No_Fill,None,None,None,Pietnascie
+0_1=Ocean,No_Fill,None,None,None,Pietnascie
+0_2=Ocean,No_Fill,None,None,None,Pietnascie
+0_3=Ocean,No_Fill,None,None,None,Pietnascie
+0_4=Ocean,No_Fill,None,None,None,Pietnascie
+0_5=Ocean,No_Fill,None,None,None,Pietnascie
+1_0=Ocean,No_Fill,None,None,None,Pietnascie
+1_1=Ocean,No_Fill,None,None,None,Pietnascie
+1_2=Ocean,No_Fill,None,None,None,Pietnascie
+1_3=Ocean,No_Fill,None,None,None,Pietnascie
+1_4=Ocean,No_Fill,None,None,None,Pietnascie
+1_5=Ocean,No_Fill,None,None,None,Pietnascie
+2_0=Ocean,No_Fill,None,None,None,Pietnascie
+2_1=Ocean,No_Fill,None,None,None,Pietnascie
+2_2=Ocean,No_Fill,None,None,None,Pietnascie
+2_3=Ocean,No_Fill,None,None,None,Pietnascie
+2_4=Ocean,No_Fill,None,None,None,Pietnascie
+2_5=Ocean,No_Fill,None,None,None,Pietnascie
+3_0=Ocean,No_Fill,None,None,None,Pietnascie
+3_1=Ocean,No_Fill,None,None,None,Pietnascie
+3_2=Ocean,No_Fill,None,None,None,Pietnascie
+3_3=Ocean,No_Fill,None,None,None,Pietnascie
+3_4=Ocean,No_Fill,None,None,None,Pietnascie
+3_5=Ocean,No_Fill,None,None,None,Pietnascie
+4_0=Ocean,No_Fill,None,None,None,Pietnascie
+4_1=Ocean,No_Fill,None,None,None,Pietnascie
+4_2=Ocean,No_Fill,None,None,None,Pietnascie
+4_3=Ocean,No_Fill,None,None,None,Pietnascie
+4_4=Ocean,No_Fill,None,None,None,Pietnascie
+4_5=Ocean,No_Fill,None,None,None,Pietnascie
+5_0=City,Fill_W,Common,Common,Common,Bordowy
+5_1=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+5_2=Ocean,No_Fill,None,None,None,Pietnascie
+5_3=Ocean,No_Fill,None,None,None,Pietnascie
+5_4=Ocean,No_Fill,None,None,None,Pietnascie
+5_5=Ocean,No_Fill,None,None,None,Pietnascie
+6_0=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+6_1=Mountain,No_Fill,Common,Common,Common,Trzy
+6_2=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+6_3=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+6_4=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+6_5=Ocean,Fill_W,Rare,Rare,Rare,Pietnascie
+
+
+
+[Tile 19]
+art_idx=358
+encounter_difficulty=-300
+walk_mask_name=wrldmp19
+0_0=Mountain,No_Fill,Common,Common,Common,Trzy
+0_1=Mountain,No_Fill,Common,Common,Common,Trzy
+0_2=Mountain,No_Fill,Common,Common,Common,Trzy
+0_3=Mountain,No_Fill,Common,Common,Common,Trzy
+0_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+0_5=Desert,Fill_W,Rare,Rare,Rare,Bordowy
+1_0=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+1_1=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+1_2=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Trzy
+1_3=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+1_4=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+1_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+2_0=Mountain,No_Fill,Uncommon,Uncommon,Uncommon,Dwanascie
+2_1=Mountain,No_Fill,Rare,Rare,Rare,Dwanascie
+2_2=Mountain,No_Fill,Rare,Rare,Rare,Dwanascie
+2_3=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+2_4=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+2_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+3_0=Mountain,No_Fill,Rare,Rare,Rare,Dwanascie
+3_1=Mountain,No_Fill,None,None,None,Dwanascie
+3_2=Mountain,No_Fill,Rare,Rare,Rare,Dwanascie
+3_3=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+3_4=Mountain,No_Fill,Rare,Rare,Rare,Trzy
+3_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+4_0=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+4_1=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+4_2=Mountain,No_Fill,Rare,Rare,Rare,Dwanascie
+4_3=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+4_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+4_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_0=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+5_1=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+5_2=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+5_3=Desert,No_Fill,Rare,Rare,Rare,Dwanascie
+5_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+5_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_0=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_1=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_2=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_3=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_4=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+6_5=Desert,No_Fill,Rare,Rare,Rare,Bordowy
+

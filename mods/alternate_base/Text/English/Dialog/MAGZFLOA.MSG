@@ -1,0 +1,3 @@
+{200}{}{Wykryto podejrzan¹ aktywnoœæ}
+{201}{}{Uwaga! Sensor wykry³ anomaliê dŸwiêkow¹}
+{202}{}{Wykryto falê akustyczn¹ nieznanego pochodzenia}

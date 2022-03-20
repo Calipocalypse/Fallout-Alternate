@@ -1,0 +1,79 @@
+{200}{}{Wypierdalaj} # Fuck off
+{201}{}{Na co siê gapisz?} # What are you staring at?
+{202}{}{Zachowuj siê, albo odpowiesz przed Garlem}
+{203}{}{Masz jakieœ p¹czki?}
+{204}{}{Jak dla mnie nie wygl¹dasz na zbytniego twardziela}
+{205}{}{Co?}
+{206}{}{Mamusia ciê nie nauczy³a nie zaczepiaæ nieznajomych?} # mommy
+{207}{}{Jesteœ ¿a³osny} # You're pathetic
+
+{220}{}{Jesteœ OK}
+
+#Stra¿nicy drzwi do obozu
+
+{299}{}{Znowu ty? Chcesz do œrodka, czy co?}
+{300}{}{Hej, frajer, chcesz trafiæ do pierdla? Hehe.}
+{301}{}{Myœlisz, ¿e masz spluwê i taki kozak jesteœ?} #Retoryka
+{302}{}{Nie chcê.}
+{303}{}{Chcê.}
+{304}{}{Pójdê ju¿.}
+
+{310}{}{Ooo patrz jaki wyszczekany. Zobaczymy, czy te¿ bêdzie tak gwizda³ po drugiej stronie siatki… [Stra¿nicy wyci¹gaj¹ pa³ki i powolnym krokiem zmierzaj¹ w twoj¹ stronê.]}
+{311}{}{[Nic nie rób.]}
+{312}{}{[Broñ siê.]}
+
+{320}{}{Tak jak myœla³em. Zabieraj swój g³adziutki ty³eczek w troki i zje¿d¿aj st¹d, albo porozmawiamy sobie jak Pan i s³uga. Pierwsze skrzypce bêdê gra³ ja, naturalnie.}
+{321}{}{Dobra...}
+
+#W obozie przed Oswaldem
+
+{396}{}{Miarka siê przebra³a}
+{397}{}{Jeszcze raz siê tutaj pojawisz, a rêcze. Kula œrednicy 10 milimetrów ugrzêznie w twoim truchle.}
+{398}{}{Zaczynasz mnie powoli denerwowaæ. Czego?}
+{399}{}{Znowu ty? Nie pamiêtasz, ¿e masz siê st¹d trzymaæ z daleka?}
+{400}{}{Zgubi³eœ siê? Mam ci pokazaæ gdzie s¹ pola? Czy sam zabierzesz swój odw³ok nim ci go skopiê?}
+{401}{}{Muszê porozmawiaæ z twoim szefem. Masz mnie przepuœciæ.}
+{402}{}{Kiedy nas wypuœcicie?}
+{403}{}{Chyba pomyli³em budynki.}
+
+{410}{}{No raczej, a teraz wypierdalaæ do roboty.}
+
+{420}{}{Wtedy gdy Chanowie skopi¹ dupê supermutantom i wasze ciasne ty³eczki bêd¹ mog³y znów bezpiecznie kroczyæ po pustyni.}
+
+{430}{}{Nie, nie, nie. Ty nic nie musisz. Chocia¿... wiesz co? Bêdzie zabawnie jak Oswald rozwali ci ³eb, haha. WchodŸ.}
+{431}{}{[WejdŸ]}
+{432}{}{Eee... wolê nie.}
+
+#410
+
+#barfgiht_quest_talk
+{500}{}{Czego?}
+{501}{}{Bo tam jest dwóch gosci i siê eee... bij¹.}
+{502}{}{Masz kapsle?}
+{503}{}{Nie? Nie wiedzia³em, ¿e...}
+{504}{}{Ju¿, ju¿ przestañ p³akaæ. Zaraz zetrzemy ich w py³. Przecie¿ od tego jesteœmy - ¿eby pilnowaæ porz¹dku.}
+{505}{}{Och, ok...}
+
+#bimber_quest_talk
+{600}{}{Barman twierdzi, ¿e bimbrownicy pracuj¹ zbyt wolno i macie ich zmusiæ do ciê¿szej pracy.}
+{601}{}{[OdejdŸ.]}
+{610}{}{A co mnie ten stary cieæ obchodzi? Mam gdzieœ co ci ten zgred powiedzia³.}
+{611}{}{[Retoryka] Zobaczymy co powie twój szefunio kiedy siê dowie, ¿e nie pilnujesz jego interesu.}
+{612}{}{Mo¿e parê kapsli zmieni twoje zdanie?}
+{613}{}{Dobra, sam to za³atwiê.}
+{620}{}{Zaraz, czy ty mi w³aœnie grozisz?!}
+{621}{}{Nie, nie wybacz! Nie chcia³em ciê uraziæ...}
+{622}{}{Tak! I jeœli zaraz mi nie pomo¿esz podpadniesz ostro swojemu szefowi. Wybór jest chyba prosty.}
+{623}{}{Ha! Wiedzia³em ¿eœ zwyk³y lamus!}
+{624}{}{Dobra, za³atwimy to. Ale jeœli jeszcze raz mnie zaczepisz to nie rêczê za siebie.}
+{625}{}{Rozumiem. Dzia³aj.}
+{630}{}{Hmm... ale to wiesz... zale¿y ile tych kapsli, hehe...}
+{631}{}{100 kapsli.}
+{632}{}{75 kapsli.}
+{633}{}{50 kapsli.}
+{634}{}{25 kapsli.}
+{635}{}{Eee... chwilowo jestem sp³ukany.}
+{636}{}{Uwa¿asz, ¿e tyle jest wart mój czas? WsadŸ sobie je w dupê.}
+{637}{}{Eh...}
+
+{700}{}{Nie powinno ciê tu byæ o tej porze! Doskonale o tym wiedzia³eœ, teraz zginiesz!}

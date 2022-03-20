@@ -1,0 +1,8 @@
+{200}{}{Dlaczego mnie tu przyprowadzi³eœ?!}
+{201}{}{Co chcesz ze mn¹ zrobiæ??}
+{202}{}{Nic szczególnego}
+{203}{}{Po prostu zamknij oczy}
+{204}{}{Zrobi³bym to skurwysynu gdybyœcie mi ich nie wypalili!}
+{205}{}{Spokojnie}
+{206}{}{Poczujesz lekkie uk³ucie}
+{207}{}{Jak tak dalej pójdzie bêdziemy musieli znaleŸæ kolejn¹ kryptê}

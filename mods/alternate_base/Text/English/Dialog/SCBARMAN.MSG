@@ -1,0 +1,47 @@
+{200}{}{Taaa? Co podaæ?}
+{201}{}{Trzymaj, podaæ coœ jeszcze?}
+{202}{}{Piwo 5$}
+{203}{}{Gorzala 15$}
+{204}{}{Nuka-Cola 15$}
+{205}{}{Woda.}
+{206}{}{Szukam pracy.}
+{207}{}{Nie mia³byœ dla mnie jeszcze jakieœ roboty?}
+{208}{}{W sprawie tej roboty...}
+{209}{}{Jestem sp³ukany, wrócê kiedy indziej.}
+{210}{}{Nie dziêki, mo¿e innym razem.}
+
+{215}{}{Przecie¿ ty nie masz nawet grosza przy sobie. Jak ty chcesz mi w ogóle zaplaciæ? WYNOŒ SIÊ!}
+{216}{}{[OdejdŸ.]}
+{217}{}{Ooo ty leszczu, nie bêdziesz tak do mnie mówi³!}
+{218}{}{Teraz to musisz umrzeæ...}
+
+{220}{}{Jeœli chcesz zmoczyæ gard³o to weŸ jeden z naszych wybornych trunków, nie sprzedajemy tu tego.}
+{221}{}{Hmmm... dziêki.}
+
+{230}{}{Widzisz gdzieœ kurwa tabliczkê "poœrednictwo pracy"? Chcia³bym wiedzieæ gdzie siej¹ taki... ale wiesz co... widzisz tych dwóch dzbanów, co zaraz dadz¹ sobie po mordzie i pó³ baru rozsadz¹ mi przy okazji? Maj¹ znikn¹æ.}
+{231}{}{Robi siê.}
+
+{240}{}{Tak w ogóle zgarnêliœmy z frajera kurtkê, mo¿esz sobie j¹ zachowaæ jako bonus.}
+{241}{}{No nie powiem... ciekawie podszed³eœ do sprawy. Masz tu ode mnie }
+{242}{}{ kapsli.}
+{243}{}{Dziêki!}
+
+{250}{}{Mia³em racjê, ¿eby nie dawaæ nikomu z zewn¹trz tej roboty! Jakbym chcia³ ¿eby to tak siê skoñczy³o to sam bym po nich poszed³! Nie dostaniesz ode mnie nawet z³amanego kapsla!}
+{251}{}{Tak? Ty te¿ siê pierdol!}
+{252}{}{Masz jeszcze coœ dla mnie?}
+
+{255}{}{Czyœ ty psem z ³bem sie pozamienia³?! Ostatni raz jak spartaczy³eœ robotê to nie mam ochoty ci nawet drinków sprzedawaæ.}
+
+{260}{}{No dobra. £adnie sobie poradzi³eœ ostatnio z awanturnikami, wiêc mogê ci chyba zaufaæ te¿ w tej sprawie.}
+{261}{}{W tej sprawie?}
+
+{270}{}{Te imbecyle, które zajmuj¹ siê pêdzeniem bimbru mog³yby pracowaæ sprawniej. Dobrze wiem, co ci powiedz¹, ale ty masz ich przekonaæ, ¿eby wyrabiali 120% normy.}
+{271}{}{Zaraz wracam.}
+{272}{}{Zmuszanie kogoœ do niewolniczej harówy? NIE, DZIÊKUJÊ.}
+
+{280}{}{Taa? Powiedz mi, przekona³eœ ich do szybszej produkcji alkoholu?}
+{281}{}{Za³atwione. Teraz bêd¹ pracowaæ z wiêksz¹ efektywnoœci¹!}
+{282}{}{Jeszcze nie, w³aœnie siê do nich wybiera³em.}
+{283}{}{Cha! Wiedzia³em, ze mogê na tobie polegaæ. Trzymaj moje ostatnie napiwki. Na razie nie mam dla ciebie nowej roboty.}
+{284}{}{Dostajesz }
+{285}{}{ kapsli.}

@@ -1,0 +1,3 @@
+{100}{}{Widzisz Jaspera.}
+{101}{}{Widzisz Jaspera. Chyba nie jest zbytnio zadowolony z obecnoœci tutaj.}
+

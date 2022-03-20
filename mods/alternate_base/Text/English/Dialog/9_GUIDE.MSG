@@ -1,0 +1,7 @@
+{100}{}{Widzisz mê¿czyznê w fioletowych szatach.}
+{101}{}{Widzisz mê¿czyznê w fioletowych szatach. Wydaje siê odpoczywaæ.}
+
+{200}{}{Jak bêdzie tak dalej grza³o to rzucam tê robotê i wracam do laboratorium}
+{201}{}{A by³o zostaæ na wsi...}
+{202}{}{Ma³o siê co dzieje na pó³nocnych rubie¿ach}
+{203}{}{Jedno muszê przyznaæ, ta iguana jest kozak!}

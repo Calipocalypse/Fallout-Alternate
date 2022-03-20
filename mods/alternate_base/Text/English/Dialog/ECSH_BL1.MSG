@@ -1,0 +1,5 @@
+{100}{}{To jeden z twoich pobratymców.}
+{101}{}{To jeden z twoich pobratymców. Do tego jeszcze czarny!}
+
+{200}{}{Stary... dziêkujê. Nawet nie wiem jak mam ci siê odwdziêczyæ. Ju¿ myœla³em, ¿e wrócê tam do nich i bêdzie po mnie...}
+{201}{}{Nie ma sprawy. Do³¹czysz do naszych na ranczu w górach. [ZaprowadŸ go.]}

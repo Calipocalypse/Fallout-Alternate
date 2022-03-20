@@ -1,0 +1,16 @@
+{200}{}{Cz³owiek nie godzien tego miejsca}
+{201}{}{Gor¹co dzia³a Ÿle na g³owa}
+{202}{}{Ja s³u¿yæ memu Panu}
+{203}{}{Purpurowy dobry}
+{204}{}{Ty nie cz³owiek, ja ciebie nie krzywdziæ}
+{205}{}{Ja pilnowaæ}
+{206}{}{Purpurowy iœæ}
+
+{300}{}{Iœæ, nie zatrzymywaæ siê}
+{301}{}{Ty nasz, ale mamy ciê na oku}
+{302}{}{Jednoœæ jest jedyn¹ droga dla pustkowii}
+{303}{}{Wkrótce wola Mistrza wype³ni siê}
+{304}{}{Dzisiaj Hub, jutro Brzask}
+{305}{}{Niesiemy pokój i bezpieczeñstwo}
+
+{400}{}{CZ£O-WIEK}

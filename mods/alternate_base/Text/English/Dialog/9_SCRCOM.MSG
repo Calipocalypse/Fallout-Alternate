@@ -1,0 +1,23 @@
+{100}{}{Pipboy's status updated.}
+{101}{}{Stara mapa po³udniowej Kaliforni naznaczona licznymi zgiêciami œwiadcz¹cymi o wieku tej mapy.}
+
+#use (hand)
+{200}{}{Widzisz panel sterowania ekranem. Mo¿e gdyby poszperaæ wiêcej mo¿na by³oby uzyskaæ dostêp do tego co jest wyœwietlane.}
+
+#science use
+{300}{}{Nie uda³o ci siê uzyskaæ dostêpu do komputera.}
+
+#menu
+{400}{}{Witaj w panelu administratora. Aktualnie odtwarzany obraz: Wideo2; Wybierz akcjê:}
+{401}{}{Odtwórz Wideo1}
+{402}{}{Wyloguj}
+
+#cutscene
+{500}{}{Jednoœæ stworzy rasê panów. Panów! Panów! Zdoln¹ do przetrwania, albo nawet rozkwitu, na Pustkowiu.} #The Unity will bring about the master race. Master! Master! One able to survive, or even thrive, in the wasteland.
+{501}{}{Dopóki istniej¹ ró¿nice, dopóty bêdziemy siê rozszarpywaæ, zwalczaj¹c siê nawzajem.} #As long as there are differences, we will tear ourselves apart fighting each other.
+{502}{}{Reszcie pozwoli siê do¿yæ do koñca ich dni, ale pod nadzorem i ochron¹ Jednoœci.} #The remainder will be allowed to live out their days, but under Unity control and protection.
+{503}{}{Potrzebujemy jednej rasy. Rasy! Rasy! Jednego celu. Celu! Celu...} #We need one race. Race! Race! One goal. Goal! Goal...
+{504}{}{Nie... to nie mo¿e byæ prawda...}
+{505}{}{Jednego ludu... by wyruszyæ ku naszemu przeznaczeniu. Przeznaczeniu.} #One people . . . to move forward to our destiny. Destiny.
+{506}{}{Muszê...}
+{507}{}{...}

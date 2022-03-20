@@ -1,0 +1,27 @@
+{190}{}{Ja jestem Gwen, potrzebujesz ze mn¹ rozmawiaæ}
+
+{200}{}{Zadanie jest proste i nie idzie tego spieprzyæ. Na pó³nocny wschód st¹d jest jaskinia. W niej ukry³ siê zbieg z obozu. Musisz go unieszkodliwiæ i przynieœæ jego ucho jako nagrodê.}
+{201}{}{Dlaczego tam sami nie pójdziecie i tego nie za³atwicie?}
+{202}{}{Potrzebujê dodatkowego uzbrojenia.}
+{203}{}{Kim jesteœ?}
+{204}{}{Brzmi jak plan. Mogê to zrobiæ.}
+
+{210}{}{Sam siê dowiesz na miejscu.}
+{211}{}{Nie potrzebujesz. Twój cel nie ma broni. Jak ci tak bardzo zale¿y to wszystko we w³asnym zakresie.}
+{212}{}{Mogê iœæ.}
+{213}{}{Musisz mi daæ jeszcze czas na przygotowanie.}
+
+{220}{}{W porz¹dku, ale niech to nie trwa latami.}
+{221}{}{Zaraz wracam.}
+
+{230}{}{Jesteœ gotowy?}
+{231}{}{Mo¿esz przypomn¹æ co mia³em zrobiæ?}
+{232}{}{Jasne. Mogê iœæ.}
+{233}{}{Jeszcze nie.}
+
+{240}{}{Jedn¹ z tych co zmiecie ciê z nóg jak dalej bêdziesz zadawa³ g³upie pytania.}
+
+{250}{}{Wspaniale. Pójdziesz razem z dwoma moimi ludŸmi. Tylko bez ¿adnych sztuczek.}
+{251}{}{Rozumie siê.}
+
+{260}{}{Jesteœ po ochron¹ Garla, ale ja dawno straci³am do ciebie cierpliwoœæ.}

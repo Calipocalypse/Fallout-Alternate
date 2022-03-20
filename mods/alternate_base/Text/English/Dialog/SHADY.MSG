@@ -1,0 +1,121 @@
+{100}{}{Zdo³a³eœ uciec najeŸdzcy. Zdobywasz 200 punktów doœwiadczenia.}
+{101}{}{Zdo³a³aœ uciec najeŸdzcy. Zdobywasz 200 punktów doœwiadczenia.}
+{102}{}{Zdo³a³eœ uciec najeŸdzcy. G³upiemu to zawsze siê poszczêœci, dlatego zdobywasz 350 punktów doœwiadczenia.}
+{103}{}{Zdo³a³aœ uciec najeŸdzcy. G³upiemu to zawsze siê poszczêœci, dlatego zdobywasz 350 punktów doœwiadczenia.}
+
+{1200}{}{Aby wydostaæ siê z tego piekie³ka, potrzebujemy kluczy, a te z kolei ma zarz¹dca obozu. Na pewno us³yszeli strza³y i ju¿ siê przygotowuj¹. Nie mo¿emy zwlekaæ... idziemy od razu?}
+#BEFORE FIGHT IN TRUE SHADY SANDS#
+{1900}{}{Nie ruszaæ siê!}
+{1901}{}{Ja jestem Galachad i jestem w stanie wybaczyæ taki cios w plecy.}
+{1902}{}{Od³ó¿cie broñ i wracajcie do ³ó¿ek.}
+{1903}{}{Jutro œci¹gniemy siatkê i bêdziecie na równi z nami.}
+{1904}{}{Wspólne napady na karawany, patrole - to was czeka.}
+{1905}{}{Nie dajcie sobie zaprzepaœciæ takiej okazji!}
+
+{1906}{}{Glachad...}
+{1907}{}{PIERDOL SIÊ}
+
+
+#LAST FIGHT IN CAMP#
+{2000}{}{Zanim zatañczymy, powiedzcie mi tylko jedno.}
+{2001}{}{Jak do jasnej cholery uda³o wam siê nagromadziæ tyle broni i amunicji?!}
+{2002}{}{Gdybyœcie tylko postawili kogoœ do stra¿y nocnej, zorientowalibyœcie siê, ¿e ktoœ z zewn¹trz przez mur przerzuca nam regularne dostawy.}
+{2003}{}{Aaa…}
+{2004}{}{Aaa!}
+{2005}{}{AAA KURWA!}
+
+
+{2050}{}{Ej, stójcie kurwa!}
+{2051}{}{Nie wiem jak wy, ale skoro wykoñczyli szefa, to ja nie mam zamiaru tu zdychaæ!}
+{2052}{}{Aaa, jebaæ to!}
+{2053}{}{Kurwa, te¿ to pierdolê.}
+
+{2100}{}{Uciekajcie szczury, uciekajcie!}
+{2101}{}{Ha ha!}
+{2102}{}{Wiêc co teraz robimy?}
+{2103}{}{S³uchajcie mnie teraz.}
+{2104}{}{Zanim wyruszymy dalej musimy siê upewniæ, ¿e wyrwaliœmy wszystkie chwasty.}
+
+{2105}{}{Co ty u diab³a masz na myœli?}
+
+{2106}{}{Musimy ukaraæ tych co pozostali oraz zdrajców, którzy zapewnienia sobie lepszego bytu opuœcili nas w potrzebie!}
+{2107}{}{Wszystko co uda siê w nowe miejsce ma byæ czyste jak szklanka wody!}
+
+{2108}{}{Ty chyba pozamienia³eœ siê rozumem jeœli myœlisz, ¿e dopuszczê do kolejnego rozlewu krwi.}
+{2109}{}{Wyruszamy teraz wszyscy w stronê krypty 15, albo bez ciebie!}
+
+{2110}{}{Tycho, ja rozumiem, ja jestem wdziêczny, ¿e nam pomog³eœ, ale twoja misja koñczy siê tu i teraz.}
+
+{2111}{}{I co myœlisz, ¿e to tak ³atwo ci ujdzie?}
+{2112}{}{Krypta 15 jest pod protekcj¹ Stra¿ników Pustkowii. Ju¿ ja siê postaram, ¿eby ciê tam ciep³o przywitano.}
+
+{2113}{}{Có¿, wiêc chyba bêdziemy musieli to rozstrzygn¹æ tutaj.}
+{2114}{}{Nie dajcie siê zwieœæ temu cz³owiekowi.}
+{2115}{}{Pamiêtajcie kto was stamt¹d wyci¹gn¹³!}
+{2116}{}{Bêdziecie mogli znieœæ myœl, ¿e ¿yjecie wœród tamtych zaprzañców?}
+
+{2120}{}{[Musisz siê odpowiedŸ po jednej ze stron.]}
+{2121}{}{Nie wiem jak ty, ale ja trzymam siê z Tycho.}
+{2122}{}{On ma racjê, Tycho, musimy pozbyæ siê ³ajdaków, którzy tu pozostali.}
+{2123}{}{Isaac, ty jebany idioto. Mo¿e dobrze strzelasz, ale z myœleniem to ty jesteœ na bakier. To, ¿e uda³o siê nam wydostaæ stamt¹d to jest NASZ WSPÓLNY SUCKES i nie zabronisz nam samym zadecydowaæ co zrobimy. Ja trzymam z Tycho, kto z nami?}
+
+###retoryka way
+{2130}{}{Isaac, ty jebany idioto. Mo¿e dobrze strzelasz, ale z myœleniem to ty jesteœ na bakier.}
+{2131}{}{To, ¿e uda³o siê nam wydostaæ stamt¹d to jest NASZ WSPÓLNY SUCKES i nie zabronisz nam samym zadecydowaæ co zrobimy.}
+{2132}{}{Ja trzymam z Tycho, kto z nami?}
+
+{2133}{}{No ludzie, co z wami?!} # isaac
+{2134}{}{Dobra, niech wam bêdzie. Bierzemy tamtych i idziemy.}
+{2135}{}{Jeszcze wspomnicie moje s³owa!}
+
+{2136}{}{Zamknij mordê ju¿ i chodŸmy.}
+
+###isaac way
+{2200}{}{Pies wam mordê liza³! Zero wdziêcznoœci wobec cz³owieka, który tygodniami siê g³owi³ jak wam pomóc!}
+{2201}{}{Niczym siê nie ró¿nicie od tych sukinsynów.}
+
+###tycho way
+#2121
+#dochodzi mark i matt
+#dochodzi 1 - 2 farmerow
+{2299}{}{Sami byœmy sobie bez was poradzili!}
+{2300}{}{Nie bêdziesz nam mówi³ co mamy robiæ!}
+#walka
+
+{2400}{}{Stop! Nie musi dochodziæ do dalszego rozlewu krwi!}
+{2401}{}{Isaac nie ¿yje, udamy siê razem do krypty 15 i zapomnimy o tym wszystkim.}
+{2402}{}{Tycho nie ¿yje, udamy siê razem do krypty 15 i zapomnimy o tym wszystkim.}
+{2403}{}{Za³atwimy, co mamy zrobiæ i ruszamy.}
+
+{2404}{}{On ma racjê, to nie ma sensu.}
+{2405}{}{Cieszê siê, ¿e siê ze mn¹ zgadzacie, ale nim wyruszymy muszê za³atwiæ pewn¹ formalnoœæ.}
+{2406}{}{Jak ciê zw¹, synu?}
+{2407}{}{Um, mnie?}
+{2408}{}{Tak.}
+{2409}{}{Jestem }
+{2410}{}{.}
+{2411}{}{Mi³o ciê poznaæ }
+{2412}{}{. Wyruszasz z nami do krypty 15?}
+{2413}{}{Omówimy tam kwestiê waszej krypty wraz z innymi Stra¿nikami Pustkowii.}
+{2414}{}{Um... myœlê, ¿e tak. Nic tu po mnie, nie mam dok¹d iœæ.}
+{2415}{}{Œwietnie, wyruszamy jak najszybciej.}
+
+# z 2403 przeskok do 2416
+
+{2416}{}{Nie oszczêdzaæ nikogo, oni wszyscy s¹ winni.}
+
+###isaac zostanie zabity w krypcie 15 przez stra¿ników
+
+
+#retoryka pozwoli unikn¹c rozlewu tutaj
+#trzeba bêdzie siê odpowiedŸ za stron¹ jedn¹
+
+#nikt nie wygra³
+{2700}{}{Kurwa, co ¿eœmy narobili.}
+{2701}{}{Mam tego doœæ, wynoszê siê st¹d.}
+
+
+#21 a ty po której stronie staniesz
+
+{9957}{}{Jego te¿, wiemy ju¿, ¿e s¹ bezwartoœciowi}
+{9958}{}{J¹ te¿, wiemy ju¿, ¿e s¹ bezwartoœciowi}

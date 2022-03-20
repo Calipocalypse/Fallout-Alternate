@@ -1,0 +1,51 @@
+{200}{}{Eeeeej! Moja mama ciê tu po mnie przys³a³a?}
+{201}{}{Ha! Wiedzia³em, ¿e ciê tu znajdê ty ma³y kurwiu. Czas wracaæ do domu.}
+{203}{}{Nie znam twojej mamy, ale to miejsce chyba nie pasuje do ciebie. ChodŸ, porozmawiamy na górze.}
+
+{210}{}{Nie mogê...}
+{211}{}{Dlaczego?}
+
+{220}{}{Mój lud mnie potrzebuje.}
+{221}{}{S³ucham?}
+
+{230}{}{Szczurzowie, jestem ich królem!}
+{231}{}{Masz na myœli te szczury wokó³ ciebie to twoi poddani?}
+{232}{}{Przestañ siê wyg³upiaæ, wracamy do domu.}
+
+#Od 231
+{240}{}{Tak, nie mogê ich tu zostawiæ. Nie poradz¹ sobie bez silnego w³adcy.}
+{241}{}{Wiêc banda szczurów jest dla ciebie wa¿niejsza od twojej mamy?}
+
+#Od 232
+{250}{}{Nie mogê ich tu zostawiæ. Nie poradz¹ sobie bez silnego w³adcy.}
+#241 do 260
+
+{260}{}{No nie… Ale szczurzowie musz¹ mieæ swojego przywódcê!}
+{261}{}{[Retoryka] Mo¿e przeprowadzimy im demokratyczne wybory. Najinteligentniejszy szczur zostanie ich przywódc¹. [Po cichu do siebie.] Albo taki co zad³u¿y rezerwy federalne na kolejne miliardy.} #Do 400
+{262}{}{Wiêc co proponujesz?}
+
+{270}{}{Widzia³eœ tego wielkieeego szczura po drugiej stronie Ÿród³a?}
+{271}{}{Chyba tak.}
+{272}{}{Nie.}
+
+{280}{}{On bêdzie nowym przywódc¹. Musimy siê do niego dostaæ!}
+{281}{}{Hola, hola! To niebezpieczne!}
+{282}{}{Dobra, chodŸmy.} #Node999
+
+{290}{}{Szczurzowie potrzebuj¹ króla! Musimy zaryzykowaæ!}
+{291}{}{Nie podoba mi siê to.}
+
+{300}{}{Zdrajcy! Nie zas³ugiwaliœcie na mnie!}
+
+#po bitce
+{310}{}{Nie wierzê w to! Oszukali mnie!}
+{311}{}{Umar³ król, niech ¿yje król. Myœlê, ¿e to najwy¿sza pora wracaæ do mamy.}
+{312}{}{Okej, nic mnie teraz tu nie trzyma!}
+{313}{}{Nareszcie…}
+
+#gdy ju¿ szczury dolacza do szczurowego krula, ale przed bitwa
+{320}{}{Taaak?}
+{321}{}{Nie nic, niewa¿ne. Idziemy.}
+{322}{}{Hej, zobacz. Szczurzowie do³¹czy³y do nowego króla. ChodŸmy st¹d.}
+#312
+{323}{}{ Teraz to chcê do mamy.}

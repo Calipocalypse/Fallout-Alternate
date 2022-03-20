@@ -1,0 +1,34 @@
+{200}{}{Cz³owiek pos³ucha}
+{201}{}{Ja przyjacielem}
+{202}{}{Ja pomóc ludziom}
+{203}{}{Cz³owiek zrobi coœ dla mnie w zamian}
+{204}{}{Yyy}
+{205}{}{Jaa?}
+{206}{}{No tak mówiê, ¿e cz³owiek}
+{207}{}{Ale nas jest dwóch}
+{208}{}{Aha}
+{209}{}{To ty cz³owiek}
+{210}{}{WeŸ ten Pip-Boy}
+{211}{}{Tu zaznaczone jest wioska}
+{212}{}{Cz³owiek pójdŸ tam}
+{213}{}{ZnajdŸ Tandi i powiedz uciekaæ} #5 sekund
+{214}{}{Cz³owiek zrobi?}
+{215}{}{Um...}
+{216}{}{Proszê cz³owiek!}
+{217}{}{Ale ja nie wiem czy dam rady}
+{218}{}{On da³ radê - ty te¿}
+{219}{}{Jaki on?!}
+{220}{}{Nie ma czasu, cz³owiek}
+{221}{}{Dobra, tylko mnie wypuœæ!}
+{222}{}{Ja poci¹gnê dŸwignia w dó³}
+{223}{}{Wtedy wy uciekaæ}
+{224}{}{Zrozumiano cz³owiek?}
+{225}{}{...}
+{226}{}{Tak}
+{227}{}{Zapamiêtaj}
+{228}{}{ZnaleŸæ Tandi i przekazaæ uciekaæ}
+{229}{}{Ja idê otworzyæ}
+#.
+#..
+#...
+{230}{}{Uhh...}

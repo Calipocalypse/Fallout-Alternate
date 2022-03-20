@@ -1,0 +1,19 @@
+{200}{}{Jedno w tym wszystkim mnie zastanawia... Jak to by³o z tob¹, jak uda³o ci siê wydostaæ z krypty. }
+{201}{}{Có¿. Najpierw pozamykali nas w klatkach we œwiecie zewnêtrznym. A potem nie uwierzysz, ale supermutant...}
+
+{209}{}{Dziêki, ¿e tu jesteœ i nas wspierasz. Myœleliœmy, ¿e bêdziemy zdani ju¿ wy³¹cznie na siebie, a okazuje siê, ¿e s¹ jeszcze inni ocaleli! Oby wiêcej jak ocala³ych jak ty.}
+
+{210}{}{Cholera... to wszystko dowodzi temu, ¿e sprawa nie jest czarno-bia³a tak jak mi siê z pocz¹tku wydawa³o.}
+{211}{}{A ty? Z tego co mówisz to uda³o ci siê uciec przede mn¹.}
+{212}{}{Porozgl¹dam siê tu jeszcze.}
+{213}{}{W jaskinii s¹ niebezpieczne stworzenia. Mamy tykaj¹c¹ bombê za plecami.}
+
+{220}{}{Owszem, ale tak samo jak inni trafi³em do klatki. Jeden z du¿ych mutantów nagle z³apa³ mnie i zaprowadzi³ do komnaty i wtedy ktoœ w purpurowej szacie wstrzykn¹³ mi zielony p³yn. Nastêpnie siedzia³em zamkniêty sam w klatce przez d³ugi czas. Nie wiem ile tego czasu up³ynê³o, ale ten sam cz³owiek, albo coœ pod t¹ szat¹, powiedzia³, ¿e ju¿ mu siê nie przydam i kaza³ mnie wyrzuciæ. PóŸniej mutant - chyba jego przydupas - zabra³ mnie nad przepaœæ i zrzuci³. Fart chcia³, ¿e z³apa³em siê czegoœ i wpad³em do jaskini. Uciek³em z map¹ pradziadka pod os³on¹ nocy by kilka dni póŸniej spad³y na mnie kamienie i by odnalaz³ mnie Franz z Ann¹.}
+{221}{}{{Jak tutaj siê znaleŸliœcie?}
+{222}{}{Pradziadek?}
+
+{230}{}{Pradziadek przekazywa³ z pokolenia na pokolenie historiê o domu w górach. Mieliœmy tu przybyæ po otwarciu krypty i zamieszkaæ kiedy Stany bêd¹ siê nadawa³y do ponownej kolonizacji. Gdy rozleg³y siê w krypcie syreny pierwsze co zrobi³em to zabezpieczy³em mapê w sejfie, która tutaj prowadzi³a.}
+
+{240}{}{Pradziadka nie zna³em. Ale za to mój dziadek umia³ wiele ciekawych rzeczy. Na przyk³ad w dolnych poziomach krypty nauczy³ mnie strzelaæ z wiatrówki. Powiedzia³ te¿ gdzie pradziadek schowa³ strzelbê z amunicj¹ w³aœnie w tym domu. W ogóle to dziadek by³ strasznie pomys³owy. Na przyk³ad my zawsze filtrowaliœmy dodatkowo wodê, która nam przys³ugiwa³a z przydzia³u. Niech mu ziemia lekk¹ bêdziê..}
+
+{250}{}{Cholera... na prawdê? Chryste, ale jesteœmy nieuwa¿ni. Szybko powiedz to Franzowi!}

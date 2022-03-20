@@ -1,0 +1,26 @@
+{100}{}{Widzisz kolejnego purpurowego. Chyba uwiêzi³ naszego brata!}
+{101}{}{Widzisz kolejnego purpurowego. Sukinsyn dzier¿y jak¹œ elektroniczn¹ pa³kê. To nie bêdzie bu³ka z mas³em.}
+
+{200}{}{Chyba jestem w czepku urodzony, bêdê mia³ dwóch w garœci!}
+{201}{}{Poddaj siê!}
+{202}{}{Znaczy... podejdŸ do mnie!}
+
+{210}{}{Odsuñ siê, ja nie chcê k³opotów}
+{211}{}{Nie zbli¿aj siê!}
+{212}{}{Nie zbli¿aj siê! Jestem uzbrojony! O-on te¿!}
+{213}{}{Przepraszam za najœcie.. ju¿ sobie idê.}
+{214}{}{Oddawaj mojego ziomka, albo zgiñ!}
+{215}{}{Dobra ju¿ dobra...}
+{216}{}{Wiedzia³em, ¿e to tak siê skoñczy}
+{217}{}{Gabriel NIGDY nie zaimponuje nikomu...}
+
+{219}{}{Co ciê sprowadza w te strony?}
+{220}{}{Witaj bracie!}
+{221}{}{[Retoryka] Jak siê nazywasz synu?}
+{222}{}{To mój wiêzieñ. Zabieram go.}
+{223}{}{Po moim trupie!}
+
+{224}{}{Ja? Ja jestem Gabriel. Dlaczego pytasz?}
+{225}{}{[Retoryka] A wiêc Gabrielu, nasz Pan dowie siê o twoich szlachetnych czynach. Tylko by to siê sta³o musisz mi przekazaæ wiêŸnia.}
+{226}{}{Ohh… to dla mnie zaszczyt, dziêkujê... W porz¹dku. Tylko nie zapomnij proszê o mnie wspomnieæ Syriuszowi.}
+{227}{}{Oczywiœcie bracie. OdejdŸ w pokoju.}

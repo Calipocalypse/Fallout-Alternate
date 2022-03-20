@@ -1,0 +1,2 @@
+{200}{}{Nie dotykaæ, ja zabiæ}
+{201}{}{Miarka siê przebraæ, ty umrzeæ}

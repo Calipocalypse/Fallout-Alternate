@@ -1,0 +1,4 @@
+{100}{}{Kupa, tylko jakaœ zmutowana. Nie widzia³eœ takiej w krypcie.}
+{101}{}{Nie dostrzegasz sensu ¿ycia w tej kupie ³ajna.}
+{102}{}{Ta kupa nie bêdzie sprawia³a ju¿ problemów lokalnej spo³ecznoœci. Dobra robota!}
+{103}{}{Wszystkie kupy w tej zagrodzie przesta³y istnieæ.}

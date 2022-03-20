@@ -1,0 +1,82 @@
+{199}{}{Eee... znowu ty? Potrzebujesz coœ tym razem?}
+{200}{}{Eeee… tak? Mogê w czymœ pomóc? Mo¿e jakieœ leczenie, albo nie wiem… potrzebujesz stimpaka albo coœ?}
+{201}{}{Potrzebujê stimpaka.}
+{202}{}{Sprzedajesz medykamenty?}
+#221 #1
+{204}{}{Nie ma tu innego lekarza?}
+{205}{}{Eeee… eee… e?} #ee++
+{206}{}{Odnios³em rany. Mo¿esz mnie po³ataæ?}
+{207}{}{[Pokazujesz na zranion¹ koñczynê.] NieŸle mnie ³otnêli. Dasz radê to posk³adaæ?}
+{208}{}{Napromieniowa³o mnie. Mo¿esz zrobiæ tak, ¿ebym przesta³ œwieciæ?}
+{209}{}{Gdzie le¿y g³ówna baza?}
+
+{210}{}{Znaczy eee… nie powinienem, ale dobra… chcia³em byæ mi³y. Masz.}
+{220}{}{Eeee… no w sumie tak. Tylko nie mów o tym nikomu.} #1
+{221}{}{Dlaczego mam nikomu nie mówiæ, ¿e sprzedajesz medykamenty?}
+{222}{}{Dobra, to poka¿ co tam masz.}
+{230}{}{Eeee… ja sprzedajê medykamenty? Nieeeee… pomyli³o ci siê coœ.}
+{240}{}{Zosta³em tylko ja. Starego eee… zjad³ wisielec. Zosta³em tylko ja. Aleee… to ju¿ chyba mówi³em.}
+{241}{}{Jak to go zjad³?}
+{242}{}{No wzi¹³ i zjad³. No ten, po³kn¹³ go w ca³oœci. Znaczy eee… nie po³kn¹³ tylko rozpuœci³ go w paszczy trucizn¹ i zjad³ to co zosta³o.}
+{250}{}{Eeeej... przestañ! Nie œmiej siê z mojej wady… wady... eee… wymowy.}
+{260}{}{No pewnie! Wszystko na koszt eee… Porucznika, hehe… Usi¹dŸ wygodnie obok tego, eee… kryptowego goœcia i zaczynam. Eee… ty nosisz kombinezon krypty? Eeee… jasny gwint! Szpieg! Szpieg! Szpieg!}
+{270}{}{Zobaczê, co siê da zrobiæ. Usi¹dŸ wygodnie obok tego, eee… kryptowego goœcia i zaczynam. Eee… ty nosisz kombinezon krypty? Eeee… jasny gwint! Szpieg! Szpieg! Szpieg!}
+{271}{}{No to wpad³em...}
+{280}{}{Ale ja nie mam, sprzêtu do eee… tego. Jedyny sprzêt jaki znam to ten w g³ównej bazie.} #2
+{290}{}{Eee… nie wiesz? Na zachód st¹d w linii prostej.}
+
+{300}{}{Muszê ju¿ iœæ.}
+
+
+{400}{}{Syriusz cierpi na schorowane serce. Nie mia³byœ dla niego jakichœ pigu³ek?}
+{410}{}{Eee.. no w sumie mia³bym… Tylko, ¿eee… to nie s¹ tanie rzeczy.}
+{411}{}{Ale eee... nie mówi³em ci, ¿e jak pomo¿esz mi z moim eee... problemem? Wiesz którym.}
+
+{420}{}{Dobra, ile to bêdzie mnie kosztowa³o?}
+{421}{}{Pomagacie bezinteresownie wszystkim mieszkañcom pustkowi, a ty ¿¹dasz pieniêdzy za lek dla twojego prze³o¿onego?!}
+
+{430}{}{To nie tak. Eee… nie chcê zbyt wiele.}
+{431}{}{Pieni¹dze nie graj¹ eee… roli.}
+{435}{}{To co ty chcesz?!}
+
+{440}{}{Jak widzisz mam swoje eee… problemy.}
+{441}{}{Chodzi o to E, E, EEE?}
+
+{450}{}{Tak.}
+{451}{}{EEEEEEEE}
+{452}{}{Nienawidzê ciê!} #node998
+{453}{}{To jak mam ci niby pomóc?}
+{454}{}{Nie mam eee… pojêcia, sam bym sobie z tym poradzi³ gdybym eeee… wiedzia³.}
+{455}{}{Mo¿e trzeba ciê po prostu nastraszyæ?}
+{456}{}{Mo¿e ci brakuje pewnoœci siebie?}
+{457}{}{Nieee… eee… to nie to…}
+{458}{}{Mo¿eeee... proszê, zrób coœ. Ja nie chcê eee... o tym rozmawiaæ.}
+{459}{}{Dobra... pomyœlê co siê da zrobiæ.}
+
+##Quest ended
+{600}{}{Nie wiem jak to siê sta³o, ale teraz mogê normalnie mówiæ! Dziêkujê!}
+{601}{}{Ty mi nie dziêkuj tylko lepiej mów, gdzie masz te pigu³y dla Syriusza.} #LVAR_Asked_Once_pills
+{602}{}{Nie ma sprawy. Polecam siê.}
+
+{605}{}{Wiesz mo¿e gdzie znajdê pigu³ki dla Syriusza?}
+
+{610}{}{Aaa... no tak. Znaczy... ja ich nie mam, ale stary doktor mówi³ zawsze o takim miejscu daleko na po³udnie st¹d. To by³a jakaœ du¿a placówka badawcza - nie pamiêtam. Mieli tam sekcjê poœwiêcon¹ medycynie. Podobno miejsce jest bardzo dobrze strze¿one przez tamtejsze systemy i nikomu od czasów wojny siê nie uda³o do œrodka dostaæ.}
+{611}{}{To lepsze ni¿ nic... dziêki.}
+
+{620}{}{Zdobywasz 300 punktów doœwiadczenia za rozwi¹zanie problemu Edwarda.}
+
+##
+
+{1199}{}{Znowu ty? Potrzebujesz coœ tym razem?}
+{1200}{}{Tak? Mogê w czymœ pomóc? Mo¿e jakieœ leczenie, albo nie wiem… potrzebujesz stimpaka albo coœ?}
+
+{1990}{}{Ahh... to ty. Czego potrzeba ci tym razem?}
+{1210}{}{Znaczy... nie powinienem, ale dobra. Chcia³em byæ mi³y. Masz.}
+{1220}{}{No w sumie tak. Tylko nie mów o tym nikomu.} #1
+{1230}{}{¯e ja sprzedajê medykamenty? Pomyli³o ci siê coœ, koleœ.}
+{1240}{}{Zosta³em tylko ja. Starego zjad³ wisielec. Przykry widok...}
+{1242}{}{No wzi¹³ i zjad³. No ten, po³kn¹³ go w ca³oœci. Znaczy nie po³kn¹³ tylko rozpuœci³ go w paszczy trucizn¹ i zjad³ to co zosta³o. No.}
+{1260}{}{No pewnie! Wszystko na koszt Porucznika, hehe… Usi¹dŸ wygodnie obok tego niebieskiego i zaczynamy. Eee… ty nosisz kombinezon krypty? Eeee… jasny gwint! Szpieg! Szpieg! Szpieg!}
+{1270}{}{Zobaczê, co siê da zrobiæ. Usi¹dŸ wygodnie obok tego niebieskiego goœcia i zaczynam. Eee… ty nosisz kombinezon krypty? Eeee… jasny gwint! Szpieg! Szpieg! Szpieg!}
+{1280}{}{Ale ja nie mam, sprzêtu do tego. Jedyny sprzêt jaki znam to ten w g³ównej bazie.} #2
+{1290}{}{Nie wiesz? Na zachód st¹d w linii prostej.}

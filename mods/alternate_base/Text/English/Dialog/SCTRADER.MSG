@@ -1,0 +1,42 @@
+{199}{}{Œmia³o, wybór jest du¿y.}
+{200}{}{Witam w sklepie wielobran¿owym, w czym mogê pomóc?}
+{201}{}{Chcia³bym rzuciæ okiem na narzêdzia.}
+{202}{}{Chcia³bym rzuciæ okiem na broñ.}
+{203}{}{Chcia³bym rzuciæ okiem na pancerze i inne rzeczy.}
+{204}{}{W sumie, to by by³o na tyle. Dziêki.}
+
+{250}{}{Dziêki, za zakupy.}
+{251}{}{No spoko, czeœæ.}
+
+{300}{}{Hej, nie dotykaj tego! Nie mo¿esz jak cz³owiek po prostu zapytaæ o te rzeczy.}
+{301}{}{Uch...}
+
+{399}{}{Co chcesz jeszcze wiedzieæ?}
+{400}{}{Mogê o coœ zapytaæ?}
+{401}{}{Nie wiem... mo¿e. O co chodzi?}
+{402}{}{Jakiego typu rzeczy sprzedajesz?}
+{403}{}{Sk¹d bierzecie towar?}
+{404}{}{Szukam pracy.}
+{405}{}{Nie masz mo¿e jakiegoœ tajnego... um... arsena³u pod lad¹?}
+{406}{}{Dziêki, pozwól, ¿e jeszcze zerknê na rzeczy.}
+{407}{}{Dziêki, chyba ju¿ pójdê.}
+{408}{}{Szukam Tandi. Wiesz gdzie mogê j¹ znaleŸæ?}
+
+{430}{}{Có¿... Chanowie twierdz¹, ¿e okoliczne osady i tubylcy dziel¹ siê z nimi zapasami. Tak na prawdê odbywa siê to troszkê na innej zasadzie, ale mniejsza z tym.}
+{431}{}{Kim s¹ Chanowie?}
+{432}{}{Wow! Czyli wszyscy na pustkowiach sobie nawzajem pomagaj¹. Nie-sa-mo-wi-te!}
+
+{440}{}{Chanowie to gang rz¹dz¹cy tym miejscem. I w sumie tyle wolno mi powiedzieæ.}
+{441}{}{A ty kim jesteœ?}
+
+{450}{}{Jeszcze tego nie zauwa¿y³eœ? Jestem ich niewolnikiem.}
+{451}{}{Hmmm... wydawa³o mi siê, ¿e abolicja niewolnictwa mia³a miejsce ponad 350 lat temu. Wybacz, pozwól, ¿e zapytam o co innego.}
+
+{460}{}{To jest sklep wielobran¿owy. Mam tutaj wszelkiej maœci towar, ale nie oczekuj fajerwerek - to dopiero pocz¹tek gry.}
+{470}{}{To tutaj jej nie znajdziesz. Popytaj na mieœcie.}
+{480}{}{Nieee... wszystko co jest na sprzeda¿ masz w³aœnie przed oczami.}
+
+{490}{}{Nie. Wybacz, nie znam nikogo o tym imieniu. Na prawdê.}
+
+#Rebelia
+{1000}{}{Cholera... to siê porobi³o...}

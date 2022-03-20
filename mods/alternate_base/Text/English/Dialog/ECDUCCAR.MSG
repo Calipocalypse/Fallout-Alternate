@@ -1,0 +1,33 @@
+{100}{}{To wêdrowny kupiec azjatyckiego pochodzenia.}
+{101}{}{To Duc, wêdrowny kupiec.}
+
+{102}{}{O witaj, wêdrowcze. Nazywam siê Duc i handlujê z okolicznymi wioskami. Mo¿e zainteresuj¹ ciê moje towary?}
+{103}{}{Co masz na sprzeda¿?}
+{104}{}{Znasz jakieœ ciekawe miejscowoœci dooko³a?}
+{105}{}{Có¿... Ja nazywam siê Duc i handlujê z okolicznymi wioskami. Mo¿e zainteresuj¹ ciê moje towary?}
+
+{106}{}{Pozwól mi je zaprezentowaæ.}
+{107}{}{Tak, Cieniste Piaski by³y czêœci¹ mojej zwyk³ej trasy handlowej. Dzisiaj na takich jak ja poluj¹ tam Chanowie. Dla ostro¿noœci polecam siê trzymaæ tego miejsca z daleka.}
+{108}{}{Znasz jeszcze inne miejsca?}
+{109}{}{Hmm... dziêki za radê.}
+{110}{}{Hmm... dziêki za radê. Co masz na sprzeda¿?}
+
+{111}{}{Znam pewn¹ kryptê w okolicy, ale warunki handlowe podpisane z ni¹ nie pozwalaj¹ mi wiêcej powiedzieæ. Wybacz.}
+{112}{}{Rozumiem.}
+{113}{}{Rozumiem. Co masz na sprzeda¿?}
+
+
+{114}{}{Niewielu ludzi zmaga siê z Pustkowiem w pojedynkê. Kim jesteœ?}
+{115}{}{Nie twoja sprawa.}
+{116}{}{Jestem }
+{117}{}{.}
+
+{118}{}{Witaj ponownie! Co mogê dla ciebie zrobiæ?}
+
+{120}{}{Co masz na sprzeda¿?}
+{121}{}{Nic, dziêki.}
+{122}{}{Czego chcesz?}
+{123}{}{Nic, przepraszam.}
+{124}{}{Co masz na sprzeda¿?}
+
+{125}{}{Dziêki. Jest coœ co mogê dla ciebie zrobiæ?}

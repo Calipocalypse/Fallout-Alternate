@@ -1,0 +1,2 @@
+{100}{}{Przed tob¹ rozci¹ga siê wielki atomowy krater. Spogl¹dasz w dó³ i mimo panuj¹cego pó³mroku zauwa¿asz zarys przedwojennych korytarzy, które stopi³y siê i stworzy³y ca³oœæ wraz z lit¹ ska³¹. Po dok³adniejszym przyjrzeniu siê powierzchni ska³ dostrzegasz w jednym miejscu utrwalone wyrazy ludzkich twarzy, które zdaj¹ siê... krzyczeæ?.}
+{101}{}{Zdobywasz 5000 PD.}

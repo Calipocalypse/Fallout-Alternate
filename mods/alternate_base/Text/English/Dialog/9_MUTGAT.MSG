@@ -1,0 +1,53 @@
+{200}{}{Staæ! Wejœcie do krypty tylko za okazaniem insygnium Jednoœci! Poka¿ swoje insygnia!}
+{201}{}{Ju¿, ju¿… Niech no tylko znajdê… hmm…}
+{203}{}{Insygnia? Co to takiego?}
+{204}{}{Nic ci nie poka¿ê. Jestem tu po to, ¿eby skopaæ ci ten paskudny zielony ryj.}
+{205}{}{[Wyjmij czarne insygnia.] Proszê.}
+{206}{}{[Wyjmij czerwone insygnia.] Proszê.}
+{207}{}{[Wyjmij niebieskie insygnia.] Proszê.}
+{208}{}{Uhh... Przybywam z pó³nocy! Tam takich rzeczy nie u¿ywamy.}
+
+{210}{}{Marne ostatnie s³owa. Teraz zginiesz.}
+{211}{}{[KONIEC]}
+
+{220}{}{Twoja niewiedza mówi, ¿e niegodnie nosisz te szaty. Teraz zginiesz.}
+{221}{}{Ups.}
+{222}{}{Zobaczymy kto pierwszy.}
+
+{230}{}{Zgadza siê. Mo¿esz przejœæ.}
+
+{250}{}{Powinieneœ ich mocno pilnowaæ. Jeœli nie masz powodu by tu byæ - zginiesz.}
+{251}{}{Mam holodysk do przekazania Syriuszowi.}
+{252}{}{Ups.} #Guess I will die
+{253}{}{Mam bardzo wa¿n¹ informacjê do przekazania twojemu przywódcy.}
+
+{260}{}{Jeœli tak to zaprowadzê ciê do niego.}
+{261}{}{[IdŸ za nim]}
+{262}{}{Pójdê sam.}
+{263}{}{Nie. Pójdziesz ze mn¹.}
+{264}{}{Dobra, ju¿ dobra.}
+{265}{}{Po moim trupie.}
+
+{270}{}{Pó³noc? Nawet nasze karawany tam nie wyruszaj¹.}
+{271}{}{[RETORYKA] Ach, bo widzisz! Jesteœmy tajnymi wys³annikami pó³nocy! Nie powinienem tego mówiæ... zachowaj to tylko dla siebie. A teraz... wpuœcisz mnie?}
+{272}{}{Bo... bo widzisz. Na pó³nocy my... yyy... NA RAZIE.}
+
+{280}{}{Dobra. WchodŸ, ale gdyby ktoœ pyta³ to pokaza³eœ insygnia.}
+{281}{}{Jasne... jasne.}
+{282}{}{Za skuteczne u¿ycie umiejêtnoœci retoryki zyskujesz 100 PD.}
+{283}{}{Uda³o ci siê przegadaæ supermutanta.}
+
+{290}{}{Tak, pamiêtam ciê. IdŸ.}
+
+{300}{}{Dobra... wejdŸ. Syriusz kaza³ wpuszczaæ swoich wys³anników. Ale jeœli podczas twojej nieobecnoœci coœ siê wydarzy... nie bêdê mia³ oporów, ¿eby ciê wys³aæ na tamten œwiat.}
+{301}{}{Dziêki!}
+
+#Koniec gry
+
+{400}{}{Iœæ, nie zatrzymywaæ siê}
+{401}{}{Ty nasz, ale mamy ciê na oku}
+{402}{}{Jednoœæ jest jedyn¹ droga dla pustkowii}
+{403}{}{Wkrótce wola Mistrza wype³ni siê}
+{404}{}{Dzisiaj Hub, jutro Brzask}
+{405}{}{Niesiemy pokój i bezpieczeñstwo}
+

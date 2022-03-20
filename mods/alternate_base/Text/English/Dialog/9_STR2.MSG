@@ -1,0 +1,11 @@
+{200}{}{Ja chcê do mamy...}
+{201}{}{Proszê! Nie chcê umieraæ!}
+{202}{}{Chuje, wyci¹gnijcie mnie}
+{203}{}{WeŸcie moj¹ ¿onê, nie mnie!}
+{204}{}{Gdzie moja manierka?}
+{205}{}{Widzieliœcie co zrobili z nadzorc¹?}
+{206}{}{Musimy uciec!}
+{207}{}{Od dwóch godzin nic nie jad³em}
+{208}{}{WeŸcie nasz¹ kryptê, ale wypuœcie nas}
+{209}{}{Gdzie jest rz¹d kiedy go tak bardzo potrzebujemy?}
+{210}{}{Widzia³em jak rozpru³ stra¿nika na strzêpy}

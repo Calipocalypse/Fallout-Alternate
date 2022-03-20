@@ -1,0 +1,72 @@
+{200}{}{[Widzisz odwrócon¹ do ciebie plecami kobietê. S³ychaæ jak p³acze.]}
+{201}{}{[Zostaw j¹ w spokoju.]}
+{202}{}{Przepraszam. Czy coœ siê sta³o?}
+
+{210}{}{[Odwraca siê do ciebie. Przed tob¹ widnieje zniszczona ³zami twarz. Widok wzbudza dreszcze.] Proszê… zostaw mnie w spokoju. Nie chcê znowu tego opowiadaæ!}
+{211}{}{Hej! Nie pomogê ci jeœli sama nie pozwolisz sobie pomóc.}
+{212}{}{Jak sobie chcesz.}
+
+{220}{}{Znowu ty? Nie mo¿esz mnie po prostu zostawiæ w spokoju?}
+#211
+{222}{}{Wynoszê siê st¹d.}
+
+{230}{}{Na prawdê chcesz mi pomóc?}
+{231}{}{No tak w sumie powiedzia³em.}
+{232}{}{No tak w sumie powiedzia³am.}
+
+#Cutscene
+{250}{}{Pamiêtam ten dzieñ jak wczoraj...}
+{251}{}{Simon, znasz zasady}
+{252}{}{Gdyby coœ siê dzia³o...}
+{253}{}{Tak, tak wiem mamo... mam ci powiedzieæ}
+{254}{}{Ale nie podgl¹daj!}
+{255}{}{W porz¹dku}
+{256}{}{Ju¿ masz szeœæ lat}
+{257}{}{Wiem, ¿e sobie poradzisz, Simon}
+{258}{}{Wierzê w ciebie, kochanie}
+{259}{}{O kurwa!}
+{260}{}{Simon! Wyra¿aj siê!}
+{261}{}{Simon?!}
+{262}{}{Simon, gdzie jesteœ?!}
+
+{270}{}{...i wtedy ju¿ go nie widzia³am. Szuka³am wszêdzie. On po prostu znikn¹³, jak duch!}
+{271}{}{Znajdê go dla ciebie, obiecujê.}
+{272}{}{OK, sprawdzê to.}
+
+{274}{}{Proszê! Jesteœ chyba moj¹ jedyn¹ nadziej¹!}
+
+# QUEST == 2
+
+{300}{}{Znalaz³eœ go? Mo¿e siê coœ dowiedzia³eœ?}
+{301}{}{Znalaz³aœ go? Mo¿e siê coœ dowiedzia³aœ?} #Fem
+{302}{}{Niestety wci¹¿ go szukam...}
+
+{305}{}{Proszê pospiesz siê! Pozosta³o niewiele czasu…}
+
+# QUEST > 2 AND QUEST <= 5
+{350}{}{Znalaz³em gówniaka. Jest w jaskinii pod wiosk¹. Ubzdura³ sobie jakiegoœ szczurowego króla. Wracam go stamt¹d wyci¹gn¹æ.}
+{351}{}{[Prawie traci równowagê.] Ten ma³y pod³y... [Ze wœciek³oœci¹ grzebie w przedmiotach w rogu œciany. Wyci¹ga ma³¹ lalkê.] Daj mu to, jeœli po tym nie wróci. To raczej nie jest mój syn...}
+{352}{}{Yyy... ok.}
+
+# QUEST == 7
+{360}{}{Znalaz³em go. Niestety nie ¿yje. Le¿y martwy w jaskinii pod wychodkiem. Przykro mi.}
+{361}{}{[Anna nerwowo spogl¹da na lewo i prawo. ¯wawym ruchem siêga po nó¿ i wbija sobie go w brzuch.]}
+{362}{}{Ahh... Mog³em byæ bardziej ostro¿ny.}
+
+# QUEST == 6
+{400}{}{O mój Bo¿e! Znalaz³eœ go! Zanim zlejê mu ty³ek i opowie mi wszystko… jak mogê ci siê odwdziêczyæ.}
+{401}{}{Wystarczy mi twoja wdziêcznoœæ.}
+{402}{}{Ile mo¿esz daæ kapsli?}
+{403}{}{Seks.}
+
+{410}{}{Och, to na prawdê szlachetne z twojej strony. Wierzê, ¿e karma wraca. Dziêkuje raz jeszcze!}
+{411}{}{[KONIEC]}
+
+{420}{}{Och, nie wiedzia³am, ¿e komuœ bêd¹ potrzebne. Tutaj s¹ bezu¿yteczne. [Wrêcza ci sakiewkê z kapslami.]}
+{421}{}{Dziêkujê.}
+
+{430}{}{Mówisz naprawdê?}
+{431}{}{¯artujê.}
+{432}{}{¯artujê. [Nie bêdê spe³nia³ fantazji jakiegoœ stulejarza sprzed monitora.]}
+
+{440}{}{Za uratowanie Simona zyskujesz 250 punktów doœwiadczenia.}

@@ -1,0 +1,59 @@
+{301}{}{[Ból w krzy¿u utrudnia ci powstanie. Mimo tego powoli zbierasz siê i dostrzegasz czarnoskórego cz³owieka.] Mam nadziejê, ¿e nie bêdziesz tak le¿a³ ca³y dzieñ, masz robotê do wykonania.}
+{302}{}{Kim ty jesteœ do cholery jesteœ i dlaczego mi mówisz co mam robiæ?!}
+{303}{}{Hê?}
+
+{304}{}{Jestem Jerome i podlegasz teraz kodeksowi obozowemu. Jeœli siê nie dostosujesz to droga otwarta! Bêdziesz spa³ na zimnym piasku i szama³ gówno brahminów.}
+{305}{}{No dobra, co jest do zrobienia?}
+{306}{}{Nie potrzebujê waszej ³aski, sam sobie poradzê.}
+
+{307}{}{Proszê bardzo, tylko nie zwlekaj zbyt d³ugo. Nie chcemy szukaæ miejsca na zakopanie twoich zw³ok.}
+
+{308}{}{Trzeba naprawiæ studniê, wysprz¹taæ zagrodê z brahminiej kupy i wreszcie pozbyæ siê szczurów z wychodka. Poza tym jak le¿a³eœ to sam wpisa³em ci to wszystko do Pip-Boya. Kiedyœ robi³em przy tych zabawkach.}
+{309}{}{Dobra, ju¿ dobra. Zabieram siê do roboty.}
+{310}{}{Gdzie jest zagroda?}
+{311}{}{O co chodzi z tym wychodkiem?}
+
+{312}{}{Od czasu kiedy w tajemniczy sposób znikn¹³ syn Anny ludzie bali siê korzystaæ z wychodka. Teraz jak chcesz siê za³atwiæ to bierzesz ³opatê, kopiesz s³awojkê, robisz swoje i zakopujesz.  Jak tak dalej bêdzie to za nied³ugo potopimy siê w gównach!}
+{313}{}{Syn Anny?}
+{314}{}{Okej, zaraz wracam.}
+
+{315}{}{Musisz zapytaæ siê jej bezpoœrednio. Nie chcê ci namieszaæ, powsta³o wiele historii na ten temat. Ona sama by³a przy znikniêciu Dixona… ale najpierw pozb¹dŸ siê szczurów!}
+{316}{}{W porz¹dku. Zaraz wracam}
+
+{317}{}{Mam nadziejê, ¿e wracasz do mnie z dobrymi wieœciami.}
+{318}{}{Szczury gryz¹ ziemiê.}
+{319}{}{Pozby³em siê chwastów.}
+{320}{}{Zagroda wyczyszczona.}
+{321}{}{Studnia naprawiona.}
+
+{322}{}{Œwietnie! Ju¿ nie mogê siê doczekaæ zapiekanki ze szczura!}
+{323}{}{W koñcu wyci¹gniêcie wody nie bêdzie wymaga³o cyrkowych umiejêtnoœci.}
+{324}{}{Rzeczywiœcie. Smród nie jest ju¿ taki jak kiedyœ, ale dalej œmierdzi gdzie nie pójdziesz. Mo¿e powinniœmy zacz¹æ siê z powrotem myæ?}
+{325}{}{Nie wymaga³o to chyba wielkiego wysi³ku od ciebie, nieprawda?}
+
+{326}{}{No nie powiem… ³adnie upora³eœ siê z zadaniami. Mo¿esz siê czuæ teraz cz³onkiem naszej ma³ej spo³ecznoœci.}
+{327}{}{I co teraz?}
+{328}{}{Nie wiem. ¯yj i daj ¿yæ innym! ¯egnaj!}
+
+{330}{}{I jak? Zmieni³eœ zdanie? Zmierzch co raz bli¿ej, a ty nie masz gdzie spaæ.}
+{331}{}{Dobra... co jest do zrobienia?}
+{332}{}{Nie.}
+
+{340}{}{Zagroda jest w pó³nocno-wschodniej czêœci obozu. Musisz pomóc temu idiocie, bo chyba do tej pory nie chwyci³ ³opaty od dobrej strony...}
+{341}{}{OK, zaraz wracam.}
+
+{350}{}{Zaraz wracam.}
+
+{360}{}{Mo¿esz powtórzyæ co mia³em zrobiæ?}
+{361}{}{Nie pamiêtasz jak mówi³em, ¿e wpisa³em ci to do Pip-Boya? Po prostu sprawdŸ Status w Pip-Boyu.}
+{362}{}{Tak te¿ zrobiê...}
+
+{400}{}{Szczury ju¿ nie bêd¹ gnêbniæ mieszkañców obozu. Zdobywasz 100 PD.}
+{401}{}{Mo¿esz byæ pewny, ¿e nikt nie wpadnie do studni podczas wyci¹gania wody. Zdobywasz 50 PD.}
+{402}{}{Kupa ju¿ nie zagra¿a mieszkañcom wioski. Zdobywasz 50 PD.}
+{403}{}{Chwasty ju¿ nie bêd¹ przeszkadzaæ uprawom. Zdobywasz 50 PD.}
+
+{450}{}{Hej, dziêki jeszcze raz za odwalenie dla nas dobrej roboty!}
+
+
+#okaza³o siê ¿e deska by³a dla niego za ma³a i wpad³em do œrodka XD

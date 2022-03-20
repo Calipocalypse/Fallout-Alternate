@@ -1,0 +1,2 @@
+{100}{}{Na pó³nocy znajduje siê ma³y zniszczony budynek otoczony siatk¹ z drutu. Odnosisz wra¿enie, ¿e jakiœ czas temu mia³a tu miejsce wielka bitwa. Uzbrojeni supermutanci strzeg¹ obiektu.}
+{101}{}{Za wyeleminowanie wszystkich ohydnych mutantów zdobywasz 15 000 PD.}

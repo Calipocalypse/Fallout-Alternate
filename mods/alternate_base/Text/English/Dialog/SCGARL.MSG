@@ -1,0 +1,172 @@
+{50}{}{Za rozwi¹zanie problemu z Huxleyem zdobywasz 1000 PD.}
+{51}{}{Za oczyszczenie i udostêpnienie magazynu Chanom zdobywasz 2500 PD.}
+
+{70}{}{CO TA DZIWKA ROBI W MOIM POKOJU!}
+
+{80}{}{A ty, m³odzieniaszku }
+{81}{}{A ty, stary zgredzie...}
+{82}{}{A ty, dziewczynko...}
+{83}{}{A ty, stara panno...}
+
+{90}{}{Chcia³bym porozmawiaæ z tob¹ w moim miejscu.}
+{91}{}{Mo¿e bêd¹ z ciebie jeszcze ludzie.}
+
+{200}{}{Wiêc to ty zdoby³eœ tê holotaœmê. Jest to o tyle zaskakuj¹ce, ¿e zrobi³eœ w moment coœ, co Mark robi³ nieudolnie tygodniami. A Mark to jedna z myœl¹cych istot w tym obozie, a mi siê myœl¹ce istoty przydaj¹... Zrobisz coœ teraz dla mnie.}
+{201}{}{Myœlê, ¿e nie bêdzie problemu.}
+{202}{}{Wiesz co... chyba jednak siê rozmyœli³em...}
+
+{210}{}{Wiêc twoja obecnoœæ pewnie przysporzy nam wiêcej problemów ni¿ po¿ytku... [Siêga po broñ.]}
+{211}{}{Ups...}
+
+{220}{}{Oczywiœcie, ¿e NIE BÊDZIE problemu. Porozmawiaj z Gwen, ona powie ci co i jak.}
+{221}{}{W porz¹dku.}
+{222}{}{A dlaczego nie ty mi nie powiesz?}
+{223}{}{Nie warto by³o, nie warto by³o ³udziæ siê.}
+
+{230}{}{IdŸ do Gwen po szczegó³y i nie wkurwiaj mnie...}
+
+#
+##Powrot z questa
+#
+
+{300}{}{Jesteœ z powrotem. Chcê zobaczyæ teraz moje trofeum.}
+{301}{}{O to i one. Proszê bardzo.}
+{302}{}{Musisz najpierw o nie grzecznie poprosiæ.}
+{303}{}{Eee... wygl¹da na to, ¿e je gdzieœ zgubi³em...}
+
+{310}{}{Ty niewdziêczna imitacjo cz³owieka!}
+
+{320}{}{[Ogl¹da dok³adnie ucho.] Mo¿e byæ. [Zdejmuje naszyjnik i umieszcza twoj¹ zdobycz obok kolekcji koœci i emblemów.] Dowiod³eœ, ¿e holodysk który zdoby³eœ nie by³ jednorazowym przyp³ywem szczêœcia. Widzê ciebie w przysz³oœci jako mojego zastêpcê o ile bêdziesz przyprowadza³ do mojego obozu niewolników z twojej krypty. Dok³adnie takich jak ten goœæ u nas. Twardy skurwiel.}
+{321}{}{Och... To bardzo mi³e z twojej strony... Nie mia³byœ dla mnie jeszcze jakiegoœ zadania?}
+{322}{}{Eee... nie brzmisz zbyt przekonywuj¹co...}
+
+{340}{}{Dobrze, ¿e pytasz. Myœlê jak poradzi³eœ sobie z tymi dwoma sprawami to i poradzisz sobie z t¹. Prawda jest taka, ¿e znaczymy gówno na pustkowiach. Co wiêksza grupa z po³udnia zmiet³a by nas w drobny mak z palcem w... nosie.}
+{341}{}{Do czego zmierzasz?}
+{342}{}{¯eby obroniæ siê przed mutantami moi ch³opcy potrzebuj¹ lepszych pukawek. Próbowa³em ju¿ nawi¹zaæ kontakt ze Zbrojeniowcami z po³udnia i straci³em wielu ludzi po tym jak zaatakowaliœmy ich karawanê. Teraz mam znacznie lepszy pomys³.}
+{343}{}{Zamieniam siê w s³uch.}
+{344}{}{[Wyci¹ga z biblioteczki star¹ mapê.] Na po³udniowy-wschód st¹d jest stary magazyn Staro¿ytnych umiejscowiony w górskiej jaskinii. Mój ojciec wzi¹³ te wszystkie informacje z archiwów krypty w której siê wychowa³. W magazynie tym sk³adowano star¹ broñ i amunicjê.}
+{345}{}{Ale jakie jest moje za...}
+{346}{}{Udasz siê tam i wyczyœcisz magazyn z czegokolwiek co tam jest. Wys³a³em tam wielu moich ludzi, ale ¿aden z nich nie powróci³. Obawiam siê, ¿e jest to bardzo dobrze ste¿one miejsce. S³uchaj... uk³ad jest taki. Zachowaj sobie wszystko, co znajdziesz dooko³a, ale ostatnie pomieszczenie JEST MOJE! Zobaczê choæby ryskê na œluzie od tego sk³adu, a obiecujê... jeszcze tego dnia, którego wrócisz twoja g³ówka pos³u¿y nam jako dekoracja naszego obozu.}
+{347}{}{Rozumie siê.}
+{348}{}{Jasne, ale to wygl¹da na grub¹ robotê. Bêdê potrzebowa³ pomocnika.}
+{349}{}{To chyba nie na moje si³y...}
+{350}{}{Mogê ci przydzieliæ makysymalnie dwóch ludzi. Nie licz na wiêcej.}
+{351}{}{Nie, nie... starczy, ¿e dasz mi osi³ka z mojej krypty, co podobno jest w twoim obozie.}}
+{352}{}{No nie wiem... aaa niech bêdzie moja strata. Zgoda.}
+{353}{}{Zgoda.}
+
+{354}{}{S³uchaj ty ma³y gównie}
+{355}{}{Od teraz jesteœ jego niewolnikiem}
+{356}{}{S³uchasz siê go i wykonujesz jego polecenia}
+
+{357}{}{W takim razie nie jesteœ mi ju¿ potrzebny...}
+
+{358}{}{A teraz oboje wypad}
+
+{360}{}{Œwietnie. Teraz won. Nie chcê ciê widzieæ tutaj przed skoñczeniem roboty.}
+{361}{}{Jasne.}
+
+#
+## Magazyn start
+#
+
+{400}{}{Jakieœ wieœci?}
+{401}{}{Magazyn strzeg³y przewojenne roboty, które uda³o mi siê wyeleminowaæ. Tak jak by³o mówione - nie rusza³em pomieszczenia o którym by³a mowa.}
+{402}{}{[Sk³am.] Magazyn nie przedstawia ¿adnej wartoœci. Wszystko zosta³o wczeœniej zrabowane...}
+{403}{}{W³aœnie siê tam wybiera³em.}
+
+{410}{}{£¿esz! To by oznacza³o, ¿e zapisy mojego ojca to gówno prawda!}
+
+{420}{}{Mam nadziejê, ¿e zaraz ruszysz twój s³odki ty³ek, albo ci zrobiê z niego jesieñ œredniowiecza!}
+
+{430}{}{[Na jego twarzy pojawia siê uœmiech.] Mam nadziejê, ¿e mówisz jak jest inaczej twoja buzia zacznie przypominaæ trójpolówkê. My teraz siê wybierzemy do magazynu po resztê fantów, a ty na nas grzecznie zaczekasz.}
+{431}{}{[Czekaj.]}
+
+{440}{}{Nie kantowa³eœ, rzeczywiœcie by³ wypchany po brzegi zbrojeniówk¹. Pozwolê ci wybraæ sobie coœ z tego zestawu.}
+{441}{}{Wezmê snajperkê.}
+{442}{}{Wezmê rozpruwacza.}
+{443}{}{Wezmê minigun.}
+{444}{}{Wezmê bazookê.}
+{445}{}{Wezmê M60.}
+{446}{}{Wezmê miotacz ognia.}
+
+{450}{}{Mam nadziejê, ¿e ci siê podoba. Tylko wyobraŸ sobie ile œcierwa pustkowii od niego zdechnie, hehe... PrzyjdŸ do mnie póŸniej. Przetestujemy nowe zabawki, ja muszê dopilnowaæ formalnoœci.}
+{451}{}{W porz¹dku, wrócê za nied³ugo.}
+{452}{}{Mo¿e nie marnujmy amunicji?}
+
+{460}{}{Jak œmiesz kwestionowaæ moje pomys³y!}
+
+{470}{}{Sprawdziliœmy w komputerach zapisy z majstrowania przy œluzie o której ci mówi³em.}
+{471}{}{No i?}
+{472}{}{Wiêc tak to siê musi skoñczyæ.}
+
+{475}{}{Wiêc zrobiê z twojego g³upiego ³ba trofeum...}
+
+{500}{}{Gotowy by przetestowaæ nowe zabawki?}
+{501}{}{Nie mogê siê doczekaæ.}
+{502}{}{Jeszcze nie, zaraz wracam.}
+
+{505}{}{Ja te¿ nie móg³em czekaæ.}
+{506}{}{[Dalej.]}
+
+
+
+#
+## Murder
+#
+
+{600}{}{Mieszkañcy obozu, s³uchajcie!}
+{601}{}{Dziêki naszemu nowemu przyjacielowi jesteœmy teraz przej¹æ i obroniæ w³adzê w regionie}
+{602}{}{Ale niestety wraz z rozwojem sytuacji nie jesteœmy zmuszeni utrzymywaæ naszej umowy o zapewnianiu wam bezpieczeñstwa}
+{603}{}{To znaczy, ¿e jesteœmy wolni?}
+{604}{}{Oczywiœcie!}
+{605}{}{Hura!}
+{606}{}{Wow!}
+{607}{}{Nie wierzê...}
+{608}{}{Czy ja œniê?}
+{609}{}{Oczywiœcie, ¿e nie!}
+{610}{}{Przepraszam za zamieszanie}
+{611}{}{Nie poradzicie sobie bez nas na pustkowiach}
+#wyjmuje bron
+{612}{}{Dlatego postanawiam ul¿yæ wam w bólu}
+
+{650}{}{Kurwa! Nigdy nie czu³em siê lepiej!}
+{651}{}{PrzyjdŸ póŸniej do mnie, musimy omówiæ pewn¹ kwestiê.}
+
+#
+## Krypta 15
+#
+
+{700}{}{Tej nocy Mark, Matt i paru innych goœci zniknêli z wioski. Sukinsyny... wiedzia³em, ¿e to kolejni szpiedzy...}
+{701}{}{To dziwne.}
+
+{705}{}{A ty? Dla kogo pracujesz?!}
+{706}{}{Jaa? Eee... dla ciebie?}
+{707}{}{Nie jestem szpiegiem!}
+
+{710}{}{To jest dok³adnie to co by szpieg powiedzia³!}
+
+{715}{}{Kurwa, nie wierzê ci! Ale... nie mogê was kurwa wszystkich zastrzeliæ! Ja pierdole...}
+{716}{}{Chyba powinienem wróciæ kiedy siê uspokoisz...}
+
+{717}{}{[Wyci¹ga broñ i celuje w ciebie.] Nie! Teraz ja tu rz¹dzê! I teraz mnie wys³uchasz!}
+{718}{}{[Wyci¹gnij broñ.]}
+{719}{}{W porz¹dku... s³ucham...}
+
+{720}{}{To s³uchaj uwa¿nie, bo nie bêdê powtarza³! Jeszcze pó³ roku temu mieliœmy ma³y obóz na po³udnie st¹d. Odzwiedzaliœmy t¹ wioskê, co jakiœ czas i nie by³o problemu, ¿eby zabraæ co nasze. Ale dopóki Aradesh i Seth nie opuœcili wioski i ta dziwka Tandi nie przejê³a w³adzy wszystko siê uk³ada³o!}
+{721}{}{[DALEJ.]}
+{722}{}{Wtedy raz odwiedziliœmy ich wiochê i dostaliœmy potworne bêcki, a ja straci³em wielu dobrych ludzi. Du¿o mi zajê³o zebraæ dru¿ynê i siê zemœciæ. Rany po³atali nam przybysze w purpurowych szatach. Wróciliœmy, a wioska by³a pusta! Ta dziwka Tandi myœli, ¿e jest ode mnie sprytniejsza! Ale ja wiem, gdzie ona teraz jest.}
+{723}{}{Gdzie?}
+{724}{}{W krypcie 15! Nasi starsi stamt¹d pochodzili. Widocznie znudzi³o jej siê œwiat³o dzienne. Wyr¿niemy wszystko w pieñ wszystko, co siê tam bêdzie rusza³o! Wyruszamy za 5 minut i nie wa¿ mi siê spóŸniæ inaczej twój odciêty ³eb utknie w dupsku brahmina!}
+{725}{}{Odwa¿nie... zaraz wracam.}
+
+{730}{}{Gotowy?}
+{731}{}{Tak.}
+{732}{}{Jeszcze nie.}
+
+{735}{}{Pospiesz siê, dajê ci jeszcze chwilê.}
+
+{736}{}{Wyruszamy}
+
+{740}{}{Wykorzysta³eœ moje zaufanie, teraz spotka ciê kara}
+

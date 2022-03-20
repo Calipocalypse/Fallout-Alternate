@@ -1,0 +1,64 @@
+### Hello First Time ###
+
+{300}{}{Ile razy mam powtarzaæ, ¿e wyda³em WSZYSTKO CO, co... ojj... wybacz. Wszyscy w tej purpurze wygl¹damy tak samo, a ja nie nad¹¿am z wydawaniem towaru.}
+{301}{}{Mogê zadaæ ci kilka pytañ?}
+{302}{}{Potrzebujê du¿ej pukawki, znajdzie siê coœ dla mnie?}
+{303}{}{Muszê ju¿ iœæ.}
+{304}{}{Moi przyjaciele zostali przez was porwani, przybywam ich wyzwoliæ!}
+
+{310}{}{Jasne, pytaj œmia³o. Robota mo¿e poczekaæ, i tak plujê na ni¹ hektolitrami œliny.}
+{311}{}{Co tutaj robisz?}
+{312}{}{Co to za miejsce?}
+{313}{}{Kto rz¹dzi tym miejscem?} #Po odpowiedzi na 312
+{314}{}{Muszê ju¿ iœæ.}
+{315}{}{Mo¿na razem z wami wybraæ siê karawan¹?}
+
+{320}{}{Chêtnie, ale sprzedajê towar, ale tylko braciom z insygniami Jednoœci. Masz takie?}
+{321}{}{Tak.}
+{322}{}{Nie.}
+
+{330}{}{Musisz byæ na prawdê zdezorientowany bracie, pustynia musia³a Ÿle zadzia³aæ na twój ³eb. Pozwól, ¿e po krótce wyjaœniê.}
+{331}{}{[Dalej.]}
+{332}{}{To miejsce jest z jednym z najgorêtszych serc Jednoœci. To tutaj odbywa siê wiêkszoœæ przeinaczeñ. Wybrani zanurzaj¹ siê w kadzi ze œwiêtym p³ynem i wyzbywaj¹ siê ludzkich s³aboœci. Czy¿ to nie cudowne?}
+{333}{}{Gdzie jeszcze ma miejsce reszta przeinaczeñ?}
+{334}{}{Taaa. :ziew: Chyba ju¿ pójdê.}
+{335}{}{Có¿... by³o do niedawna takie miejsce daleko na po³udniu, ale banda gówniarzy nie pozwoli³a nam ukoñczyæ dzie³a. Mistrzu, wybacz im bo nie wiedz¹ co uczynili! Ale jest jeszcze jedno miejsce...}
+{336}{}{Hmm...?}
+{337}{}{Krypta na wschodzie! Czêœæ zasobów ze œwiêtym p³ynem zosta³a tam przeniesiona. Wielu nietkniêtych skaz¹ promieniowania dost¹pi cudownego przeinaczenia. Ach bracie, jaka zazdroœæ we mnie kipieje!}
+{338}{}{Sk¹d ta zazdroœæ?}
+{339}{}{Pozwól, ¿e zapytam o coœ jeszcze.}
+{340}{}{Podejrzewamy, ¿e wolni od promieniowania, wychowani w sterylnych warunkach ludzie po Wielkiej Przemianie zachowaj¹ swoje zdolnoœci intelektualne, a byæ mo¿e i rozrodcze.}
+{341}{}{To bardzo ciekawe, pozwól, ¿e zapytam o coœ innego.}
+
+{350}{}{Jeszcze do niedawna by³ to Porucznik, ale uda³ siê do krypty na wschodzie nadzorowaæ przemiany. Ktoœ podobno przyszed³ na jego miejsce, ale ja nic tam nie wiem. Mówi¹, ¿e wcale nie musia³ pod¹¿aæ œcie¿k¹ cursus honorum. Po prostu zast¹pi³ Porucznika.}
+{351}{}{Cursus Honorum?}
+#311
+
+{360}{}{Cursus honorum, czyli droga na szczyt, stopieñ wtajemniczenia. Zastanawiam siê dlaczego tak ma³o wiesz o nas samych, bracie...}
+{361}{}{[...]}
+{362}{}{Hej, zaczekaj sekundê... co jeœli jesteœ szpiegiem?! To by siê zgadza³o, niech mnie diabli! Stra¿e, bierzcie go!}
+{363}{}{Kurwa.}
+{364}{}{Stra¿e, bierzcie go!}
+
+#[...]
+{370}{}{[Nauka] Yyy... a wiesz jestem ze pó³nocnego bractwaaa z... z... San Francisco. Dawno mnie tu nie by³o.} #Science
+{371}{}{[Retoryka] Yyy... a wiesz jestem z naszego oddzia³u na pó³noc st¹d i my... szukamy nowych krypt do otwarcia tam... i d³ugo nas tu nie by³o.} #Speech
+{372}{}{Za u¿ycie umiejêtnoœci nauki zdobywasz 120 PD.}
+{373}{}{Za u¿ycie umiejêtnoœci retoryki zdobywasz 100 PD.}
+
+{380}{}{Hmmm... ciekawe, ciekawe... nigdy nie s³ysza³em. Popytam póŸniej w archiwach - nie bêdê ci przecie¿ zawraca³ g³owy.}
+{381}{}{Tak, tak - oczywiœcie. Pozwól, ¿e zapytam o coœ innego.}
+
+{390}{}{Pilnujê, ¿eby karawany, które wysy³amy w pustkowia dociera³y na miejsce z odpowiednim towarem. Wiesz, ostatni dyspozytor na fermê wisielców wys³a³ ludzi do przemiany zamiast truch³a brahminów.}
+{391}{}{Gdzie wysy³acie... wysy³amy jeszcze nasze karawany?}
+
+{400}{}{Na razie nigdzie. Mamy chwilowy przestój. Ekspedycja w góry w poszukiwaniu krypty pokrzy¿owa³a nam trochê plany. Wszystko idzie teraz w tamt¹ stronê. Wczeœniej wysy³aliœmy karawany do Hub, Nowego Adytum i Nekropolis.}
+#339
+
+{410}{}{Czego potrzebujesz tym razem? Muszê zrobiæ grafik kolejnych karawan na ca³y rok.}
+
+{420}{}{Czyli pewnie nie otrzyma³eœ jeszcze insygnii. Przepraszam, nie mogê ci sprzedaæ towaru. Coœ jeszcze?}
+{430}{}{Coœ jeszcze?}
+{431}{}{Chcia³bym jeszcze o coœ zapytaæ.}
+
+{440}{}{Hmmm... nie widzê problemu. Gdyby jeszcze karawany nie by³y wstrzymane do odwo³ania, wtedy to nawet móg³bym ci p³aciæ za ochronê karawany!}

@@ -1,0 +1,327 @@
+;
+; City datafile for worldmap, etc.
+; Fallout 2
+;
+
+
+;
+;   This information is the default, starting information, but
+; in actual game play, it will be saved out locally to the
+; individual savegame.  This allows us to have some locations
+; that have random-by-game positions.
+;   Note that this could cause code headaches if the bounding
+; circles overlap!
+;
+
+;   Code determines how many "Areas" there are based on how many
+; are in this file.  So there are *2* digits in city segment #
+; in order to preserve the ordering of the segments!
+
+;   Note: All areas are assumed to have at *least* one (ON) entrance!
+; If none is found, the system will generate one for you.  If there
+; aren't any that are *ON*, then it will force the first one on anyway.
+
+   ; Note: City names are kept in the Worldmap.msg message file
+   
+   ; Starting state, xpos, ypos, map index, elevation, tile_num, orientation
+   ;    (state is SAVED)
+   ; Note: entrance_# -- # is entrance value for map script
+   
+   
+; Pozycję sprawdzasz na townmap.frm w Paincie sprawdzamy dodajemy tylko +20 do x oraz y
+
+[Area 00]                ; Arroyo
+area_name=Arroyo
+world_pos=184,83
+start_state=Off
+size=Medium
+townmap_art_idx=156       ; Fid num index for the townmap art
+townmap_label_art_idx=370 ; Fid num index for the townmap label
+entrance_0=On,350,275,Baza Wojskowa,-1,-1,3  ; Etc.
+
+[Area 01]                ; The Den
+area_name=Fortress
+world_pos=884,933
+start_state=Off
+size=Medium
+townmap_art_idx=160
+townmap_label_art_idx=372
+entrance_0=On,124,293,Fortress,-1,-1,0
+
+
+[Area 02]                ; Random Encounter Desert
+area_name=Random
+world_pos=670,310
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Desert Encounter 1,-1,-1,3
+entrance_1=On,-1,-1,Desert Encounter 2,-1,-1,3
+entrance_2=On,-1,-1,Desert Encounter 3,-1,-1,3
+entrance_3=On,-1,-1,Desert Encounter 4,-1,-1,3
+entrance_4=On,-1,-1,Desert Encounter 5,-1,-1,3
+entrance_5=On,-1,-1,Desert Encounter 6,-1,-1,3
+entrance_6=On,-1,-1,Desert Encounter 7,-1,-1,3
+entrance_7=On,-1,-1,Desert Encounter 8,-1,-1,3
+entrance_8=On,-1,-1,Desert Encounter 9,-1,-1,3
+entrance_9=On,-1,-1,Desert Encounter 10,-1,-1,3
+
+[Area 03]                ; Random Encounter Mountain
+area_name=Random
+world_pos=670,310
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Mountain Encounter 1,-1,-1,0
+entrance_1=On,345,230,Cavern Encounter 0,-1,-1,0
+entrance_2=On,345,230,Mountain Encounter 2,-1,-1,0
+entrance_3=On,345,230,Cavern Encounter 1,-1,-1,0
+entrance_4=On,345,230,Cavern Encounter 2,-1,-1,0
+entrance_5=On,345,230,Cavern Encounter 3,-1,-1,0
+entrance_6=On,345,230,Cavern Encounter 4,-1,-1,0
+entrance_7=On,345,230,Cavern Encounter 5,-1,-1,0
+entrance_8=On,345,230,Mountain Encounter 3,-1,-1,0
+entrance_9=On,345,230,Mountain Encounter 4,-1,-1,0
+
+
+[Area 04]                ; Random Encounter City
+area_name=Random
+world_pos=670,310
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,City Encounter 1,-1,-1,0
+entrance_1=Off,-1,-1,City Encounter 2,-1,-1,0
+entrance_2=Off,-1,-1,City Encounter 3,-1,-1,0
+entrance_3=Off,-1,-1,City Encounter 4,-1,-1,0
+entrance_4=Off,-1,-1,City Encounter 5,-1,-1,0
+entrance_5=Off,-1,-1,City Encounter 6,-1,-1,0
+entrance_6=Off,-1,-1,City Encounter 7,-1,-1,0
+entrance_7=Off,-1,-1,City Encounter 8,-1,-1,0
+
+
+
+[Area 05]                ; Random Encounter Coast
+area_name=Random
+world_pos=670,310
+start_state=Off
+lock_state=On
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Coast Encounter 1,-1,-1,0
+entrance_1=On,345,230,Coast Encounter 2,-1,-1,0
+entrance_2=On,345,230,Coast Encounter 3,-1,-1,0
+entrance_3=On,345,230,Coast Encounter 4,-1,-1,0
+entrance_4=On,345,230,Coast Encounter 5,-1,-1,0
+entrance_5=On,345,230,Coast Encounter 6,-1,-1,0
+entrance_6=On,345,230,Coast Encounter 7,-1,-1,0
+entrance_7=On,345,230,Coast Encounter 8,-1,-1,0
+entrance_8=On,345,230,Coast Encounter 9,-1,-1,0
+entrance_9=On,345,230,Coast Encounter 10,-1,-1,0
+
+
+[Area 06]		; Special Encounter Monty Python Bridge
+area_name=Special Bridge
+world_pos=120,350
+start_state=Off
+lock_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Bridge Encounter,-1,-1,0
+
+
+[Area 07]		; Special Encounter Cafe of Broken Dreams
+area_name=Special Cafe
+world_pos=120,350
+start_state=Off
+lock_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Special Cafe Encounter,-1,-1,0
+
+
+[Area 08]		; Caravan Encounters
+area_name=Random
+world_pos=120,350
+start_state=Off
+lock_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Broken Hills Desert 1,-1,-1,0
+entrance_1=Off,-1,-1,Broken Hills Mountain 1,-1,-1,0
+
+
+[Area 09]		; areas that have no where else to go
+area_name=Shadow Worlds
+world_pos=672,972
+start_state=Off
+lock_state=on
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Coast Encounter 11,-1,-1,0
+entrance_1=On,345,230,Coast Encounter 12,-1,-1,0
+entrance_2=On,345,230,Desert Encounter 11,-1,-1,0
+entrance_3=On,345,230,Desert Encounter 12,-1,-1,0
+entrance_4=On,345,230,Desert Encounter 13,-1,-1,0
+entrance_5=On,345,230,Mountain Encounter 5,-1,-1,0
+entrance_6=On,345,230,Mountain Encounter 6,-1,-1,0
+entrance_7=On,-1,-1,In Game Movie Map 1,-1,-1,0
+entrance_8=On,-1,-1,Bess Dead, -1,-1,0
+
+[Area 10]
+area_name=Destroyed Citadel
+world_pos=634,483
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,345,230,Destroyed Citadel,-1,-1,3
+
+[Area 11]
+area_name=Mariposa
+world_pos=184,83
+start_state=On
+size=Medium
+townmap_art_idx=156       ; Fid num index for the townmap art
+townmap_label_art_idx=370 ; Fid num index for the townmap label
+entrance_0=On,350,275,Baza Wojskowa,-1,-1,3  ; Etc.
+
+[Area 12]
+area_name=Shady Sands
+world_pos=1073,72
+start_state=On
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,Shady Sands,-1,-1,3
+
+[Area 13]
+area_name=Vault 15
+world_pos=1284,83
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,Vault 15 Outside,-1,-1,3
+entrance_1=Off,-1,-1,Vault 15,-1,-1,3
+
+[Area 14]
+area_name=Vault 13
+world_pos=834,83
+start_state=Off
+size=Medium
+townmap_art_idx=479
+townmap_label_art_idx=370
+entrance_0=On,224,394,Vault 13 Mutant,0,20053,0
+entrance_1=Off,215,320,Vault 13 MUT Wejscie,0,25950,1
+entrance_2=Off,305,285,Vault 13,0,16895,5
+entrance_3=Off,305,325,Vault 13,1,16895,5
+entrance_4=Off,305,355,Vault 13,2,16895,5
+
+[Area 15]
+area_name=Milligan Revitalization Agency
+world_pos=473,622
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,Milligan Revitalization Agency Entrance,-1,-1,3
+
+[Area 16]
+area_name=Watershed
+world_pos=1123,672
+start_state=Off
+size=Large
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,Watershed,-1,-1,3
+
+[Area 17]
+area_name=Brotherhood
+world_pos=1284,783
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,BoS Surface,-1,-1,3
+entrance_1=Off,-1,-1,BoS Inside,-1,-1,3
+
+[Area 18]
+area_name=Child Dead
+world_pos=784,1033
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,Child Dead,-1,-1,3
+
+[Area 19]
+area_name=Shady Sands Cave
+world_pos=1123,72
+start_state=Off
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,Shady Sands Cave,-1,-1,3
+
+[Area 20]
+area_name=Caravan Area Test
+world_pos=1123,72
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,Shady Sands Cave,-1,-1,3
+
+
+; NOTE: This index # CANNOT CHANGE without a code change in Worldmap.c!
+;[Area 21]                ; Car out of gas Sub-area
+;area_name=Car Outta Gas
+;world_pos=100,100
+;start_state=Off
+;lock_state=Off
+;size=Small
+;townmap_art_idx=-1
+;townmap_label_art_idx=-1
+;entrance_0=On,130,150,Car Outta Gas,-1,-1,0
+;townmap_art_idx=-1
+;townmap_label_art_idx=379
+;entrance_0=On,130,150,Car: Desert,-1,-1,0
+
+[Area 21]
+area_name=Magazine
+world_pos=784,283
+start_state=On
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,Magazine,2,-1,3
+
+[Area 22]
+area_name=Vault 13 Start
+world_pos=834,83
+start_state=On
+size=Medium
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,Vault 13 Start,-1,-1,3
+
+[Area 23]
+area_name=Szopa
+world_pos=1060,418
+start_state=Off
+size=Small
+townmap_art_idx=-1
+townmap_label_art_idx=-1
+entrance_0=On,-1,-1,Szopa,-1,-1,3

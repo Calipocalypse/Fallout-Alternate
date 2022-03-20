@@ -1,0 +1,73 @@
+#
+# quests.txt
+#
+# format of each line is:
+#
+#   location, description, gvar_index, display_threshold, completed_threshold
+#
+# where:
+#
+#   location is the number of the message in map.msg describing the location
+#
+#   description is the number of the message in quest.msg with the quest description.
+#
+#   gvar_index is the GVAR_* number for the variable controlling the quest.
+#
+#   display_threshold is the minimum value that the gvar must be for this quest
+#     to be displayed in the pipboy.
+#
+#   completed_threshold is the minimum value that the gvar must be for this quest
+#     to be shown as completed in the pipboy.
+#
+
+
+#####
+# Arroyo Quests
+#####
+# Kill the Evil Plants
+# Arroyo, GVAR_KILL_EVIL_PLANTS, Quest_Accepted, Quest_Completed
+1500, 100, 9, 2, 6
+# Sharpen your Spear
+# Arroyo, GVAR_ARROYO_SPEAR, Spear_Get_Flint, Spear Finished
+1500, 110, 183, 1, 3
+# Recover Smoke for Nagor
+# Arroyo, GVAR_ARROYO_DOG, Dog_Accepted, Dog_FInished_Good
+1500, 120, 191, 1, 3
+# Return the GECK
+1500, 130, 480, 0, 1
+# Find Vic
+1500, 140, 619, 1, 2
+
+#####
+# Shady Sands
+#####
+# Napraw radio
+1512, 200, 791, 1, 3
+# Zepsuj z powrotem radio
+1512, 210, 862, 5, 6
+# Wyprowadz dwoch gosci od bojki
+1512, 201, 793, 1, 3
+# Spraw by bimbrownicy szybciej robili piwko raczkami
+1512, 202, 796, 1, 4
+# Szczury
+1512, 203, 839, 1, 5
+# Chwasty
+1512, 205, 838, 1, 5
+# Brahminy
+1512, 206, 837, 1, 6
+# Studnia
+1512, 207, 836, 1, 2
+# Dowod przeciwko dzieciom katedry
+1512, 208, 804, 1, 2
+# Wyeleminowac dzieci Katedry
+1512, 209, 804, 2, 5
+# Syn Anny
+1512, 204, 850, 1, 8
+
+#####
+# Vault 13
+#####
+# Pigulki dla Syriusza
+1514, 300, 871, 1, 2
+# Problem Edwarda
+1514, 301, 873, 1, 2

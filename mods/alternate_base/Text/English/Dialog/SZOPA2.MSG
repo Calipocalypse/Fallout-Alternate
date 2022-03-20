@@ -1,0 +1,13 @@
+{100}{}{Przed twoimi oczami jawi siê niedosz³e górskie ranczo. Dooko³a panuje niebywa³a cisza. Kilometry dalej s³ychaæ przechadzaj¹ce siê kretoszczury.}
+
+{200}{}{A niech mnie}
+{201}{}{Myœla³em, ¿e Franz œciemnia³!}
+{202}{}{Nie no znaczy... dobrze ciê widzieæ!}
+{203}{}{Pozwól, ¿e ciê oprowadzê}
+{204}{}{Po prawej stronie mój pokój}
+{205}{}{Dalej po lewej stronie pokój Anny i Franza}
+{206}{}{Ale za to prawej jest wolny pokój}
+{207}{}{Jeœli chcesz z nami zostaæ to myœlê, ¿e mo¿esz go zaj¹æ}
+{208}{}{Œmia³o, rozgoœæ siê}
+{209}{}{Ogólnie to jestem Vavro}
+{210}{}{PrzyjdŸ za chwilê do mojego pokoju to porozmawiamy}

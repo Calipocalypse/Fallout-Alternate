@@ -1,0 +1,9 @@
+{200}{}{[Przed tob¹ stoi postaæ, któr¹ ju¿ wczeœniej widzia³eœ. Nosi kombinezon krypty 13 i zdaje siê, ¿e spêdziliœcie razem chwilê w klatce zanim uciekliœcie.]}
+{201}{}{Uhh... czeœæ.}
+
+{210}{}{Nie mam na ciebie czasu. Za³o¿ê siê, ¿e nie prze¿yjesz nawet pierwszych kilku godzin. Mój facet dok³adnie pozna³ ten œwiat i o wszystkim mi powiedzia³. Tacy jak ty nie dadz¹ tutaj rady, mo¿esz zwin¹æ siê w kulkê i zacz¹æ p³akaæ.}
+{211}{}{Hej, ka¿dy od czegoœ...}
+{212}{}{Hej, zbieram ekipê do...}
+
+{220}{}{Wybacz, ja nie bêdê traci³a czasu w tej zasyfionej wiosce, zw³aszcza na takich jak ty. Muszê wpierw kogoœ odnaleŸæ. [Porywa siê z miejsca i prêdkoœci¹ œwiat³a wybiega na zewn¹trz.]}
+{221}{}{[KONIEC]}

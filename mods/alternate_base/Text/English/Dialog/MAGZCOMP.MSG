@@ -1,0 +1,48 @@
+{200}{}{Logowanie do systemu PowerSafe... Proszê podaæ has³o...}
+{201}{}{[Zgadnij has³o.]}
+{202}{}{[Próbuj wejœæ bez wpisywania has³a.]}
+{203}{}{w3wjes6q794Mj7jjM0E4}
+{204}{}{eeqKz5nPjq6kQeDQUPxM}
+{205}{}{4IDC0ZXssmlqJeb0ExRB}
+{206}{}{[Nasikaj na klawiaturê.]}
+{207}{}{[Uderz g³ow¹ o klawiaturê.]} #krwotok
+{208}{}{[OdejdŸ od komputera.]}
+
+{210}{}{[Uderzasz z impetem o klawiaturê. Wskutek uderzenia leje siê z twojej g³owy struga krwi.]}
+{211}{}{Aaaaaah!}
+
+{220}{}{[Wskutek zwarcia pr¹d elektryczny przechodzi przez strugi z³otego deszczu i przep³ywa przez twoje cia³o. Za³osna œmieræ...]}
+{221}{}{Mama?}
+
+{230}{}{B³êdne has³o... Pozosta³o jeszcze }
+{231}{}{ prób...}
+
+{240}{}{Terminal zosta³ zablokowany... Proszê skontaktowaæ siê z przedstawicielem firmy PowerSafe...}
+
+{250}{}{Has³o przyjête... Witamy w systemie PowerSafe... Jest godzina }
+{251}{}{ dnia }
+{252}{}{ miesi¹ca }
+{253}{}{ roku }
+{254}{}{. Jak¹ operacjê chcesz wykonaæ?}
+{260}{}{Wyœwietl parametry zasilania.}
+{261}{}{Wy³¹cz zasilanie.}
+{262}{}{W³¹cz zasilanie.}
+{263}{}{Wyloguj.}
+{264}{}{Odœwie¿.}
+
+{265}{}{Wylogowywanie z systemu PowerSafe...}
+{266}{}{[Czekaj.]}
+{267}{}{[Zaloguj siê bez u¿ywania has³a.]}
+
+{270}{}{Napiêcie: }
+{271}{}{ V DC (110V). Czêstotliwoœæ: }
+{272}{}{ Hz (60Hz). Pr¹d:}
+{273}{}{ A...}
+{274}{}{Powrót.}
+{275}{}{Wyœwietl komunikaty o aktualnych b³êdach.}
+
+{280}{}{System PowerSafe... Proszê wybraæ jedno z dostêpnych poleceñ...}
+
+{290}{}{#34 Uwaga! Wysokie amplitudy ró¿nic potencja³ów. Proszê wezwaæ technika w celu ustabilizowania napiêcia...}
+{291}{}{Brak b³êdów...}
+#274

@@ -1,0 +1,28 @@
+{200}{}{Zebraliœmy siê tutaj by po¿egnaæ naszego brata Jonasa}
+{201}{}{Ojciec, gdy Jonas by³ niepos³uszny, wbija³ mu w ty³ek puste strzykawki po stimpakach }
+{202}{}{Jonas nie mia³ ³atwego dzieciñstwa}
+{203}{}{Wychowywa³ siê sam u boku ojca na farmie nieopodal Hub}
+{204}{}{Ju¿ jako dziecko musia³ ciê¿ko pracowaæ na farmie by utrzymaæ siebie i gospodarstwo}
+{205}{}{Wtedy przyszli bandyci zabili go. I w ten sposób…}
+{206}{}{Szlag...}
+{207}{}{Przepraszam… mia³o byæ, ¿e zabili mu ojca.}
+{208}{}{Wybaczcie}
+{209}{}{[Rzuca kartkê z tekstem do wykopanego grobu]}
+{210}{}{Jonas!}
+{211}{}{Wkrótce pomœcimy twoj¹ œmieræ!}
+{212}{}{Oko za oko, z¹b za z¹b!}
+{213}{}{Umrzemy jak wolni ludzie pustkowii!}
+{214}{}{Nie jak ostatnie œmiecie!}
+{215}{}{Mo¿esz odejœæ spokojny o nasz¹ przysz³oœæ}
+{216}{}{Wkrótce siê z tob¹ zobaczymy}
+{217}{}{Niech drogi Valhalli bêd¹ dla ciebie szerokie…}
+{218}{}{a twój Chrysler niech pali ma³o!}
+{219}{}{Amen}
+{220}{}{Zakopcie grób}
+{221}{}{Pierdolê, bêdê improwizowa³}
+
+{228}{}{Mam nadziejê, ¿e Isaac wie co robi.}
+{229}{}{Niech siê ju¿ dzieje co siê chce.}
+{230}{}{Rany julek, ale¿ to by³a noc.}
+{231}{}{Mam nadziejê, ¿e ju¿ wiêcej nic takiego nie prze¿yjê.}
+{232}{}{Koniec wra¿eñ na dzisiaj.}
